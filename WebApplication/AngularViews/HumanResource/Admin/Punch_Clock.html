@@ -1,0 +1,1189 @@
+﻿<div class="row">
+
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Punch Clock</h6>
+                </div>
+                <div class="card-header px-0 border-0">
+                    <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+                        <li class="nav-item ms-2">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':PUNCH_CLOCK_TAB_ID==1}" ng-click="Fn_PUNCH_CLOCK_TAB_CLICK(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                General
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':PUNCH_CLOCK_TAB_ID==2}" ng-click="Fn_PUNCH_CLOCK_TAB_CLICK(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Rules
+                            </a>
+                        </li>
+                        <li class="nav-item" ng-show="false">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':PUNCH_CLOCK_TAB_ID==3}" ng-click="Fn_PUNCH_CLOCK_TAB_CLICK(3)" id="bottom-inbox-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-inbox" aria-selected="false">
+                                Others
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body" ng-show="PUNCH_CLOCK_TAB_ID==1">
+                    <form name="PunchClockfrom" novalidate>
+                        <div class="row mb-2">
+                            <div class="col-xxl-8 col-md-8 col-xl-8">
+                                <h6 class="headings">Clock-in/out</h6>
+                            </div>
+                            <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                                <button type="button"
+                                        class="btn btn-light btn-sm"
+                                        ng-click="HRM_INS_UPD_PUNCHCLOCK_BRANCH_SETTINGS()">
+                                    <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                            <div class="table-responsive">
+                                <div class="col-xxl-12 col-md-12 col-xl-12">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Sites</th>
+                                                <th width="15%">Geo Location</th>
+                                                <th width="15%">QR Scan</th>
+                                                <th width="15%">Clock-in Terminal</th>
+                                                <th width="15%">Mobile Selfie</th>
+                                                <th width="15%">ClockIn Terminal Selfie</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="_branch in HR_BRANCH_LIST" ng-init="nginit_clockinout(_branch)">
+                                                <td>{{_branch.BRANCH_NAME}}</td>
+                                                <td>
+                                                    <div class="media d-block">
+                                                        <div class="media-body switch-sm">
+                                                            <label class="switch">
+                                                                <input type="checkbox"
+                                                                       checked=""
+                                                                       name="GEO_LOCATION_{{$index}}"
+                                                                       ng-model="_branch.GEO_LOCATION"
+                                                                       required
+                                                                       ng-class="{'error':PunchClockfrom.submitted && PunchClockfrom.GEO_LOCATION_{{$index}}.$error.required}" /><span class="switch-state"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="media d-block">
+                                                        <div class="media-body switch-sm">
+                                                            <label class="switch">
+                                                                <input type="checkbox"
+                                                                       name="QR_SCAN_{{$index}}"
+                                                                       ng-model="_branch.QR_SCAN"
+                                                                       required
+                                                                       ng-class="{'error':PunchClockfrom.submitted && PunchClockfrom.QR_SCAN_{{$index}}.$error.required}" /><span class="switch-state"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="media d-block">
+                                                        <div class="media-body switch-sm">
+                                                            <label class="switch">
+                                                                <input type="checkbox"
+                                                                       name="CLOCK_IN_TERMINAL_{{$index}}"
+                                                                       ng-model="_branch.CLOCK_IN_TERMINAL"
+                                                                       value="false"
+                                                                       required
+                                                                       ng-class="{'error':PunchClockfrom.submitted && PunchClockfrom.CLOCK_IN_TERMINAL_{{$index}}.$error.required}" /><span class="switch-state"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="media d-block">
+                                                        <div class="media-body switch-sm">
+                                                            <label class="switch">
+                                                                <input type="checkbox"
+                                                                       name="CLOCK_IN_TERMINAL_{{$index}}"
+                                                                       ng-model="_branch.MOBILE_SELFIE"
+                                                                       value="false"
+                                                                       required
+                                                                       ng-class="{'error':PunchClockfrom.submitted && PunchClockfrom.CLOCK_IN_TERMINAL_{{$index}}.$error.required}" /><span class="switch-state"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="media d-block">
+                                                        <div class="media-body switch-sm">
+                                                            <label class="switch">
+                                                                <input type="checkbox"
+                                                                       name="CLOCK_IN_TERMINAL_SELFIE{{$index}}"
+                                                                       ng-model="_branch.CLOCK_IN_TERMINAL_SELFIE"
+                                                                       value="false"
+                                                                       required
+                                                                       ng-class="{'error':PunchClockfrom.submitted && PunchClockfrom.CLOCK_IN_TERMINAL_SELFIE{{$index}}.$error.required}" /><span class="switch-state"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <hr />
+                    <form name="QRform" novalidate>
+                        <div class="row mb-2">
+                            <div class="col-xxl-8 col-md-8 col-xl-8">
+                                <h6 class="headings">Enable QR Code Refresh</h6>
+                            </div>
+                            <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                                <button type="button"
+                                        class="btn btn-light btn-sm"
+                                        ng-click="INS_UPD_CUSTOMER_SETTINGS(PunchClockGeneralSearch.ALLOW_QR ? PunchClockGeneralSearch.MINS : 0, 57)">
+                                    <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <div class="media form-control">
+                                    <label class="col-form-label m-r-10">Allow</label>
+                                    <div class="media-body switch-sm ms-auto" ng-init="PunchClockGeneralSearch.ALLOW_QR =false">
+                                        <label class="switch">
+                                            <input type="checkbox"
+                                                   checked
+                                                   name="ALLOW_QR"
+                                                   ng-model="PunchClockGeneralSearch.ALLOW_QR" /><span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-show="PunchClockGeneralSearch.ALLOW_QR == true">
+                                <div class="placeholder_blank" data-type="Mins">
+                                    <input type="text"
+                                           name="MINS"
+                                           placeholder="0"
+                                           ng-model="PunchClockGeneralSearch.MINS"
+                                           only-digits
+                                           min="5"
+                                           maxlength="4"
+                                           required
+                                           ng-class="{'error':QRform.submitted && QRform.MINS.$error.required && PunchClockGeneralSearch.MINS < 5}" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <hr ng-show="false" />
+                    <h6 ng-show="false" class="headings mb-2">Exceptions for Clock-in/out</h6>
+                    <p ng-show="false" class="paragraph">These users wont need to clock-in/out</p>
+                    <form ng-show="false" name="Exceptionsform" novalidate>
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings mb-1">Sites</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="exceptionBranchSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_BRANCH_Fn($item,$index)"
+                                           autocomplete="off"
+                                           uib-typeahead="_branch as _branch.BRANCH_NAME for _branch in DD_BRANCH_LIST | filter:$viewValue"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':Exceptionsform.submitted && Exceptionsform.BRANCH_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_branch in ADD_BRANCH_LIST">
+                                    <span class="truncate_employee">{{_branch.BRANCH_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_BRANCH_Fn(_branch)"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings mb-1">Departments</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="exceptionDepartmentSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_DEPARTMENTS_Fn($item,$index)"
+                                           autocomplete="off"
+                                           uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in DEPARTMENTS_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':Exceptionsform.submitted && Exceptionsform.DEPARTMENT_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_department in ADD_DEPARTMENTS_LIST">
+                                    <span class="truncate_employee">{{_department.DEPARTMENT_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_DEPARTMENTS_Fn(_department)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings mb-1">Positions</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="exceptionPositionSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_POSITIONS_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_position as _position.POSITION_NAME for _position in POSITIONS_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':Exceptionsform.submitted && Exceptionsform.POSITION_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_position in ADD_POSITIONS_LIST">
+                                    <span class="truncate_employee">{{_position.POSITION_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_POSITIONS_Fn(_position)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings mb-1">Employee</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="exceptionEmployeeSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_EMPLOYEE_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in EMPLOYEES_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':Exceptionsform.submitted && Exceptionsform.EMPLOYEE_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_employee in ADD_EMPLOYEES_LIST">
+                                    <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_EMPLOYEE_Fn(_employee)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr />
+
+                    <div class="row mb-2">
+                        <div class="col-xxl-8 col-md-8 col-xl-8">
+                            <h6 class="headings">Employees Clock-in prior to the scheduled start of the shift</h6>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-light btn-sm"                                    
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS(PunchClockGeneralSearch.CLOCK_IN_ALLOW ? PunchClockGeneralSearch.HOURS : 0, 59)">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <div class="media form-control">
+                                <label class="col-form-label m-r-10">Allow</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               name="CLOCK_IN_ALLOW"
+                                               ng-model="PunchClockGeneralSearch.CLOCK_IN_ALLOW"
+                                               required
+                                               ng-class="{'error':Exceptionsform.submitted && Exceptionsform.CLOCK_IN_ALLOW.$error.required}" /><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 col-xl-3 " ng-show="PunchClockGeneralSearch.CLOCK_IN_ALLOW">
+                            <div class="placeholder_blank" data-type="Mins">
+                                <input type="text"
+                                       name="HOURS"
+                                       placeholder="0"
+                                       ng-model="PunchClockGeneralSearch.HOURS"
+                                       only-digits
+                                       required
+                                       ng-class="{'error':Exceptionsform.submitted && Exceptionsform.HOURS.$error.required}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <h6 class="headings">Allow Clock-in/out editing</h6>
+                    <div class="row">
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <div class="media form-control">
+                                <label class="col-form-label m-r-10">Enable</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               checked=""
+                                               name="ENABLE_CLOCK"
+                                               ng-model="PunchClockGeneralSearch.ENABLE_CLOCK"
+                                               ng-change="INS_UPD_CUSTOMER_SETTINGS(PunchClockGeneralSearch.ENABLE_CLOCK ? 1 : 0, 60)"
+                                               required
+                                               ng-class="{'error':Exceptionsform.submitted && Exceptionsform.ENABLE_CLOCK.$error.required}" /><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr ng-show="false" />
+
+                    <h6 ng-show="false" class="headings">Subtract Breaks</h6>
+                    <div ng-show="false" class="row">
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <div class="media form-control">
+                                <label class="col-form-label m-r-10">Enable</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               checked=""
+                                               name="ENABLE_SUBTRACT"
+                                               ng-model="PunchClockGeneralSearch.ENABLE_SUBTRACT"
+                                               ng-change="INS_UPD_CUSTOMER_SETTINGS(PunchClockGeneralSearch.ENABLE_SUBTRACT ? 1 : 0, 61)"
+                                               required
+                                               ng-class="{'error':Exceptionsform.submitted && Exceptionsform.ENABLE_SUBTRACT.$error.required}" /><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <form name="SHIFTform" novalidate>
+                        <h6 class="headings">Take Breaks During Employee’s Shifts</h6>
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-7 col-xl-6">
+                                <div class="media form-control">
+                                    <label class="col-form-label m-r-10">Enable Employees to Take Breaks During Their Shifts</label>
+                                    <div class="media-body switch-sm ms-auto">
+                                        <label class="switch">
+                                            <input type="checkbox"
+                                                   checked=""
+                                                   name="ENABLE_EMPLOYEE_BREAK"
+                                                   ng-model="PunchClockGeneralSearch.ENABLE_EMPLOYEE_BREAK"
+                                                   ng-change="UPDATE_SHIFT_Fn()"
+                                                   required
+                                                   ng-class="{'error':SHIFTform.submitted && SHIFTform.ENABLE_EMPLOYEE_BREAK.$error.required}" /><span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-show="PunchClockGeneralSearch.ENABLE_EMPLOYEE_BREAK">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Sites</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="shiftBranchSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_SHIFT_BRANCH_Fn($item,$index)"
+                                           autocomplete="off"
+                                            ng-change="scrollToBottom()"
+                                           uib-typeahead="_branch as _branch.BRANCH_NAME for _branch in SHIFT_BRANCH_LIST | filter:$viewValue"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':SHIFTform.submitted && SHIFTform.BRANCH_NAME.$error.required}" />
+                                    </div>
+                                    <div class="tags-normal text-start my-2" ng-repeat="_branch in ADD_SHIFT_BRANCH_LIST">
+                                        <span class="truncate_employee">{{_branch.BRANCH_NAME}}</span>
+                                        <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SHIFT_BRANCH_Fn(_branch)"></i>
+                                    </div>
+                                </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Departments</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="shiftDepartmentSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           ng-change="scrollToBottom()"
+                                           typeahead-on-select="ADD_SHIFT_DEPARTMENTS_Fn($item,$index)"
+                                           autocomplete="off"
+                                           uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in SHIFT_DEPARTMENTS_LIST | filter:$viewValue"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':SHIFTform.submitted && SHIFTform.DEPARTMENT_NAME.$error.required}" />
+                                    </div>
+                                    <div class="tags-normal text-start my-2" ng-repeat="_department in ADD_SHIFT_DEPARTMENTS_LIST">
+                                        <span class="truncate_employee">{{_department.DEPARTMENT_NAME}}</span>
+                                        <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SHIFT_DEPARTMENTS_Fn(_department)"></i>
+                                    </div>
+                                </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Positions</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="shiftPositionSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                            ng-change="scrollToBottom()"
+                                           typeahead-on-select="ADD_SHIFT_POSITIONS_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_position as _position.POSITION_NAME for _position in SHIFT_POSITIONS_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':SHIFTform.submitted && SHIFTform.POSITION_NAME.$error.required}" />
+                                    </div>
+                                    <div class="tags-normal text-start my-2" ng-repeat="_position in ADD_SHIFT_POSITIONS_LIST">
+                                        <span class="truncate_employee">{{_position.POSITION_NAME}}</span>
+                                        <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SHIFT_POSITIONS_Fn(_position)"></i>
+                                    </div>
+                                </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Employee</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="shiftEmployeeSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_SHIFT_EMPLOYEE_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in SHIFT_EMPLOYEES_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':SHIFTform.submitted && SHIFTform.EMPLOYEE_NAME.$error.required}" />
+                                    </div>
+                                    <div class="tags-normal text-start my-2" ng-repeat="_employee in ADD_SHIFT_EMPLOYEES_LIST">
+                                        <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+                                        <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SHIFT_EMPLOYEE_Fn(_employee)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+                    <hr />
+                    <form name="ROTAform" novalidate>
+                        <h6 class="headings">Accept ROTA as Clock-in/out time</h6>
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings mb-1">Sites</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="rotaBranchSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           ng-change="scrollToBottom()"
+                                           typeahead-on-select="ADD_ROTA_BRANCH_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_branch as _branch.BRANCH_NAME for _branch in ROTA_BRANCH_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':ROTAform.submitted && ROTAform.BRANCH_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_branch in ADD_ROTA_BRANCH_LIST">
+                                    <span class="truncate_employee">{{_branch.BRANCH_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_ROTA_BRANCH_Fn(_branch)"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings mb-1">Departments</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="rotaDepartmentSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           ng-change="scrollToBottom()"
+                                           typeahead-on-select="ADD_ROTA_DEPARTMENTS_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in ROTA_DEPARTMENTS_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':ROTAform.submitted && ROTAform.DEPARTMENT_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_department in ADD_ROTA_DEPARTMENTS_LIST">
+                                    <span class="truncate_employee">{{_department.DEPARTMENT_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_ROTA_DEPARTMENTS_Fn(_department)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings mb-1">Positions</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="rotaPositionSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                            ng-change="scrollToBottom()"
+                                           typeahead-on-select="ADD_ROTA_POSITIONS_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_position as _position.POSITION_NAME for _position in ROTA_POSITIONS_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':ROTAform.submitted && ROTAform.POSITION_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_position in ADD_ROTA_POSITIONS_LIST">
+                                    <span class="truncate_employee">{{_position.POSITION_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_ROTA_POSITIONS_Fn(_position)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings mb-1">Employee</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="rotaEmployeeSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                            ng-change="scrollToBottom()"
+                                           typeahead-on-select="ADD_ROTA_EMPLOYEE_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in ROTA_EMPLOYEES_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':ROTAform.submitted && ROTAform.EMPLOYEE_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_employee in ADD_ROTA_EMPLOYEES_LIST">
+                                    <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_ROTA_EMPLOYEE_Fn(_employee)"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="card-body" ng-show="PUNCH_CLOCK_TAB_ID==2">
+                    <div class="row">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Rounding Rules</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-light btn-sm"
+                                    click-once
+                                    ng-click="ROUND_RULE_SAVE_Fn()">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    <form name="PunchClockRulesform" novalidate>
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label class="d-block">Start</label>
+                                <input type="hidden"
+                                       name="UNITS_NAME"
+                                       required
+                                       ng-model="PunchClockRulesSearch.RULE_START_ID"
+                                       ng-class="{'error':PunchClockRulesform.submitted && PunchClockRulesform.RULE_START_NAME.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':PunchClockRulesform.submitted && PunchClockRulesform.RULE_START_NAME.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{PunchClockRulesSearch.CUSTOM_RULE_START_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+
+                                            <li class=""
+                                                ng-repeat="_start in ROUNDING_RULE_START_LIST "
+                                                ng-click="SELECTED_RULE_START_Fn(_start)">
+                                                <span class="">{{_start.RULE_START_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label class="d-block">End</label>
+                                <input type="hidden"
+                                       name="UNITS_NAME"
+                                       required
+                                       ng-model="PunchClockRulesSearch.RULE_END_ID"
+                                       ng-class="{'error':PunchClockRulesform.submitted && PunchClockRulesform.RULE_END_NAME.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':PunchClockRulesform.submitted && PunchClockRulesform.RULE_END_NAME.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{PunchClockRulesSearch.CUSTOM_RULE_END_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+
+                                            <li class=""
+                                                ng-repeat="_end in ROUNDING_RULE_END_LIST "
+                                                ng-click="SELECTED_RULE_END_Fn(_end)">
+                                                <span class="">{{_end.RULE_END_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <form name="ClockRuleform" novalidate>
+                        <div class="row">
+                            <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Early & Late Clock-in/out Rules</h6></div>
+                            <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                                <button type="button"
+                                        class="btn btn-light btn-sm"
+                                        click-once
+                                        ng-click="CLOCK_INOUT_RULE_SAVE_Fn()">
+                                    <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                                </button>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>Track when employee clock-in variance is</label>
+                                <div class="placeholder" data-type="Mins">
+                                    <input type="text"
+                                           name="TRACK_EMPLOYEE_EARLY"
+                                           placeholder="0"
+                                           ng-model="PunchClockRulesSearch.TRACK_EMPLOYEE_EARLY"
+                                           required
+                                           only-digits
+                                           ng-class="{'error':ClockRuleform.submitted && ClockRuleform.TRACK_EMPLOYEE_EARLY.$error.required}" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>Track when employee clocks-out variance is </label>
+                                <div class="placeholder" data-type="Mins">
+                                    <input type="text"
+                                           name="TRACK_EMPLOYEE_LATE"
+                                           placeholder="0"
+                                           ng-model="PunchClockRulesSearch.TRACK_EMPLOYEE_LATE"
+                                           required
+                                           only-digits
+                                           ng-class="{'error':ClockRuleform.submitted && ClockRuleform.TRACK_EMPLOYEE_LATE.$error.required}" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr ng-show="false" />
+
+                    <form ng-show="false" name="OverTimeRuleform" novalidate>
+                        <div class="row">
+                            <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Overtime Rule (When It Kicks In)</h6></div>
+                            <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                                <button type="button"
+                                        class="btn btn-light btn-sm"
+                                        click-once
+                                        ng-click="HRM_INS_UPD_OVERTIME_RULES()">
+                                    <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                                </button>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>Length</label>
+                                <div class="placeholder" data-type="Mins">
+                                    <input type="text"
+                                           name="LENGTH"
+                                           placeholder="0"
+                                           ng-model="PunchClockRulesSearch.LENGTH"
+                                           required
+                                           only-digits
+                                           ng-class="{'error':OverTimeRuleform.submitted && OverTimeRuleform.LENGTH.$error.required}">
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>Positions</label>
+                                <ul class="nav nav-pills">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations cursor-pointer"
+                                           data-toggle="dropdown">
+                                            <span class="select-label" id="select_label">
+                                                {{(POSITIONS_ORULE_LIST | filter:{IS_SELECTED:true}).length==POSITIONS_ORULE_LIST.length?'All':(POSITIONS_ORULE_LIST | filter:{IS_SELECTED:true}).length}} Position Selected
+                                            </span>
+                                        </a>
+                                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+
+                                            <li class="DontHideOnClick" ng-repeat="_position in POSITIONS_ORULE_LIST" ng-init="_position.IS_SELECTED=false">
+                                                <div class="form-check">
+                                                    <input class="form-check-input"
+                                                           id="POSITION_ID_{{$index}}"
+                                                           type="checkbox"
+                                                           ng-model="_position.IS_SELECTED"
+                                                           checked="">
+                                                    <label class="form-check-label text-nowrap" for="POSITION_ID_{{$index}}">{{_position.POSITION_NAME}}</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>Day of the Week</label>
+                                <ul class="nav nav-pills">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations cursor-pointer"
+                                           data-toggle="dropdown">
+                                            <span class="select-label" id="select_label">
+                                                {{(WEEKDAY_LIST | filter:{IS_SELECTED:true}).length==WEEKDAY_LIST.length?'All':(WEEKDAY_LIST | filter:{IS_SELECTED:true}).length}} Days Selected
+                                            </span>
+                                        </a>
+                                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+
+                                            <li class="DontHideOnClick" ng-repeat="_weekDay in WEEKDAY_LIST" ng-init="_weekDay.IS_SELECTED=false">
+                                                <div class="form-check">
+                                                    <input class="form-check-input"
+                                                           id="DAY_NAME_{{$index}}"
+                                                           type="checkbox"
+                                                           ng-model="_weekDay.IS_SELECTED"
+                                                           checked="">
+                                                    <label class="form-check-label text-nowrap" for="DAY_NAME_{{$index}}">{{_weekDay.DAY_NAME}}</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>Wage Multiplier</label>
+                                <input type="text"
+                                       name="WAGE_MULTIPLIER"
+                                       placeholder="0"
+                                       ng-model="PunchClockRulesSearch.WAGE_MULTIPLIER"
+                                       required
+                                       only-digits
+                                       ng-class="{'error':OverTimeRuleform.submitted && OverTimeRuleform.WAGE_MULTIPLIER.$error.required}" />
+                            </div>
+
+                        </div>
+                    </form>
+                    <hr />
+                    <div class="row">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Exception Rules</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-light btn-sm"
+                                    click-once
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS(PunchClockRulesSearch.THRESHOLD_FOR_VARIANCE, 68)">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+
+                        <div class="col-xxl-6 col-md-12 col-xl-6">
+                            <label>Threshold for Variance Between Clock-in Clock-out and Scheduled Minute</label>
+                            <div class="placeholder" data-type="Mins">
+                                <input type="text"
+                                       name="THRESHOLD_FOR_VARIANCE"
+                                       placeholder="0"
+                                       only-digits
+                                       ng-model="PunchClockRulesSearch.THRESHOLD_FOR_VARIANCE"
+                                       required
+                                       ng-class="{'error':UserJourneyform.submitted && UserJourneyform.THRESHOLD_FOR_VARIANCE.$error.required}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Auto Clock-out</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-light btn-sm mb-2"
+                                    click-once
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS(PunchClockRulesSearch.ALLOW_AUTO_CLOCK ? PunchClockRulesSearch.HOURS : 0 ,69)">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <div class="media form-control">
+                                <label class="col-form-label m-r-10">Allow auto-clock out if clockout is over x Minutes</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               name="ALLOW_AUTO_CLOCK"
+                                               ng-model="PunchClockRulesSearch.ALLOW_AUTO_CLOCK"
+                                               required                                               
+                                               ng-class="{'error':UserJourneyform.submitted && UserJourneyform.ALLOW_AUTO_CLOCK.$error.required}"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="PunchClockRulesSearch.ALLOW_AUTO_CLOCK">
+                            <div class="placeholder_blank" data-type="Mins">
+                                <input type="text"
+                                       name="HOURS"
+                                       placeholder="0"
+                                       ng-model="PunchClockRulesSearch.HOURS"
+                                       required
+                                       only-digits
+                                       ng-class="{'error':UserJourneyform.submitted && UserJourneyform.HOURS.$error.required}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr ng-show="false" />
+
+                    <div class="row" ng-show="false">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Punch in Without Schedule</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-light btn-sm"
+                                    click-once
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS(PunchClockRulesSearch.SCHEDULE_MESSAGE,70)">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+
+                        <div class="col-xxl-6 col-md-12 col-xl-6">
+                            <label>Message for Users Punching In Without Schedule</label>
+                            <textarea placeholder="Type here"
+                                      name="SCHEDULE_MESSAGE"
+                                      ng-model="PunchClockRulesSearch.SCHEDULE_MESSAGE"
+                                      rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <hr ng-show="false" />
+
+                    <form name="OverTimeform" novalidate ng-show="false">
+                        <h6 class="headings">Pay for Overtime</h6>
+                        <div class="row">
+                            <div class="col-xxl-4 col-md-4 col-xl-4">
+                                <h6 class="headings mb-1">Departments</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="overtimeDepartmentSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_OVERTIME_DEPARTMENTS_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in OVERTIME_DEPARTMENTS_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':OverTimeform.submitted && OverTimeform.DEPARTMENT_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_department in ADD_OVERTIME_DEPARTMENTS_LIST">
+                                    <span class="truncate_employee">{{_department.DEPARTMENT_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_OVERTIME_DEPARTMENTS_Fn(_department)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4 col-md-4 col-xl-4">
+                                <h6 class="headings mb-1">Positions</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="overtimePositionSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_OVERTIME_POSITIONS_Fn($item,$index)"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           uib-typeahead="_position as _position.POSITION_NAME for _position in OVERTIME_POSITIONS_LIST | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':OverTimeform.submitted && OverTimeform.POSITION_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_position in ADD_OVERTIME_POSITIONS_LIST">
+                                    <span class="truncate_employee">{{_position.POSITION_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_OVERTIME_POSITIONS_Fn(_position)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4 col-md-4 col-xl-4">
+                                <h6 class="headings mb-1">Employee</h6>
+                                <div class="AddCustomScroll_Contact">
+                                    <input type="text"
+                                           ng-model="overtimeEmployeeSearch"
+                                           placeholder="Search & Add"
+                                           maxlength="100"
+                                           name="search"
+                                           typeahead-on-select="ADD_OVERTIME_EMPLOYEE_Fn($item,$index)"
+                                           autocomplete="off"
+                                           uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in OVERTIME_EMPLOYEES_LIST | filter:$viewValue"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           typeahead-min-length="0"
+                                           typeahead-loading="loading"
+                                           typeahead-no-results="noResults" 
+                                           ng-focus="SET_DROPSCROLL();"
+                                           ng-class="{'error':OverTimeform.submitted && OverTimeform.EMPLOYEE_NAME.$error.required}" />
+                                </div>
+                                <div class="tags-normal text-start my-2" ng-repeat="_employee in ADD_OVERTIME_EMPLOYEES_LIST">
+                                    <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_OVERTIME_EMPLOYEE_Fn(_employee)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+
+                    <div class="row"  ng-show="false">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Set a Higher Pay Rate for Shifts Worked on Holidays</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-light btn-sm"
+                                    click-once
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS(PunchClockRulesSearch.ENABLE? PunchClockRulesSearch.FACTOR_VALUE :0 ,72)">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <label class="d-block">&nbsp;</label>
+                            <div class="media form-control">
+                                <label class="col-form-label m-r-10">Enable</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               name="ENABLE"
+                                               ng-model="PunchClockRulesSearch.ENABLE"
+                                               required
+                                               ng-class="{'error':UserJourneyform.submitted && UserJourneyform.ENABLE.$error.required}"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4" ng-show="PunchClockRulesSearch.ENABLE">
+                            <label class="d-block">Multiplication factor</label>
+                            <input type="hidden"
+                                   name="FACTOR_NAME"
+                                   required
+                                   ng-model="PunchClockRulesSearch.FACTOR_VALUE"
+                                   ng-class="{'error':PunchClockRulesform.submitted && PunchClockRulesform.FACTOR_NAME.$error.required}" />
+
+                            <ul class="nav nav-pills" ng-class="{'error':PunchClockRulesform.submitted && PunchClockRulesform.FACTOR_NAME.$error.required}">
+                                <li class="dropdown w-100 show">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                        <span class="select-label" id="select_label">
+                                            {{PunchClockRulesSearch.CUSTOM_FACTOR_NAME}}
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+
+                                        <li class=""
+                                            ng-repeat="_factor in MULTIPLICATION_FACTORS_LIST "
+                                            ng-click="SELECTED_FACTOR_Fn(_factor,1)">
+                                            <span class="">{{_factor.FACTOR_NAME}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <hr ng-show="false" />
+                    <h6 class="headings" ng-show="false">Hide from Schedule</h6>
+                    <div class="row" ng-show="false">
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <h6 class="headings">Departments</h6>
+                            <div class="AddCustomScroll_Contact">
+                                <input type="text"
+                                       ng-model="scheduleepartmentSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-focus-first="false"
+                                       typeahead-focus-trigger
+                                       typeahead-min-length="0"
+                                       typeahead-on-select="ADD_SCHEDULE_DEPARTMENTS_Fn($item,$index)"
+                                       autocomplete="off"
+                                       uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in SCHEDULE_DEPARTMENTS_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults" 
+                                       ng-focus="SET_DROPSCROLL();"
+                                       ng-class="{'error':OverTimeform.submitted && OverTimeform.DEPARTMENT_NAME.$error.required}" />
+                            </div>
+                            <div class="tags-normal text-start my-2" ng-repeat="_department in ADD_SCHEDULE_DEPARTMENTS_LIST">
+                                <span class="truncate_employee">{{_department.DEPARTMENT_NAME}}</span>
+                                <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SCHEDULE_DEPARTMENTS_Fn(_department)"></i>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <h6 class="headings">Employee</h6>
+                            <div class="AddCustomScroll_Contact">
+                                <input type="text"
+                                       ng-model="scheduleEmployeeSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-on-select="ADD_SCHEDULE_EMPLOYEE_Fn($item,$index)"
+                                       autocomplete="off"
+                                       typeahead-focus-first="false"
+                                       typeahead-min-length="0"
+                                       typeahead-focus-trigger
+                                       uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in SCHEDULE_EMPLOYEES_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults" 
+                                       ng-focus="SET_DROPSCROLL();"
+                                       ng-class="{'error':OverTimeform.submitted && OverTimeform.EMPLOYEE_NAME.$error.required}" />
+                            </div>
+
+                            <div class="tags-normal text-start my-2" ng-repeat="_employee in ADD_SCHEDULE_EMPLOYEES_LIST">
+                                <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+                                <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SCHEDULE_EMPLOYEE_Fn(_employee)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" ng-show="PUNCH_CLOCK_TAB_ID==3">
+                    <form name="PunchClockOtherform" novalidate>
+                        <h6 class="headings">Add Site Wifi </h6>
+                        <div class="row">
+                            <label class="col-xxl-6 col-md-8 col-xl-6">Site</label>
+                            <label class="col-xxl-6 col-md-4 col-xl-6">Wifi IP</label>
+                        </div>
+                        <div class="row" ng-repeat="_wifi in BRANCH_WIFI_MAPPING_LIST" ng-init="nginit_wifi_mapping(_wifi)">
+                            <div class="col-xxl-6 col-md-8 col-xl-6">
+                                <input type="hidden"
+                                       name="WIFI_BRANCH_ID_{{$index}}"
+                                       required
+                                       ng-model="_wifi.BRANCH_ID"
+                                       ng-class="{'error':PunchClockOtherform.submitted && PunchClockOtherform.WIFI_BRANCH_ID_{{$index}}.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':PunchClockOtherform.submitted && PunchClockOtherform.WIFI_BRANCH_ID_{{$index}}.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{_wifi.CUSTOM_BRANCH_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                            <li class=""
+                                                ng-show="_wifi.BRANCH_DEFAULT_TEXT != _wifi.CUSTOM_BRANCH_NAME"
+                                                ng-click="SELECTED_WIFI_BRANCH_Fn('',_wifi)">{{_wifi.BRANCH_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-repeat="_branch_wifi in BRANCH_WIFI_LIST"
+                                                ng-click="SELECTED_WIFI_BRANCH_Fn(_branch_wifi,_wifi)">
+                                                <span class="">{{_branch_wifi.BRANCH_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xxl-3 col-md-4 col-xl-3">
+                                <input type="text"
+                                       name="WIFI_IP_{{$index}}"
+                                       placeholder="Add here"
+                                       ng-model="_wifi.WIFI_IP"
+                                       required
+                                       ng-class="{'error':PunchClockOtherform.submitted && PunchClockOtherform.WIFI_IP_{{$index}}.$error.required}" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-12 col-md-12 col-xl-12">
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        click-once
+                                        ng-click="HRM_INS_UPD_BRANCH_WIFI_MAPPING()">
+                                    Save
+                                </button>
+                                <button type="button"
+                                        class="btn btn-light"
+                                        ng-click="ADD_BRANCH_WIFI()">
+                                    <i class="fa-light fa-plus float-start me-2 mt-1"></i> Add More Site Wifi
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="multiplication-factor-alert" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+
+                    <h6 class="text-center pb-2 fw-500">Confirm Multiplication Factor</h6>
+                    <p class="text-center text-dark">This keyed-in seems to be greater than 2 which could mean employees could get paid more than twice their wage. Please Confirm.</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-danger w-100"
+                                type="button"
+                                click-once
+                                data-bs-dismiss="modal"
+                                ng-click="SELECTED_FACTOR_Fn(SELECTED_MULTI_FACTOR,0)">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

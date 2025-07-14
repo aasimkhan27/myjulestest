@@ -1,0 +1,14 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/HeaderDtlsNew.html?v=1{{AppVersion}}">
+    </div>
+    <div class="col-auto mn-w-250">
+        <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/Employee_Tabs.html?v={{AppVersion}}">
+    </div>
+        
+    <div class="col">
+        <button type="button" class="btn btn-sm btn-wenodo edit-position" ng-show="EmpSearch_HEADER.ACTIVE" ng-if="EDIT_PROFILE_CHECK_MODULE_ACCESS" ng-click="CONTRACT_DETAILS()">Edit</button>
+        <div class="w-100" ng-repeat="LIST in [{'DATA':ViewEmpSearch_2}]" ng-include="'../AngularViews/CommonView/FormLabelView.html?v=1{{AppVersion}}'"></div>
+        <div class="w-100" ng-include="'../AngularViews/CommonView/UpcomingUpdates.html?v=1{{AppVersion}}'"></div>
+    </div>
+</div>

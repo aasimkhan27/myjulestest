@@ -1,0 +1,185 @@
+﻿<div class="container-fluid" ng-show="CASHUP_REPORTS_PRIVILEGE==true">
+    <div class="my-2 py-2 pb-3 scrollbar-wrapper d-flex">
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Daily_Cashup">Daily Cashup</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Weekly_Cashup">Weekly Cashup</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Weekly_Sales">Weekly Sales</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Cash_Banking">Cash_Banking</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Account_Customer">Account Customer</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Cashup_Deposit">Cashup Deposit</a>
+        <a class="btn-tabs" href="#!/Reports_Petty_Cash">Petty Cash</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Voucher">Reports Voucher</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Comps">Comps</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Voids">Voids</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Float">Float</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Total_Cash">Total Cash</a>
+        <a class="btn-tabs active" href="#!/CashUpApp_Reports_Comments">Comments</a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="row g-1 resCashupHeader">
+                <div class="col-xxl-1 col-xl-1 col-md-1">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate">
+                                        {{ REPORTS_COMMENTS_Obj.SELECTED_SITE.BRANCH_NAME || 'Site' }}
+                                    </span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li ng-repeat="site in REPORTS_SITES_LIST"
+                                    ng-click="selectSite(site)">
+                                    <span class="truncate">{{ site.BRANCH_NAME }}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2" ng-init="dateinputddmmyy()">
+                    <div class="date-column">
+                        <input type="text"
+                               class="dateinputddmmyy"
+                               placeholder="DD/MM/YY"
+                               name=""
+                               ng-model="REPORTS_COMMENTS_Obj.CASHUP_DATE" />
+                        <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+
+                <div class="col-xxl-1 col-xl-1 col-md-1">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate">
+                                        {{ REPORTS_COMMENTS_Obj.SELECTED_AREA.AREA_NAME || 'Area' }}
+                                    </span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li ng-click="selectArea('Choose')">Choose</li>
+                                <li ng-repeat="area in AREA_LIST"
+                                    ng-click="selectArea(area)">
+                                    <span class="truncate">{{ area.AREA_NAME }}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-xxl-1 col-xl-1 col-md-1">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate">
+                                        {{ REPORTS_COMMENTS_Obj.SELECTED_SESSION.SESSION_NAME || 'Session' }}
+                                    </span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li ng-click="selectSession('Choose')">Choose</li>
+                                <li ng-repeat="session in SESSION_LIST"
+                                    ng-click="selectSession(session)">
+                                    <span class="truncate">{{ session.SESSION_NAME }}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#print_comment" class="btn btn-primary w-100">
+                        <i class="fa-thin fa-print me-1"></i>
+                        Print
+                    </button>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-xxl-12 col-xl-12 col-md-12">
+                    <h5 class="headings">Variance Comments</h5>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="COMMENT_LIST.length==0">
+                    <div class="no-record text-center">
+                        <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+                    </div>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12 reports-comments" ng-repeat="COM in COMMENT_LIST | orderBy:['AREA','SESSION_NAME']" ng-show="COMMENT_LIST.length>0">
+                    <label>{{COM.TITLE}}</label> <span>(Area: {{COM.AREA}}, Session: {{COM.SESSION_NAME}}) </span>
+                    <p>{{COM.NOTE}}</p>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-xxl-12 col-xl-12 col-md-12">
+                    <h5 class="headings">Review Commentary</h5>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="COMMENT_REVIEW_LIST.length==0">
+                    <div class="no-record text-center">
+                        <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+                    </div>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12 reports-comments" ng-repeat="COM in COMMENT_REVIEW_LIST | orderBy:['AREA','SESSION_NAME']" ng-show="COMMENT_LIST.length>0">
+                    <label>{{COM.TITLE}}</label> <span>({{COM.AREA}} {{COM.SESSION_NAME}}) </span>
+                    <p>{{COM.NOTE}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_REPORTS_PRIVILEGE==false">
+    <div class="no-record text-center">
+        <span class="d-block text-center">You do not have access to Reports. Please contact Admin for access.</span>
+    </div>
+</div>
+<div class="modal fade " tabindex="-1" id="print_comment">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <h6 class="my-3 f-w-600">Comments report will include ?</h6>
+                    <div class="col-xxl-12 col-md-12 col-md-12">
+                        <div class="form-check">
+                            <input class="form-check-input" id="Variance" type="checkbox" value="Variance">
+                            <label class="form-check-label" for="Variance"><span class="modal-label">Variance Comments</span></label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="Review" type="checkbox" value="Review">
+                            <label class="form-check-label" for="Review"><span class="modal-label">Review Commentary</span></label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row g-1 w-100">
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button class="btn btn-primary w-100" type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#redeem">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+

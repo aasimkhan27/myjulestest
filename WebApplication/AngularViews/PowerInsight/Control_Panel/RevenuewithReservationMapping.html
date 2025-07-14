@@ -1,0 +1,102 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                        <h6>Revenue with Reservation Mapping</h6>
+                </div>
+
+                <div class="card-body">
+                    <form id="ReservationMappingForm" name="ReservationMappingForm" novalidate>
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <ul class="nav nav-pills">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label_Branch"
+                                                  ng-if="RevenueReservationMappingSearch.DISPLAY_TEXT_BRANCH!=undefined || RevenueReservationMappingSearch.DISPLAY_TEXT_BRANCH!=null">
+                                                {{RevenueReservationMappingSearch.DISPLAY_TEXT_BRANCH}}
+                                            </span>
+                                        </a>
+                                        <ul ID="divBranch" class="dropdown-menu w-100 scrollbar-wrapper">
+                                            <li ng-repeat="BL in PW_BRANCH_LIST" ng-show="!BL.USE_EPOS_COVERS_IN_DASHBOARDS"
+                                                ng-click="BRANCH_CHANGE_Fn(BL)">
+                                                {{BL.BRANCH_NAME}}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-auto ms-auto">
+                                <button type="button" class="btn btn-sm btn-primary" ng-click="ADD_MORE_Fn();">Add</button>
+
+                            </div>
+                        </div>
+                    </form>
+                    <form id="ReservationMappingListForm" name="ReservationMappingListForm" novalidate>
+                        <div class="table-responsive scrollbar-wrapper height-60vh" ng-show="EPOS_REVENUE_CENTER_MAPPING_WITH_RESERVATION_SYSTEMS_LIST.length>0">
+                            <table class="table table-hover consolidated-table">
+                                <thead class="table-header-fixed">
+                                    <tr>
+                                        <th class="text-nowrap">#</th>
+                                        <th class="text-nowrap">Revenue</th>
+                                        <th width="20%" class="text-nowrap">Mapped Reservation </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="_revenue in REVENUE_LIST" on-finish-render="ngRepeatFinished">
+                                        <td class="text-nowrap"> {{$index+1}}</td>
+                                        <td class="text-nowrap">
+                                            <ul class="nav nav-pills">
+                                                <li class="dropdown w-100">
+                                                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                                        <span class="select-label" id="select_label" style="z-index:1">
+                                                            {{_revenue.EPOS_REVENUE_CENTER==null?'Select':_revenue.EPOS_REVENUE_CENTER==""?'-':_revenue.EPOS_REVENUE_CENTER  }}
+                                                        </span>
+                                                    </a>
+                                                    <ul ID="divReservation" class="dropdown-menu w-100 scrollbar-wrapper" style="z-index:2">
+                                                        <li ng-repeat="_reservation_system in EPOS_REVENUE_CENTER_MAPPING_WITH_RESERVATION_SYSTEMS_LIST"
+                                                            ng-click="Fn_EPOS_REVENU_CLICK(_reservation_system,_revenue)">
+                                                            {{_reservation_system.EPOS_REVENUE_CENTER==null || _reservation_system.EPOS_REVENUE_CENTER==''?'-':_reservation_system.EPOS_REVENUE_CENTER}}
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul class="nav nav-pills">
+                                                <li class="dropdown w-100">
+                                                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                                        <span class="select-label" id="select_label" style="z-index:1">
+                                                            {{_revenue.RESERVATION_REVENUE_CENTER==null?'Select':_revenue.RESERVATION_REVENUE_CENTER==""?'-' :_revenue.RESERVATION_REVENUE_CENTER }}
+                                                        </span>
+                                                    </a>
+                                                    <ul ID="divReservation" class="dropdown-menu w-100 scrollbar-wrapper" style="z-index:2">
+                                                        <li class=""
+                                                            ng-show="_revenue.RESERVATION_REVENUE_CENTER != RevenueReservationMappingSearch.DISPLAY_TEXT_ENTITY"
+                                                            ng-click="Fn_REVENUE_RESERVATION_CLICK('',_revenue)">
+                                                            {{RevenueReservationMappingSearch.DISPLAY_TEXT_ENTITY}}
+                                                        </li>
+                                                        <li ng-repeat="_reservation in RESERVATION_SYSTEMS_REVENUE_CENTER_LIST"
+                                                            ng-click="Fn_REVENUE_RESERVATION_CLICK(_reservation,_revenue)">
+                                                            {{_reservation.RESERVATION_REVENUE_CENTER==""?'-':_reservation.RESERVATION_REVENUE_CENTER}}
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="col-md-12 mt-2">
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="Save" ng-click="INS_UPD_EPOS_REVENUE_CENTER_MAPPING_WITH_RESERVATION_SYSTEMS();">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            

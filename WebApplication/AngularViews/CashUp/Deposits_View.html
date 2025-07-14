@@ -1,0 +1,230 @@
+﻿<style>
+    h5 {
+        font-size: 12px;
+    }
+</style>
+<!--<div class="animated fadeInLeft" id="deposits" role="tabpanel" ng-show="CASHUP.STEP_NO==8" aria-labelledby="custom-content-below-settings-tab">-->
+<div class="overlay_loadingNew" style="display:{{overlay_loadingNew}}!important"></div>
+<div id="LOADER_ID">
+    <div class="card-header">
+        <ul class="nav nav-pills float-left">
+            <li class="nav-item border radius-50">
+                <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Area: <span class="cash-up-header">{{CASHUP.AreaList[0].NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">CashUp Date: <span class="cash-up-header">{{CASHUP.CASHUP_DATE|date}}</span></span>
+            </li>
+        </ul>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item border radius-50">
+                    <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Received"})[0].SALES_AMT | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.DEPOSIT_TOTAL | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_DEPOSIT!=0}">
+                        Variance: <span class="cash-up-header">
+                            <!--{{ CASHUP.VARIANCE_DEPOSIT=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Received"}).length>0?(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Received"})[0].SALES_AMT*1-CASHUP.DEPOSIT_TOTAL*1:CASHUP.DEPOSIT_TOTAL*-1) |number:2}}-->
+                            {{ CASHUP.VARIANCE_DEPOSIT=(CASHUP.DEPOSIT_TOTAL- (CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Received"})[0].SALES_AMT ) |number:2}}
+
+                        </span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-header">
+        <h5 class="card-title">Deposit Received</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive overflow-visible">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Deposit Reference  </th>
+                        <th>Amount </th>
+                        <th> Date </th>
+                        <th>Payment Method</th>
+                        <th>Name Of Payee</th>
+                        <th>Note</th>
+                        <th>Upload</th>
+                    </tr>
+                </thead>
+                <tbody ng-show="CASHUP.DEPOSIT_TOTAL==0">
+                    <tr><td colspan="7"><div class="text-center" empty-grid></div></td></tr>
+                </tbody>
+                <tbody ng-show="CASHUP.DEPOSIT_TOTAL!=0">
+                    <tr ng-repeat="VISS in VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:3}| filter:{IS_DELETED:0}" ng-show="VISS.VALUE!=''" on-finish-render="ngRepeatFinished" ng-init="ValidControls(VISS);initdepositList(VISS);">
+                        <td>
+                            {{VISS.CHECK_NO}}
+                        </td>
+                        <td>
+                            {{VISS.CODE}}
+                        </td>
+                        <td>
+                            {{VISS.VALUE|number:2}}
+                        </td>
+                        <td>
+                            {{VISS.VALIDITY_DATE|date}}
+                        </td>
+                        <td>
+                            <select class="custom-select text-xs" style="width: 100%;" ng-options="Payment.PAYMENT_METHOD_ID as Payment.METHOD_NAME for Payment in PAYMENT_METHODS" ng-model="VISS.PAYMENT_METHOD_ID" ng-change="SetPayment(VISS,VISS.PAYMENT_METHOD_ID)" ng-disabled="true">
+                                <option value="">Select</option>
+                            </select>
+                        </td>
+                        <td>
+                            {{VISS.CUSTOMER_NAME}}
+
+                        </td>
+
+                        <td>
+                            {{VISS.NOTE}}
+
+                        </td>
+                        <td>
+                            <span class="d-block" ng-repeat="upls in VISS.UploadedFiles">
+                                <br ng-if="$index!=0" />
+                                <span ng-if="$index!=0" />
+                                <a class="font-11" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                    <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                                    <span ng-if="upls.ORIGINAL_FILE_NAME.length > 10">...</span>
+                                </a>
+                            </span>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>      
+
+        <div class="card-footer text-right">
+            <h6 class="app-text text-bold">Total: {{ CASHUP.DEPOSIT_TOTAL=((VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:3}| filter:{IS_DELETED:0}) | total:'VALUE')| number:2 }}</h6>
+        </div>
+
+    </div>
+
+    <hr />
+
+    <div class="card-header">
+        <h5 class="card-title">Deposit Redeemed <!--<button type="button" class="btn btn-wenodo btn-sm ml-2" data-toggle="modal" ng-click="SelectedRedeemedPopup();">Redeem Deposit </button>--></h5>  <!--data-target="#Deposit_Receipts"-->
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item">
+
+                </li>
+                <li class="nav-item border radius-50">
+                    <!--<h5>ePOS: <span class="app-text">0.00</span></h5> Deposit Received-->
+                    <!--<span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT | number:2}}</span></span>-->
+                    <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{((CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT) || (CASHUP.EPOS_DATA | filter:{"MEDIA":"DEP Redeem"})[0].SALES_AMT | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.DEPOSIT_REDEEMED_TOTAL | number:2}}</span></span>
+                    <!--<h5>Actual: <span class="app-text">{{CASHUP.DEPOSIT_REDEEMED_TOTAL | number:2}}</span></h5>-->
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <sapn class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_DEPOSIT_REDEEMED!=0}">
+                        Variance: <span class="cash-up-header">
+                            {{ CASHUP.VARIANCE_DEPOSIT_REDEEMED=( CASHUP.DEPOSIT_REDEEMED_TOTAL - (CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT) |number:2}}
+                        </span>
+                    </sapn>
+
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive overflow-visible">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Deposit Reference  </th>
+                        <th>Amount </th>
+                        <th>Redeemed Amount</th>
+                        <th> Date </th>
+                        <th>Payment Method</th>
+                        <th>Name Of Payee</th>
+                        <th>Note</th>
+                        <th>Upload</th>
+                    </tr>
+                </thead>
+                <tbody ng-show="CASHUP.DEPOSIT_REDEEMED_TOTAL==0">
+                    <tr><td colspan="7"><div class="text-center" empty-grid></div></td></tr>
+                </tbody>
+                <tbody ng-show="CASHUP.DEPOSIT_REDEEMED_TOTAL!=0">
+                    <tr ng-repeat="VISS in VoucherIssuedList | filter:{IS_REDEEMED:true}| filter:{ENTRY_TYPE_ID:3}| filter:{IS_DELETED:0}" ng-show="VISS.VALUE!=''" on-finish-render="ngRepeatFinished" ng-init="ValidControls(VISS);initdepositListred(VISS);">
+                        <td>
+                            {{VISS.CHECK_NO}}
+                        </td>
+                        <td>
+                            {{VISS.CODE}}
+                        </td>
+                        <td>
+                            {{VISS.TOTAL_AMT|number:2}}
+                        </td>
+                        <td>
+                            {{VISS.VALUE|number:2}}
+                        </td>
+                        <td>
+                            {{VISS.VALIDITY_DATE|date}}
+                        </td>
+                        <td>
+                            <select class="custom-select text-xs" style="width: 100%;" ng-options="Payment.PAYMENT_METHOD_ID as Payment.METHOD_NAME for Payment in PAYMENT_METHODS_RECEIVED" ng-model="VISS.PAYMENT_METHOD_ID" ng-change="SetPayment_Red(VISS,VISS.PAYMENT_METHOD_ID)" ng-disabled="true">
+                                <option value="">Select</option>
+                            </select>
+                        </td>
+                        <td>
+                            {{VISS.CUSTOMER_NAME}}
+
+                        </td>
+
+                        <td>
+                            {{VISS.NOTE}}
+
+                        </td>
+                        <td>
+                            <span class="d-block" ng-repeat="upls in VISS.UploadedFiles">
+                                <br ng-if="$index!=0" />
+                                <span ng-if="$index!=0" />
+                                <a class="font-11" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                    <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                                    <span ng-if="upls.ORIGINAL_FILE_NAME.length > 10">...</span>
+                                </a>
+                            </span>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      
+        <div class="card-footer text-right">
+            <h6 class="app-text text-bold">Total: {{ CASHUP.DEPOSIT_REDEEMED_TOTAL=((VoucherIssuedList | filter:{IS_REDEEMED:true}| filter:{ENTRY_TYPE_ID:3}| filter:{IS_DELETED:0}) | total:'VALUE')| number:2 }}</h6>
+        </div>
+
+    </div>
+</div>
+<!--</div>-->
+<div class="event-footer animated fadeInUp">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12 d-inline m-2 text-right">
+                <!--<button class="btn btn-w-default btn-sm" ng-click="ShowDiv(GetPreviousStep())" ng-show="CASHUP.STEP_NO!=0"><i class="fa fa-angle-double-left"></i> Previous</button>-->
+                <button class="btn btn-w-default btn-sm" ng-click="PreviousLink_View()"><i class="fa fa-angle-double-left"></i> Previous</button>
+                <button class="btn btn-wenodo btn-sm" ng-click="NextLink_View('Complimentary')"><i class="fa fa-angle-double-right"></i> Continue</button>
+                </div>
+        </div>
+    </div>
+</div>
+
+

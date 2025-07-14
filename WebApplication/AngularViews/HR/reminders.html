@@ -1,0 +1,79 @@
+﻿<div class="col-md-12 border-bottom"><a href="#!/YourTask" class="text-bold"><i class="fal fa-chevron-left fa-lg mr-2 mb-4"></i> Back to tasks</a></div>
+    <div class="card-body">
+        <div class="col-md-12">
+            <h3 class="heading-text mb-3">Reminders</h3>
+            <div class="col-md-12">
+                <div class="text-center" ng-show="USER_REMINDER.length==0" empty-grid>
+                </div>
+                <div class="reminders" ng-show="USER_REMINDER.length>0">
+                    <ul>
+                        <li class="" ng-repeat="UR in USER_REMINDER" ng-show="UR.TABLE_ID!=0">
+                            <label>
+                                <span class="d-block">{{UR.REMINDER_TYPE}}</span>
+                                <small class="font-10">{{UR.MESSAGE}}</small>
+                            </label>
+                            <span class="float-right cursor-pointer" ng-click="UPD_REMINDER_TO_DO_STATUS(UR)">
+                                <span class="d-block">
+                                    <i class="fas fa-thumbs-up app-text" data-toggle="tooltip" data-html="true" data-original-title="Acknowledge"></i>
+                                </span>
+                                <i class="fas fa-times text-danger" data-toggle="tooltip" data-html="true" data-original-title="Remove"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="reminders" ng-show="false">
+    <ul>
+        <li class="border-bottom">
+            <div class="custom-control custom-checkbox d-inline">
+                <input class="custom-control-input" type="checkbox" id="1" value="work">
+                <label for="1" class="custom-control-label">Review Name's right to work</label>
+            </div>
+            <span class="float-right"><i class="fal fa-search"></i></span>
+        </li>
+        <li class="border-bottom">
+            <div class="custom-control custom-checkbox d-inline">
+                <input class="custom-control-input" type="checkbox" id="2" value="2">
+                <label for="2" class="custom-control-label">Upload Name’s contract</label>
+            </div>
+            <span class="float-right"><i class="fal fa-upload"></i></span>
+        </li>
+        <li class="border-bottom">
+            <div class="custom-control custom-checkbox d-inline">
+                <input class="custom-control-input" type="checkbox" id="3" value="3">
+                <label for="3" class="custom-control-label">Review Name's right to work</label>
+            </div>
+            <span class="float-right"><i class="fal fa-search"></i></span>
+        </li>
+        <li class="border-bottom">
+            <div class="custom-control custom-checkbox d-inline">
+                <input class="custom-control-input" type="checkbox" id="4" value="4">
+                <label for="4" class="custom-control-label">Upload Name’s contract</label>
+            </div>
+            <span class="float-right"><i class="fal fa-upload"></i></span>
+        </li>
+        <li class="border-bottom">
+            <div class="custom-control custom-checkbox d-inline">
+                <input class="custom-control-input" type="checkbox" id="5" value="5">
+                <label for="5" class="custom-control-label">Review Name's right to work</label>
+            </div>
+            <span class="float-right"><i class="fal fa-search"></i></span>
+        </li>
+        <li class="border-bottom">
+            <div class="custom-control custom-checkbox d-inline">
+                <input class="custom-control-input" type="checkbox" id="6" value="6">
+                <label for="6" class="custom-control-label">Upload Name’s contract</label>
+            </div>
+            <span class="float-right"><i class="fal fa-upload"></i></span>
+        </li>
+        <li class="border-bottom">
+            <div class="custom-control custom-checkbox d-inline">
+                <input class="custom-control-input" type="checkbox" id="7" value="7">
+                <label for="7" class="custom-control-label">Review Name's right to work</label>
+            </div>
+            <span class="float-right"><i class="fal fa-search"></i></span>
+        </li>
+    </ul>
+</div>

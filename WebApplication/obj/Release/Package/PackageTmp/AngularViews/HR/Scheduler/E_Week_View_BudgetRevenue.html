@@ -1,0 +1,230 @@
+﻿
+<div class="card-header px-2 row">
+    <div class="col-md-6">
+        <h5 class="app-text semibold">Weekly Schedule({{SHIFT_CELDER_START_DATE | date }}-{{SHIFT_CELDER_END_DATE | date }})</h5>
+    </div>
+
+</div>
+<div class="table-responsive custom-scrollbar height-auto">
+    <table class="table table-bordered mb-0" id="Revenue_PDF">
+        <tbody>
+            <tr>
+                <td style="width:30%;">Wage Target % </td>
+                <td style="width:10%;">{{(WAGE_TARGET_LIST | total :'REVENUE')| number:2 }} </td>
+                <td style="width:10%;" ng-repeat="WTL in WAGE_TARGET_LIST track by $index">{{WTL.REVENUE}} <!--<input type="text"  only-digits ng-model="WTL.REVENUE" placeholder="0.00">--></td>
+            </tr>
+            <tr>
+                <td style="width:30%;">Revenue</td>
+                <td style="width:10%;">Total</td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">{{DL.NewDate | date:'EEE'}} {{DL.Days}}</td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> Last Year </td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(dayOfWeekNamesShort | total :'LAST_YEAR_TOTAL') | number:2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="AV in dayOfWeekNamesShort track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{AV.LAST_YEAR_TOTAL=((LAST_YEAR | filter: {'START_DATE': AV.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </td>
+            </tr>
+            <tr ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                <td style="width:30%;">{{Branch.BRANCH_NAME}}</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(LAST_YEAR | filter: {'BRANCH_ID': Branch.BRANCH_ID})  | total :'REVENUE'  | number :2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="RVN in LAST_YEAR | filter: {'BRANCH_ID': Branch.BRANCH_ID}">{{RVN.REVENUE | number :2 }}</td>
+            </tr>
+            <tr>
+                <td style="width:30%;">  Last Week Sales</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(dayOfWeekNamesShort | total :'LAST_WEEK_REVENUE_TOTAL') | number:2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{DL.LAST_WEEK_REVENUE_TOTAL=((LAST_WEEK_SALES| filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </td>
+            </tr>
+            <tr ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                <td style="width:30%;">{{Branch.BRANCH_NAME}} </td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(LAST_WEEK_SALES | filter: {'BRANCH_ID': Branch.BRANCH_ID})  | total :'REVENUE'  | number :2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="RVN in LAST_WEEK_SALES | filter: {'BRANCH_ID': Branch.BRANCH_ID}">
+                    {{RVN.REVENUE| number :2 }}
+                </td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> Budget Revenue</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(dayOfWeekNamesShort | total :'BUDGET_REVENUE_TOTAL') | number:2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{DL.BUDGET_REVENUE_TOTAL=((BUDGET_REVENUE_LIST| filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </td>
+
+            </tr>
+            <tr ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                <td style="width:30%;">{{Branch.BRANCH_NAME}}</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID})  | total :'REVENUE'  | number :2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="RVN in BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}">
+                    {{RVN.REVENUE| number :2 }}
+                </td>
+            </tr>
+            <tr ng-show="REVENUE_SEARCH.BRANCH_LIST.length==1">
+                <td style="width:30%;" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">Forecast Revenue </td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID})  | total :'REVENUE') | number:2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="RVN in FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}">
+                    <!--<input type="text"  only-digits ng-model="RVN.REVENUE" placeholder="0.00">-->
+                    {{RVN.REVENUE| number :2 }}
+                </td>
+
+            </tr>
+            <tr ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1">
+                <td style="width:30%;">Forecast Revenue</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(dayOfWeekNamesShort | total :'FORECAST_REVENUE_TOTAL') | number:2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{DL.FORECAST_REVENUE_TOTAL=((FORECAST_REVENUE_LIST | filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </td>
+
+            </tr>
+            <tr ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                <td style="width:30%;"> {{Branch.BRANCH_NAME}}</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID})  | total :'REVENUE') | number:2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="RVN in FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}">
+                    {{RVN.REVENUE| number :2 }}
+                </td>
+            </tr>
+            <tr>
+                <td style="width:30%;">Actual Revenue</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(dayOfWeekNamesShort  | total :'ACTUAL_REVENUE_TOTAL') | number:2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{DL.ACTUAL_REVENUE_TOTAL=((ACTUAL_REVENUE_LIST | filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </td>
+
+            </tr>
+            <tr ng-repeat="ARL in REVENUE_SEARCH.BRANCH_LIST" on-finish-render="ngRepeatFinishedRender">
+                <td style="width:30%;">{{ARL.BRANCH_NAME}}</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': ARL.BRANCH_ID})  | total :'REVENUE'  | number:2  }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="RVN in ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': ARL.BRANCH_ID}">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{RVN.REVENUE  | number:2 }}</span>
+                </td>
+
+            </tr>
+            <tr ng-show="REVENUE_SEARCH.WAGE_SETTING.DAY!==0">
+                <td style="width:30%;">Wage Target Cost</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{(WAGE_TARGET_LIST | total :'WAGE_TARGET_COST') | number:2 }}</span>
+                </td>
+                <td style="width:10%;" ng-repeat="WTL in WAGE_TARGET_LIST track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span>{{WTL.WAGE_TARGET_COST =(WTL.REVENUE * ((dayOfWeekNamesShort | filter: {'DateAsString': WTL.START_DATE})  | total :'BUDGET_REVENUE_TOTAL')/100) | number:2}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:30%;">Wage Cost</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    {{Section_Week_Search.COSE_PRIVILEGE==1?((dayOfWeekNamesShort | total :'WAGE_COST_TOTAL') | number:2):ASTRIC }}
+                </td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{Section_Week_Search.COSE_PRIVILEGE==1?(DL.WAGE_COST_TOTAL=((WAGE_COST_LIST | filter: {'START_DATE': DL.DateAsString})  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL') | number:2 ):ASTRIC}}
+                </td>
+            </tr>
+            <tr ng-repeat="ARL in REVENUE_SEARCH.BRANCH_LIST" on-finish-render="ngRepeatFinishedRender">
+                <td style="width:30%;">{{ARL.BRANCH_NAME}}</td>
+                <td style="width:10%;">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    {{Section_Week_Search.COSE_PRIVILEGE==1 ?((WAGE_COST_LIST  | filter: {'BRANCH_ID': ARL.BRANCH_ID}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL'  | number:2)  :ASTRIC}}
+                </td>
+                <td style="width:10%;" ng-repeat="WCL in WAGE_COST_LIST  | filter: {'BRANCH_ID': ARL.BRANCH_ID}:true ">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>{{Section_Week_Search.COSE_PRIVILEGE==1?(WCL.WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL | number:2) :ASTRIC}}
+                </td>
+            </tr>
+            <tr>
+                <td style="width:30%;">Wage Cost vs Budget %</td>
+                <td style="width:10%;">
+                    {{WAGE_COST_VS_BUDGET=((dayOfWeekNamesShort | total :'WAGE_COST_TOTAL') *1/(dayOfWeekNamesShort | total :'BUDGET_REVENUE_TOTAL'))*100 | number:2}}
+                </td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">
+                    {{DL.WAGE_COST_VS_BUDGET | number :2}}
+                </td>
+            </tr>
+
+            <tr ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST" on-finish-render="ngRepeatFinishedRender">
+                <td style="width:30%;">{{Branch.BRANCH_NAME}}</td>
+                <td style="width:10%;">
+                    {{((BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' )==0?'-':  (((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/((BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' ) | number:2) + '%'}}
+                </td>
+                <td style="width:10%;" ng-repeat="DL in Branch.dayOfWeekNamesShort track by $index">
+                    {{((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')==0 || ((BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')==0?'-':(((((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL') *100)/((BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')) | number:2)+'%'}}
+                </td>
+            </tr>
+            <tr>
+                <td style="width:30%;">Wage Cost vs Forecast % </td>
+                <td style="width:10%;">
+                    {{((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' )==0?'-':(((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' ) | number:2) + ' % '}}
+                </td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">
+                    {{DL.WAGE_COST_VS_FORECAST | number :2}}
+                </td>
+            </tr>
+            <tr ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST" on-finish-render="ngRepeatFinishedRender">
+                <td style="width:30%;">{{Branch.BRANCH_NAME}}</td>
+                <td style="width:10%;">
+                    {{((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' )==0?'-':(((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' ) | number:2) + ' % '}}
+                </td>
+                <td style="width:10%;" ng-repeat="DL in Branch.dayOfWeekNamesShort track by $index">
+                    {{((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')==0 || ((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')==0?'-':(((((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL') *100)/((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')) | number:2 )+'%'}}
+                </td>
+            </tr>
+            <tr>
+                <td style="width:30%;">Wage Cost vs Actual % </td>
+                <td style="width:10%;">
+                    {{((dayOfWeekNamesShort | total :'WAGE_COST_TOTAL') *1/(dayOfWeekNamesShort | total :'ACTUAL_REVENUE_TOTAL'))*100 | number:2 }}
+                </td>
+                <td style="width:10%;" ng-repeat="DL in dayOfWeekNamesShort track by $index">
+                    {{DL.WAGE_COST_VS_ACTUAL | number :2}}
+                </td>
+            </tr>
+            <tr ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST" on-finish-render="ngRepeatFinishedRender">
+                <td style="width:30%;">{{Branch.BRANCH_NAME}}</td>
+                <td style="width:10%;">
+                    {{Branch.TOT_ACTUAL_REVENUE==0?'-':(((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/Branch.TOT_ACTUAL_REVENUE | number:2) + ' % '}}
+                </td>
+                <td style="width:10%;" ng-repeat="DL in Branch.dayOfWeekNamesShort track by $index">
+                    {{(ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true| filter: {'START_DATE': DL.DateAsString})[0].REVENUE==0?'-': (((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/(ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true| filter: {'START_DATE': DL.DateAsString})[0].REVENUE | number:2 ) +' % '}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

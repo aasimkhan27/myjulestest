@@ -1,0 +1,244 @@
+﻿<div class="mx-3 mt-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-3 col-md-3">
+                    <label>
+                        Standard Role <i class="fa-solid fa-square-info bg-grey info-color fa-lg" data-bs-toggle="tooltip" data-bs-title="Edit the access level in individual user's profile"></i>
+                    </label>
+                    <ul class="nav nav-pills mb-0">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    Choose
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">Admin</li>
+                                <li class="DontHideOnClick">HR Manager</li>
+                                <li class="DontHideOnClick">Site Manager</li>
+                                <li class="DontHideOnClick">Assistant Manager</li>
+                                <li class="DontHideOnClick">Employee</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <span class="bulkUpdateSpan">You can change it individually once applied</span>
+                </div>
+                <div class="col-xxl-3 col-xl-3 col-md-3">
+                    <label>Effective From </label>
+                    <input type="date" />
+                </div>
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto">
+                    <label class="d-block responsiveLabel">&nbsp;</label>
+                    <button class="btn btn-primary applyBtn">Apply</button>
+                </div>
+            </div>
+
+            <div class="table-responsive mt-3">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="15%" class="text-nowrap">Standard Roles</th>
+                            <th width="16%" class="text-nowrap">Super Admin</th>
+                            <th class="text-nowrap" width="16%">HR Manager</th>
+                            <th width="16%" class="text-nowrap">Site/Location Manager</th>
+                            <th width="16%" class="text-nowrap">Assistant Manager</th>
+                            <th width="16%">Employee</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-nowrap bg-grey">System Setup</td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap bg-grey">Onboarding</td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap bg-grey">Scheduling</td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap bg-grey">Reports</td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap bg-grey">Leave/Absence</td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                            <td><i class="fa-solid fa-circle-check txt-primary fa-lg"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="mx-3 mt-3">
+    <div class="card">
+        <div class="card-header pb-0">
+            <div class="row">
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <h5 class="mt-3">Employee</h5>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2 ms-auto">
+                    <input type="text" name="search" placeholder="Search" />
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label mb-0" id="select_label">
+                                    <i class="fa-lg fa-light fa-location-dot"></i>
+                                    Location
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Location 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Location 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-building fa-lg"></i>
+                                    Department
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Department 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Department 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-briefcase-blank fa-lg"></i>
+                                    Position
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Position 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Position 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-nowrap">Employee Name</th>
+
+                            <th width="25%">Position</th>
+
+                            <th width="25%" class="text-nowrap">Standard Role</th>
+
+                            <th class="text-nowrap" width="25%">Effective From</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-nowrap">
+                                <span class="text_avatar">mw</span>
+                                Malik Wihowo
+                            </td>
+
+                            <td><input type="text" disabled placeholder="Employee" class="mb-0" /></td>
+
+                            <td>
+                                <ul class="nav nav-pills mb-0">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label">
+                                                <span class="truncate-ellipsis">
+                                                    Employee
+                                                </span>
+                                            </span>
+                                        </a>
+                                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                            <li class="DontHideOnClick">
+                                                <span>Employee</span>
+
+                                            </li>
+                                            <li class="DontHideOnClick">
+                                                <span>Employee</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td><input type="date" class="mb-0" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="card-footer text-end">
+            <a href="#!/Employee_List" class="btn btn-outline" type="button">
+                Cancel
+            </a>
+            <a href="#!/Preview_And_Update_Accesses" class="btn btn-primary" type="button">
+                Preview and update [1] accesses
+            </a>
+        </div>
+    </div>
+</div>
+

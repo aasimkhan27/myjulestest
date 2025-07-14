@@ -1,0 +1,139 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="heading-text-2">
+            Schedule
+        </h5>
+        <div class="card-tools" ng-show="false">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item mt-2">
+                    <span class="font-14 semibold">Pending:</span> <span class="badge bg-wenodo-blue text-white">50</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">List by</label>
+                        <select class="custom-select custom-select-sm" name="SELF_FALG"
+                                data-placeholder="Select Status"
+                                ng-change="GET_APPROVAL_HEADERS_FOR_SUBMITTER(1, SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)"
+                                ng-model="SchedularViewSearch.SELF_FALG"
+                                ng-options="IS.ID  as IS.NAME for IS in (MY_STATUS)"></select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Schedule Date</label>
+                        <div id="reportShdlScheduledaterange" class="form-control form-control-sm">
+                            <i class="fa fa-calendar mt-1"></i>&nbsp;
+                            <span class="mt-1">{{SchedularViewSearch.SCHEDULE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Select Status</label>
+                        <select class="custom-select custom-select-sm" name="STATUS_TYPE"
+                                data-placeholder="Select Status"
+                                ng-model="SchedularViewSearch.STATUS_IDS"
+                                ng-options="IS.ID  as IS.NAME for IS in (APPROVALS_STATUS)">
+                            <option value="">- Select Status -</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                    <div class="form-group">
+                        <label class="d-block">Branch Name</label>
+                        <select class="custom-select custom-select-sm min-w-250" name="BRN_LG"
+                                data-placeholder="Select Branch"
+                                ng-model="SchedularViewSearch.BRANCH_IDS"
+                                ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                    </div>
+                </div>
+                <div class="col-auto ml-auto">
+                    <div class="col-auto">
+                        <label class="d-block">&nbsp;</label>
+                        <button type="submit" 
+                                name="submit" 
+                                click-once
+                                class="btn btn-sm btn-wenodo" 
+                                ng-click="GET_APPROVAL_HEADERS_FOR_SUBMITTER(1, SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)">Search</button>
+                        <button class="btn btn-sm btn-w-default" ng-click="RESET_MY_SHDL()"> Reset</button>
+                        <button ng-show="false" type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel"><i class="far fa-file-excel"></i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="text-center" ng-show="APPROVAL_HEADERS_FOR_SUBMITTER_LIST.length==0" empty-grid></div>
+
+        <div class="table-responsive custom-scrollbar height-47vh" ng-show="APPROVAL_HEADERS_FOR_SUBMITTER_LIST.length>0">
+            <table class="table table-head-fixed table-striped table-hover compact_table">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th ng-repeat="Header in Headers" ng-class="Header.CLASS_NAME" ng-click="GET_APPROVAL_HEADERS_FOR_SUBMITTER(1, Header.ID, !SORT_ORDER_NO_ASCDESC)"><a class="text-bold">{{Header.NAME}} <i class="far " ng-show="Header.ID==SORT_COLUMN_NO" ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC,'fa-angle-up':SORT_ORDER_NO_ASCDESC}"></i> </a></th>
+                        <th class="text-center w-105">Actions</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="ASL in APPROVAL_HEADERS_FOR_SUBMITTER_LIST" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{ASL.APPROVAL_HEADER_ID}}</td>
+                        <td>{{ASL.SCHEDULE_NAME}}</td>
+                        <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{ASL.PAYMENT_DATE | date}}</td>
+
+                        <td class="text-center">
+                            <span class="badge" ng-class="{'badge-light-green':ASL.OVERALL_STATUS_ID==37 ,'badge-danger':ASL.OVERALL_STATUS_ID==38 ,'badge-light-grey':ASL.OVERALL_STATUS_ID==39,'badge-light-red':ASL.OVERALL_STATUS_ID==42}">
+                                {{ASL.OVERALL_STATUS_NAME}}
+                            </span>
+                        </td>
+                        <td class="text-center">{{ASL.SUPPLIERS_COUNT}}</td>
+                        <td class="text-center">
+                            {{ASL.TOTAL_INVOICES}}
+                        </td>
+                        <td class="text-center" ng-show="IS_ONE_SIXTY">
+                            {{ASL.ERROR_COUNT}}
+                        </td>
+                        
+                        <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                        <td class="text-nowrap text-right">{{ASL.TOTAL_AMOUNT | number:2}}</td>
+                        <td class="text-nowrap text-right">{{ASL.PAYMENT_AMOUNT | number:2}}</td>
+                        <td><i class="fal fa-calendar-alt text-blue"></i> {{ASL.CREATED_DATE | date}}</td>
+                        <td class="text-center">
+                            <button ng-click="GO_TO_APPROVAL(ASL)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fas fa-eye"></i></button>
+                            <button type="button" class="btn btn-sm btn-transparent-danger" ng-click="CANCEL_PAYMENT_SCHEDULE(ASL);" data-toggle="tooltip" data-html="true" data-original-title="Cancel"><i class="fas fa-ban"></i></button>
+                            <!--ng-show="ASL.OVERALL_STATUS_ID==39"-->
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <!--<tr>
+                        <td colspan="4"></td>
+                        <td class="text-bold text-right">Total</td>
+                        <td class="text-bold text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{(APPROVAL_HEADERS_FOR_SUBMITTER_LIST | total:'TOTAL_AMOUNT')  | number:2}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>-->
+                    <tr>
+                        <td class="text-center table-footer-fixed" colspan="{{IS_ONE_SIXTY?12:11}}">
+                            <a class="btn btn-sm btn-secondary text-white" ng-show="GetData" click-once ng-click="GET_APPROVAL_HEADERS_FOR_SUBMITTER_LAZY_LOAD()">{{VIEWMORERECORD}}</a>
+                            <div class="form-inline float-right">
+                                <label class="mr-2">Show Records</label>
+                                <select class="custom-select custom-select-sm w-50px" name="STATUS_TYPE"
+                                        data-placeholder="Show Records"
+                                        ng-model="SchedularViewSearch.PAGE_SIZE"
+                                        ng-change="GET_APPROVAL_HEADERS_FOR_SUBMITTER(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)"
+                                        ng-options="PA.ID  as PA.NAME for PA in (PAGE_ARRAY_LIST)"></select>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+

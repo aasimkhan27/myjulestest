@@ -1,0 +1,1167 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="card-title font-18">Approvals View</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8 pr-5">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-headers">
+                            <span class="info-box-icon"><i class="fad fa-file-signature app-text"></i></span>
+                            <div class="info-box-content w-100">
+                                <span class="info-box-text semibold">Ref No.</span>
+                                <span class="info-box-number schedule-name-limit" data-toggle="tooltip" data-html="true" data-original-title="{{ApprovalViewSearch.APPROVAL_HEADERS_LIST.APPROVAL_HEADER_ID}}">
+                                    {{ApprovalViewSearch.APPROVAL_HEADERS_LIST.APPROVAL_HEADER_ID}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-headers">
+                            <span class="info-box-icon"><i class="fad fa-calendar-alt app-text"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Scheduled Date</span>
+                                <span class="info-box-number text-nowrap">{{ApprovalViewSearch.APPROVAL_HEADERS_LIST.PAYMENT_DATE | date}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-headers">
+                            <span class="info-box-icon"><i class="fad fa-file-invoice app-text"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Invoices</span>
+                                <span class="info-box-number text-nowrap">
+                                    <span ng-show="ApprovalViewSearch.WHO_LOADED==1"> {{ApprovalViewSearch.SELECTED_INV_COUNT_GRID}}</span>
+                                    <span ng-show="ApprovalViewSearch.WHO_LOADED==2">{{ApprovalViewSearch.APPROVAL_HEADERS_LIST.TOTAL_INVOICES}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-headers">
+                            <span class="info-box-icon"><i class="fad fa-people-carry app-text"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Suppliers</span>
+                                <span class="info-box-number text-nowrap">
+                                    <span ng-show="ApprovalViewSearch.WHO_LOADED==1"> {{ApprovalViewSearch.DISPLAY_SUPPLIER_COUNT_GRID}}</span>
+                                    <span ng-show="ApprovalViewSearch.WHO_LOADED==2"> {{ApprovalViewSearch.APPROVAL_HEADERS_LIST.SUPPLIERS_COUNT}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-headers">
+                            <span class="info-box-icon"><i class="fad fa-sack-dollar app-text"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Scheduled Amount</span>
+                                <span class="info-box-number text-nowrap">
+                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                    {{ApprovalViewSearch.APPROVAL_HEADERS_LIST.TOTAL_PAYMENT_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-headers">
+                            <span class="info-box-icon"><i class="fad fa-strikethrough app-text"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Cancelled Amount</span>
+                                <span class="info-box-number text-nowrap">
+                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                    <span>
+                                        {{ ApprovalViewSearch.APPROVAL_HEADERS_LIST.TOTAL_CANCELLED_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}
+                                    </span>
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-headers">
+                            <span class="info-box-icon"><i class="fad fa-window-close app-text"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Rejected Amount</span>
+                                <span class="info-box-number text-nowrap">
+                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                    {{ ApprovalViewSearch.APPROVAL_HEADERS_LIST.TOTAL_REJECTED_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box bg-headers">
+                            <span class="info-box-icon"><i class="fad fa-check-square app-text"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Amount to pay</span>
+                                <span class="info-box-number text-nowrap">
+                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                    {{ ApprovalViewSearch.APPROVAL_HEADERS_LIST.TOTAL_REMAINING_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col border shadow-sm" ng-show="false">
+                        <div class="col-md-12 text-bold text-nowrap app-text text-sm"><i class="fad fa-hand-holding-usd text-blue"></i> Payment </div>
+                        <div class="col-md-12 pl-4"><span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{ApprovalViewSearch.DISPLAY_PAYMANT_AMOUNT_GRID |  number : TO_NUMBER_DECIMAL_TWO}}</div>
+                    </div>
+                    <div class="col-md-12 px-0 mt-3">
+                        <p class="text-blue text-bold mb-0">Scheduled Name:</p>
+                        <p class="quote-text mb-0 comments-limit">
+                            {{ApprovalViewSearch.APPROVAL_HEADERS_LIST.SCHEDULE_NAME}}
+                        </p>
+                    </div>
+                    <div class="col-md-12 px-0 mt-3">
+                        <div class="card border">
+                            <blockquote class="quote-box m-0">
+                                <p class="text-blue text-bold mb-0">Comments:</p>
+                                <p class="quote-text mb-0 comments-limit">
+                                    {{ApprovalViewSearch.APPROVAL_HEADERS_LIST.COMMENT}}
+                                </p>
+                                <a class="d-block cursor-pointer text-sm text-blue" ng-show="ApprovalViewSearch.APPROVAL_HEADERS_LIST.COMMENT.length>100" data-toggle="modal" data-target="#Comments">Read More..</a>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                            <div class="vertical-timeline-item vertical-timeline-element"
+                                 ng-repeat=" APC in APPROVAL_HEADERS_CHAIN_LIST">
+                                <div>
+                                    <span class="vertical-timeline-element-icon bounce-in">
+                                        <i class="badge badge-dot badge-dot-xl"
+                                           ng-class="{'badge-success' :  ApprovalViewSearch.USER_ID == APC.APPROVER_ID,'badge-light-green' :  ApprovalViewSearch.USER_ID != APC.APPROVER_ID}"
+                                           style="display:block">
+                                        </i>
+                                    </span>
+                                    <div class="vertical-timeline-element-content bounce-in">
+                                        <span class="badge" ng-class="{'badge-light-green':APC.STATUS_ID==37 ,'badge-danger':APC.STATUS_ID==38 ,'badge-light-grey':APC.STATUS_ID==39,'badge-light-orange':APC.STATUS_ID==41 ,'badge-light-red':APC.STATUS_ID==42}">
+                                            {{APC.STATUS_NAME}}
+                                        </span>
+                                        <button type="button" class="btn btn-transparent-wenodo float-right" ng-click="ADD_NEW_APPROVER(APC)" ng-show="ACTION_REQUIRED==1 && ApprovalViewSearch.USER_ID == APC.APPROVER_ID && CheckSubModuleAccess(127)"><i class="far fa-edit"></i></button>
+                                        <h4 class="timeline-title mb-0">{{APC.APPROVER_NAME}}</h4>
+                                        <p class="font-12"><i class="fad fa-comments text-green" data-toggle="tooltip" data-html="true" data-original-title="Comments: {{APC.COMMENTS}}" ng-show="APC.COMMENTS.length>0"></i> {{APC.COMMENTS}}</p>
+                                        <span class="vertical-timeline-element-date semibold">
+                                            {{APC.LAST_ACTION_TAKEN_DATE | date}}
+                                            <span class="d-block text-normal">{{APC.TIME_TAKEN_PENDING}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card-header">
+                    <h5 class="card-title mt-2" ng-show="SUPPLIER_LIST.length>0">Approval List</h5>
+                    <div class="card-tools">
+                        <div class="dropdown">
+                            <button class="btn btn-w-default px-3" type="button" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item font-12" ng-click="DOWNLOAD_PAYMMENT_APPROVED_INVOICE()">Approved Payment list</a>
+                                <a class="dropdown-item font-12" ng-show="CheckSubModuleAccess(1175)" ng-click="POP_BANK_Fn()">Download Bank Template</a>
+                                <a class="dropdown-item font-12" ng-click="GET_PYMNT_BY_PYMNT_SCHEDULE_ID()" click-once>Remittance Advice</a>
+                            </div>
+                        </div>
+                        <ul class="nav nav-pills m-0 ml-auto" ng-show="PAYMENT_ARRPOVAL_REPORT_CHECK && ApprovalViewSearch.APPROVAL_HEADERS_LIST.OVERALL_STATUS_ID==37">
+                            <!--<li class="nav-item cursor-pointer mr-2"
+                                ng-click="DOWNLOAD_PAYMMENT_APPROVED_INVOICE()">
+                                <button class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Download Approved List"><i class="fa fa-download"></i></button>
+                            </li>
+                            <li class="nav-item" ng-show="CheckSubModuleAccess(1175)"><button ng-click="POP_BANK_Fn()" click-once class="btn btn-sm btn-wenodo">Download Bank Template</button></li>
+                            <li class="nav-item" ><button ng-click="GET_PYMNT_BY_PYMNT_SCHEDULE_ID()" click-once class="btn btn-sm btn-wenodo"><i class="fa fa-download"></i> Remittance Advice PDF</button></li>-->
+                            <li class="nav-item"><button ng-click="UPD_XERO_APPROVED_INVOICE()" click-once class="btn btn-sm btn-wenodo ml-2" ng-show="IS_ONE_SIXTY">Send to Xero</button></li>
+                        </ul>
+                    </div>
+
+
+                </div>
+                <div class="card-body px-0 pt-1">
+                    <div class="table-responsive">
+                        <form id="InvoiceForm" name="InvoiceForm" novalidate>
+                            <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                                <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(1)">
+                                    <a class="nav-link " ng-class="{'active':TAB_FLAG==1}"
+                                       data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Invoice-wise</a>
+                                </li>
+                                <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(2)">
+                                    <a class="nav-link" ng-class="{'active':TAB_FLAG==2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Supplier-wise</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="custom-content-below-tabContent">
+                                <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                                    <div class="table-responsive">
+                                        <table class="table table-head-fixed table-striped table-hover compact_table">
+                                            <thead class="bg-wenodo-border">
+                                                <tr>
+                                                    <th>
+                                                        # <span class="bigcheck" ng-show="IS_ONE_SIXTY && ERROR_COUNT>0">
+                                                            <label class="bigcheck mb-0">
+                                                                <input type="checkbox"
+                                                                       class="bigcheck"
+                                                                       ng-change="ALL_CHECK_BOX_SENDTOXERO_Fn()"
+                                                                       ng-model="IS_SELECTED_SEND_TO_XERO_ALL"
+                                                                       id="Index_ALL}" />
+                                                                <span class="bigcheck-target"> </span>
+                                                            </label>
+                                                            {{(APPROVAL_LINES_FOR_APPROVER | filter:{IS_SELECTED_SEND_TO_XERO:true}).length}}
+                                                        </span>
+                                                        <span ng-show="false">{{ERROR_COUNT==(APPROVAL_LINES_FOR_APPROVER | filter:{IS_SELECTED_SEND_TO_XERO:true}).length?IS_SELECTED_SEND_TO_XERO_ALL=true:IS_SELECTED_SEND_TO_XERO_ALL=false}}</span>
+                                                    </th>
+                                                    <th class="text-nowrap">
+                                                        Invoice #
+                                                    </th>
+                                                    <th class="text-nowrap">Supplier Name</th>
+                                                    <th class="text-nowrap">Invoice Date</th>
+                                                    <th class="text-nowrap">Due Date</th>
+                                                    <th>Currency</th>
+                                                    <th class="text-nowrap text-right">Invoice Amount</th>
+                                                    <th class="text-nowrap text-right">Due Amount</th>
+                                                    <th class="text-nowrap text-right w-145">Payment Amount</th>
+                                                    <th class="text-nowrap text-center">Approval Status</th>
+                                                    <th class="text-wrap text-center" ng-show="IS_ONE_SIXTY">Error Status({{ERROR_COUNT=(APPROVAL_LINES_FOR_APPROVER | filter:{INTEGRATION_STATUS:3}).length }})</th>
+                                                    <th>Comments</th>
+                                                    <th class="text-center w-145">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="ISL in APPROVAL_LINES_FOR_APPROVER track by $index" on-finish-render="ngRepeatFinished">
+                                                <tr>
+                                                    <td>
+                                                        <span class="bigcheck" ng-show="ACTION_REQUIRED==1">
+                                                            <label class="bigcheck mb-0">
+                                                                <input type="checkbox"
+                                                                       class="bigcheck"
+                                                                       ng-model="ISL.IS_SELECTED_INV"
+                                                                       id="Index_2{{SPL.SL_INDEX}}{{$index}}" />
+                                                                <span class="bigcheck-target"></span>
+                                                            </label>
+                                                        </span>
+                                                        <!---->
+                                                        <span class="bigcheck" ng-show="ACTION_REQUIRED!=1 && ISL.INTEGRATION_STATUS==3 && ISL.OVERALL_STATUS_ID==37 && IS_ONE_SIXTY">
+                                                            <label class="bigcheck mb-0">
+                                                                <input type="checkbox"
+                                                                       class="bigcheck"
+                                                                       ng-model="ISL.IS_SELECTED_SEND_TO_XERO"
+                                                                       id="Index_3{{SPL.SL_INDEX}}{{$index}}" />
+                                                                <span class="bigcheck-target"></span>
+                                                            </label>
+                                                        </span>
+
+                                                        <span ng-show="false">{{ISL.IN_INDEX=$index+1}} </span>
+                                                    </td>
+                                                    <td class="text-nowrap">{{ISL.INVOICENUMBER}}</td>
+                                                    <td>{{ISL.SUPPLIER_NAME}}</td>
+                                                    <td class="text-nowrap"> <i class="fal fa-calendar-alt text-blue"></i> {{ISL.INVOICE_DATE | date}}</td>
+                                                    <td class="text-nowrap"> <i class="fal fa-calendar-alt text-blue"></i> {{ISL.DUEDATE | date}}</td>
+                                                    <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                                                    <td class="text-nowrap text-right">
+                                                        {{ISL.TOTAL_AMOUNT | number:2}}
+                                                    </td>
+                                                    <td class="text-nowrap text-right">{{ISL.DUE_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}</td>
+                                                    <td class="text-nowrap text-right">
+                                                        <span ng-show="!IS_PARTIAL_PAYMENT_ALLOW">
+                                                            {{ISL.PAYMENT_AMOUNT | number:2}}
+                                                        </span>
+                                                        <span ng-show="IS_PARTIAL_PAYMENT_ALLOW">
+                                                            <input type="text"
+                                                                   ng-required="!ISL.IS_PAY_OVER"
+                                                                   name="PAYMENT_AMOUNT"
+                                                                   only-digits
+                                                                   class="form-control"
+                                                                   ng-model="ISL.PAYMENT_AMOUNT"
+                                                                   ng-class="{'error':InvoiceForm.submitted && InvoiceForm.PAYMENT_AMOUNT{{$index}}.$error.required}" />
+                                                        </span>
+                                                        <span ng-show="false">
+                                                            {{(ISL.PAYMENT_AMOUNT>ISL.TOTAL_AMOUNT)?ISL.IS_PAY_OVER=true:ISL.IS_PAY_OVER=false}}
+                                                        </span>
+                                                        <span class="text-danger" ng-show="ISL.IS_PAY_OVER">Cannot be more than due amount.</span>
+                                                    </td>
+                                                    <td class="text-nowrap text-center">
+                                                        <span class="badge" ng-class="{'badge-light-green':ISL.OVERALL_STATUS_ID==37 ,'badge-danger':ISL.OVERALL_STATUS_ID==38 ,'badge-light-grey':ISL.OVERALL_STATUS_ID==39,'badge-light-red':ISL.OVERALL_STATUS_ID==42}">
+                                                            {{ISL.OVERALL_STATUS_NAME}}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-wrap text-center" ng-show="IS_ONE_SIXTY">
+                                                        {{ ISL.INTEGRATION_STATUS==3?ISL.ERROR:'-'}}
+                                                    </td>
+                                                    <td>
+                                                        <span ng-show="ACTION_REQUIRED!=1 || ACTION_REQUIRED==1 && INL.OVERALL_STATUS_ID==42">{{ISL.COMMENTS==null || ISL.COMMENTS==""?'-':ISL.COMMENTS}}</span>
+                                                        <span ng-show="ACTION_REQUIRED==1 && ISL.OVERALL_STATUS_ID==39">
+                                                            <textarea name="COMMENTS{{$index}}"
+                                                                      class="form-control"
+                                                                      ng-class="{'error':InvoiceForm.submitted && InvoiceForm.COMMENTS{{$index}}.$error.required}"
+                                                                      rows="2"
+                                                                      maxlength="2000"
+                                                                      ng-model="ISL.COMMENTS">
+                                                                </textarea>
+                                                            <span class="font-11 semibold text-gray mb-2">
+                                                                {{2000 - ISL.COMMENTS.length}} Characters Remaining
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button" ng-click="VIEW_INVOICE_DETAIL(ISL)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fa fa-eye"></i></button>
+                                                        <button type="button" ng-show="ISL.OVERALL_STATUS_ID==39 && ApprovalViewSearch.WHO_LOADED==2" class="btn btn-sm btn-transparent-danger" ng-click="CANCEL_APPROVALS(SPL,ISL);" data-toggle="tooltip" data-html="true" data-original-title="Cancel"><i class="fas fa-ban"></i></button>
+                                                        <button type="button" class="btn btn-sm btn-transparent-wenodo" ng-click="GET_APPROVAL_LINES_CHAIN(ISL)" data-toggle="tooltip" data-html="true" data-original-title="See History"><i class="fas fa-history"></i></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot class="table-footer-fixed">
+                                                <tr>
+                                                    <td colspan="{{IS_ONE_SIXTY?7:6}}" class="text-bold text-right font-14">Total</td>
+                                                    <td class="text-bold text-right text-nowrap font-14">
+                                                        <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                        <span class="semibold">{{InvoiceSearch.TOTAL_AMOUNT=(APPROVAL_LINES_FOR_APPROVER | filter :{IS_SELECTED_INV:true} | total:'TOTAL_AMOUNT')  | number:2}}</span>
+                                                    </td>
+
+                                                    <td class="text-bold text-right text-nowrap font-14">
+                                                        <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                        <span class="semibold">{{InvoiceSearch.AMOUNT_DUE=(APPROVAL_LINES_FOR_APPROVER | filter :{IS_SELECTED_INV:true} | total:'DUE_AMOUNT')  | number:2}}</span>
+                                                    </td>
+                                                    <td class="text-bold text-right text-nowrap font-14">
+                                                        <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                        <span class="semibold">{{InvoiceSearch.PAYMENT_AMOUNT=(APPROVAL_LINES_FOR_APPROVER | filter :{IS_SELECTED_INV:true} | total:'PAYMENT_AMOUNT')  | number:2}}</span>
+                                                    </td>
+                                                    <td colspan="3"></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==2}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                                    <table class="table table-head-fixed table-hover compact_table " ng-show="SUPPLIER_LIST.length>0">
+                                        <thead class="bg-wenodo-border">
+                                            <tr>
+                                                <th width="2%" ng-show="ACTION_REQUIRED==1">
+                                                    <span class="bigcheck">
+                                                        <label class="bigcheck mb-0">
+                                                            <input type="checkbox" class="bigcheck"
+                                                                   ng-change="SET_CHECKBOX_ALL()"
+                                                                   ng-model="ApprovalViewSearch.IS_ALL_SELECTED"
+                                                                   id="Check_All" />
+                                                            <span class="bigcheck-target"></span>
+                                                        </label>
+                                                    </span>
+                                                </th>
+                                                <th width="2%"></th>
+                                                <th class="text-nowrap">Payee</th>
+                                                <th>Selected Invoices</th>
+                                                <th>Currency</th>
+                                                <th class="text-nowrap text-right">Selected Amount</th>
+                                                <th class="text-nowrap text-right">Total Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="SPL in SUPPLIER_LIST" on-finish-render="ngRepeatFinishedRender">
+                                            <tr ng-click="HIDE_SHOW_FY(SPL)">
+                                                <td ng-show="ACTION_REQUIRED==1">
+                                                    <span ng-show="false">  {{SPL.SL_INDEX= $index; SPL.IS_VALID=false;}}</span>
+                                                    <span class="bigcheck">
+                                                        <label class="bigcheck mb-0">
+                                                            <input type="checkbox" class="bigcheck" ng-change="SET_CHECKBOX_LINE(SPL)" ng-model="SPL.IS_SELECTED" id="SP_CHECKBOX{{$index}}" />
+                                                            <span class="bigcheck-target"></span>
+                                                        </label>
+                                                    </span>
+
+                                                </td>
+                                                <td class="cursor-pointer"><i class="far " ng-class="{'fa-chevron-down':SPL.HIDESHOW,'fa-chevron-right':!SPL.HIDESHOW}"></i></td>
+                                                <td>{{SPL.SUPPLIER_NAME}}</td>
+                                                <td>
+                                                    {{(APPROVAL_LINES_FOR_APPROVER | filter :{ SUPPLIER_ID:SPL.SUPPLIER_ID } | filter :{IS_SELECTED_INV:true}).length}} out of
+                                                    <span class="semibold" data-toggle="tooltip" data-html="true" data-original-title="Total Invoice">{{SPL.INV_LIST.length}}</span>
+                                                </td>
+                                                <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                                                <td class="text-nowrap text-right">
+                                                    <!--{{SPL.SELECTED_TOTAL_AMOUNT =="" || SPL.SELECTED_TOTAL_AMOUNT==null?0:SPL.SELECTED_TOTAL_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}-->
+                                                    {{SPL.CUSTOM_SELECTED_AMT=((APPROVAL_LINES_FOR_APPROVER | filter :{ SUPPLIER_ID:SPL.SUPPLIER_ID } | filter :{IS_SELECTED_INV:true}) | total:'PAYMENT_AMOUNT')  | number :TO_NUMBER_DECIMAL_TWO}}
+                                                </td>
+                                                <td class="text-nowrap text-right">{{SPL.TOTAL_TOTAL_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}</td>
+                                            </tr>
+                                            <tr ng-show="SPL.HIDESHOW">
+                                                <td colspan="9" class="p-0">
+                                                    <table class="table bg-white mb-0">
+                                                        <thead class="bg-wenodo-blue">
+                                                            <tr class="text-bold">
+                                                                <td></td>
+                                                                <td class="text-white">Invoice No.</td>
+                                                                <td class="text-white">Invoice Date</td>
+                                                                <td class="text-white">Due Date</td>
+                                                                <td class="text-white text-right">Invoice Amount</td>
+                                                                <td class="text-white text-right">Due Amount</td>
+                                                                <td class="text-white text-right">Payment Amount</td>
+                                                                <td class="text-white text-center">Approval Status</td>
+                                                                <td class="text-white text-center" ng-show="IS_ONE_SIXTY">Error Status({{(APPROVAL_LINES_FOR_APPROVER | filter :{ SUPPLIER_ID:SPL.SUPPLIER_ID } | filter :{ OVERALL_STATUS_ID:'!42' } | filter :{ INTEGRATION_STATUS:3}).length}})</td>
+                                                                <td class="text-white">Comments</td>
+                                                                <td class="text-white text-center w-145">Action</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="INL in APPROVAL_LINES_FOR_APPROVER | filter :{ SUPPLIER_ID:SPL.SUPPLIER_ID } | filter :{ OVERALL_STATUS_ID:'!42' }">
+                                                                <td width="2%">
+                                                                    <span class="bigcheck" ng-show="ACTION_REQUIRED==1">
+                                                                        <label class="bigcheck mb-0">
+                                                                            <input type="checkbox"
+                                                                                   class="bigcheck"
+                                                                                   ng-change="SET_INV_CHECKBOX_LINE(SPL,INL)"
+                                                                                   ng-model="INL.IS_SELECTED_INV"
+                                                                                   id="Index_2{{SPL.SL_INDEX}}{{$index}}" />
+                                                                            <span class="bigcheck-target"></span>
+                                                                        </label>
+                                                                    </span>
+
+                                                                    <span class="bigcheck" ng-show="ACTION_REQUIRED!=1 && ISL.INTEGRATION_STATUS==3 && ISL.OVERALL_STATUS_ID==37 && IS_ONE_SIXTY">
+                                                                        <label class="bigcheck mb-0">
+                                                                            <input type="checkbox"
+                                                                                   class="bigcheck"
+                                                                                   ng-model="INL.IS_SELECTED_SEND_TO_XERO"
+                                                                                   id="Index_4{{SPL.SL_INDEX}}{{$index}}" />
+                                                                            <span class="bigcheck-target"></span>
+                                                                        </label>
+                                                                    </span>
+                                                                </td>
+                                                                <td class="text-nowrap">{{INL.INVOICENUMBER}}</td>
+                                                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{INL.INVOICE_DATE | date }}</td>
+                                                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{INL.DUEDATE | date }}</td>
+                                                                <td class="text-nowrap text-right">{{INL.TOTAL_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}</td>
+                                                                <td class="text-nowrap text-right">{{INL.DUE_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}</td>
+                                                                <td class="text-nowrap text-right">
+                                                                    <span ng-show="!IS_PARTIAL_PAYMENT_ALLOW">
+                                                                        {{INL.PAYMENT_AMOUNT | number:2}}
+                                                                    </span>
+                                                                    <span ng-show="IS_PARTIAL_PAYMENT_ALLOW">
+                                                                        <input type="text"
+                                                                               ng-required="!INL.IS_PAY_OVER"
+                                                                               name="PAYMENT_AMOUNT{{SPL.SL_INDEX}}{{$index}}"
+                                                                               only-digits
+                                                                               class="form-control"
+                                                                               ng-model="INL.PAYMENT_AMOUNT"
+                                                                               ng-class="{'error':InvoiceForm.submitted && InvoiceForm.PAYMENT_AMOUNT{{SPL.SL_INDEX}}{{$index}}.$error.required}" />
+                                                                    </span>
+                                                                    <span ng-show="false">
+                                                                        {{(INL.PAYMENT_AMOUNT>INL.TOTAL_AMOUNT)?INL.IS_PAY_OVER=true:INL.IS_PAY_OVER=false}}
+                                                                    </span>
+                                                                    <span class="text-danger" ng-show="INL.IS_PAY_OVER">Cannot be more than due amount.</span>
+                                                                </td>
+                                                                <td class="text-nowrap text-center">
+                                                                    <span class="badge" ng-class="{'badge-light-green':INL.OVERALL_STATUS_ID==37 ,'badge-danger':INL.OVERALL_STATUS_ID==38 ,'badge-light-grey':INL.OVERALL_STATUS_ID==39,'badge-light-red':INL.OVERALL_STATUS_ID==42}">
+                                                                        {{INL.OVERALL_STATUS_NAME}}
+                                                                    </span>
+                                                                </td>
+                                                                <td class="text-wrap text-center" ng-show="IS_ONE_SIXTY">
+                                                                    {{ INL.INTEGRATION_STATUS==3?INL.ERROR:'-'}}
+                                                                </td>
+                                                                <td>
+                                                                    <span ng-show="ACTION_REQUIRED!=1 || ACTION_REQUIRED==1 && INL.OVERALL_STATUS_ID==42">{{INL.COMMENTS==null || INL.COMMENTS==""?'-':INL.COMMENTS}}</span>
+                                                                    <span ng-show="ACTION_REQUIRED==1 && INL.OVERALL_STATUS_ID==39">
+                                                                        <textarea name="COMMENTS{{SPL.SL_INDEX}}{{$index}}"
+                                                                                  class="form-control"
+                                                                                  ng-class="{'error':InvoiceForm.submitted && InvoiceForm.COMMENTS{{SPL.SL_INDEX}}{{$index}}.$error.required}"
+                                                                                  rows="2"
+                                                                                  maxlength="2000"
+                                                                                  ng-model="INL.COMMENTS">
+                                                                </textarea>
+                                                                        <span class="font-11 semibold text-gray mb-2">
+                                                                            {{2000 - INL.COMMENTS.length}} Characters Remaining
+                                                                        </span>
+                                                                    </span>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <button type="button" ng-click="VIEW_INVOICE_DETAIL(INL)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fa fa-eye"></i></button>
+                                                                    <button type="button" ng-show="INL.OVERALL_STATUS_ID==39 && ApprovalViewSearch.WHO_LOADED==2" class="btn btn-sm btn-transparent-danger" ng-click="CANCEL_APPROVALS(SPL,INL);" data-toggle="tooltip" data-html="true" data-original-title="Cancel"><i class="fas fa-ban"></i></button>
+                                                                    <button type="button" class="btn btn-sm btn-transparent" ng-click="GET_APPROVAL_LINES_CHAIN(INL)" data-toggle="tooltip" data-html="true" data-original-title="See History"><i class="fas fa-history"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td ng-show="ACTION_REQUIRED==1"></td>
+                                                <td colspan="3"></td>
+                                                <td class="text-bold text-right">Total</td>
+                                                <td class="text-bold text-nowrap text-right">
+                                                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    <span class="semibold">
+
+                                                        <!--{{InvoiceSearch.TOTAL_AMOUNT | number:2}}-->
+                                                        {{SUPPLIER_LIST | total:'CUSTOM_SELECTED_AMT' | number : TO_NUMBER_DECIMAL_TWO }}
+                                                    </span>
+                                                </td>
+                                                <!--<td class="text-bold text-nowrap text-right">
+                                                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    {{InvoiceSearch.AMOUNT_DUE | number : TO_NUMBER_DECIMAL_TWO}}
+                                                </td>-->
+                                                <td class="text-bold text-nowrap text-right">
+                                                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    <!--{{InvoiceSearch.PAYMENT_AMOUNT | number : TO_NUMBER_DECIMAL_TWO }}-->
+                                                    {{SUPPLIER_LIST | total:'TOTAL_TOTAL_AMOUNT' | number : TO_NUMBER_DECIMAL_TWO }}
+
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div data-ng-show="InvoiceForm.submitted && InvoiceForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="InvoiceForm.$valid">
+                    <span class="help-block">{{InvalidUser}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer bg-white py-0">
+        <div class="form-group mb-0">
+            <button type="button" ng-click="VALIDATION_CLICK_FY()" ng-show="ACTION_REQUIRED==1" class="btn btn-sm btn-wenodo">Approve</button>
+            <button type="button" ng-show="false" ng-click="APPROVE_CLICK_FY()" class="btn btn-sm btn-w-default">Download</button>
+            <a onclick="javascript:history.back(0)" class="btn btn-sm btn-w-default text-blue">Back</a>
+            <!--<button type="button" ng-click="REJECT_CLICK_FY()" class="btn btn-w-default">Reject</button>-->
+        </div>
+    </div>
+
+    <h6 ng-show="SUPPLIER_CANCEL_LIST.length>0" class="mt-1">Cancelled List</h6>
+    <table class="table table-head-fixed table-hover compact_table" id="Cancel" ng-show="SUPPLIER_CANCEL_LIST.length>0">
+        <thead class="bg-wenodo-border">
+            <tr>
+                <th width="2%" ng-show="ACTION_REQUIRED==1"></th>
+                <th width="2%"></th>
+                <th class="text-nowrap">Payee</th>
+                <th>Invoice Count</th>
+                <th class="text-nowrap text-right">Selected Amount</th>
+                <th class="text-nowrap text-right">Total Amount</th>
+
+            </tr>
+        </thead>
+        <tbody ng-repeat="SPL in SUPPLIER_CANCEL_LIST">
+            <tr ng-click="HIDE_SHOW_FY(SPL)">
+                <td ng-show="ACTION_REQUIRED==1">
+                    <span ng-show="false">  {{SPL.SL_INDEX= $index; SPL.IS_VALID=false;}}</span>
+                </td>
+                <td class="cursor-pointer"><i class="far " ng-class="{'fa-chevron-down':SPL.HIDESHOW,'fa-chevron-right':!SPL.HIDESHOW}"></i></td>
+                <td>{{SPL.SUPPLIER_NAME}}</td>
+                <td>
+                    {{SPL.SELECTED_INV_COUNT=="" || SPL.SELECTED_INV_COUNT==null?0:SPL.SELECTED_INV_COUNT}}
+                </td>
+                <td class="text-nowrap text-right"><span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{SPL.SELECTED_TOTAL_AMOUNT =="" || SPL.SELECTED_TOTAL_AMOUNT==null?0:SPL.SELECTED_TOTAL_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}</td>
+                <td class="text-nowrap text-right"><span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{SPL.TOTAL_TOTAL_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}</td>
+            </tr>
+            <tr ng-show="SPL.HIDESHOW">
+                <td colspan="6" class="p-0">
+                    <table class="table bg-white mb-0">
+                        <thead class="bg-wenodo-blue">
+                            <tr class="text-bold">
+                                <td></td>
+                                <td class="text-white">Invoice No.</td>
+                                <td class="text-white">Due Date</td>
+                                <td class="text-white text-right">Invoice Amount</td>
+                                <td class="text-white text-right">Payment Amount</td>
+                                <td class="text-white text-center">Approval Status</td>
+                                <td class="text-white">Comments</td>
+                                <td width="6%" class="text-white text-center">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="INL in SPL.INV_LIST">
+                                <td width="2%"></td>
+                                <td class="text-nowrap">{{INL.INVOICENUMBER}}</td>
+                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i>&nbsp;&nbsp;&nbsp; {{ INL.DUEDATE | date }}</td>
+                                <td class="text-nowrap text-right">
+                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                    {{INL.TOTAL_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}
+                                </td>
+                                <td class="text-nowrap text-right">
+                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                    {{INL.PAYMENT_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}
+                                </td>
+                                <td class="text-nowrap text-center">
+                                    <span class="badge" ng-class="{'badge-light-green':INL.OVERALL_STATUS_ID==37 ,'badge-danger':INL.OVERALL_STATUS_ID==38 ,'badge-light-grey':INL.OVERALL_STATUS_ID==39,'badge-light-red':INL.OVERALL_STATUS_ID==42}">
+                                        {{INL.OVERALL_STATUS_NAME}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span ng-show="ACTION_REQUIRED!=1 || ACTION_REQUIRED==1 && INL.OVERALL_STATUS_ID==42">{{INL.COMMENTS==null || INL.COMMENTS==""?'-':INL.COMMENTS}}</span>
+                                    <span ng-show="ACTION_REQUIRED==1 && INL.OVERALL_STATUS_ID==39">
+                                        {{INL.COMMENTS}}
+                                    </span>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td ng-show="ACTION_REQUIRED==1"></td>
+                <td colspan="2"></td>
+                <td class="text-bold text-right">Total</td>
+                <td class="text-bold text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{SUPPLIER_CANCEL_LIST | total :'SELECTED_TOTAL_AMOUNT' | number : TO_NUMBER_DECIMAL_TWO }}</td>
+                <td class="text-bold text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{SUPPLIER_CANCEL_LIST | total :'TOTAL_TOTAL_AMOUNT' | number : TO_NUMBER_DECIMAL_TWO }}</td>
+
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="modal fade show" id="Approved_Reject_POP">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title d-flex">
+                    Approve
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 text-center" ng-show="OTP_VALID_CHECK=='1' && NXT_APPROVAL_HEADER_STATUS_ID=='' && ALLOW_SUBMIT">
+                    <div class="prompt">Enter OTP</div>
+                    <form method="get" class="digit-group" data-group-name="digits" data-autosubmit="false" autocomplete="off">
+                        <input type="text" id="digit-1" ng-model="ApprovalViewSearch.digit1" name="digit-1" data-next="digit-2" />
+                        <input type="text" id="digit-2" ng-model="ApprovalViewSearch.digit2" name="digit-2" data-next="digit-3" data-previous="digit-1" />
+                        <input type="text" id="digit-3" ng-model="ApprovalViewSearch.digit3" name="digit-3" data-next="digit-4" data-previous="digit-2" />
+                        <span class="splitter">&ndash;</span>
+                        <input type="text" id="digit-4" ng-model="ApprovalViewSearch.digit4" name="digit-4" data-next="digit-5" data-previous="digit-3" />
+                        <input type="text" id="digit-5" ng-model="ApprovalViewSearch.digit5" name="digit-5" data-next="digit-6" data-previous="digit-4" />
+                        <input type="text" id="digit-6" ng-model="ApprovalViewSearch.digit6" name="digit-6" data-previous="digit-5" />
+                    </form>
+                    <span class="d-block text-danger font-14 semibold mb-2"><em>{{MESSAGE_OTP_ERROR}}</em></span>
+                    <span class="d-block text-success font-14 semibold mb-2"><em>{{MESSAGE_OTP_SEND}}</em></span>
+                    <button type="button" ng-click="RESEND_GENERATE_APPROVAL_OTP()" class="btn btn-w-default">Resend OTP</button>
+                </div>
+                <form id="ApprovalForm" name="ApprovalForm" ng-show="!ALLOW_SUBMIT">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <div class="info-box bg-headers">
+                                <span class="info-box-icon"><i class="fad fa-check-square text-success"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text semibold">Approved  / Selected  Invoices</span>
+                                    <span class="info-box-number text-nowrap">
+                                        {{ApprovalViewSearch.SELECTED_INVOICES}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="info-box bg-headers">
+                                <span class="info-box-icon"><i class="fad fa-times-square text-danger"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text semibold">Rejected / Unselected Invoice</span>
+                                    <span class="info-box-number text-nowrap">
+
+                                        {{ApprovalViewSearch.UNSELECTED_INVOICE}}
+                                    </span>
+                                </div>
+                            </div>
+                            <!--<div class="font-14 semibold text-danger">
+                                Rejected / Unselected Invoice : {{ApprovalViewSearch.UNSELECTED_INVOICE}}
+                            </div>-->
+                        </div>
+                        <div class="col-md-12">
+                            <label class="mt-2">Comment</label>
+                            <span class="text-danger">
+                                <span ng-show="ApprovalViewSearch.SELECTED_INV_COUNT_GRID==ApprovalViewSearch.UNSELECTED_INVOICE || ApprovalViewSearch.UNSELECTED_INVOICE>0">(*) </span>
+                            </span>
+                            <textarea name="COMMENT"
+                                      ng-required="ApprovalViewSearch.SELECTED_INV_COUNT_GRID==ApprovalViewSearch.UNSELECTED_INVOICE || ApprovalViewSearch.UNSELECTED_INVOICE>0"
+                                      class="form-control"
+                                      ng-class="{'error':ApprovalForm.submitted && ApprovalForm.COMMENT.$error.required}"
+                                      rows="8"
+                                      maxlength="2000"
+                                      ng-model="ApprovalViewSearch.COMMENT">
+                           </textarea>
+                            <span class="d-block text-danger text-xs semibold mb-2">{{2000 - ApprovalViewSearch.COMMENT.length}} Character Remaining </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" ng-show="!ALLOW_SUBMIT">
+                <button type="button"
+                        ng-click="APPROVE_CLICK_FY()"
+                        click-once
+                        ng-disabled="OTP_VALID_CHECK=='1' && NXT_APPROVAL_HEADER_STATUS_ID=='' && ALLOW_SUBMIT"
+                        class="btn btn-sm btn-wenodo">
+                    Submit
+                </button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade show" id="Comments">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title d-flex">
+                    Comments by {{ApprovalViewSearch.APPROVAL_HEADERS_LIST.SCHEDULE_NAME}}
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body text-sm">
+                <div class="border border-radius-5">
+                    <blockquote class="quote-box m-0">
+                        <p class="quote-text mb-0">
+                            {{ApprovalViewSearch.APPROVAL_HEADERS_LIST.COMMENT}}
+                        </p>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" id="CommentsList">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title d-flex">
+                    Comments
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body text-sm">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                <div class="vertical-timeline-item vertical-timeline-element"
+                                     ng-repeat=" APC in APPROVAL_LINES_CHAIN">
+                                    <div>
+                                        <span class="vertical-timeline-element-icon bounce-in">
+                                            <i class="badge badge-dot badge-dot-xl " ng-class="{'badge-success' :  ApprovalViewSearch.USER_ID == APC.APPROVER_ID,'badge-light-green' :  ApprovalViewSearch.USER_ID != APC.APPROVER_ID}" style="display:block"></i>
+                                        </span>
+                                        <div class="vertical-timeline-element-content bounce-in">
+                                            <h4 class="timeline-title mb-0">{{APC.APPROVER_NAME}}</h4>
+                                            <p class="font-12"><i class="fad fa-comments text-green"></i> {{APC.COMMENTS==""?'No Comments':APC.COMMENTS}}</p>
+                                            <span class="vertical-timeline-element-date">{{APC.LAST_ACTION_TAKEN_DATE | date}}</span>
+                                            <span class="vertical-timeline-element-date">
+                                                <span class="badge" ng-class="{'badge-light-green':APC.STATUS_ID==37 ,'badge-danger':APC.STATUS_ID==38 ,'badge-light-grey':APC.STATUS_ID==39,'badge-light-red':APC.STATUS_ID==42}">
+                                                    {{APC.STATUS_NAME}}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" id="Edit_Approvers">
+    <form name="SchInvoiceForm" id="SchInvoiceForm" novalidate>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title d-flex">
+                        Edit Approvers
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-sm">
+                    <table class="table table-head-fixed table-striped compact_table">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Select Approver</th>
+                                <th>Order</th>
+                                <th width="25%"></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="Al in NEW_APPROVAL_HEADERS_CHAIN_LIST" on-finish-render="ngRepeatFinished" ">
+                            <tr>
+                                <td>
+                                    <input type="text"
+                                           name="APPROVER_BOX{{$index}}"
+                                           ng-model="Al.APPROVER_NAME"
+                                           ng-change="SetValues(Supplier,$index)"
+                                           uib-typeahead="AP.NAME  for AP in PYMNT_APPROVERS_LIST | filter:$viewValue"
+                                           typeahead-loading="loading" typeahead-no-results="noResults"
+                                           class="form-control form-control-sm" autocomplete="off"
+                                           ng-disabled="Al.APPROVAL_HEADER_ID>0"
+                                           placeholder="Type to select Approver Name..."
+                                           required
+                                           ng-class="{'error':SchInvoiceForm.submitted && SchInvoiceForm.APPROVER_BOX{{$index}}.$error.required || Al.apprrovalerror>0 && SchInvoiceForm.submitted}" />
+                                </td>
+                                <td>
+                                    <input type="text"
+                                           name="APP_SORT_SEQUENCE{{$index}}"
+                                           class="form-control form-control-sm"
+                                           only-numbers
+                                           maxlength="2"
+                                           ng-disabled="Al.APPROVAL_HEADER_ID>0"
+                                           required
+                                           ng-model="Al.APP_SORT_SEQUENCE"
+                                           ng-class="{'error':SchInvoiceForm.submitted && SchInvoiceForm.APP_SORT_SEQUENCE{{$index}}.$error.required }" />
+                                </td>
+                                <td>
+                                    <div class="form-group d-flex mb-0">
+                                        <button type="button" class="btn btn-sm btn-transparent-wenodo" ng-click="ADD_APPROVER_FY(Al,-1,$index)" ng-show="ACTION_REQUIRED==1 && Al.APPROVAL_HEADER_ID==null  || ACTION_REQUIRED==1 && Al.STATUS_ID==39" data-toggle="tooltip" data-html="true" data-original-title="Add Approver Above"><i class="far fa-level-up-alt"></i></button>
+                                        <button type="button" class="btn btn-sm btn-transparent-danger" ng-click="REMOVE_APPROVER_FY(Al,$index)" ng-show="Al.APPROVAL_HEADER_STATUS_ID==null" data-toggle="tooltip" data-html="true" data-original-title="Delete"><i class="far fa-times"></i></button>
+                                        <button type="button" class="btn btn-sm btn-transparent-wenodo" ng-click="ADD_APPROVER_FY(Al,1,$index)" ng-show="ACTION_REQUIRED==1 && Al.APPROVAL_HEADER_ID==null  || ACTION_REQUIRED==1 && Al.STATUS_ID==39" data-toggle="tooltip" data-html="true" data-original-title="Add Approver Below"><i class="far fa-level-down-alt"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-wenodo" ng-click="INS_UPD_APPROVERS_IN_APPROVAL_CHAIN()">Save</button>
+                    <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade show" id="BANK">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"> Download Template</div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body text-sm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="d-block">Bank Name</label>
+                            <select class="custom-select custom-select-sm" name="BANK"
+                                    data-placeholder="Select"
+                                    ng-model="InvoiceApprovalSearch.BRANK_ID"
+                                    ng-change="NG_CHANGE_BANK_Fn()"
+                                    ng-options="Bank.ID  as Bank.BANK_NAME for Bank in PYMNT_BANK_LIST">
+                                <option value="">- Select -</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="d-block">Debit iBAN</label>
+                            <select class="custom-select custom-select-sm" name="BANK_ENTITY"
+                                    data-placeholder="Select"
+                                    ng-model="InvoiceApprovalSearch.ENTITY_BANK_MAPPING_ID"
+                                    ng-change="NG_CHANGE_ENTITY_BANK_Fn()"
+                                    ng-options="BankEn.ENTITY_BANK_MAPPING_ID  as BankEn.BANK_NAME + '-' + BankEn.BANK_CUSTOMER_ID  for BankEn in PYMNT_ENTITY_BANK_MAPPING_LIST">
+                                <option value="">- Select -</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+
+                        <div class="table-responsive">
+                            <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                                <li class="nav-item" ng-click="TAB_CLICK_SHDL_DOWNLOAD_FY(1)">
+                                    <a class="nav-link " ng-class="{'active':TAB_DOWNLOAD_FLAG==1}"
+                                       data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Success</a>
+                                </li>
+                                <li class="nav-item" ng-click="TAB_CLICK_SHDL_DOWNLOAD_FY(2)">
+                                    <a class="nav-link" ng-class="{'active':TAB_DOWNLOAD_FLAG==2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Exception</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="custom-content-below-tabContent">
+                                <div class="tab-pane fade " ng-class="{'show active':TAB_DOWNLOAD_FLAG==1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                                    <div class="table-responsive">
+                                        <table class="table table-head-fixed table-striped table-hover compact_table" ng-show="InvoiceApprovalSearch.BRANK_ID==1">
+                                            <thead class="bg-wenodo-border">
+                                                <tr>
+                                                    <th class="text-nowrap">Company Reference Number</th>
+                                                    <th class="text-nowrap">Payment Type</th>
+                                                    <th class="text-nowrap">Debit IBAN</th>
+                                                    <th class="text-nowrap">Amount</th>
+                                                    <th class="text-nowrap">Payment Currency</th>
+                                                    <th class="text-nowrap">Payment value Date</th>
+                                                    <th class="text-nowrap">Beneficiary Name</th>
+                                                    <th class="text-nowrap">Beneficiary Address 1</th>
+                                                    <th class="text-nowrap">Beneficiary Address 2</th>
+                                                    <th class="text-nowrap">Beneficiary Address 3</th>
+                                                    <th class="text-nowrap">Beneficiary Account Number/IBAN</th>
+                                                    <th class="text-nowrap">Beneficiary Bank Name</th>
+                                                    <th class="text-nowrap">Beneficiary Bank Address 1</th>
+                                                    <th class="text-nowrap">Beneficiary Bank Address 2</th>
+                                                    <th class="text-nowrap">Beneficiary Bank Address 3</th>
+                                                    <th class="text-nowrap">Beneficiary Bank SWIFT/Routing Code</th>
+                                                    <th class="text-nowrap">Payment Details 1</th>
+                                                    <th class="text-nowrap">Payment Details 2</th>
+                                                    <th class="text-nowrap text-right">Payment Details 3</th>
+                                                    <th class="text-nowrap text-right">Payment Details 4</th>
+                                                    <th class="text-nowrap text-right w-145">Charges Details</th>
+                                                    <th class="text-nowrap text-center">Intermediary Bank Name</th>
+                                                    <th class="text-nowrap text-center">Intermediary Bank Address 1</th>
+                                                    <th class="text-nowrap text-center">Intermediary Bank Address 2</th>
+                                                    <th class="text-nowrap text-center">Intermediary Bank Address 3</th>
+                                                    <th class="text-nowrap text-center">Intermediary Bank SWIFT Code</th>
+                                                    <th class="text-nowrap text-center">Deal Number</th>
+                                                    <th class="text-nowrap text-center">Remittance Code</th>
+                                                    <th class="text-nowrap text-center">Remittance Details</th>
+                                                    <th class="text-nowrap text-center">Bene Bank Sort/ABA/NEFT Code</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="bank in PYMNT_SCHDLS_BY_BANK_ONE_LIST  | filter:{'FLAG':0} track by $index" on-finish-render="ngRepeatFinished">
+                                                <tr>
+                                                    <td class="text-nowrap">{{bank.COMPANY_REFERENCE_NUMBER}}</td>
+                                                    <td>{{bank.PAYMENT_TYPE==null || bank.PAYMENT_TYPE==""?'-':bank.PAYMENT_TYPE}}</td>
+                                                    <td class="text-nowrap">{{bank.DEBIT_IBAN}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.AMOUNT | number:2}}</td>
+                                                    <td><span ng-bind-html="bank.PAYMENT_CURRENCY"></span></td>
+                                                    <td class="text-nowrap text-right">{{bank.PAYMENT_VALUE_DATE | date}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_NAME==null || bank.BENEFICIARY_NAME==""?'-':bank.BENEFICIARY_NAME}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_ADDRESS_1==null || bank.BENEFICIARY_ADDRESS_1==""?'-':bank.BENEFICIARY_ADDRESS_1}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_ADDRESS_2==null || bank.BENEFICIARY_ADDRESS_2==""?'-':bank.BENEFICIARY_ADDRESS_2}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_ADDRESS_3==null || bank.BENEFICIARY_ADDRESS_3==""?'-':bank.BENEFICIARY_ADDRESS_3}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_ACCOUNT_NO==null || bank.BENEFICIARY_ACCOUNT_NO==""?'-':bank.BENEFICIARY_ACCOUNT_NO}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_NAME==null || bank.BENEFICIARY_BANK_NAME==""?'-':bank.BENEFICIARY_BANK_NAME}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_ADDRESS_1==null || bank.BENEFICIARY_BANK_ADDRESS_1==""?'-':bank.BENEFICIARY_BANK_ADDRESS_1}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_ADDRESS_2==null || bank.BENEFICIARY_BANK_ADDRESS_2==""?'-':bank.BENEFICIARY_BANK_ADDRESS_2}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_ADDRESS_3==null || bank.BENEFICIARY_BANK_ADDRESS_3==""?'-':bank.BENEFICIARY_BANK_ADDRESS_3}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_SWIFT_CODE==null || bank.BENEFICIARY_BANK_SWIFT_CODE==""?'-':bank.BENEFICIARY_BANK_SWIFT_CODE}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.PAYMENT_DETAILS_1==null || bank.PAYMENT_DETAILS_1==""?'-':bank.PAYMENT_DETAILS_1}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.PAYMENT_DETAILS_2==null || bank.PAYMENT_DETAILS_2==""?'-':bank.PAYMENT_DETAILS_2}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.PAYMENT_DETAILS_3==null || bank.PAYMENT_DETAILS_3==""?'-':bank.PAYMENT_DETAILS_3}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.PAYMENT_DETAILS_4==null || bank.PAYMENT_DETAILS_4==""?'-':bank.PAYMENT_DETAILS_4}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.CHARGES_DETAILS==null || bank.CHARGES_DETAILS==""?'-':bank.CHARGES_DETAILS}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_NAME==null || bank.INTERMEDIARY_BANK_NAME==""?'-':bank.INTERMEDIARY_BANK_NAME}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_ADDRESS_1==null || bank.INTERMEDIARY_BANK_ADDRESS_1==""?'-':bank.INTERMEDIARY_BANK_ADDRESS_1}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_ADDRESS_2==null || bank.INTERMEDIARY_BANK_ADDRESS_2==""?'-':bank.INTERMEDIARY_BANK_ADDRESS_2}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_ADDRESS_3==null || bank.INTERMEDIARY_BANK_ADDRESS_3==""?'-':bank.INTERMEDIARY_BANK_ADDRESS_3}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_SWIFT_CODE==null || bank.INTERMEDIARY_BANK_SWIFT_CODE==""?'-':bank.INTERMEDIARY_BANK_SWIFT_CODE}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.DEAL_NUMBER==null || bank.DEAL_NUMBER==""?'-':bank.DEAL_NUMBER}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.REMITTANCE_CODE==null || bank.REMITTANCE_CODE==""?'-':bank.REMITTANCE_CODE}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.REMITTANCE_DETAILS==null || bank.REMITTANCE_DETAILS==""?'-':bank.REMITTANCE_DETAILS}}</td>
+                                                    <td class="text-nowrap text-right">{{bank.BENE_BANK_SORT==null || bank.BENE_BANK_SORT==""?'-':bank.BENE_BANK_SORT}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-head-fixed table-striped table-hover compact_table" ng-show="InvoiceApprovalSearch.BRANK_ID==2">
+                                            <thead class="bg-wenodo-border">
+                                                <tr>
+                                                    <th class="text-nowrap">Debit Account No.</th>
+                                                    <th class="text-nowrap">Customer Refrence No.</th>
+                                                    <th class="text-nowrap">Transaction type code</th>
+                                                    <th class="text-nowrap">Beneficiary Name</th>
+                                                    <th class="text-nowrap">Beneficiary Address line</th>
+                                                    <th class="text-nowrap text-right">Beneficiary Country</th>
+                                                    <th class="text-nowrap text-right">Beneficiary Account No</th>
+                                                    <th class="text-nowrap text-right w-145">Beneficiary Account type</th>
+                                                    <th class="text-nowrap text-center">Purpose code</th>
+                                                    <th class="text-nowrap text-center">Beneficiary Bank Country</th>
+                                                    <th class="text-nowrap text-center">Beneficiary bank swift code</th>
+                                                    <th class="text-nowrap text-center">Routing code</th>
+                                                    <th class="text-nowrap text-center">Beneficiary Purpose code</th>
+                                                    <th class="text-nowrap text-center">Intermediatory Bank Swift Code</th>
+                                                    <th class="text-nowrap text-center">Transaction Currency</th>
+                                                    <th class="text-nowrap text-center">Transaction Amount</th>
+                                                    <th class="text-nowrap text-center">Purpose Of Payment</th>
+                                                    <th class="text-nowrap text-center">Beneficiary E-mail Id</th>
+                                                    <th class="text-nowrap text-center">Value Date</th>
+                                                    <th class="text-nowrap text-center">Charge Type</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="bank in PYMNT_SCHDLS_BY_BANK_TWO_LIST | filter:{'FLAG':0} track by $index" on-finish-render="ngRepeatFinished">
+                                                <tr>
+
+                                                    <td class="text-nowrap">{{bank.DEBIT_ACCOUNT_NO==null || bank.DEBIT_ACCOUNT_NO==""?'-':bank.DEBIT_ACCOUNT_NO}}</td>
+                                                    <td>{{bank.CUSTOMER_REFERENCE_NO==null || bank.CUSTOMER_REFERENCE_NO==""?'-':bank.CUSTOMER_REFERENCE_NO}}</td>
+                                                    <td class="text-nowrap">{{bank.TRANSACTION_TYPE_CODE==null || bank.TRANSACTION_TYPE_CODE==""?'-':bank.TRANSACTION_TYPE_CODE}}</td>
+                                                    <td class="text-nowrap"> {{bank.BENEFICIARY_NAME==null || bank.BENEFICIARY_NAME==""?'-':bank.BENEFICIARY_NAME}}</td>
+                                                    <td class="text-nowrap">{{bank.BENEFICIARY_ADDR_LINE_1==null || bank.BENEFICIARY_ADDR_LINE_1==""?'-':bank.BENEFICIARY_ADDR_LINE_1}}</td>
+                                                    <td class="text-nowrap">{{bank.BENEFICIARY_COUNTRY==null || bank.BENEFICIARY_COUNTRY==""?'-':bank.BENEFICIARY_COUNTRY}}</td>
+                                                    <td class="text-nowrap">{{bank.BENEFICIARY_ACCOUNT_NO==null || bank.BENEFICIARY_ACCOUNT_NO==""?'-':bank.BENEFICIARY_ACCOUNT_NO}}</td>
+                                                    <td class="text-nowrap">{{bank.BENEFICIARY_ACCOUNT_TYPE==null || bank.BENEFICIARY_ACCOUNT_TYPE==""?'-':bank.BENEFICIARY_ACCOUNT_TYPE}}</td>
+                                                    <td class="text-nowrap">{{bank.PURPOSE_CODE==null || bank.PURPOSE_CODE==""?'-':bank.PURPOSE_CODE}}</td>
+                                                    <td class="text-nowrap">{{bank.BENEFICIARY_BANK_COUNTRY==null || bank.BENEFICIARY_BANK_COUNTRY==""?'-':bank.BENEFICIARY_BANK_COUNTRY}}</td>
+                                                    <td class="text-nowrap">{{bank.BENEFICIARY_BANK_SWIFT_CODE==null || bank.BENEFICIARY_BANK_SWIFT_CODE==""?'-':bank.BENEFICIARY_BANK_SWIFT_CODE}}</td>
+                                                    <td class="text-nowrap">{{bank.ROUTING_CODE==null || bank.ROUTING_CODE==""?'-':bank.ROUTING_CODE}}</td>
+                                                    <td class="text-nowrap">{{bank.BENEFICIARY_PURPOSE_CODE==null || bank.BENEFICIARY_PURPOSE_CODE==""?'-':bank.BENEFICIARY_PURPOSE_CODE}}</td>
+                                                    <td class="text-nowrap">{{bank.INTERMEDIATORY_BANK_SWIFT_CODE==null || bank.INTERMEDIATORY_BANK_SWIFT_CODE==""?'-':bank.INTERMEDIATORY_BANK_SWIFT_CODE}}</td>
+                                                    <td class="text-nowrap">{{bank.TRANSACTION_CURRENCY==null || bank.TRANSACTION_CURRENCY==""?'-':bank.TRANSACTION_CURRENCY}}</td>
+                                                    <td class="text-nowrap">{{bank.TRANSACTION_AMOUNT==null || bank.TRANSACTION_AMOUNT==""?'-':bank.TRANSACTION_AMOUNT}}</td>
+                                                    <td class="text-nowrap">{{bank.PURPOSE_OF_PAYMENT==null || bank.PURPOSE_OF_PAYMENT==""?'-':bank.PURPOSE_OF_PAYMENT}}</td>
+                                                    <td class="text-nowrap">{{bank.BENEFICIARY_EMAIL_ID==null || bank.BENEFICIARY_EMAIL_ID==""?'-':bank.BENEFICIARY_EMAIL_ID}}</td>
+                                                    <td class="text-nowrap">{{bank.VALUE_DATE==null || bank.VALUE_DATE==""?'-':bank.VALUE_DATE}}</td>
+                                                    <td class="text-nowrap">{{bank.CHARGE_TYPE==null || bank.CHARGE_TYPE==""?'-':bank.CHARGE_TYPE}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade " ng-class="{'show active':TAB_DOWNLOAD_FLAG==2}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                                    <table class="table table-head-fixed table-striped table-hover compact_table" ng-show="InvoiceApprovalSearch.BRANK_ID==1">
+                                        <thead class="bg-wenodo-border">
+                                            <tr>
+                                                <th class="text-nowrap">Company Reference Number</th>
+                                                <th class="text-nowrap">Payment Type</th>
+                                                <th class="text-nowrap">Debit IBAN</th>
+                                                <th class="text-nowrap">Amount</th>
+                                                <th class="text-nowrap">Payment Currency</th>
+                                                <th class="text-nowrap">Payment value Date</th>
+                                                <th class="text-nowrap">Beneficiary Name</th>
+                                                <th class="text-nowrap">Beneficiary Address 1</th>
+                                                <th class="text-nowrap">Beneficiary Address 2</th>
+                                                <th class="text-nowrap">Beneficiary Address 3</th>
+                                                <th class="text-nowrap">Beneficiary Account Number/IBAN</th>
+                                                <th class="text-nowrap">Beneficiary Bank Name</th>
+                                                <th class="text-nowrap">Beneficiary Bank Address 1</th>
+                                                <th class="text-nowrap">Beneficiary Bank Address 2</th>
+                                                <th class="text-nowrap">Beneficiary Bank Address 3</th>
+                                                <th class="text-nowrap">Beneficiary Bank SWIFT/Routing Code</th>
+                                                <th class="text-nowrap">Payment Details 1</th>
+                                                <th class="text-nowrap">Payment Details 2</th>
+                                                <th class="text-nowrap text-right">Payment Details 3</th>
+                                                <th class="text-nowrap text-right">Payment Details 4</th>
+                                                <th class="text-nowrap text-right w-145">Charges Details</th>
+                                                <th class="text-nowrap text-center">Intermediary Bank Name</th>
+                                                <th class="text-nowrap text-center">Intermediary Bank Address 1</th>
+                                                <th class="text-nowrap text-center">Intermediary Bank Address 2</th>
+                                                <th class="text-nowrap text-center">Intermediary Bank Address 3</th>
+                                                <th class="text-nowrap text-center">Intermediary Bank SWIFT Code</th>
+                                                <th class="text-nowrap text-center">Deal Number</th>
+                                                <th class="text-nowrap text-center">Remittance Code</th>
+                                                <th class="text-nowrap text-center">Remittance Details</th>
+                                                <th class="text-nowrap text-center">Bene Bank Sort/ABA/NEFT Code</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="bank in PYMNT_SCHDLS_BY_BANK_ONE_LIST |  filter:{'FLAG':1} track by $index" on-finish-render="ngRepeatFinished">
+                                            <tr>
+                                                <td class="text-nowrap">{{bank.COMPANY_REFERENCE_NUMBER}}</td>
+                                                <td>{{bank.PAYMENT_TYPE==null || bank.PAYMENT_TYPE==""?'-':bank.PAYMENT_TYPE}}</td>
+                                                <td class="text-nowrap">{{bank.DEBIT_IBAN}}</td>
+                                                <td class="text-nowrap text-right">{{bank.AMOUNT | number:2}}</td>
+                                                <td><span ng-bind-html="bank.PAYMENT_CURRENCY"></span></td>
+                                                <td class="text-nowrap text-right">{{bank.PAYMENT_VALUE_DATE | date}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_NAME==null || bank.BENEFICIARY_NAME==""?'-':bank.BENEFICIARY_NAME}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_ADDRESS_1==null || bank.BENEFICIARY_ADDRESS_1==""?'-':bank.BENEFICIARY_ADDRESS_1}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_ADDRESS_2==null || bank.BENEFICIARY_ADDRESS_2==""?'-':bank.BENEFICIARY_ADDRESS_2}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_ADDRESS_3==null || bank.BENEFICIARY_ADDRESS_3==""?'-':bank.BENEFICIARY_ADDRESS_3}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_ACCOUNT_NO==null || bank.BENEFICIARY_ACCOUNT_NO==""?'-':bank.BENEFICIARY_ACCOUNT_NO}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_NAME==null || bank.BENEFICIARY_BANK_NAME==""?'-':bank.BENEFICIARY_BANK_NAME}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_ADDRESS_1==null || bank.BENEFICIARY_BANK_ADDRESS_1==""?'-':bank.BENEFICIARY_BANK_ADDRESS_1}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_ADDRESS_2==null || bank.BENEFICIARY_BANK_ADDRESS_2==""?'-':bank.BENEFICIARY_BANK_ADDRESS_2}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_ADDRESS_3==null || bank.BENEFICIARY_BANK_ADDRESS_3==""?'-':bank.BENEFICIARY_BANK_ADDRESS_3}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENEFICIARY_BANK_SWIFT_CODE==null || bank.BENEFICIARY_BANK_SWIFT_CODE==""?'-':bank.BENEFICIARY_BANK_SWIFT_CODE}}</td>
+                                                <td class="text-nowrap text-right">{{bank.PAYMENT_DETAILS_1==null || bank.PAYMENT_DETAILS_1==""?'-':bank.PAYMENT_DETAILS_1}}</td>
+                                                <td class="text-nowrap text-right">{{bank.PAYMENT_DETAILS_2==null || bank.PAYMENT_DETAILS_2==""?'-':bank.PAYMENT_DETAILS_2}}</td>
+                                                <td class="text-nowrap text-right">{{bank.PAYMENT_DETAILS_3==null || bank.PAYMENT_DETAILS_3==""?'-':bank.PAYMENT_DETAILS_3}}</td>
+                                                <td class="text-nowrap text-right">{{bank.PAYMENT_DETAILS_4==null || bank.PAYMENT_DETAILS_4==""?'-':bank.PAYMENT_DETAILS_4}}</td>
+                                                <td class="text-nowrap text-right">{{bank.CHARGES_DETAILS==null || bank.CHARGES_DETAILS==""?'-':bank.CHARGES_DETAILS}}</td>
+                                                <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_NAME==null || bank.INTERMEDIARY_BANK_NAME==""?'-':bank.INTERMEDIARY_BANK_NAME}}</td>
+                                                <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_ADDRESS_1==null || bank.INTERMEDIARY_BANK_ADDRESS_1==""?'-':bank.INTERMEDIARY_BANK_ADDRESS_1}}</td>
+                                                <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_ADDRESS_2==null || bank.INTERMEDIARY_BANK_ADDRESS_2==""?'-':bank.INTERMEDIARY_BANK_ADDRESS_2}}</td>
+                                                <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_ADDRESS_3==null || bank.INTERMEDIARY_BANK_ADDRESS_3==""?'-':bank.INTERMEDIARY_BANK_ADDRESS_3}}</td>
+                                                <td class="text-nowrap text-right">{{bank.INTERMEDIARY_BANK_SWIFT_CODE==null || bank.INTERMEDIARY_BANK_SWIFT_CODE==""?'-':bank.INTERMEDIARY_BANK_SWIFT_CODE}}</td>
+                                                <td class="text-nowrap text-right">{{bank.DEAL_NUMBER==null || bank.DEAL_NUMBER==""?'-':bank.DEAL_NUMBER}}</td>
+                                                <td class="text-nowrap text-right">{{bank.REMITTANCE_CODE==null || bank.REMITTANCE_CODE==""?'-':bank.REMITTANCE_CODE}}</td>
+                                                <td class="text-nowrap text-right">{{bank.REMITTANCE_DETAILS==null || bank.REMITTANCE_DETAILS==""?'-':bank.REMITTANCE_DETAILS}}</td>
+                                                <td class="text-nowrap text-right">{{bank.BENE_BANK_SORT==null || bank.BENE_BANK_SORT==""?'-':bank.BENE_BANK_SORT}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-head-fixed table-striped table-hover compact_table" ng-show="InvoiceApprovalSearch.BRANK_ID==2">
+                                        <thead class="bg-wenodo-border">
+                                            <tr>
+
+                                                <th class="text-nowrap">Debit Account No.</th>
+                                                <th class="text-nowrap">Customer Refrence No.</th>
+                                                <th class="text-nowrap">Transaction type code</th>
+                                                <th class="text-nowrap">Beneficiary Name</th>
+                                                <th class="text-nowrap">Beneficiary Address line</th>
+                                                <th class="text-nowrap text-right">Beneficiary Country</th>
+                                                <th class="text-nowrap text-right">Beneficiary Account No</th>
+                                                <th class="text-nowrap text-right w-145">Beneficiary Account type</th>
+                                                <th class="text-nowrap text-center">Purpose code</th>
+                                                <th class="text-nowrap text-center">Beneficiary Bank Country</th>
+                                                <th class="text-nowrap text-center">Beneficiary bank swift code</th>
+                                                <th class="text-nowrap text-center">Routing code</th>
+                                                <th class="text-nowrap text-center">Beneficiary Purpose code</th>
+                                                <th class="text-nowrap text-center">Intermediatory Bank Swift Code</th>
+                                                <th class="text-nowrap text-center">Transaction Currency</th>
+                                                <th class="text-nowrap text-center">Transaction Amount</th>
+                                                <th class="text-nowrap text-center">Purpose Of Payment</th>
+                                                <th class="text-nowrap text-center">Beneficiary E-mail Id</th>
+                                                <th class="text-nowrap text-center">Value Date</th>
+                                                <th class="text-nowrap text-center">Charge Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="bank in PYMNT_SCHDLS_BY_BANK_TWO_LIST  |  filter:{'FLAG':1} track by $index" on-finish-render="ngRepeatFinished">
+                                            <tr>
+
+                                                <td class="text-nowrap">{{bank.DEBIT_ACCOUNT_NO==null || bank.DEBIT_ACCOUNT_NO==""?'-':bank.DEBIT_ACCOUNT_NO}}</td>
+                                                <td>{{bank.CUSTOMER_REFERENCE_NO==null || bank.CUSTOMER_REFERENCE_NO==""?'-':bank.CUSTOMER_REFERENCE_NO}}</td>
+                                                <td class="text-nowrap">{{bank.TRANSACTION_TYPE_CODE==null || bank.TRANSACTION_TYPE_CODE==""?'-':bank.TRANSACTION_TYPE_CODE}}</td>
+                                                <td class="text-nowrap"> {{bank.BENEFICIARY_NAME==null || bank.BENEFICIARY_NAME==""?'-':bank.BENEFICIARY_NAME}}</td>
+                                                <td class="text-nowrap">{{bank.BENEFICIARY_ADDR_LINE_1==null || bank.BENEFICIARY_ADDR_LINE_1==""?'-':bank.BENEFICIARY_ADDR_LINE_1}}</td>
+                                                <td class="text-nowrap">{{bank.BENEFICIARY_COUNTRY==null || bank.BENEFICIARY_COUNTRY==""?'-':bank.BENEFICIARY_COUNTRY}}</td>
+                                                <td class="text-nowrap">{{bank.BENEFICIARY_ACCOUNT_NO==null || bank.BENEFICIARY_ACCOUNT_NO==""?'-':bank.BENEFICIARY_ACCOUNT_NO}}</td>
+                                                <td class="text-nowrap">{{bank.BENEFICIARY_ACCOUNT_TYPE==null || bank.BENEFICIARY_ACCOUNT_TYPE==""?'-':bank.BENEFICIARY_ACCOUNT_TYPE}}</td>
+                                                <td class="text-nowrap">{{bank.PURPOSE_CODE==null || bank.PURPOSE_CODE==""?'-':bank.PURPOSE_CODE}}</td>
+                                                <td class="text-nowrap">{{bank.BENEFICIARY_BANK_COUNTRY==null || bank.BENEFICIARY_BANK_COUNTRY==""?'-':bank.BENEFICIARY_BANK_COUNTRY}}</td>
+                                                <td class="text-nowrap">{{bank.BENEFICIARY_BANK_SWIFT_CODE==null || bank.BENEFICIARY_BANK_SWIFT_CODE==""?'-':bank.BENEFICIARY_BANK_SWIFT_CODE}}</td>
+                                                <td class="text-nowrap">{{bank.ROUTING_CODE==null || bank.ROUTING_CODE==""?'-':bank.ROUTING_CODE}}</td>
+                                                <td class="text-nowrap">{{bank.BENEFICIARY_PURPOSE_CODE==null || bank.BENEFICIARY_PURPOSE_CODE==""?'-':bank.BENEFICIARY_PURPOSE_CODE}}</td>
+                                                <td class="text-nowrap">{{bank.INTERMEDIATORY_BANK_SWIFT_CODE==null || bank.INTERMEDIATORY_BANK_SWIFT_CODE==""?'-':bank.INTERMEDIATORY_BANK_SWIFT_CODE}}</td>
+                                                <td class="text-nowrap">{{bank.TRANSACTION_CURRENCY==null || bank.TRANSACTION_CURRENCY==""?'-':bank.TRANSACTION_CURRENCY}}</td>
+                                                <td class="text-nowrap">{{bank.TRANSACTION_AMOUNT==null || bank.TRANSACTION_AMOUNT==""?'-':bank.TRANSACTION_AMOUNT}}</td>
+                                                <td class="text-nowrap">{{bank.PURPOSE_OF_PAYMENT==null || bank.PURPOSE_OF_PAYMENT==""?'-':bank.PURPOSE_OF_PAYMENT}}</td>
+                                                <td class="text-nowrap">{{bank.BENEFICIARY_EMAIL_ID==null || bank.BENEFICIARY_EMAIL_ID==""?'-':bank.BENEFICIARY_EMAIL_ID}}</td>
+                                                <td class="text-nowrap">{{bank.VALUE_DATE==null || bank.VALUE_DATE==""?'-':bank.VALUE_DATE}}</td>
+                                                <td class="text-nowrap">{{bank.CHARGE_TYPE==null || bank.CHARGE_TYPE==""?'-':bank.CHARGE_TYPE}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-wenodo" ng-click="DOWNLOAD_PYMT_BANK_Fn()">Download</button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

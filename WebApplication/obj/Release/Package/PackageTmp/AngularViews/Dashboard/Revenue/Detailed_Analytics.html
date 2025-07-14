@@ -1,0 +1,456 @@
+﻿<div class="box-shadow" id="REVENUE_PDF">
+    <div class="row my-3" hidden>
+        <div class="col-md-6 border-bottom"><img src="{{LOGO_PATH}}" class="img-fluid footer-logo my-2" alt="" /></div>
+        <div class="col-md-6 border-bottom text-right"><img src="../E_Content/images/logo.png" class="img-fluid footer-logo my-2" alt="" /></div>
+    </div>
+    <div class="card-header">
+        <h5 class="card-title">&nbsp;</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item mr-2" ng-show="false">
+                    <select class="custom-select custom-select-sm mw-150"
+                            name="ENTITY"
+                            style="max-width:150px"
+                            ng-change="ENTITY_CHANGE_FY()"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in REVE_ENTITY_LIST"
+                            ng-model="RevenueAnalyticsSearch.ENTITY_ID">
+                    </select>
+
+                </li>
+                <li class="nav-item mr-2">
+                    <select class="custom-select custom-select-sm mw-150"
+                            name="BRANCH"
+                            ng-change="ANA_BRANCH_CHANGE()"
+                            ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST"
+                            ng-model="RevenueAnalyticsSearch.BRANCH_ID">
+                    </select>
+                </li>
+                <li class="nav-item mr-2">
+                    <div class="input-group input-group-sm my-0" id="week-picker-wrapper">
+                        <div class="input-group-prepend">
+                            <button type="button" class="btn input-group-text week-prev">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="form-control week-picker font-11 bg-white" ng-class="{'c-form-control':SHOW_BTN}" value="" readonly format="yy-mm-dd" placeholder="Select a Week" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn input-group-text week-next">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <!--<li class="nav-item mr-2">
+                    <div class="form-group mb-0">
+                        <button type="button" ng-click="GET_DETAILED_REVENUE_ANALYTICS()" class="btn btn-sm btn-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Filter"><i class="far fa-filter"></i></button>
+                    </div>
+                </li>
+                <li class="nav-item mr-2">
+                    <div class="form-group mb-0">
+                        <button type="button" ng-click="RESET_GET_DETAILED_REVENUE_ANALYTICS()" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Reset"><i class="far fa-undo"></i></button>
+                    </div>
+                </li>-->
+                <li class="nav-item">
+                    <div class="form-group mb-0">
+                        <button type="button" class="btn btn-sm btn-wenodo" ng-click="REVENUE_PDF(1)" data-toggle="tooltip" data-html="true" data-original-title="Download PDF"><i class="far fa-file-pdf"></i></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body" ng-show="GROSSREVENUE_CHART1_DATA.length==0">
+        <div class="row "> <div class="col-md-12 text-center text-green">   {{FETCHING_RECORD}} </div></div>
+    </div>
+    <div class="card-body" ng-show="GROSSREVENUE_CHART1_DATA.length>0" id="ANA_REVENUE_PDF">
+        <div class="row my-3" hidden>
+            <div class="col-md-6 border-bottom"><img src="{{LOGO_PATH}}" class="img-fluid footer-logo my-2" alt="" /></div>
+            <div class="col-md-6 border-bottom text-right"><img src="../E_Content/images/logo.png" class="img-fluid footer-logo my-2" alt="" /></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box-shadow bg-white">
+                    <div class="card-header">
+                        <h5 class="card-title">Weekly Summary</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-resposive custom-scrollbar height-auto">
+                            <table class="table table-hover table-head-fixed compact_table mb-0 table-fixed-left">
+                                <thead class="bg-wenodo-border">
+                                    <tr>
+                                        <th class="table-fixed-left"></th>
+                                        <th></th>
+                                        <th class="text-right">Mon <i ng-show="false" class="fas fa-cloud-hail-mixed text-secondary"> </i> <sup ng-show="false">13<sup>0</sup></sup></th>
+                                        <th class="text-right">Tue <i ng-show="false" class="fad fa-sun text-warning"></i> <sup ng-show="false">16<sup ng-show="false">0</sup></sup></th>
+                                        <th class="text-right">Wed <i ng-show="false" class="fad fa-clouds"></i> <sup ng-show="false">10<sup ng-show="false">0</sup></sup></th>
+                                        <th class="text-right">Thu <i ng-show="false" class="fad fa-cloud-hail-mixed text-secondary"></i> <sup ng-show="false">14<sup>0</sup></sup></th>
+                                        <th class="text-right">Fri <i ng-show="false" class="fad fa-sun text-warning"></i> <sup ng-show="false">20<sup ng-show="false">0</sup></sup></th>
+                                        <th class="text-right">Sat <i ng-show="false" class="fad fa-clouds"></i> <sup ng-show="false">15<sup ng-show="false">0</sup></sup></th>
+                                        <th class="text-right">Sun <i ng-show="false" class="fad fa-cloud-hail-mixed text-secondary"></i> <sup ng-show="false">10<sup>0</sup></sup></th>
+                                        <th class="text-right text-orange">Total Gross Sales</th>
+                                        <th class="text-right">VAT</th>
+                                        <th class="text-right text-light-green">NET</th>
+                                        <th class="text-right">Split</th>
+                                        <th class="text-right  bg-light-blue">Last Wk</th>
+                                        <th class="text-right bg-light-grey">Last Yr</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="DRL in  DETAILED_SALES_BREAKDOWN_BY_REVENUECENTER_LIST">
+                                    <tr ng-if="DRL.HeaderID!='-1' && DRL.HeaderID!='-2' && DRL.HeaderID!='-3' && DRL.HeaderID!='-4' && DRL.HeaderID!='-5'&& DRL.HeaderID!='-6'">
+                                        <td class="bg-light-teal text-bold font-14">{{DRL.HeaderName}}</td>
+                                        <td class="bg-light-teal" colspan="14"></td>
+                                    </tr>
+                                    <tr ng-if="DRL.HeaderID=='-1' || DRL.HeaderID=='-2' || DRL.HeaderID=='-3' || DRL.HeaderID=='-4' || DRL.HeaderID=='-5'">
+                                        <td rowspan="3" ng-class="{'text-bold text-blue':DRL.HeaderID=='-3'}">{{DRL.HeaderName}}</td>
+                                    </tr>
+                                    <tr ng-if="DRL.HeaderID=='-6'">
+                                        <td rowspan="5">{{DRL.HeaderName}}</td>
+                                    </tr>
+                                    <tr ng-repeat-start="SL in  DRL.SessionList"
+                                        ng-hide="DRL.HeaderID=='-1' || DRL.HeaderID=='-2' || DRL.HeaderID=='-3' || DRL.HeaderID=='-4' || DRL.HeaderID=='-5'|| DRL.HeaderID=='-6'">
+                                        <td rowspan="{{SL.SalesBreakdownRowsList.length+1}}" class="table-fixed-left text-center v-align-top"
+                                            ng-class="{'bg-light-grey border-radius-5':SL.SESSION_ID=='1' , 'bg-light-green border-radius-5':SL.SESSION_ID=='2', 'bg-light-blue border-radius-5':SL.SESSION_ID=='3', 'bg-teal border-radius-5':SL.SESSION_ID=='4'}">
+                                            <span class="d-block text-bold"> {{SL.SESSION_NAME}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="DRL.HeaderID=='-6'">
+                                        <td colspan="8" class="text-center text-bold text-blue font-14">Covers</td>
+                                        <td colspan="7"></td>
+                                    </tr>
+                                    <tr ng-repeat="SBL in SL.SalesBreakdownRowsList | orderBy:'SortOrder'">
+                                        <td class="text-right" ng-class="{'text-bold text-blue':SBL.RowName=='Covers(CW)','bg-light-pink': SBL.RowName=='Spend' ,'bg-light-purple': SBL.RowName=='Covers'}">{{SBL.RowName}}</td>
+                                        <td class="text-right" ng-class="{'text-bold text-blue':DRL.HeaderID=='-3'|| SBL.RowName=='Covers(CW)','bg-light-pink': SBL.RowName=='Spend' ,'bg-light-purple': SBL.RowName=='Covers'}" 
+                                            ng-repeat="x in [].constructor(7) track by $index">
+                                            <span ng-show="SBL.WeeklySalesBreakdownValuesList[$index].Value!=null">
+                                                <span ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'" ng-bind-html="CURRENCY_SYMBOL">
+                                                </span> {{SBL.WeeklySalesBreakdownValuesList[$index].Value | number :0}}
+                                            </span>
+                                            <span ng-show="SBL.WeeklySalesBreakdownValuesList[$index].Value==null">-</span>
+                                        </td>
+                                        <td class="text-right text-bold bg-light-orange" ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{SBL.TotalGross | number :0}}</td>
+                                        <td class="text-right" ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'" ng-class="{'text-bold text-blue':DRL.HeaderID=='-3'}"><span ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'" ng-bind-html="CURRENCY_SYMBOL"></span> {{SBL.VAT | number :0}}</td>
+                                        <td class="text-right bg-light-green text-bold" ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'"><span ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'" ng-bind-html="CURRENCY_SYMBOL"></span> {{SBL.NET | number :0}}</td>
+                                        <td class="text-right" ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'"><span ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'"></span>{{SBL.SPLIT}}</td>
+                                        <td class="text-right text-bold text-blue bg-light-blue" ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'"><span ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'" ng-bind-html="CURRENCY_SYMBOL"></span> {{SBL.LastWk | number :0}}</td>
+                                        <td class="text-right text-bold text-blue bg-light-grey" ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'"><span ng-if="SBL.RowName!='Covers' && DRL.HeaderID!='-6'" ng-bind-html="CURRENCY_SYMBOL"></span> {{SBL.LastYr | number :0}}</td>
+                                    </tr>
+                                    <tr ng-repeat-end ng-show="false"><td></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 my-3">
+                <div class="box-shadow">
+                    <div class="card-header"><h5 class="card-title">Weekly Sales By Category</h5></div>
+                    <div class="card-body text-center">
+                        <!--<img src="../../E_Content/images/Weekly_Grouped_Summary.jpg" class="img-fluid" />-->
+                        <fusioncharts id="WEEKLY_GROUPED_SUMMARY_STACKED_BAR_ID"
+                                      chartid="WEEKLY_GROUPED_SUMMARY_STACKED_BAR_CHARTID"
+                                      width="100%"
+                                      height="500"
+                                      type="msstackedcolumn2d"
+                                      dataSource="{{WEEKLY_GROUPED_SUMMARY_STACKED_BAR}}"></fusioncharts>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 my-3">
+                <div class="card-header d-flex justify-content-center"><h6 class="card-title">Cumulative Sales</h6></div>
+                <div>
+                    <div class="card-header"><h5 class="card-title"></h5></div>
+                    <div class="table-responsive">
+                        <table class="table table-hover compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th></th>
+                                    <th class="text-right">Current Week</th>
+                                    <th class="text-right">Last Year</th>
+                                    <th class="text-right">+/(-)</th>
+                                    <th class="text-right"> Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="CSBL  in CUMULATIVE_SALES_BREAKDOWN_LIST">
+                                    <td colspan="{{CSBL.ColSpan}}">
+                                        <h5 ng-show="CSBL.ColSpan>0" class="card-title">{{CSBL.RowName}}</h5>
+                                        <span ng-show="CSBL.ColSpan==0">{{CSBL.RowName}}</span>
+                                    </td>
+                                    <td class="text-right" ng-if="CSBL.ColSpan==0"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{CSBL.CW_Sales | number :0 }}</td>
+                                    <td class="text-right" ng-if="CSBL.ColSpan==0"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{CSBL.LY_Sales | number :0}}</td>
+                                    <td class="text-right" ng-if="CSBL.ColSpan==0"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{CSBL.UP_DOWN | number :0}}</td>
+                                    <td class="text-success text-right" ng-if="CSBL.ColSpan==0">{{CSBL.UP_DOWN_PERCENT}} </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 box-shadow mb-3">
+                <div class="card-header">
+                    <h5 class="card-title mt-3">Weekly Comps</h5>
+                    <div class="card-tools">
+                        <select class="form-control"
+                                ng-options="BL.ID as BL.NAME for BL in BY_REASON_STAFF_LIST"
+                                ng-model="RevenueAnalyticsSearch.WEEKLY_COMPS_REASON_STAFF_ID"
+                                ng-change="BY_WEEKLY_COMPS_REASON_STAFF_FY(1)"></select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="table-responsive custom-scrollbar height-auto">
+                                <table class="table table-hover compact_table">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>Discounts & Promos</th>
+                                            <th class="text-right">Mon</th>
+                                            <th class="text-right">Tue</th>
+                                            <th class="text-right">Wed</th>
+                                            <th class="text-right">Thu</th>
+                                            <th class="text-right">Fri</th>
+                                            <th class="text-right">Sat</th>
+                                            <th class="text-right">Sun</th>
+                                            <th class="text-right">Total</th>
+                                            <th class="text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="CWBR in  COMP_WEEKLY_BREAKDOWN_BY_REASON_OR_STAFF  ">
+                                        <tr ng-class="{'text-bold text-blue':CWBR.RowName==':;:'}">
+                                            <td class="text-nowrap" ng-class="{'text-blue':CWBR.RowName==':;:'}">{{CWBR.RowName==":;:"?'Total':CWBR.RowName}}</td>
+                                            <td ng-repeat="CWBR_Val in CWBR.WeeklySalesBreakdownValuesList | orderBy:'SortOrder'" class="text-nowrap text-right" ng-class="{'text-blue':CWBR.RowName==':;:'}">
+                                                <span ng-show="CWBR_Val.Value!=null && CWBR_Val.Value!=0">
+                                                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    {{CWBR_Val.Value | number :0}}
+                                                </span>
+                                                <span ng-show="CWBR_Val.Value==null || CWBR_Val.Value==0">-</span>
+                                            </td>
+                                            <td class="text-blue text-right">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                {{CWBR.TotalGross | number :0}}
+                                            </td>
+                                            <td class="text-nowrap text-right" ng-class="{'text-blue':CWBR.RowName==':;:'}">
+                                                {{CWBR.SPLIT}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <fusioncharts id="WEEKLY_COMPS_STACKED_BAR_ID"
+                                          chartid="WEEKLY_COMPS_STACKED_BAR_CHARTID"
+                                          width="100%"
+                                          height="500"
+                                          type="msstackedcolumn2d"
+                                          dataSource="{{COMP_WEEKLY_BREAKDOWN_BY_REASON_BAR}}"></fusioncharts>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 box-shadow">
+                <div class="card-header">
+                    <h5 class="card-title mt-3">Weekly Voids</h5>
+                    <div class="card-tools">
+                        <select class="form-control"
+                                ng-model="RevenueAnalyticsSearch.WEEKLY_VOIDS_REASON_STAFF_ID"
+                                ng-options="BL.ID as BL.NAME for BL in BY_REASON_STAFF_LIST"
+                                ng-change="BY_WEEKLY_VOIDS_REASON_STAFF_FY(1)"></select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="table-responsive custom-scrollbar height-auto">
+                                <table class="table table-hover compact_table">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>Voids</th>
+                                            <th class="text-right">Mon</th>
+                                            <th class="text-right">Tue</th>
+                                            <th class="text-right">Wed</th>
+                                            <th class="text-right">Thu</th>
+                                            <th class="text-right">Fri</th>
+                                            <th class="text-right">Sat</th>
+                                            <th class="text-right">Sun</th>
+                                            <th class="text-right">Total</th>
+                                            <th class="text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="VWBR in  VOID_WEEKLY_BREAKDOWN_BY_REASON_OR_STAFF">
+                                        <tr ng-class="{'text-bold':VWBR.RowName==':;:'}">
+                                            <td class="text-nowrap" ng-class="{'text-blue':VWBR.RowName==':;:'}">{{VWBR.RowName==":;:"?'Total':VWBR.RowName}}</td>
+                                            <td ng-repeat="VWBR_VAL in VWBR.WeeklySalesBreakdownValuesList | orderBy:'SortOrder'" class="text-nowrap text-right" ng-class="{'text-blue':VWBR.RowName==':;:'}">
+                                                <span ng-show="VWBR_VAL.Value!=null && VWBR_VAL.Value!=0">
+                                                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    {{VWBR_VAL.Value | number :0}}
+                                                </span>
+                                                <span ng-show="VWBR_VAL.Value==null || VWBR_VAL.Value==0">-</span>
+                                            </td>
+                                            <td class="text-blue text-right">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>{{VWBR.TotalGross | number :0}}
+                                            </td>
+                                            <td class="text-nowrap text-right" ng-class="{'text-blue':VWBR.RowName==':;:'}">{{VWBR.SPLIT}}</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <fusioncharts id="WEEKLY_VOID_STACKED_BAR_ID_ID"
+                                          chartid="WEEKLY_VOID_STACKED_BAR_CHARTID"
+                                          width="100%"
+                                          height="500"
+                                          type="msstackedcolumn2d"
+                                          dataSource="{{VOID_WEEKLY_BREAKDOWN_BY_REASON_BAR}}"></fusioncharts>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="false">
+            <div class="col-md-6 box-shadow mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Weekly Flash P&L</h5>
+                    <div class="card-tools">
+                        <ul class="nav nav-pills ml-auto">
+                            <li class="nav-item">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn bg-light-grey cursor-pointer" ng-class="{'bg-wenodo-blue text-white':TAB_FLAG_WEEKLY_FLASH_P_L==1,'':TAB_FLAG_WEEKLY_FLASH_P_L!=1}" data-toggle="tooltip" data-html="true" data-original-title="Grid" ng-click="TAB_CLICK_SHDL_GROSS_REVENUE_FY(1)">
+                                        <input type="radio" name="options" id="option1" autocomplete="off" checked=""> <i class="fas fa-list-ul"></i>
+                                    </label>
+                                    <label class="btn bg-light-grey cursor-pointer" data-toggle="tooltip" ng-class="{'bg-wenodo-blue text-white':TAB_FLAG_WEEKLY_FLASH_P_L==2,'':TAB_FLAG_WEEKLY_FLASH_P_L!=2}" data-html="true" data-original-title="Graph" ng-click="TAB_CLICK_SHDL_GROSS_REVENUE_FY(2)">
+                                        <input type="radio" name="options" id="option2" autocomplete="off"> <i class="fas fa-chart-line"></i>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="table-responsive" ng-show="TAB_FLAG_WEEKLY_FLASH_P_L==1">
+                    <table class="table table-hover compact_table">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th></th>
+                                <th class="text-right">Current Wk</th>
+                                <th class="text-right">Last Wk</th>
+                                <th class="text-right">Last Yr</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="ABL in ACCOUNTS_BRAKDOWN_LIST | orderBy:'SortOrder'">
+                            <tr class="" ng-class="{'text-bold text-blue':ABL.IsHeader==1}">
+                                <th class="text-nowrap" ng-class="{'text-blue':ABL.IsHeader==1}">{{ABL.AccountName}}</th>
+                                <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ABL.CW_Amt | number :0}}</td>
+                                <td class="text-nowrap text-right">
+                                    <span ng-bind-html="CURRENCY_SYMBOL"></span> {{ABL.LW_Amt | number :0}}
+                                    <i ng-show="ABL.CW_LW_PERCENT!='-'" data-toggle="tooltip" data-html="true" data-original-title="{{ABL.CW_LW_PERCENT}}" class="fas fa-triangle fa-sm" ng-class="{'text-light-green':ABL.CW_LW_PERCENT>0,'text-red rotate-180':ABL.CW_LW_PERCENT<0}"></i>
+                                </td>
+                                <td class="text-nowrap text-right"> 
+                                    <span ng-bind-html="CURRENCY_SYMBOL"></span> {{ABL.LY_Amt | number :0}}
+                                    <i ng-show="ABL.CW_LY_PERCENT!='-'" data-toggle="tooltip" data-html="true" data-original-title="{{ABL.CW_LY_PERCENT}}" ng-class="{'text-light-green':ABL.CW_LY_PERCENT>0,'text-red rotate-180':ABL.CW_LY_PERCENT<0}" class="fas fa-triangle fa-sm "></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-body bg-white mb-2" ng-show="TAB_FLAG_WEEKLY_FLASH_P_L==2">
+
+                    <div>
+                        <fusioncharts id="GROSS_PROFIT_&_NET_REVENUE_ID"
+                                      chartid="GROSS_PROFIT_&_NET_REVENUE_CHARTID"
+                                      width="100%"
+                                      height="500"
+                                      dataEmptyMessage="No data  found."
+                                      dataFormat="json"
+                                      type="overlappedcolumn2d"
+                                      dataSource="{{GROSS_PROFIT_NET_REVENUE}}"></fusioncharts>
+
+                    </div>
+                    <!--<img src="../../E_Content/images/Gross_Profit_&_Net_Revenue.jpg" class="img-fluid border" />-->
+
+                    <div>
+                        <fusioncharts id="PAYROLL_ID"
+                                      chartid="PAYROLL_CHART_ID"
+                                      width="100%"
+                                      height="500"
+                                      type="mscolumn2d"
+                                      dataSource="{{PAYROLL}}"></fusioncharts>
+
+                    </div>
+                    <!--<img src="../../E_Content/images/Payroll.jpg" class="img-fluid border my-2" />-->
+                </div>
+
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="box-shadow">
+                    <div class="card-header"><h5 class="card-title">Operation Cost</h5></div>
+                    <div class="card-body text-center">
+                        <!--<img src="../../E_Content/images/Operating_Cost.jpg" class="img-fluid" style="max-height:350px;" />-->
+                        <fusioncharts id="OPERATING_COST_ID"
+                                      chartid="OPERATING_COST_CHARTID"
+                                      width="100%"
+                                      height="500"
+                                      type="doughnut2d"
+                                      dataSource="{{OPERATION_COST}}"></fusioncharts>
+
+
+                    </div>
+                </div>
+                <div class="col-md-12 box-shadow mt-2">
+                    <div class="card-header"><h5 class="card-title">Weekly Voids & Comps </h5></div>
+                    <div class="table-responsive">
+                        <table class="table table-hover compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>Wk ({{RevenueAnalyticsSearch.START_DATE | date}}) - ({{RevenueAnalyticsSearch.END_DATE | date}})</th>
+                                    <th class="text-right">Current Week</th>
+                                    <th class="text-right">Last Week</th>
+                                    <th class="text-right">Last Year</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-nowrap">Voids</td>
+                                    <td class="text-nowrap text-right">&pound; 81,262</td>
+                                    <td class="text-nowrap text-right">&pound; 80,416</td>
+                                    <td class="text-nowrap text-right">&pound; 60,435</td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td class="text-nowrap">Comps</td>
+                                    <td class="text-nowrap text-right">&pound; 52,262</td>
+                                    <td class="text-nowrap text-right">&pound; 68,416</td>
+                                    <td class="text-nowrap text-right">&pound; 25,435</td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td class="text-nowrap">Reservations</td>
+                                    <td class="text-nowrap text-right"> 15</td>
+                                    <td class="text-nowrap text-right">25</td>
+                                    <td class="text-nowrap text-right">18</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

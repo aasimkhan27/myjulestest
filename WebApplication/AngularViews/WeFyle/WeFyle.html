@@ -1,0 +1,154 @@
+﻿
+<div class="card-header text-bold">
+    <div class="card-tools">
+        <ul class="nav nav-pills ml-auto">
+            <li class="nav-item">
+                <a class="btn btn-sm btn-wenodo" href="#!PU" data-toggle="tooltip" data-html="true" data-original-title="Upload File"><i class="far fa-upload"></i></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Title </label>
+                <input type="text" class="form-control form-control-sm" placeholder="Enter Title" ng-model="PAYROLL_FILTER.TITLE" />
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Entity </label>
+                <select class="custom-select custom-select-sm text-sm"
+                        ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                        ng-model="PAYROLL_FILTER.ENTITY_ID"
+                        ng-change="GET_BRANCH_LIST(PAYROLL_FILTER.ENTITY_ID)">
+                    <option value="">-Select Entity-</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Branch</label>
+                <select name="BRANCH" class="custom-select custom-select-sm text-sm"
+                        ng-options="BRL.BRANCH_ID as BRL.BRANCH_NAME for BRL in BRANCH_LIST"
+                        ng-model="PAYROLL_FILTER.BRANCH_ID">
+                    <option value="">-Select Branch-</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Month</label>
+                <select class="custom-select custom-select-sm text-sm" ng-model="PAYROLL_FILTER.MONTH_ID">
+                    <option value="">-Select Month-</option>
+                    <option value="1">JANUARY</option>
+                    <option value="2">FEBRUARY</option>
+                    <option value="3">MARCH</option>
+                    <option value="4">APRIL</option>
+                    <option value="5">MAY</option>
+                    <option value="6">JUNE</option>
+                    <option value="7">JULY</option>
+                    <option value="8">AUGUST</option>
+                    <option value="9">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Type </label>
+                <select class="custom-select custom-select-sm text-sm"
+                         ng-options="UT.ID as UT.TYPE for UT in UPLOAD_TYPES"
+                        ng-model="PAYROLL_FILTER.UPLOAD_TYPE_IDS"  >
+                    <option value="">-Select Type-</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Status </label>
+                <select class="custom-select custom-select-sm text-sm"
+                        ng-model="PAYROLL_FILTER.STATUS_IDS">
+                    <option value="">-Select Status-</option>
+                    <option value="0">Pending Approval</option>
+                    <option value="1">Approved</option>
+                    <option value="2">Rejected</option>
+                    <option value="3">Approval - NA</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Filter by </label>
+                <select class="custom-select custom-select-sm text-sm"                      
+                        ng-model="PAYROLL_FILTER.FILTER_BY_IDS">
+                    <option value="">-Select Filter-</option>
+                    <option value="1">Uploaded By Me</option>
+                    <option value="2">Shared With Me</option>
+                    <option value="3">For Approval/Approved</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">&nbsp;</label>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-wenodo" ng-click="GET_WEFILE_UPLOADS(1)">Search</button>
+                    <button class="btn btn-sm btn-w-default" ng-click="Reset_Filter()"> Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto">
+            <table class="table table-striped" ng-show="PAYROLL_LIST.length>0">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th class="mw-200">Title</th>
+                        <th class="text-nowrap">Entity | Branch</th>
+                        <th class="text-nowrap">Uploaded By</th>
+                        <th>Type</th>
+                        <th>Month</th>
+                        <th class="text-nowrap">Created Date</th>
+                        <th>Approver</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="10" align="center" ng-show="GetData">
+                            <a class="btn btn-secondary text-white" ng-click="LAZY_GET_WEFILE_UPLOADS()">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="payroll in PAYROLL_LIST">
+                    <tr>
+                        <td>{{payroll.TITLE}}</td>
+                        <td>{{payroll.ENTITY_NAME}} | {{payroll.BRANCH_NAME}}</td>
+                        <td>
+                            {{payroll.UPLOADED_BY_USER_NAME}}
+                            <span class="d-block text-xs">{{payroll.UPLOADED_BY_USER_EMAIL}}</span>
+                        </td>
+                        <td>{{payroll.UPLOAD_TYPE}}</td>
+                        <td>{{GetMonthName(payroll.MONTH)}}</td>
+                        <td class="text-nowrap"><i class="far fa-calendar-alt text-blue"></i> {{payroll.CREATED_DATE | date}} </td>
+                        <td>
+                            {{payroll.APPROVER_USER_NAME}}
+                            <span class="d-block text-xs">{{payroll.APPROVER_USER_EMAIL}}</span>
+                        </td>
+                        <td><span class="badge bg-light-green">{{payroll.STATUS_NAME}}</span></td>
+                        <td><a ng-click="RedirectToDetails(payroll.TABLE_ID)" class="cursor-pointer"> <i class="far fa-eye text-blue" title="View Details"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

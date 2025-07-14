@@ -1,0 +1,654 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="RestaurantEnterprise">
+<head>
+    <title>Restaurant Application | Explore...</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://i2.wp.com/wenodo.com/wp-content/uploads/2020/10/logo-main-e1602233242613.png?fit=32%2C32&ssl=1" sizes="32x32" />
+    <link rel="icon" href="https://i2.wp.com/wenodo.com/wp-content/uploads/2020/10/logo-main-e1602233242613.png?fit=32%2C32&ssl=1" sizes="192x192" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <script type="text/javascript">
+        var AppVersion = @System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString();
+        window.fwSettings = {
+            'widget_id': 80000008565
+        };
+        !function () { if ("function" != typeof window.FreshworksWidget) { var n = function () { n.q.push(arguments) }; n.q = [], window.FreshworksWidget = n } }()
+        FreshworksWidget('disable', 'ticketForm', ['email']);
+
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) {
+                    //alert(c.substring(nameEQ.length, c.length));
+                    return c.substring(nameEQ.length, c.length);
+                }
+            }
+            return null;
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @Styles.Render("~/E_Content/css/PI_Main")
+    @Scripts.Render("~/E_Content/Scripts/PI_Main")
+    @Scripts.Render("~/E_Scripts/Common")
+    <script src="~/AngularControllers/CommonMethod.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+    <script type='text/javascript' src="~/E_Scripts/FreshDesk/80000008565.js" async defer></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="keywords" content="">
+    <meta name="author" content="Wenodo HR">
+    <title>Wenodo HR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="~/E_Content/CustomCss/HR/Vendors/fontawesome-pro-6.5.1-web/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="~/E_Scripts/Select2angularjs/select2.css" rel="stylesheet" />
+    <link href="~/E_Content/CustomCss/HR/Vendors/fontawesome-pro-6.5.1-web/css/light.css" rel="stylesheet" />
+    <link href="~/E_Content/CustomCss/HR/Vendors/fontawesome-pro-6.5.1-web/css/regular.css" rel="stylesheet" />
+    <link href="~/E_Content/CustomCss/HR/Vendors/fontawesome-pro-6.5.1-web/css/solid.css" rel="stylesheet" />
+    <link href="~/E_Content/CustomCss/HR/Vendors/fontawesome-pro-6.5.1-web/css/duotone.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/E_Content/CustomCss/HR/Vendors/bootstrap/bootstrap.css?v=?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()" />@*// Header impact notification part*@
+    <link href="~/E_Scripts/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
+    <link href="~/E_Scripts/bootstrap-datepicker-1.6.4-dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
+    <!-- App css-->
+    <link rel="stylesheet" type="text/css" href="~/E_Content/CustomCss/HR/hr-style.css?v=2" />
+    <!-- Responsive css-->
+    <link rel="stylesheet" type="text/css" href="~/E_Content/CustomCss/HR/responsive.css">
+    <link href="~/E_Content/CustomCss/HR/Vendors/Countries/intltelinput.min.css" rel="stylesheet" />
+    <style type="text/css">
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            filter: alpha(opacity=70);
+            -moz-opacity: 0.7;
+            -khtml-opacity: 0.7;
+            opacity: 0.7;
+            z-index: 100;
+            display: none;
+        }
+
+        .overlay_loadingNew {
+            background-image: url(/E_Content/images/loading.gif);
+            background-color: #666;
+            opacity: 0.4;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        .cnt223 {
+            margin: 100px auto;
+            position: relative;
+            z-index: 103;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .datepicker table tr td span.active {
+            background: #04c !important;
+            border-color: #04c !important;
+        }
+
+        .datepicker .datepicker-days tr td.active {
+            background: #05A6F0 !important;
+        }
+
+        #week-picker-wrapper .datepicker .datepicker-days tr td.active ~ td, #week-picker-wrapper .datepicker .datepicker-days tr td.active {
+            color: #fff;
+            background-color: #0888c3;
+            border-radius: 0;
+        }
+
+        #week-picker-wrapper .datepicker .datepicker-days tr:hover td, #week-picker-wrapper .datepicker table tr td.day:hover, #week-picker-wrapper .datepicker table tr td.focused {
+            color: #fff !important;
+            background: #0888c3 !important;
+            border-radius: 0 !important;
+        }
+
+        #week-filter-picker-wrapper .datepicker .datepicker-days tr td.active ~ td, #week-filter-picker-wrapperr .datepicker .datepicker-days tr td.active {
+            color: #fff;
+            background-color: #0888c3;
+            border-radius: 0;
+        }
+
+        #week-filter-picker-wrapper .datepicker .datepicker-days tr:hover td, #week-filter-picker-wrapper .datepicker table tr td.day:hover, #week-filter-picker-wrapper .datepicker table tr td.focused {
+            color: #fff !important;
+            background: #0888c3 !important;
+            border-radius: 0 !important;
+        }
+        /* EOS CALENDAR WEEK CSS*/
+        /* EOS TEMPLATE-->COPY WEEK CSS*/
+
+        #week-picker-copy-wrapper .datepicker .datepicker-days tr td.active ~ td, #week-picker-copy-wrapper .datepicker .datepicker-days tr td.active {
+            color: #fff;
+            background-color: #04c;
+            border-radius: 0;
+        }
+
+        #week-picker-copy-wrapper .datepicker .datepicker-days tr:hover td, #week-picker-copy-wrapper .datepicker table tr td.day:hover, #week-picker-copy-wrapper .datepicker table tr td.focused {
+            color: #000 !important;
+            background: #e5e2e3 !important;
+            border-radius: 0 !important;
+        }
+    </style>
+</head>
+<body ng-controller="MasterController" ng-init="AppVersion=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()" ng-cloak bn-document-click="handleClick($event)"
+      class="sidebar-mini layout-fixed layout-navbar-fixed sidebar-collapse">
+    <!-- loader starts-->
+    <div class="loader-wrapper" style="display:{{overlay_loading_HR_Loader}}!important"><div class="loader-index"> <span></span></div></div>
+    <!-- loader ends-->
+    <!-- tap on top starts-->
+    @*<div class="tap-top" data-bs-toggle="tooltip" data-bs-title="Scroll to Top"><i class="fa-regular fa-arrow-up"></i></div>*@
+    <!-- tap on tap ends-->
+    <!-- page-wrapper Start-->
+    <div class="page-wrapper compact-wrapper" id="pageWrapper" ng-controller="CashupAppIndexController">
+        <!-- Page Header Start-->
+
+        <div class="page-header">
+            <div class="header-wrapper row">
+                <div class="header-logo-wrapper col-auto p-0">
+                    <div class="toggle-sidebar"><i class="fa-regular fa-bars-sort status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
+                    <div class="logo-wrapper">
+                        <a><img class="logo-wrap border-right pe-3" src="~/E_Content/images/HR/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <header>
+                    <nav id='cssmenu' ng-if="HIDE_HEADER_DETAIL">
+                        <div id="head-mobile"></div>
+                        <div class="button"></div>
+                        <ul>
+                            <li class="active"><a href="#!/Cashup_Dashboard"><i class="fa-solid fa-house fa-lg"></i></a></li>
+                            <li>
+                                <a>Cashup</a>
+                                <ul>
+                                    <li><a href='#!/Cashup_Register'>Cashup Register</a></li>
+                                    <li><a href='#!/CashUpApp_Cashup_Entry'>Cashup Entry</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a>Data Upload</a>
+                                <ul>
+                                    <li><a href='#!/CashUpApp_ePOS_upload'>EPOS Entry</a></li>
+                                    <li><a href='#!/CashUpApp_covers_upload'>Covers Entry</a></li>
+                                    <li><a href='#!/CashUpApp_petty_cash_upload'>Petty Cash Entry</a></li>
+                                    <li><a href='#!/CashUpApp_float_upload'>Float Entry</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a>Receivables</a>
+                                <ul>
+                                    <li><a href='#!/CashUpApp_Account_Credit_Management'>Account Credit Management</a></li>
+                                    <li><a href='#!/CashUpApp_Voucher_Management'>Voucher Management</a></li>
+                                    <li><a href='#!/CashUpApp_Deposit_Management'>Deposit Management</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#!/CashUpApp_Cash_Banking">Cash Banking</a></li>
+                            <li><a href="#!/CashUpApp_Reports_Daily_Cashup">Reports</a></li>
+                        </ul>
+                    </nav>
+                </header>
+
+                <div class="nav-right col-xxl-2 col-xl-2 col-md-2 col-2 p-0 ms-auto desktop-view">
+                    <ul class="nav-menus">
+                        <li ng-if="false" onclick="Gyde.toggle()">
+                            <i class="fa-light fa-paper-plane-top fa-lg"></i>
+                        </li>
+
+                        <li><a class="d-block" href="#!/Organisation" ng-if="HIDE_HEADER_DETAIL"><i class="fa-light fa-gear fa-lg" data-bs-toggle="tooltip" data-bs-title="Settings"></i></a></li>
+                        <li class="onhover-dropdown px-4" ng-if="HIDE_HEADER_DETAIL">
+                            <i class="fa-light fa-grid-2 fa-lg" data-bs-toggle="tooltip" data-bs-title="App Suite"></i>
+                            @*<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#6B7C94" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid status_toggle middle sidebar-toggle"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>*@
+                            <div class="onhover-show-div notification-dropdown">
+                                <div class="card mb-0">
+                                    <div class="card-body scrollbar-wrapper" style="max-height:80vh">
+                                        <div class="at-grid bg-white" data-column="4">
+                                            <div class="at-column app-suit-inside cursor-pointer {{Module.CLASS_NAME}}"
+                                                 ng-repeat="Module in ModuleList" ng-click="ModuleRedirection(Module)"
+                                                 ng-if="Module.IS_VISIBLE_IN_APP_SUITE">
+                                                <div class="at-user">
+                                                    <div class="at-user__avatar inside_icons">
+                                                        <img src="../E_Content/images/Appsuite_Icons/{{Module.MODULE_ICON | trim }}" />
+                                                    </div>
+                                                    <div class="text-white font-8">{{Module.MODULE_NAME}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="../Main/MainIndex" class="btn btn-primary d-block btn-sm mt-2">Back to App Suite</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <i class="fa-light fa-circle-question fa-lg" data-bs-toggle="tooltip" data-bs-title="Walk-through"></i>
+                        </li>
+
+                        <li class="pe-0 py-0 me-2 border-left" ng-click="OPEN_SIDE_BAR('entity_div_id')" style="max-width: 180px; min-width: 150px;">
+                            <i class="fa-light fa-chevron-down float-end mt-1 ms-3" ng-if="HIDE_HEADER_DETAIL"></i>
+                            <div class="media profile-media" ng-if="HIDE_HEADER_DETAIL">
+                                <div class="media-body">
+                                    <span class="truncate">{{SELECTED_ENTITY_NAME}}</span>
+                                    @*<span class="text-grey f-12">Need to discuss</span>*@
+                                </div>
+                            </div>
+
+                        </li>
+                        <li class="profile-nav onhover-dropdown pe-0 py-0 me-2 border-left" ng-if="HIDE_HEADER_DETAIL">
+                            <img class="rounded-circle" alt="" src="../dist/img/user1-128x128.jpg" style="width:35px; height:35px" />
+                            <ul class="profile-dropdown onhover-show-div">
+                                <li><a href="../AccountSetting/index#!/BasicInfo"><i data-feather="settings"></i><span> User Settings</span></a></li>
+                                <li><a ng-click="INS_LOGOUT_LOG(1)"><i data-feather="log-in"> </i><span>Log Out</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-right col-xxl-2 col-xl-2 col-md-2 col-2 right-header p-0 ms-auto mobile-view" ng-if="HIDE_HEADER_DETAIL">
+                    <ul class="nav-menus">
+                        <li class="profile-nav onhover-dropdown pe-0 py-0 me-2 border-left">
+                            <img class="rounded-circle" alt="" src="../E_Content/images/default-user.png" style="width:35px; height:35px" />
+                            <ul class="profile-dropdown onhover-show-div">
+                                <li class="media profile-media">
+                                    <div class="media-body">
+                                        <span class="truncate">{{User_Name}}</span>
+                                        <span class="text-grey f-12">{{SELECTED_ENTITY_NAME}}</span>
+                                    </div>
+                                </li>
+                                <li><a class="d-block" href="#!/Organisation"><span><i class="fa-light fa-gear fa-lg"></i> User Settings</span></a></li>
+                                <li class="text-nowrap"><a><span><i class="fa-light fa-circle-question fa-lg"></i> Walk-through</span></a></li>
+                                <li><a class="txt-dark" ng-click="INS_LOGOUT_LOG(1)"><span><i class="fa-thin fa-arrow-right-from-bracket"></i> Log out</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- Page Header Ends -->
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <div class="sidebar-wrapper" sidebar-layout="stroke-svg" ng-show="DISPLAY_FLAG">
+                <div class="logo-wrapper">
+                    <div class="back-btn"><i class="fa fa-angle-left"></i></div>
+                    <div class="toggle-sidebar"></div>
+                </div>
+                <nav class="sidebar-main">
+                    <div class="left-arrow" id="left-arrow"><i class="fa-light fa-angle-left"></i></div>
+                    <div id="sidebar-menu">
+                        <ul class="sidebar-links" id="simple-bar">
+                            <li class="back-btn">
+                                <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
+                            </li>
+                            <li class="sidebar-list">
+                                <a class="sidebar-link" href="#!/Cashup_Organisation"><i class="fa-light fa-lg fa-building txt-primary"></i> <span>Organisation</span></a>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <!-- <label class="badge badge-light-primary">8</label> -->
+                                <a class="sidebar-link sidebar-title"><i class="fa-light fa-lg fa-people-line txt-primary"></i> <span>HR</span></a>
+                                <ul class="sidebar-submenu">
+                                    <li><a href="#!/General" ng-class="{'active':TAB_ID==6}"><i class="fa-light fa-cog"></i> General</a></li>
+                                    <li><a href="#!/Access" ng-class="{'active':TAB_ID==7}"><i class="fa-light fa-key"></i> Access</a></li>
+                                    <li><a href="#!/Users" ng-class="{'active':TAB_ID==8}"><i class="fa-light fa-user-group"></i> Users</a></li>
+                                    <li><a href="#!/Work_Pattern" ng-class="{'active':TAB_ID==9}"><i class="fa-light fa-code-branch"></i> Work Patterns</a></li>
+                                    <li><a href="#!/Schedule_Admin" ng-class="{'active':TAB_ID==10}"><i class="fa-light fa-calendar"></i> Schedule</a></li>
+                                    <li><a href="#!/Punch_Clock" ng-class="{'active':TAB_ID==11}"><i class="fa-light fa-stopwatch"></i> Punch Clock</a></li>
+                                    <li><a href="#!/Absence" ng-class="{'active':TAB_ID==12}"><i class="fa-light fa-user-xmark"></i> Absence</a></li>
+                                    <li><a href="#!/Payroll_Admin" ng-class="{'active':TAB_ID==13}"><i class="fa-light fa-hand-holding-circle-dollar"></i> Payroll</a></li>
+                                    <li><a href="#!/Reporting_Admin" ng-class="{'active':TAB_ID==15}"><i class="fa-light fa-file-chart-column"></i> Reporting</a></li>
+                                    <li><a href="#!/Integration" ng-class="{'active':TAB_ID==14}"><i class="fa-light fa-link-horizontal"></i> Integration</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title " data-bs-original-title="" title="">
+                                    <i class="fa-light fa-lg fa-wallet txt-primary"></i> <span>Cashup</span>
+                                    <span class="percent-circle me-3"><span>100%</span></span>
+                                    <div class="according-menu"><i class="fa fa-angle-down"></i></div>
+                                </a>
+                                <ul class="sidebar-submenu" style="">
+                                    <li data-bs-toggle="modal" data-bs-target="#perform-cashup"><a href="#!/Cashup_General" ng-class="{'active':TAB_ID==15}" data-bs-original-title="" title=""><i class="fa-light fa-building"></i> General</a></li>
+                                    <li><a href="#!/Cashup_User" ng-class="{'active':TAB_ID==16}" data-bs-original-title="" title=""><i class="fa-light fa-key"></i> Users</a></li>
+                                    <li><a href="#!/Cashup_Setup" ng-class="{'active':TAB_ID==17}" data-bs-original-title="" title=""><i class="fa-light fa-hand-holding-circle-dollar"></i> Site Setup</a></li>
+                                    <li><a href="#!/CashUpApp_Cashup_Upload" ng-class="{'active':TAB_ID==18}" data-bs-original-title="" title=""><i class="fa-light fa-person-arrow-up-from-line"></i> Data Upload</a></li>
+                                    <li><a href="#!/Cashup_Integration" ng-class="{'active':TAB_ID==20}" data-bs-original-title="" title=""><i class="fa-light fa-database"></i> Integration</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+                </nav>
+            </div>
+            <div class="page-body">
+                @RenderBody()
+            </div>
+            <footer class="footer footer-fix">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 footer-copyright">
+                            <p class="mb-0">Powered by <img class="img-fluid for-light" src="~/E_Content/images/HR/logo.png" alt="" style="max-width: 140px;"></p>
+                        </div>
+                        <div class="col-md-6 footer-copyright text-end">
+                            <a href="https://www.wenodo.com/privacy-policy" target="_blank" class="mx-4">Privacy Policy</a>
+                            <a href="https://www.wenodo.com/contact-us" target="_blank">Contact</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div id="entity_div_id" class="filter-panel sidenav" style="width:0px;z-index:1500">
+        <div class="card-header">
+            <h5 class="headings my-2 w-100">
+                Entity
+                <a class="c-pointer float-end" ng-click="CLOSE_SIDE_BAR('entity_div_id')">
+                    <i class="fas fa-times"></i>
+                </a>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xxl-12 col-xl-12 col-ed-12">
+                    <input type="text" name="search" ng-model="ENTITY_SEARCH" class="mb-0" placeholder="Search for entity">
+                </div>
+
+                <div class="col-xxl-6 col-xl-6 col-ed-6 d-none">
+                    <button type="button" class="btn btn-outline w-100 text-start text-nowrap"><i class="fa-light fa-star float-start me-3 mt-1"></i> Starred</button>
+                </div>
+
+                <div class="col-xxl-6 col-xl-6 col-ed-6 d-none">
+                    <ul class="nav nav-pills mb-0">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations" data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-location-dot me-1"></i> All Locations
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">Location 01</li>
+                                <li class="DontHideOnClick">Location 02</li>
+                                <li class="DontHideOnClick">Location 03</li>
+                                <li class="DontHideOnClick">Location 04</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr />
+
+            <div class="row">
+                <div class="col-xxl-12 col-xl-12 col-ed-12 d-flex align-items-center my-2" ng-repeat="_entity in ENTITY_LIST | filter:{ENTITY_NAME:ENTITY_SEARCH}">
+                    <i class=" me-3" ng-class="{'fa-solid fa-star text-warning':_entity.DEFAULT_ENTITY==1,'fa-light fa-star text-grey':_entity.DEFAULT_ENTITY!=1}"></i>
+                    <img class="img-40 rounded-circle me-3" ng-show="_entity.LOGO_PATH==null" src="../E_Content/images/user2-160x160.jpg">
+                    <img class="img-40 rounded-circle me-3" ng-show="_entity.LOGO_PATH!=null" src="../uploads/{{_entity.LOGO_PATH}}">
+                    <span class="">{{_entity.ENTITY_NAME}}</span>
+                </div>
+            </div>
+
+            <div class="accordion" id="outlineaccordion" ng-if="false">
+                <div class="accordion-item1 border-bottom mb-0" ng-repeat="_entity in ENTITY_LIST | filter:{ENTITY_NAME:ENTITY_SEARCH}">
+                    <h2 class="accordion-header1" id="outlineaccordionentity">
+                        <button class="accordion-button bg-white" style="background-image:none!important"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#left-collapseentity"
+                                aria-expanded="true"
+                                aria-controls="left-collapseOne">
+                            {{_entity.ENTITY_NAME}}
+                        </button>
+                    </h2>
+                    <div class="accordion-collapse bg-white" id="left-collapseentity" aria-labelledby="outlineaccordionentity" data-bs-parent="#outlineaccordion">
+                        <div class="accordion-body listing-lh">
+                            <div class="row" ng-if="false">
+                                <div class="col-xxl-12 col-xl-12 col-ed-12 d-flex align-items-center my-2" ng-repeat="_branch in HUMAN_RESOURCE_BRANCH_LIST | filter:{'BRANCH_ID':_entity.BRANCH_ID}">
+                                    <i class="fa-light fa-star text-grey me-3"></i>
+                                    <img class="img-40 rounded-circle me-3" ng-show="_branch.LOGO_PATH==null" src="../E_Content/images/user2-160x160.jpg">
+                                    <img class="img-40 rounded-circle me-3" ng-show="_branch.LOGO_PATH!=null" src="{{_branch.LOGO_PATH}}">
+                                    <span class="">{{_branch.BRANCH_NAME}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer sidenav-footer-fixed d-none">
+            <button type="button" class="btn btn-wenodo" ng-click="CLOSE_PDF()">Close</button>
+        </div>
+    </div>
+
+
+    <div id="return-to-top"><i class="fa fa-arrow-up" aria-hidden="true"></i></div>
+
+    <script src="~/AngularControllers/RouteProvider.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+    <script src="~/AngularControllers/Angular_Directive.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+    <script src="~/AngularControllers/MasterCntrl.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+    <script src="~/AngularControllers/CashupApp/CashupAppIndexController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+  
+    @*<script src="~/AngularControllers/HumanResource/UserJourneyController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>*@
+
+    <script src="~/E_Scripts/angular-sanitize.min.js"></script>
+    <script src="~/E_Scripts/MomentTimePicker/moment-with-locales.min.js"></script>
+    <script src="~/E_Scripts/MomentTimePicker/angular-moment-picker.min.js"></script>
+    <script src="~/E_Content/CustomCss/HR/Vendors/bootstrap/bootstrap.bundle.min.js"></script> @*/// tab header click display and show*@
+    <script src="~/E_Content/CustomCss/HR/Vendors/scrollbar/simplebar.js"></script> @*// side bar UI effect*@
+    <script src="~/E_Content/CustomCss/HR/Vendors/scrollbar/custom.js"></script>@*// side bar UI effect*@
+    <script src="~/E_Content/CustomCss/HR/Vendors/apex-chart/apex-chart.js"></script>
+    <script src="~/E_Content/CustomCss/HR/Vendors/bootstrap/bootstrap-notify.min.js"></script>@*//loading inner data alert box*@
+    <script src="~/E_Content/CustomCss/HR/Vendors/wow/wow.min.js"></script>@*// animation use no effect*@
+
+    <script src="~/E_Content/CustomCss/HR/Vendors/tooltip-init.js"></script>
+    <script src="~/E_Content/CustomCss/HR/Vendors/script.js"></script>@*Loading impact*@
+    <script src="~/E_Content/CustomCss/HR/Vendors/height-equal.js"></script>
+    <script src="~/E_Scripts/bootstrap-datepicker-1.6.4-dist/js/bootstrap-datepicker.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+    <script src="~/E_Scripts/daterangepicker-master/daterangepicker.js"></script>
+    <script type="text/javascript" src="~/E_Scripts/ExcelPdfJS/html2canvas.min.js"></script>
+    <script src="~/E_Scripts/ExcelPdfJS/jspdf.min.js"></script>
+    <script src="~/E_Scripts/Calendar/ui-bootstrap-tpls.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
+    <script src="~/E_Content/CustomCss/HR/Vendors/sidebar-menu.js"></script>
+    <script src="~/E_Content/CustomCss/HR/Vendors/Countries/telephone-input.js"></script>
+    <script src="~/E_Content/CustomCss/HR/Vendors/Countries/intltelinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="~/E_Scripts/Select2angularjs/select2.js"></script>
+    <script src="~/E_Scripts/Select2angularjs/select2_locale_sv.js"></script>
+    <script src="~/E_Scripts/Select2angularjs/sc-select2.directive.js"></script>
+
+
+    <!-- Plugin used-->
+    <!-- start Gyde JS code-->
+
+    <script>
+
+        var gy345cldi = "3ecc8ef1-c184-42b6-a630-685336d60ab5",
+            gyIconDisplay = false,
+            gyIconColor = "",
+            gy345theme = "classic";
+        !(function (s, t, a) {
+            (s1 = s.createElement("script")),
+                (s1.src = "https://widget.gyde.ai/webintv2/GydeTrack.js"),
+                (s1.async = !0), (e = s.getElementsByTagName(t)[0]), e.appendChild(s1),
+                (s2 = s.createElement("script")),
+                (s2.src = "https://widget.gyde.ai/webintv2/webWidget.js"),
+                (s2.async = !0), (e = s.getElementsByTagName(t)[0]), e.appendChild(s2)
+        })(document, "head", window)</script><!-- end Gyde JS code-->
+
+
+    <script type="text/javascript">
+        function FRESHDESK_CALL() {
+
+            let frameElement = document.getElementById("launcher-frame");
+            let freshworks_container = document.getElementById("freshworks-container");
+            freshworks_container.style.display = "block";
+            frameElement.style.display = "none";
+            frameElement.style.right = "22px";
+            frameElement.style.top = "9px";
+            frameElement.style.border = "none";
+            frameElement.style.position = "fixed";
+            frameElement.style.minWidth = "48px";
+            frameElement.style.maxWidth = "48px";
+            frameElement.style.height = "48px";
+            frameElement.style.zIndex = "1040";
+            frameElement.style.visibility = "visible";
+            //let elements = document.querySelectorAll('.frame-root');
+            let link = document.createElement("link");
+            link.href = "../E_Content/CustomCss/widget-style.css?v=1"+@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString();;
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            $("#launcher-frame").contents().find("head")[0].appendChild(link);
+            //$("#freshworks-frame-wrapper").contents().find("head")[0].appendChild(link);
+            FreshworksWidget('identify', 'ticketForm', {
+                //name: 'Rachel',
+                email: getCookie("FRESHDSK_EMAIL"),
+            });
+        }
+        $(document).ready(function () {
+            setTimeout(FRESHDESK_CALL, 5000);
+        });
+
+    </script>
+
+
+    <script>
+        $(".sidebar-title").append(
+            '<div class="according-menu"><i class="fa fa-angle-right"></i></div>'
+        );
+        $(".sidebar-title").click(function () {
+            $(".sidebar-title")
+                .removeClass("active")
+                .find("div")
+                .replaceWith(
+                    '<div class="according-menu"><i class="fa fa-angle-right"></i></div>'
+                );
+            $(".sidebar-submenu, .menu-content").slideUp("normal");
+            $(".menu-content").slideUp("normal");
+            if ($(this).next().is(":hidden") == true) {
+                $(this).addClass("active");
+                $(this)
+                    .find("div")
+                    .replaceWith(
+                        '<div class="according-menu"><i class="fa fa-angle-down"></i></div>'
+                    );
+                $(this).next().slideDown("normal");
+            } else {
+                $(this)
+                    .find("div")
+                    .replaceWith(
+                        '<div class="according-menu"><i class="fa fa-angle-right"></i></div>'
+                    );
+            }
+        });
+
+        $(".sidebar-submenu, .menu-content").hide();
+        $(".submenu-title").append(
+            '<div class="according-menu"><i class="fa fa-angle-right"></i></div>'
+        );
+        $(".submenu-title").click(function () {
+            $(".submenu-title")
+                .removeClass("active")
+                .find("div")
+                .replaceWith(
+                    '<div class="according-menu"><i class="fa fa-angle-right"></i></div>'
+                );
+            $(".submenu-content").slideUp("normal");
+            if ($(this).next().is(":hidden") == true) {
+                $(this).addClass("active");
+                $(this)
+                    .find("div")
+                    .replaceWith(
+                        '<div class="according-menu"><i class="fa fa-angle-down"></i></div>'
+                    );
+                $(this).next().slideDown("normal");
+            } else {
+                $(this)
+                    .find("div")
+                    .replaceWith(
+                        '<div class="according-menu"><i class="fa fa-angle-right"></i></div>'
+                    );
+            }
+        });
+        $(".submenu-content").hide();
+
+    </script>
+
+    <script type="text/javascript">
+        (function ($) {
+            $.fn.menumaker = function (options) {
+                var cssmenu = $(this), settings = $.extend({
+                    format: "dropdown",
+                    sticky: false
+                }, options);
+                return this.each(function () {
+                    $(this).find(".button").on('click', function () {
+                        $(this).toggleClass('menu-opened');
+                        var mainmenu = $(this).next('ul');
+                        if (mainmenu.hasClass('open')) {
+                            mainmenu.slideToggle().removeClass('open');
+                        }
+                        else {
+                            mainmenu.slideToggle().addClass('open');
+                            if (settings.format === "dropdown") {
+                                mainmenu.find('ul').show();
+                            }
+                        }
+                    });
+                    cssmenu.find('li ul').parent().addClass('has-sub');
+                    multiTg = function () {
+                        cssmenu.find(".has-sub").prepend('<span class="submenu-button"></span>');
+                        cssmenu.find('.submenu-button').on('click', function () {
+                            $(this).toggleClass('submenu-opened');
+                            if ($(this).siblings('ul').hasClass('open')) {
+                                $(this).siblings('ul').removeClass('open').slideToggle();
+                            }
+                            else {
+                                $(this).siblings('ul').addClass('open').slideToggle();
+                            }
+                        });
+                    };
+                    if (settings.format === 'multitoggle') multiTg();
+                    else cssmenu.addClass('dropdown');
+                    if (settings.sticky === true) cssmenu.css('position', 'fixed');
+                    resizeFix = function () {
+                        var mediasize = 1000;
+                        if ($(window).width() > mediasize) {
+                            cssmenu.find('ul').show();
+                        }
+                        if ($(window).width() <= mediasize) {
+                            cssmenu.find('ul').hide().removeClass('open');
+                        }
+                    };
+                    resizeFix();
+                    return $(window).on('resize', resizeFix);
+                });
+            };
+        })(jQuery);
+
+        (function ($) {
+            $(document).ready(function () {
+                $("#cssmenu").menumaker({
+                    format: "multitoggle"
+                });
+            });
+        })(jQuery);
+    </script>
+</body>
+</html>

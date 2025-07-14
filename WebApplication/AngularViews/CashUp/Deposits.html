@@ -1,0 +1,511 @@
+﻿<style>
+    h5 {
+        font-size: 12px;
+    }
+    .dropdown-menu li.active {
+        background-color: #e7e7e7;
+    }
+
+    .dropdown-menu li {
+        padding: 6px 10px;
+        border-bottom: 1px solid #e9ecef;
+        cursor: pointer;
+    }
+</style>
+<!--<div class="animated fadeInLeft" id="deposits" role="tabpanel" ng-show="CASHUP.STEP_NO==8" aria-labelledby="custom-content-below-settings-tab">-->
+<div class="overlay_loadingNew" style="display:{{overlay_loadingNew}}!important"></div>
+<div id="LOADER_ID">
+    <div class="card-header">
+        <ul class="nav nav-pills float-left">
+            <li class="nav-item border radius-50">
+                <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Area: <span class="cash-up-header">{{CASHUP.AreaList[0].NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">CashUp Date: <span class="cash-up-header">{{CASHUP.CASHUP_DATE|date}}</span></span>
+            </li>
+        </ul>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item border radius-50">
+                    <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Received"})[0].SALES_AMT | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.DEPOSIT_TOTAL | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_DEPOSIT!=0}">Variance: <span class="cash-up-header">
+    <!--{{ CASHUP.VARIANCE_DEPOSIT=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Received"}).length>0?(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Received"})[0].SALES_AMT*1-CASHUP.DEPOSIT_TOTAL*1:CASHUP.DEPOSIT_TOTAL*-1) |number:2}}-->
+    {{ CASHUP.VARIANCE_DEPOSIT=(CASHUP.DEPOSIT_TOTAL- (CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Received"})[0].SALES_AMT ) |number:2}}
+
+</span></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-header">
+        <h5 class="card-title">Deposit Received</h5>
+    </div>
+    <div class="card-body">
+        <!--<div class="row">
+        <h5 class="card-title">Deposit Received</h5>
+    </div>-->
+        <div class="row">
+            <div class="col-md-1">
+                <label for="check">Invoice # <span class="text-danger">*</span></label>
+            </div>
+
+            <div class="col-md-2">
+                <label for="deposit">Deposit Reference   <span class="text-danger">*</span><i class="fas fa-info-circle" ng-show="false"></i></label>
+            </div>
+            <div class="col-md-1">
+                <label for="value"> Amount  <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-md-1">
+                <label for="date">Date</label>
+            </div>
+
+            <div class="col-md-2">
+                <label>Payment Method  <span class="text-danger">*</span></label>
+            </div>
+
+            <div class="col-md-2">
+                <label for="nameofpayee">Name Of Payee</label>
+            </div>
+
+            <div class="col-md-1">
+                <label for="note">Note</label>
+            </div>
+            <div class="col-md-1">
+                <label for="dinner">Uploads</label>
+            </div>
+            <div class="col-md-1">
+               
+            </div>
+        </div>
+        <div class="row" ng-repeat="VISS in VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:3}| filter:{IS_DELETED:0}" on-finish-render="ngRepeatFinished" ng-init="ValidControls(VISS);initdepositList(VISS);">
+            <div class="col-md-1">
+                <div class="form-group">
+                    <input class="form-control" type="text" ng-model="VISS.CHECK_NO" ng-class="{'error':!VISS.CHECK_NO_VALID}" ng-disabled="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input class="form-control" type="text" ng-model="VISS.CODE" ng-class="{'error':!VISS.CODE_VALID}" ng-disabled="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <!--<input class="form-control" type="text" only-digits ng-model="VISS.VALUE" ng-blur="CheckDecimal(VISS)">-->
+                    <input type="text" class="form-control" only-digits ng-model="VISS.VALUE" ng-blur="CheckDecimal(VISS)" ng-class="{'error':!VISS.VALUE_VALID}" ng-disabled="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true" />
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest" ng-init="dateinputOpenDate();">
+                        <input class="form-control bg-white dateinputOpenDate" name="datecontrol{{$index}}" placeholder="Select Date" type="text"
+                               readonly="readonly" ng-model="VISS.VALIDITY_DATE" ng-value="VISS.VALIDITY_DATE |date" ng-disabled="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true" />
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <!--<span ng-show="false"> {{VISS.PAYMENT_METHOD_ID!=null?VISS.PAYMENT_METHOD=(PaymentList | filter:{PAYMENT_METHOD_ID:VISS.PAYMENT_METHOD_ID})[0]:'' }}</span>
+            <select class="custom-select text-xs" style="width: 100%;" ng-options="Payment.METHOD_NAME for Payment in PaymentList" ng-model="VISS.PAYMENT_METHOD" ng-disabled="VISS.RESTRICT_DELETE==1">
+                <option value="">Select</option>
+            </select>-->
+                    <select class="custom-select text-xs" style="width: 100%;" ng-options="Payment.PAYMENT_METHOD_ID as Payment.METHOD_NAME for Payment in PAYMENT_METHODS" ng-model="VISS.PAYMENT_METHOD_ID" ng-change="SetPayment(VISS,VISS.PAYMENT_METHOD_ID)" ng-disabled="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true" ng-class="{'error':!VISS.PAYMENT_METHOD_ID_VALID}">
+                        <option value="">Select</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input class="form-control" type="text" ng-model="VISS.CUSTOMER_NAME" ng-disabled="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true">
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="d-flex">
+                    <input type="text" class="form-control" ng-model="VISS.NOTE" ng-disabled="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true">
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <span ng-hide="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true">
+                        <label for="DEPFILE{{$index}}" class="btn btn-upload text-nowrap" ng-show="VISS.UploadedFiles==null || VISS.UploadedFiles.length==0">
+                            <i class="fal fa-upload text-white"></i>
+                        </label>
+                    </span>
+                    <span class="hidden-input">
+                        <input id="DEPFILE{{$index}}" ng-files="getTheFilesToUploadDeposits($files, 'DepositFile', 5,VISS,47,$index)" name="file" type="file" />
+                    </span>
+                    <span class="d-block" ng-repeat="upls in VISS.UploadedFiles">
+                        <br ng-if="$index!=0" />
+                        <span ng-if="$index!=0" />
+                        <!--<a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.ORIGINAL_FILE_NAME}}">  <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>-->
+
+                        <a class="font-11" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                            <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                            <span ng-if="upls.ORIGINAL_FILE_NAME.length > 10">...</span>
+                        </a>
+                        <span> <i ng-hide="VISS.RESTRICT_DELETE==1 || VISS.IS_CANCELLED==true" ng-click="DELETE_UPLOAD_DEPOSIT_ALL(VISS,upls,$index)" class="fa fa-times text-danger fa-sm mt-2 float-right cursor-pointer" ></i> </span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="d-flex">
+                    <a class="add_dreceived_button mt-2 cursor-pointer" ng-click="DepositRecievedLine()" click-once ng-show="$last" data-toggle="tooltip" data-html="true" data-original-title="Add More">
+                        <i class="fas fa-plus-circle ml-2"></i>
+                    </a>
+                    <a class="add_dreceived_button mt-2 cursor-pointer" ng-hide="VISS.RESTRICT_DELETE==1||VISS.IS_CANCELLED==true" ng-click="DeleteLine((VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:3}), $index,false,3,VISS)" data-toggle="tooltip" data-html="true" data-original-title="Remove">
+                        <i class="fas fa-minus-circle ml-2"></i>
+                    </a>
+                    <i class="fa fa-info-circle cursor-pointer ml-2 text-warning mt-2"
+                       ng-show="VISS.RESTRICT_DELETE==1"
+                       data-toggle="tooltip"
+                       data-html="true"
+                       data-placement="top"
+                       data-original-title="You have already redeemed the deposits on behalf of this record, if you want to change it or delete you need to first delete in deposits redeemed"></i>
+                    <i class="fa fa-info-circle cursor-pointer ml-2 text-warning mt-2"
+                       ng-show="VISS.IS_CANCELLED==true"
+                       data-toggle="tooltip"
+                       data-html="true"
+                       data-placement="top"
+                       data-original-title="This record has been cancelled by the Deposit team."></i>
+                </div>
+            </div>
+
+        </div>
+
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.DEPOSIT_TOTAL=((VoucherIssuedList| filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:3}| filter:{IS_DELETED:0}| filter:{IS_CANCELLED:false}) | total:'VALUE')| number:2 }}</h6>
+                </div>
+            </div>
+            <hr />
+
+            <div class="card-header">
+                <h5 class="card-title">Deposit Redeemed <button type="button" class="btn btn-wenodo btn-sm ml-2" data-toggle="modal" ng-click="SelectedRedeemedPopup();">Redeem Deposit </button></h5>  <!--data-target="#Deposit_Receipts"-->
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item">
+
+                        </li>
+                        <li class="nav-item border radius-50">
+                            <!--<h5>ePOS: <span class="app-text">0.00</span></h5> Deposit Received-->
+                            <!--<span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT | number:2}}</span></span>-->
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{((CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT) || (CASHUP.EPOS_DATA | filter:{"MEDIA":"DEP Redeem"})[0].SALES_AMT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.DEPOSIT_REDEEMED_TOTAL | number:2}}</span></span>
+                            <!--<h5>Actual: <span class="app-text">{{CASHUP.DEPOSIT_REDEEMED_TOTAL | number:2}}</span></h5>-->
+                        </li>
+                       
+                        <li class="nav-item border radius-50 ml-2">
+                            <sapn class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_DEPOSIT_REDEEMED!=0}">
+                                Variance: <span class="cash-up-header">
+                                    <!--{{ CASHUP.VARIANCE_DEPOSIT_REDEEMED=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"}).length>0?(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT*1-CASHUP.DEPOSIT_REDEEMED_TOTAL:0) |number:2}}-->
+                                    {{ CASHUP.VARIANCE_DEPOSIT_REDEEMED=( CASHUP.DEPOSIT_REDEEMED_TOTAL - (CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT) |number:2}}
+                                </span>
+                            </sapn>
+
+                            <!--<span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_DEPOSIT_REDEEMED!=0}">
+                        Variance:
+
+                        <span class="cash-up-header" ng-show="(CASHUP.EPOS_DATA | filter:{'MEDIA':'Deposit Redeemed'}).length>0?true:DFlag=false">{{ CASHUP.VARIANCE_DEPOSIT_REDEEMED=( ((CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT*1)-CASHUP.DEPOSIT_REDEEMED_TOTAL*1) |number:2}}</span>
+                        <span class="cash-up-header" ng-show="(CASHUP.EPOS_DATA | filter:{'MEDIA':'DEP Redeem'}).length>0?true:DFlag=false">{{ CASHUP.VARIANCE_DEPOSIT_REDEEMED=( ((CASHUP.EPOS_DATA | filter:{"MEDIA":"DEP Redeem"})[0].SALES_AMT*1)-CASHUP.DEPOSIT_REDEEMED_TOTAL*1) |number:2}}</span>
+                        <span class="cash-up-header" ng-show="VARIANCE_DEPOSIT_REDEEMED1!=0">{{ VARIANCE_DEPOSIT_REDEEMED1*-1 |number:2}}</span>
+                        <span class="cash-up-header" ng-show="DFlag==false?true:false">{{ CASHUP.VARIANCE_DEPOSIT_REDEEMED=(0-VARIANCE_DEPOSIT_REDEEMED1*-1) |number:2}}</span>
+
+                    </span>-->
+                            <!--<span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_DEPOSIT_REDEEMED!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_DEPOSIT_REDEEMED=(0-CASHUP.DEPOSIT_REDEEMED_TOTAL*1) |number:2}}</span></span>-->
+
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="check">Invoice # <span class="text-danger">*</span></label>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="deposit">Deposit Reference  <span class="text-danger">*</span></label>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="value"> Amount </label>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="value">Redeemed Amount  <span class="text-danger">*</span></label>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="date">Date</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label>Payment Method  <!--<span class="text-danger">*</span>--></label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="nameofpayee">Name Of Payee</label>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label for="note">Note</label>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="note">Upload</label>
+                    </div>
+                    <div class="col-md-1">
+                      
+                    </div>
+                </div>
+                <div class="row" ng-repeat="VISS in VoucherIssuedList | filter:{IS_REDEEMED:true}| filter:{ENTRY_TYPE_ID:3}| filter:{IS_DELETED:0}" on-finish-render="ngRepeatFinished" ng-init="ValidControls(VISS);initdepositListred(VISS);">
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <input class="form-control" type="text" ng-model="VISS.CHECK_NO" ng-class="{'error':!VISS.RED_CHECK_NO_VALID}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group SCROLL_DROP">
+                            <input type="text" name="CategorySearchBox"
+                                   ng-model="VISS.CODE"
+                                   autocomplete="off"
+                                   placeholder="Type to select deposit"
+                                   uib-typeahead="client.CODE for client in DepositsListSearch | filter:$viewValue | filter:{IS_CANCELLED:false}"
+                                   ng-blur="SetValues_Deposit(VISS,$index);initdepositListred(VISS);" ng-change="SET_DROPSCROLL();"
+                                   typeahead-loading="loading" typeahead-no-results="noResults" ng-class="{'error':!VISS.RED_CODE_VALID}"
+                                   class="form-control input-sm" ng-disabled="(VISS.ENTRY_TYPE_DETAIL_ID!=0)?true:false" />
+                        </div>
+                    </div>
+                    <!--$('#AddCustomScroll').find('.dropdown-menu').addClass('custom-scrollbar');-->
+                    <div class="col-md-1">
+                        <div class="form-group mb-0">
+                            <input class="form-control" type="text" only-digits ng-model="VISS.TOTAL_AMT" ng-disabled="true">  <!-- ng-disabled="(VISS.ENTRY_TYPE_DETAIL_ID!=0)?true:false" ng-disabled="VISS.PAYMENT_METHOD_ID==null?false:true"-->
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <input class="form-control" type="text" only-digits ng-model="VISS.VALUE" ng-blur="CheckDecimal(VISS);" ng-class="{'error':!VISS.RED_VALUE_VALID}" ng-disabled="VISS.ID!=0?true:false" ng-change="SET_VALUECHECK(VISS);" />  <!-- ng-disabled="VISS.ENTRY_TYPE_DETAIL_ID!=0?true:false" ng-disabled="(VISS.PAYMENT_METHOD_ID==null?false:true)"-->
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group" ng-init="dateinputOpenDate();">
+                            <input class="form-control bg-white dateinputOpenDate" name="datecontrol{{$index}}" placeholder="Select Date" type="text"
+                                   readonly="readonly" ng-model="VISS.VALIDITY_DATE" ng-value="VISS.VALIDITY_DATE |date" ng-disabled="(VISS.ENTRY_TYPE_DETAIL_ID!=0)?true:false" />
+                            <!--<input class="form-control" type="text"  ng-model="VISS.VALIDITY_DATE" ng-value="VISS.VALIDITY_DATE |date" ng-disabled="VISS.ENTRY_TYPE_DETAIL_ID!=0?true:false">-->
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+
+                            <select class="custom-select text-xs" style="width: 100%;" ng-options="Payment.PAYMENT_METHOD_ID as Payment.METHOD_NAME for Payment in PAYMENT_METHODS_RECEIVED" ng-model="VISS.PAYMENT_METHOD_ID" ng-change="SetPayment_Red(VISS,VISS.PAYMENT_METHOD_ID)">
+                                <!--ng-class="{'error':!VISS.RED_PAYMENT_METHOD_ID_VALID}"-->
+
+                                <option value="">Select</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input class="form-control" type="text" ng-model="VISS.CUSTOMER_NAME">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" ng-model="VISS.NOTE">
+
+
+                        </div>
+                    </div>
+
+                    <!--<div class="col-md-1" ng-show="UPL_FLAG==false">
+                        <div class="form-group">
+                            <span class="d-block" ng-repeat="upls in VISS.UploadedFiles">
+                                <br ng-if="$index!=0" />
+                                <span ng-if="$index!=0" />
+                                <a class="font-11" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                    <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                                    <span ng-if="upls.ORIGINAL_FILE_NAME.length > 10">...</span>
+                                </a>
+                                <span> <i ng-click="DELETE_UPLOAD_DEPOSIT_ALL1(VISS,upls,$index)" class="fa fa-times text-danger fa-sm mt-2 float-right cursor-pointer"></i> </span>
+                            </span>
+                        </div>
+                        </div>-->
+                    <div class="col-md-1" >
+                        <div class="form-group">
+                            <label for="DEPFILE1{{$index}}" class="btn btn-upload text-nowrap" ng-show="VISS.UploadedFiles==null || VISS.UploadedFiles.length==0">
+                                <i class="fal fa-upload text-white"></i>
+                            </label>
+                            <span class="hidden-input">
+                                <input id="DEPFILE1{{$index}}" ng-files="getTheFilesToUploadDeposits1($files, 'DepositFile', 5,VISS,47,$index)" name="file" type="file" />
+                               
+                            </span>
+                            <span class="d-block" ng-repeat="upls in VISS.UploadedFiles">
+                                <br ng-if="$index!=0" />
+                                <span ng-if="$index!=0" />
+                                <a class="font-11" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                    <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                                    <span ng-if="upls.ORIGINAL_FILE_NAME.length > 10">...</span>
+                                </a>
+                                <span> <i ng-click="DELETE_UPLOAD_DEPOSIT_ALL1(VISS,upls,$index)" class="fa fa-times text-danger fa-sm mt-2 float-right cursor-pointer"></i> </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="d-flex">
+                            <a class="add_dreceived_button mt-2 cursor-pointer" ng-click="DepositRedeemLine()" click-once ng-show="$last" data-toggle="tooltip" data-html="true" data-original-title="Add More">
+                                <i class="fas fa-plus-circle ml-2"></i>
+                            </a>
+                            <a class="add_dreceived_button mt-2 cursor-pointer" ng-click="DeleteVoucherLine(VoucherIssuedList , $index, true, 3,VISS)" data-toggle="tooltip" data-html="true" data-original-title="Remove">
+                                <i class="fas fa-minus-circle ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                        <div class="card-footer text-right">
+                            <h6 class="app-text text-bold">Total: {{ CASHUP.DEPOSIT_REDEEMED_TOTAL=((VoucherIssuedList | filter:{IS_REDEEMED:true}| filter:{ENTRY_TYPE_ID:3}| filter:{IS_DELETED:0}) | total:'VALUE')| number:2 }}</h6>
+                        </div>
+                        <hr ng-show="!CASHUP.DEPOSITSVALID" />
+                        <div class="form-group text-red p-3" ng-show="!CASHUP.DEPOSITSVALID">
+                            Please fill the mandatory fields marked in red (*) symbol.
+                        </div>
+                    </div>
+                </div>
+    <!--</div>-->
+    <div class="event-footer animated fadeInUp">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 d-inline m-2 text-right">
+                    <!--<button class="btn btn-w-default btn-sm" ng-click="ShowDiv(GetPreviousStep())" ng-show="CASHUP.STEP_NO!=0"><i class="fa fa-angle-double-left"></i> Previous</button>-->
+                    <button class="btn btn-w-default btn-sm" ng-click="PreviousLink()"><i class="fa fa-angle-double-left"></i> Previous</button>
+                    <button class="btn btn-wenodo btn-sm" ng-click="NextLink('Complimentary')"><i class="fa fa-angle-double-right"></i> Continue</button>
+                    <!--<button class="btn btn-wenodo btn-sm" ng-click="UPD_CASHUP_HEADER_SUBMIT()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==0 || CashUp_Main_STATUS_ID==1 || CashUp_Main_STATUS_ID==5)"><i class="fa fa-angle-double-right"></i> Submit</button>
+                    <button class="btn btn-wenodo btn-sm" ng-click="APP_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Approve</button>
+                    <button class="btn btn-danger btn-sm" ng-click="REJ_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Return</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade show" id="Deposit_Receipts">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Deposit Receipts</h4>
+                    <button type="button" class="close" data-dismiss="modal"  ng-click="RESETPAGESEARCH();" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-sm">Invoice #</label>
+                                <input type="text" class="form-control" ng-model="DepositeSearch.INVOICENUMBER" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-sm">Deposit Reference</label>
+                                <input type="text" class="form-control" ng-model="DepositeSearch.DEPOSIT_REFERENCE" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-sm">Payment Method</label>
+                                <!--<span ng-show="false"> {{VISS.PAYMENT_METHOD_ID!=null?VISS.PAYMENT_METHOD=(PaymentList | filter:{PAYMENT_METHOD_ID:VISS.PAYMENT_METHOD_ID})[0]:'' }}</span>
+            <select class="custom-select text-xs" style="width: 100%;" ng-options="Payment.METHOD_NAME for Payment in PaymentList" ng-model="VISS.PAYMENT_METHOD">
+                <option value="">Select</option>
+            </select>-->
+                                <select class="custom-select text-xs" ng-options="Payment.PAYMENT_METHOD_ID as Payment.METHOD_NAME for Payment in PAYMENT_METHODS" ng-model="DepositeSearch.PAYMENT_MODE_ID">
+                                    <option value="">Select</option>
+                                </select>
+                                <!--<input type="text" class="form-control" ng-model="MODE" />-->
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="text-sm">Name Of Payee</label>
+                                <input type="text" class="form-control" ng-model="DepositeSearch.PAYEE_NAME" />
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <label class="text-sm">&nbsp;</label>
+                                <button class="btn btn-wenodo" ng-click="GET_DEPOSITS(1);">Search</button>
+                                <button class="btn btn-w-default" ng-click="RESETPAGESEARCH();">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="table-responsive custom-scrollbar">
+                        <div class="text-center" ng-show="DepositsList.length==0" empty-grid></div>
+                        <table class="table table-hover table-head-fixed" ng-show="DepositsList.length>0">
+                            <thead class="bg-wenodo-dark-blue">
+                                <tr>
+                                    <th></th>
+                                    <th>Invoice #</th>
+                                    <th>Deposit Reference</th>
+                                    <th>Name Of Payee</th>
+                                    <th>Date</th>
+                                    <th>Payment Method</th>
+                                    <th>Amount </th>
+                                    <th>Remaining Amount</th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8" class="text-center table-footer-fixed" ng-show="GetData">
+                                        <a class="btn btn-secondary text-white" click-once ng-click="LAZY_GET_DEPOSITE_LIST();">{{VIEWMORERECORD}}</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr ng-repeat="Dep in DepositsList| filter:{ENTRY_TYPE_ID:3}  | filter:{IS_REDEEMED:false}| filter:{IS_CANCELLED:false}|orderBy:'-ID'">
+                                    <!--| orderBy:'-ID'-->
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="customCheckbox1{{$index}}" ng-model="Dep.IS_CHECKED">
+                                            <label for="customCheckbox1{{$index}}" class="custom-control-label"></label>
+                                        </div>
+                                    </td>
+                                    <td ng-click="Dep.IS_CHECKED=!Dep.IS_CHECKED">{{Dep.CHECK_NO}}</td>
+                                    <td ng-click="Dep.IS_CHECKED=!Dep.IS_CHECKED">{{Dep.CODE}}</td>
+                                    <td ng-click="Dep.IS_CHECKED=!Dep.IS_CHECKED">{{Dep.CUSTOMER_NAME}}</td>
+                                    <td ng-click="Dep.IS_CHECKED=!Dep.IS_CHECKED">{{Dep.VALIDITY_DATE|date}}</td>
+                                    <td ng-click="Dep.IS_CHECKED=!Dep.IS_CHECKED">{{Dep.MODE}}</td>
+                                    <td ng-click="Dep.IS_CHECKED=!Dep.IS_CHECKED">{{Dep.VALUE}}</td>
+                                    <td ng-click="Dep.IS_CHECKED=!Dep.IS_CHECKED">{{Dep.REMAINING_VALUE}}</td>
+                                    <td ng-click="Dep.IS_CHECKED=!Dep.IS_CHECKED">{{Dep.NOTE}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer d-inline text-left">
+                    <button type="button" class="btn btn-wenodo" ng-click="SelectRedeemed();">Redeem</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal" ng-click="RESETPAGESEARCH();">Cancel</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>

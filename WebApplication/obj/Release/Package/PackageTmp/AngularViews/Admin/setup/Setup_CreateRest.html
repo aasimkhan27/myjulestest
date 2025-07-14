@@ -1,0 +1,458 @@
+﻿<form id="EntForm" name="EntForm" novalidate ng-init="EDIT_INS_UPD_ENTITIES()">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            ng-disabled="EntitySearch.CONTROL_ENABLE_DISABLE_FLAG"
+                            name="CUSTOMER_ID"
+                            ng-model="EntitySearch.CUSTOMER_ID"
+                            ng-options="CT.CUSTOMER_ID as CT.CUSTOMER_NAME for CT in CUSTOMER_LIST "
+                            required
+                            ng-class="{'error':EntForm.submitted && EntForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity Name:*</label>
+                    <input type="text"
+                           ng-disabled=""
+                           class="form-control"
+                           maxlength="250"
+                           name="ENTITY_NAME"
+                           ng-model="EntitySearch.ENTITY_NAME"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':EntForm.submitted && EntForm.ENTITY_NAME.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Financial Year Start Month:*</label>
+                    <select id="month"
+                            class="custom-select"
+                            name="FINANCIAL_YEAR_START_MONTH"
+                            ng-model="EntitySearch.FINANCIAL_YEAR_START_MONTH"
+                            ng-options="FYM.ID as FYM.Text for FYM in FINANCIAL_YEAR_START_MONTH_LIST"
+                            required
+                            ng-class="{'error':EntForm.submitted && EntForm.FINANCIAL_YEAR_START_MONTH.$error.required}">
+                        <option value="">- Please Select Month-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Address:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="100"
+                           name="ADDRESS_1"
+                           ng-model="EntitySearch.ADDRESS_1"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':EntForm.submitted && EntForm.ADDRESS_1.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Country:*</label>
+                    <select class="custom-select"
+                            name="COUNTRY_ID"
+                            ng-model="EntitySearch.COUNTRY_ID"
+                            ng-options="CTY.COUNTRY_ID as CTY.COUNTRY_NAME for CTY in COUNTRY"
+                            required
+                            ng-change="GET_STATES()"
+                            ng-class="{'error':EntForm.submitted && EntForm.COUNTRY_ID.$error.required}">
+                        <option value="">- Please Select Country-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>State:*</label>
+                    <select class="custom-select"
+                            name="STATE"
+                            ng-model="EntitySearch.STATE_ID"
+                            ng-options="STR.STATE_ID as (STR.STATE_NAME|uppercase) for STR in STATES"
+                            required
+                            ng-class="{'error':EntForm.submitted && EntForm.STATE.$error.required}">
+                        <option value="">- Please Select State-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>City:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="100"
+                           name="CITY_NAME"
+                           ng-model="EntitySearch.CITY_NAME"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':EntForm.submitted && EntForm.CITY_NAME.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label> Zip code/Post Code:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="100"
+                           name="ZIPCODE"
+                           ng-model="EntitySearch.ZIPCODE"
+                           placeholder="Enter ..."
+                           ng-change="EntitySearch.ZIPCODE = (EntitySearch.ZIPCODE | uppercase)"
+                           required
+                           ng-class="{'error':EntForm.submitted && EntForm.ZIPCODE.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Currency:*</label>
+                    <select class="custom-select"
+                            name="CURRENCY"
+                            ng-model="EntitySearch.CURRENCY_ID"
+                            ng-options="CRY.CURRENCY_ID as (CRY.CURRENCY_NAME|  uppercase)+' - '+CRY.CURRENCY_CODE for CRY in (CURRENCY)"
+                            required
+                            ng-class="{'error':EntForm.submitted && EntForm.CURRENCY.$error.required}">
+                        <option value="">- Please Select Currency-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Time Zone:*</label>
+                    <select id="month"
+                            class="custom-select"
+                            name="TIME_ZONE_NAME"
+                            ng-model="EntitySearch.TIME_ZONE_NAME"
+                            ng-options="TZN.name as TZN.name for TZN in TIME_ZONE_NAME"
+                            required
+                            ng-class="{'error':EntForm.submitted && EntForm.TIME_ZONE_NAME.$error.required}">
+                        <option value="">- Please Select Time Zone -</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Contact Name:</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="100"
+                           name="CONTACT_NAME"
+                           ng-model="EntitySearch.CONTACT_NAME"
+                           placeholder="Enter ..."
+                           only-letters
+                           ng-class="{'error':EntForm.submitted && EntForm.CONTACT_NAME.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Contact Number:</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="100"
+                           name="CONTACT_NUMBER"
+                           ng-model="EntitySearch.CONTACT_NUMBER"
+                           placeholder="Enter ..."
+                           only-numbers
+                           ng-class="{'error':EntForm.submitted && EntForm.CONTACT_NUMBER.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Contact Email:*</label>
+                    <input type="email" required
+                           ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+                           class="form-control"
+                           maxlength="100"
+                           name="CONTACT_EMAIL"
+                           ng-model="EntitySearch.CONTACT_EMAIL"
+                           placeholder="Enter ..."
+                           only-emails
+                           ng-class="{'error':EntForm.submitted && EntForm.CONTACT_EMAIL.$error.required}">
+                    <small class="text-danger" ng-show="EntForm.CONTACT_EMAIL.$dirty && EntForm.CONTACT_EMAIL.$error.pattern">Please Enter Valid Email</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Registered Company Name:</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="LIMITED_COMPANY_NAME"
+                           ng-model="EntitySearch.LIMITED_COMPANY_NAME"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.LIMITED_COMPANY_NAME.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Company Registration Number:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="20"
+                           name="COMPANY_REGISTRATION_NO"
+                           ng-model="EntitySearch.COMPANY_REGISTRATION_NO"
+                           required
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.COMPANY_REGISTRATION_NO.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>PR Number Prefix:</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="4"
+                           name="PR_NO_PREFIX"
+                           ng-model="EntitySearch.PR_NO_PREFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.PR_NO_PREFIX.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>PR Number Suffix:</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="4"
+                           name="PR_NO_SUFFIX"
+                           ng-model="EntitySearch.PR_NO_SUFFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.PR_NO_SUFFIX.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label title="PR No MIN LENGTH EXCLUDING PREFIX AND SUFFIX">PR Number Min Length (Default Length 5):</label>
+                    <input type="text" title="PR NUMBER MIN LENGTH EXCLUDING PREFIX AND SUFFIX"
+                           class="form-control"
+                           maxlength="2"
+                           name="PR_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                           ng-model="EntitySearch.PR_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.PR_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>REQ Number Prefix (Default Prefix REQ-):</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="4"
+                           name="REQ_NO_PREFIX"
+                           ng-model="EntitySearch.REQ_NO_PREFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.REQ_NO_PREFIX.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>REQ Number Suffix:</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="4"
+                           name="REQ_NO_SUFFIX"
+                           ng-model="EntitySearch.REQ_NO_SUFFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.REQ_NO_SUFFIX.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label title="REQ No MIN LENGTH EXCLUDING PREFIX AND SUFFIX">REQ Number Min Length (Default Length 5):</label>
+                    <input type="text" title="REQ NUMBER MIN LENGTH EXCLUDING PREFIX AND SUFFIX"
+                           class="form-control"
+                           maxlength="2"
+                           name="REQ_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                           ng-model="EntitySearch.REQ_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.REQ_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX.$error.required}">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>PO Number Prefix (Default Prefix PO-):</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="4"
+                           name="PO_NO_PREFIX"
+                           ng-model="EntitySearch.PO_NO_PREFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.PO_NO_PREFIX.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>PO Number Suffix:</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="4"
+                           name="PO_NO_SUFFIX"
+                           ng-model="EntitySearch.PO_NO_SUFFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.PO_NO_SUFFIX.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label title="PO No MIN LENGTH EXCLUDING PREFIX AND SUFFIX">PO Number Min Length (Default Length 5):</label>
+                    <input type="text" title="PO NUMBER MIN LENGTH EXCLUDING PREFIX AND SUFFIX"
+                           class="form-control"
+                           maxlength="2"
+                           name="PO_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                           ng-model="EntitySearch.PO_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.PO_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX.$error.required}">
+                </div>
+            </div>
+
+            <div class="col-md-4" ng-show="EntitySearch.ENTITY_ID>0 && EntitySearch.ENTITY_ID!='' && EntitySearch.ENTITY_ID!=null">
+                <div class="form-group">
+                    <label>Comments:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="COMMENTS"
+                           ng-model="EntitySearch.COMMENTS"
+                           ng-required="EntitySearch.ENTITY_ID>0 && EntitySearch.ENTITY_ID!='' && EntitySearch.ENTITY_ID!=null"
+                           placeholder="Enter ..."
+                           ng-class="{'error':EntForm.submitted && EntForm.COMMENTS.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Logo:*</label>
+                    <div class="form-group">
+                        <div class="input-group-prepend" ng-class="{'error':EntForm.submitted && EntitySearch.UploadedFiles==null  || EntForm.submitted && EntitySearch.UploadedFiles.length==0,'':EntitySearch.UploadedFiles.length>0}">
+                            <label for="logo1" class="btn btn-upload mb-0">
+                                <i class="fal fa-upload"></i> Logo
+                            </label>
+                            <span class="hidden-input">
+                                <input id="logo1" name="file" ng-files="getTheFilesToUploadall($files,5,EntitySearch,1, 'logo','ENTITY')" type="file">
+                            </span>
+                        </div>
+                    </div>
+                    <span ng-repeat="File in EntitySearch.UploadedFiles">
+                        <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="download"><i class="fa fa-download"></i> {{File.SERVER_FILE_NAME}}</a>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" id="EntitySearch.ACTIVE"
+                               ng-model="EntitySearch.ACTIVE"
+                               ng-checked="EntitySearch.ACTIVE">
+                        <label for="EntitySearch.ACTIVE" class="custom-control-label">Active</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" id="EntitySearch.IS_LIVE"
+                               ng-model="EntitySearch.IS_LIVE"
+                               ng-checked="EntitySearch.IS_LIVE">
+                        <label for="EntitySearch.IS_LIVE" class="custom-control-label">IS Live</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12 mt-2">
+                <div class="row">
+                    <div class="form-group">
+                        <button ng-click="ADMIN_INS_UPD_ENTITIES()" class="btn btn-wenodo">Save</button>
+                        <button ng-click="RESET_ENT()" href="#" class="btn btn-w-default">Reset</button>
+                        <a href="Admin#!/Setup_Rest" class="btn btn-w-default">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div data-ng-show="EntForm.submitted && EntForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive custom-scrollbar height-auto">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Module Name</th>
+                        <th width="15%">Subscribed</th>
+                        <th width="15%">Wenodo Module</th>
+                        <th width="15%">Email Live</th>
+                        <th width="25%">Redirection URL</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="MOD in AdminModuleList" ng-init="Initialize_Entity_ModuleList(MOD)">
+                    <tr>
+                        <td>
+                            <i class="fad {{MOD.MODULE_ICON}}"></i>{{MOD.MODULE_NAME}}
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input"
+                                           type="checkbox"
+                                           id="Subscribe{{$index}}"
+                                           ng-model="MOD.FLAG"
+                                           ng-change="CHECK_CHANGE(MOD)"
+                                           g-class="{'error':EntForm.submitted && EntForm.CURRENCY.$error.required}">
+                                    <label for="Subscribe{{$index}}" class="custom-control-label"></label>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group" ng-if="MOD.INTERNAL_REDIRECTION_PATH!=null">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input"
+                                           type="checkbox"
+                                           id="InApp{{$index}}"
+                                           ng-change="CHECK_CHANGE(MOD)"
+                                           ng-disabled="!MOD.FLAG"
+                                           ng-model="MOD.IN_APP">
+                                    <label for="InApp{{$index}}" class="custom-control-label"></label>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input"
+                                           type="checkbox"
+                                           id="EMAIL_LIVE{{$index}}"
+                                            ng-disabled="!MOD.IN_APP"  
+                                           ng-model="MOD.EMAIL_LIVE">
+                                    <label for="EMAIL_LIVE{{$index}}" class="custom-control-label"></label>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   class="form-control"
+                                   id="rurl{{$index}}"
+                                   value="furlough"
+                                   ng-model="MOD.MODULE_URL"
+                                   ng-disabled="MOD.IN_APP || !MOD.FLAG"  
+                                   placeholder="Enter Mapping URL..."
+                                   ng-class="{'error':EntForm.submitted && EntForm.FAX.$error.required}">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</form>

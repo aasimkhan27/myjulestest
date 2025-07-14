@@ -1,0 +1,108 @@
+﻿<form id="SetupPageHeaderForm" name="SetupPageHeaderForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="SetupPageHeaderFormSearch.CUSTOMER_ID"
+                            ng-options="CT.CUSTOMER_ID as CT.CUSTOMER_NAME for CT in CUSTOMER_LIST "
+                            required
+                            ng-change="GET_ENTITY_LIST();"
+                            ng-class="{'error':SetupPageHeaderForm.submitted && SetupPageHeaderForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="SetupPageHeaderFormSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            ng-change="GET_APP_PAGE_HEADERS();"
+                            required
+                            ng-class="{'error':SetupPageHeaderForm.submitted && SetupPageHeaderForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Page Header:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="PAGE_HEADER"
+                           ng-model="SetupPageHeaderFormSearch.PAGE_HEADER"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':SetupPageHeaderForm.submitted && SetupPageHeaderForm.PAGE_HEADER.$error.required}">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <!--<label class="d-block">&nbsp;</label>-->
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" id="SetupPageHeaderFormSearch.ACTIVE"
+                               ng-model="SetupPageHeaderFormSearch.ACTIVE"
+                               ng-checked="SetupPageHeaderFormSearch.ACTIVE">
+                        <label for="SetupPageHeaderFormSearch.ACTIVE" class="custom-control-label">Active</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div data-ng-show="SetupPageHeaderForm.submitted && SetupPageHeaderForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PAGE_HEADER_EXIST">
+                    <span class="help-block">Page Header Already Exist.</span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button ng-click="ADMIN_INS_UPD_APP_PAGE_HEADERS();" class="btn btn-wenodo">Save</button>
+                    <button ng-click="RESET_PAGE_HEADER();" class="btn btn-w-default">Reset</button>
+                    <a href="#!/Page_Header" class="btn btn-w-default">Back</a>
+                    <button ng-click="ADMIN_GET_COST_CENTER_SEARCH()" ng-if="EDIT_MODE==0" class="btn btn-wenodo ml-2">Search</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+</form>
+<div class="card-body">
+    <div class="text-center" ng-show="APP_PAGE_HEADER_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="APP_PAGE_HEADER_LIST.length>0">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th>Header Name</th>
+                    <th>Creation Date</th>
+                    <th>Status</th>
+                    <th width="5%"></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="APHL in APP_PAGE_HEADER_LIST" on-finish-render="ngRepeatFinished">
+                <tr>
+                    <td> {{APHL.HEADER_NAME}}</td>
+                    <td>{{APHL.CREATED_DATE | date}}</td>
+                    <td>{{APHL.ACTIVE?'Active':'Inactive'}}</td>
+                    <td>
+                        <a ng-click="ADMIN_EDIT_INS_UPD_PAGE_HEADER(APHL)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        <!--<a ng-click="DELETE_INS_UPD_COST_CENETR(LL)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,302 @@
+﻿<style>
+    .overlay_loadingtest {
+        background-image: url(/E_Content/images/coming_soon.png);
+        background-color: #fff;
+        background-size: 300px;
+        opacity: 1;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: block;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+    }
+
+    .typeahead-demo .custom-popup-wrapper {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        background-color: #f9f9f9;
+    }
+
+        .typeahead-demo .custom-popup-wrapper > .message {
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            color: #868686;
+        }
+
+        .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+            position: static;
+            float: none;
+            display: block;
+            min-width: 160px;
+            background-color: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+</style>
+<!--<div class="overlay_loadingtest">-->
+<form id="ReportForm" name="ReportForm">
+    <div class="card-header"><h5 class="heading-text">HR Reports</h5></div>
+    <div class="card-body" style="">
+        <div class="text-center" ng-show="REPORT_LIST.length==0" empty-grid>
+        </div>
+        <div class="table-responsive" style="z-index:-1" ng-show="REPORT_LIST.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Report</th>
+                        <th>Description</th>
+                        <!--<th>Date</th>-->
+                        <th width="5%">Download</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="RPT in REPORT_LIST">
+                    <tr>
+                        <td>{{RPT.REPORT_NAME}}</td>
+                        <td>
+                            {{RPT.REPORT_DESCRIPTION}}
+                        </td>
+                        <!--<td>01/01/2020</td>-->
+                        <td>
+                            <i class="fad fa-download fa-lg" data-toggle="tooltip" data-html="true" data-original-title="Download"
+                               ng-click="DOWNLOAD_SHOW_POP(RPT.REPORT_ID)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--</div>-->
+    <div class="modal fade" id="Report_Date">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" ng-init="$parent.dateinputOpenDate()">
+                    <h4 class="modal-title">
+                        Download Report
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="row" ng-show="RPTID ==2 || RPTID==3 || RPTID ==5 || RPTID ==6 || RPTID ==24">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Start Date:*</label>
+                                <input type="text"
+                                       class="form-control dateinputOpenDate"
+                                       autocomplete="off"
+                                       name="ReportSearch.START_DATE"
+                                       readonly
+                                       placeholder="Select ..."
+                                       ng-model="ReportSearch.START_DATE"
+                                       ng-value="ReportSearch.START_DATE | date"
+                                       required
+                                       ng-class="{'error':ReportForm.submitted && ReportForm.START_DATE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="d-block">End Date:*</label>
+                            <input type="text"
+                                   class="form-control dateinputOpenDate"
+                                   autocomplete="off"
+                                   name="ReportSearch.END_DATE"
+                                   readonly
+                                   placeholder="Select ..."
+                                   ng-model="ReportSearch.END_DATE"
+                                   ng-value="ReportSearch.END_DATE | date"
+                                   required
+                                   ng-class="{'error':ReportForm.submitted && ReportForm.END_DATE.$error.required}" />
+                        </div>
+
+                        <div class="col-md-4" ng-show="RPTID ==2 || RPTID==3 || RPTID ==24">
+                            <div class="form-group">
+                                <label>Branch:</label>
+                                <select class="custom-select"
+                                        name="BRANCH_ID"
+                                        ng-model="ReportSearch.BRANCH_ID"
+                                        ng-options="EL.BRANCH_ID as EL.BRANCH_NAME for EL in BRANCH_LIST"
+                                        ng-class="{'error':ReportForm.submitted && ReportForm.BRANCH_ID.$error.required}">
+                                    <option value="">- Please Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="RPTID ==7 || RPTID ==9 || RPTID ==25 || RPTID ==26 || RPTID ==30">
+                        <div class="col-md-4" ng-show="RPTID !=25">
+                            <div class="form-group">
+                                <label>Start Date:*</label>
+                                <input type="text"
+                                       class="form-control dateinputOpenDate"
+                                       autocomplete="off"
+                                       name="ReportSearch.ROTA_START_DATE"
+                                       readonly
+                                       placeholder="Select ..."
+                                       ng-model="ReportSearch.ROTA_START_DATE"
+                                       ng-value="ReportSearch.ROTA_START_DATE | date"
+                                       required
+                                       ng-class="{'error':ReportForm.submitted && ReportForm.ROTA_START_DATE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="RPTID !=25">
+                            <div class="form-group">
+                                <label>End Date:*</label>
+                                <input type="text"
+                                       class="form-control dateinputOpenDate"
+                                       autocomplete="off"
+                                       name="ReportSearch.END_DATE"
+                                       readonly
+                                       placeholder="Select ..."
+                                       ng-model="ReportSearch.ROTA_END_DATE"
+                                       ng-value="ReportSearch.ROTA_END_DATE | date"
+                                       required
+                                       ng-class="{'error':ReportForm.submitted && ReportForm.ROTA_END_DATE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="RPTID !=25 && RPTID !=26">
+                            <div class="form-group">
+                                <label>Location:</label>
+                                <select class="custom-select"
+                                        name="LOCATION_ID"
+                                        ng-model="ReportSearch.LOCATION_ID"
+                                        ng-options="EL.LOCATION_ID as EL.LOCATION_NAME for EL in LOCATION"
+                                        ng-change="ADMIN_GET_BRANCH();"
+                                        ng-class="{'error':ReportForm.submitted && ReportForm.LOCATION_ID.$error.required}">
+                                    <option value="">- Please Select Location-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Branch:</label>
+                                <select class="custom-select"
+                                        name="BRANCH_ID"
+                                        ng-model="ReportSearch.BRANCH_ID"
+                                        ng-options="EL.BRANCH_ID as EL.BRANCH_NAME for EL in BRANCH_LIST"                                        
+                                        ng-class="{'error':ReportForm.submitted && ReportForm.BRANCH_ID.$error.required}">
+                                    <option value="">- Please Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="RPTID==7 || RPTID==30">
+                            <div class="form-group">
+                                <label>Status:</label>
+                                <select class="custom-select"
+                                        ng-model="ReportSearch.STATUS_ID"
+                                        ng-options="RS.STATUS_ID  as RS.DISPLAY_TEXT for RS in (ROTA_STATUS_FLAG)"
+                                        ng-class="{'error':ReportForm.submitted && ReportForm.STATUS_ID.$error.required}"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="RPTID !=25">
+                            <div class="form-group">
+                                <label>Section:</label>
+                                <select class="custom-select"
+                                        ng-model="ReportSearch.SECTION_ID"
+                                        ng-options="SEC.TABLE_ID  as SEC.DISPLAY_TEXT for SEC in (SECTIONS)"
+                                        ng-class="{'error':ReportForm.submitted && ReportForm.STATUS_ID.$error.required}">
+                                    <option value="">- Please Select Section-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="COMMON_REPORT_GENERATE_FILE(RPTID)" ng-if="RPTID ==7 || RPTID ==9 || RPTID ==5|| RPTID ==6 || RPTID ==24 || RPTID ==25 || RPTID ==26 || RPTID ==30" ng-disabled="enable=='false'"
+                            class="btn btn-wenodo">
+                        <span ng-show="LOADER_ICON"><i class='fa fa-spinner fa-spin '></i></span>
+                        Download
+                    </button>
+                    <button type="button" ng-if="RPTID ==1 || RPTID ==2 || RPTID ==3" ng-click="HR_EMPLOYEE_REPORT();"
+                            class="btn btn-wenodo">
+                        <span ng-show="LOADER_ICON"><i class='fa fa-spinner fa-spin '></i></span>
+                        Download
+                    </button>
+                    <button type="button" ng-if="(RPTID == 2 || RPTID == 3) && (REPORT_DATA_LIST_CSV.length>0)"
+                            ng-class="{'btn btn-wenodo': REPORT_DATA_LIST_CSV.length>0}"
+                            class="btn btn-default"
+                            ng-csv="REPORT_DATA_LIST_CSV"
+                            filename="{{REPORT_NAME
+                            }}.csv"
+                            csv-header="JSON_COLUMN_NAME" charset="utf-8">
+                        <span class="glyphicon glyphicon-download-alt">&nbsp;</span>Download CSV
+                    </button>
+                    <!--<button type="button" ng-show="RPTID ==7 || RPTID ==9 || RPTID ==5 || RPTID ==6"
+                            ng-class="{'btn btn-wenodo': REPORT_DATA_LIST.length>0}"
+                            class="btn btn-default"
+                            ng-if="REPORT_DATA_LIST.length>0" ng-click="DOWNLOAD_EXCEL();">
+                        <span class="glyphicon glyphicon-download-alt">&nbsp;</span>Download Excel
+                    </button>-->
+                    <!--<button type="button" ng-show="RPTID ==7" ng-if="false"
+                            ng-class="{'btn btn-wenodo': REPORT_DATA_LIST.length>0}"
+                            class="btn btn-default"
+                            ng-if="REPORT_DATA_LIST.length>0" ng-click="DOWNLOAD_PDF();">
+                        <span class="glyphicon glyphicon-download-alt">&nbsp;</span>Download PDF
+                    </button>-->
+                    <!--<button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close" ng-if="RPTID !=7 || RPTID !=9 || RPTID !=5">Cancel</button>-->
+                    <button type="button" class="btn btn-w-default" ng-if="RPTID ==7 || RPTID ==9 || RPTID ==5 || RPTID ==6 || RPTID ==2 || RPTID ==3 || RPTID ==24 || RPTID ==25 || RPTID ==26" ng-click="RESET();">Reset</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--<table class="table table-striped" ng-show="false" id="PDF">
+    <thead>
+        <tr>
+            <th>SL No.</th>
+            <th>EMP NAME</th>
+            <th>EMP NO</th>
+            <th>BRANCH</th>
+            <th>SECTION</th>
+            <th>COST CENTER</th>
+            <th>CC DESC</th>
+            <th>LEAVE</th>
+            <th>SHIFT DATE</th>
+            <th>START TIME</th>
+            <th>END TIME</th>
+            <th>BREAK</th>
+            <th>Brk. DURATION</th>
+            <th>Brk. START</th>
+            <th>Brk. END</th>
+            <th>LOGIN</th>
+            <th>LOGOUT</th>
+            <th>TOTAL(Hrs.)</th>
+            <th>STATUS</th>
+            <th class="headcol-right-header"></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="10" align="center"></td>
+        </tr>
+    </tfoot>
+    <tbody ng-repeat="BL in REPORT_DATA_LIST ">
+        <tr>
+            <td class="text-nowrap">{{$index}}</td>
+            <td class="text-nowrap">{{BL.EMPLOYEE_NAME}}</td>
+            <td>{{BL.EMPLOYEE_NO}}</td>
+            <td class="text-nowrap">{{BL.BRANCH_NAME}}</td>
+            <td>{{BL.SECTION_NAME}}</td>
+            <td>{{BL.COST_CENTER_CODE}}</td>
+            <td>{{BL.COST_CENTER_DESCRIPTION}}</td>
+            <td>{{BL.LEAVE_TYPE}}</td>
+            <td>{{BL.SHIFT_DATE}}</td>
+            <td>{{BL.START_TIME}}</td>
+            <td>{{BL.END_TIME}}</td>
+            <td>{{BL.BREAK_TYPE}}</td>
+            <td>{{BL.BREAK_DURATION}}</td>
+            <td>{{BL.BREAK_START}}</td>
+            <td>{{BL.BREAK_END}}</td>
+            <td>{{BL.CLOCK_IN}}</td>
+            <td>{{BL.CLOCK_OUT}}</td>
+            <td>{{BL.TOTAL_HOURS}}</td>
+            <td>{{BL.STATUS}}</td>
+
+
+        </tr>
+    </tbody>
+</table>-->

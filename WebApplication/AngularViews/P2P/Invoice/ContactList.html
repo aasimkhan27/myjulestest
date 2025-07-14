@@ -1,0 +1,114 @@
+﻿<div class="card mb-0">
+    <div class="card-header">
+        <h5 class="card-title mt-1 font-15">Contact List</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills" >
+                <li class="nav-item" ng-show="IntegrationDetails!=null && IntegrationDetails!='">
+                    <a ng-show="!IntegrationDetails.PageLoad && IntegrationDetails.ShowSyncBtn"
+                       ng-click="CLICK_SUPPLIER_XERO_SYNC_Fn()"
+                       class="btn btn-transparent-wenodo border py-0"
+                       data-toggle="tooltip"
+                       data-html="true"
+                       click-once
+                       data-original-title="Sync Xero Contact">
+                        Sync Xero Contact
+                        <i class="far fa-sync-alt"></i>
+                    </a>
+                    <a class="font-14" ng-show="!IntegrationDetails.PageLoad && !IntegrationDetails.ShowSyncBtn">
+                        <i class="fas fa-sync fa-spin"></i> Syncing Xero Contact
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <div class="font-12 mt-1 ml-2">(Last Sync on {{IntegrationDetails.LAST_PICKUP_DATE | utcToLocal:"dd/MMM/yyyy h:mm:ss a" }})</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group" id="AddCustomScroll">
+                        <label class="d-block">Contact Name</label>
+                        <input type="text" name="CategorySearchBox"
+                               ng-model="ContactFilter.SUPPLIER_NAME"
+                               class="form-control form-control-sm"
+                               placeholder="Type to search Contact Name..." />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group" id="AddCustomScroll">
+                        <label class="d-block">Email</label>
+                        <input type="text" name="CategorySearchBox"
+                               ng-model="ContactFilter.EMAIL"
+                               class="form-control form-control-sm"
+                               placeholder="Type to search Email..." />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group" id="AddCustomScroll">
+                        <label class="d-block">Tax No</label>
+                        <input type="text" name="CategorySearchBox"
+                               ng-model="ContactFilter.TAX_NO"
+                               class="form-control form-control-sm"
+                               placeholder="Type to search Tax No..." />
+                    </div>
+                </div>
+                <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                    <div class="form-group">
+                        <label class="d-block">Branch Name</label>
+                        <select class="custom-select custom-select-sm min-w-250" name="BRN_LG"
+                                data-placeholder="Select Branch"
+                                ng-model="PaymentSearch.BRANCH_LOGIN_ID"
+                                ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <label class="d-block">&nbsp;</label>
+                    <button class="btn btn-sm btn-w-default" type="button" ng-click="RESETPAGESEARCH();">Reset</button>
+                </div>
+
+            </div>
+        </form>
+        <div class="table-reponsive custom-scrollbar height-72vh">
+            <div class="text-center" ng-show="SUPPLIER_LIST.length==0" empty-grid></div>
+            <table class="table table-head-fixed table-striped table-hover compact_table" ng-show="SUPPLIER_LIST.length>0">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th>Contact Name</th>
+                        <th>Email</th>
+                        <th>Tax No</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" class="text-center table-footer-fixed" ng-show="GetData">
+                            <a class="btn btn-sm btn-secondary text-white" ng-click="LAZY_GET_REQUESTSTATEMENT_LIST();">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="Vendor in SUPPLIER_LIST | filter:{SUPPLIER_NAME:ContactFilter.SUPPLIER_NAME} | filter:{EMAILADDRESS:ContactFilter.EMAIL} | filter:{TAXNUMBER:ContactFilter.TAX_NO}" 
+                       >
+                    <tr>
+                        <td>{{Vendor.SUPPLIER_NAME}} </td>
+                        <td> {{Vendor.EMAILADDRESS==null || Vendor.EMAILADDRESS=='' ?'-':Vendor.EMAILADDRESS}}</td>
+                        <td> {{Vendor.TAXNUMBER==null?'-':Vendor.TAXNUMBER}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-sm btn-wenodo" click-once ng-show="CheckSubModuleAccess(60)" data-toggle="modal" ng-click="VALID_SCHEDULECLICK();">Create schedule</button>
+                <!--<button type="button" class="btn btn-wenodo" data-toggle="modal" data-target="#Schedule_Statement">Schedule Request</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+﻿<div class="row">
+    <div class="col-md-4" ng-show="false">
+        <label>Login *</label>
+        <div class="input-group d-flex">
+            <input class="form-control"
+                   moment-picker="Section_Week_Search.APPROVE_START_TIME"
+                   name="APPROVE_START_TIME"
+                   only-digits-colon
+                   autocomplete="off"
+                   placeholder="Select a time"
+                   ng-disabled="IS_EMPLOYEE"
+                   ng-model="Section_Week_Search.APPROVE_START_TIME"
+                   format="HH:mm"
+                   locale="de"
+                   show-header="0"
+                   required
+                   ng-class="{'error':Form_Approve_Multiple_Shifts.submitted && Form_Approve_Multiple_Shifts.APPROVE_START_TIME.$error.required}">
+        </div>
+    </div>
+    <div class="col-md-4" ng-show="false">
+        <label>Logout *</label>
+        <input class="form-control"
+               placeholder="Select a time"
+               moment-picker="Section_Week_Search.APPROVE_END_TIME"
+               only-digits-colon
+               autocomplete="off"
+               name="APPROVE_END_TIME"
+               ng-disabled="IS_EMPLOYEE"
+               ng-model="Section_Week_Search.APPROVE_END_TIME"
+               format="HH:mm"
+               locale="de"
+               show-header="0"
+               required
+               ng-class="{'error':Form_Approve_Multiple_Shifts.submitted && Form_Approve_Multiple_Shifts.APPROVE_END_TIME.$error.required}">
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Shift Type  <i class="fas fa-info-circle" data-toggle="tooltip" data-html="true" data-placement="right" data-original-title="Shift Type <br> Change the script type to track staff attention, such as sickness, training or absence. Create and edit shift types in Settings > Schedule > Shift types"></i></label>
+            <input type="text"
+                   class="form-control "
+                   name="APPROVE_SHIFT_TYPE_NAME"
+                   autocomplete="off"
+                   ng-model="Section_Week_Search.APPROVE_SHIFT_NAME"
+                   placeholder="Select Shift Type"
+                   ng-disabled="IS_EMPLOYEE"
+                   uib-typeahead="SC as SC.DISPLAY_TEXT for SC in SHIFT_TYPES | filter:{DISPLAY_TEXT:$viewValue}"
+                   typeahead-template-url="ShiftTemplate.html"
+                   typeahead-on-select="selectApproveShiftTypeAhead($item)"
+                   typeahead-show-hint="true"
+                   typeahead-min-length="0"
+                   ng-class="{'error':Form_Approve_Multiple_Shifts.submitted && Form_Approve_Multiple_Shifts.APPROVE_SHIFT_TYPE_NAME.$error.required,'disabled':IS_EMPLOYEE }">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <p>
+            Approve <span ng-show="APPROVE_SHIFTS_WITHOUT_CLOCK_IN_AND_CLOCK_OUT == 0">{{$parent.APPROVE_COUNT =LOGIN_LOGOUT_LIST_COUNT}}</span>
+                    <span ng-show="APPROVE_SHIFTS_WITHOUT_CLOCK_IN_AND_CLOCK_OUT == 1">{{$parent.APPROVE_COUNT =LOGIN_LOGOUT_LIST_COUNT+PUBLISH_SHIFT_COUNT}}</span>  shifts
+        </p>
+        <div class="form-group border" ng-show="(UNPUBLISH_SHIFT_COUNT + PUBLISH_SHIFT_COUNT +LOGIN_LIST_COUNT+EMTY_SHIFT_COUNT)>0">
+            <div class="row">
+                <div class="col-auto"><i class="fa fa-exclamation-triangle text-danger"></i></div>
+                <div class="col text-sm" ng-show="APPROVE_SHIFTS_WITHOUT_CLOCK_IN_AND_CLOCK_OUT == 0">
+                    {{(APPROVE_SHIFT_COUNT+ UNPUBLISH_SHIFT_COUNT + PUBLISH_SHIFT_COUNT +LOGIN_LIST_COUNT+EMTY_SHIFT_COUNT) | number :2}} shift(s) cannot be approved,
+                    approving incomplete shifts is not possible, assign an employee to open shifts,
+                    Please Clock-in, clock-out to approve shifts.
+                </div>
+                <div class="col text-sm" ng-show="APPROVE_SHIFTS_WITHOUT_CLOCK_IN_AND_CLOCK_OUT == 1">
+                    {{(APPROVE_SHIFT_COUNT+ UNPUBLISH_SHIFT_COUNT + LOGIN_LIST_COUNT+EMTY_SHIFT_COUNT) | number :2}} shift(s) cannot be approved,
+                    approving incomplete shifts is not possible, assign an employee to open shifts.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Comment</label>
+            <textarea ng-model="Section_Week_Search.APPROVE_COMMENTS" class="form-control" rows="5"></textarea>
+        </div>
+    </div>
+</div>

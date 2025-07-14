@@ -1,0 +1,1765 @@
+﻿<div class="card">
+    <div class="card-header pl-2 pr-0">
+        <div class="row">
+            <div class="col-md-2">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                            <span id="dropdown_title">View Area | Week </span><i class="fa fa-sort float-right mt-1"></i>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu dropdown-menu-arrow text-xs">
+                            <li class="min-max-300 disabled-li">View by Area</li>
+                            <li class="min-max-300 px-3 py-2"><a>Day </a></li>
+                            <li class="min-max-300 px-3 py-2"><a href="#!/A_Week_View" class="d-block">Week</a></li>
+                            <li class="min-max-300 px-3 py-2"><a>2 Weeks</a></li>
+                            <li class="min-max-300 px-3 py-2"><a>Month</a></li>
+                            <li class="min-max-300 disabled-li">View by Employee</li>
+                            <li class="min-max-300 px-3 py-2"><a>Day </a></li>
+                            <li class="min-max-300 px-3 py-2"><a href="#!/E_Week_View" class="d-block">Week</a></li>
+                            <li class="min-max-300 px-3 py-2"><a>2 Weeks</a></li>
+                            <li class="min-max-300 px-3 py-2"><a>Month</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-2">
+                <div class="input-group input-group-sm" style="display:flex">
+                    <div class="input-group-prepend">
+                        <button type="button" class="btn input-group-text">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <input type="text"
+                           class="form-control text-sm dateinput"
+                           autocomplete="off"
+                           name="datecontrol"
+                           readonly
+                           placeholder="9 Aug - 15 Aug"
+                           ng-model="PAYROLL.END_DATE" ng-value="PAYROLL.END_DATE  | date" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn input-group-text">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-w-default btn-sm text-nowrap mt-1" data-toggle="tooltip" data-html="true" data-original-title="Dragndrop Shift">Shift 01</button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-w-default btn-sm text-nowrap mt-1" data-toggle="tooltip" data-html="true" data-original-title="Dragndrop Shift">Shift 02</button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-w-default btn-sm text-nowrap mt-1" data-toggle="tooltip" data-html="true" data-original-title="Dragndrop Shift">Shift 03</button>
+                    </div>
+                    <div class="col-auto ml-auto">
+                        <button type="button" class="btn btn-wenodo text-nowrap" ng-click="openNav3()">Settings</button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-w-default dropdown-toggle" data-toggle="dropdown">
+                            Templates
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm" aria-haspopup="true" aria-expanded="false">
+                            <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH()">Create New</a>
+                            <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_1=true">Save as template</a>
+                            <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_2=true">Edit template</a>
+                            <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_3=true">Apply template</a>
+                            <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_4=true">Copy week</a>
+                        </div>
+                        <div class="mega-menu dropdown-menu-arrow" ng-show="FILTER_SWTICH_ON_OFF">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Create Template</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <span class="d-block semibold font-14">Length</span>
+                                            <div class="custom-control custom-radio mt-2">
+                                                <input class="custom-control-input" type="radio" id="Week" name="customRadio">
+                                                <label for="Week" class="custom-control-label">Week</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <span class="d-block semibold font-14">&nbsp;</span>
+                                            <div class="custom-control custom-radio mt-2">
+                                                <input class="custom-control-input" type="radio" id="Day" name="customRadio">
+                                                <label for="Day" class="custom-control-label">Day</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-0">
+                                            <button type="button" class="btn btn-wenodo">Save</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mega-menu dropdown-menu-arrow" ng-show="FILTER_SWTICH_ON_OFF_1">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Save this schedule for Restaurant as a template <br />Aug 16th - Aug 22nd</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <span class="d-block semibold font-14">Weeks</span>
+                                            <select class="custom-select">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>6</option>
+                                                <option>7</option>
+                                                <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
+                                                <option>11</option>
+                                                <option>12</option>
+                                                <option>13</option>
+                                                <option>14</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <span class="d-block semibold font-14">Save From</span>
+                                            <input type="text"
+                                                   class="form-control text-sm dateinput"
+                                                   autocomplete="off"
+                                                   name="datecontrol"
+                                                   readonly
+                                                   placeholder="9 Aug - 15 Aug"
+                                                   ng-model="PAYROLL.END_DATE" ng-value="PAYROLL.END_DATE  | date" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-0">
+                                            <button type="button" class="btn btn-wenodo">Save</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_1=false">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mega-menu dropdown-menu-arrow" ng-show="FILTER_SWTICH_ON_OFF_2">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Edit Template</h5>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="row">
+                                    <ul class="todo-list w-100">
+                                        <li class="border-bottom">
+                                            <span class="text font-14">Template 01</span>
+                                            <div class="tools float-right">
+                                                <i class="fas fa-edit fa-sm"></i>
+                                                <i class="fas fa-trash fa-sm"></i>
+                                            </div>
+                                        </li>
+                                        <li class="border-bottom">
+                                            <span class="text font-14">Template 02</span>
+                                            <div class="tools float-right">
+                                                <i class="fas fa-edit fa-sm"></i>
+                                                <i class="fas fa-trash fa-sm"></i>
+                                            </div>
+                                        </li>
+                                        <li class="border-bottom">
+                                            <span class="text font-14">Template 03</span>
+                                            <div class="tools float-right">
+                                                <i class="fas fa-edit fa-sm"></i>
+                                                <i class="fas fa-trash fa-sm"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-group mb-0">
+                                            <button type="button" class="btn btn-wenodo">Save</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_2=false">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mega-menu dropdown-menu-arrow" ng-show="FILTER_SWTICH_ON_OFF_3">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Apply Template</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-0">
+                                            <select class="custom-select">
+                                                <option>Template 01</option>
+                                                <option>Template 02</option>
+                                                <option>Template 03</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-group mb-0">
+                                            <button type="button" class="btn btn-wenodo">Save</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_3=false">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mega-menu dropdown-menu-arrow" ng-show="FILTER_SWTICH_ON_OFF_4">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Copy Week</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-0">
+                                            <input type="text"
+                                                   class="form-control text-sm dateinput"
+                                                   autocomplete="off"
+                                                   name="datecontrol"
+                                                   readonly
+                                                   placeholder="9 Aug - 15 Aug"
+                                                   ng-model="PAYROLL.END_DATE" ng-value="PAYROLL.END_DATE  | date" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-group mb-0">
+                                            <button type="button" class="btn btn-wenodo">Save</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_4=false?'fadeiInOut':''">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-w-default dropdown-toggle" data-toggle="dropdown">
+                            Tools
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm" aria-haspopup="true" aria-expanded="false">
+                            <a class="dropdown-item" data-toggle="modal" data-target="#Approve_Multiple_Shifts">Approve multiple shifts</a>
+                            <a class="dropdown-item">Delete this week</a>
+                            <a class="dropdown-item">Export schedule (CSV)</a>
+                            <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_5=true">Hide/Show period</a>
+                            <a class="dropdown-item">Working time rule report</a>
+                            <a class="dropdown-item">Contracted hours</a>
+                            <a class="dropdown-item">Schedule history</a>
+                            <a class="dropdown-item">Shifts overview</a>
+                        </div>
+                        <div class="mega-menu dropdown-menu-arrow" ng-show="FILTER_SWTICH_ON_OFF_5">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Hide/Show period</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" id="Hide_Days" name="customRadio">
+                                                <label for="Hide_Days" class="custom-control-label">Hide Days</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" id="Show_Days" name="customRadio">
+                                                <label for="Show_Days" class="custom-control-label">Show Days</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>From</label>
+                                            <input type="text"
+                                                   class="form-control text-sm dateinput"
+                                                   autocomplete="off"
+                                                   name="datecontrol"
+                                                   readonly
+                                                   placeholder="9 Aug - 15 Aug"
+                                                   ng-model="PAYROLL.END_DATE" ng-value="PAYROLL.END_DATE  | date" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>To</label>
+                                            <input type="text"
+                                                   class="form-control text-sm dateinput"
+                                                   autocomplete="off"
+                                                   name="datecontrol"
+                                                   readonly
+                                                   placeholder="9 Aug - 15 Aug"
+                                                   ng-model="PAYROLL.END_DATE" ng-value="PAYROLL.END_DATE  | date" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-group mb-0">
+                                            <button type="button" class="btn btn-wenodo">Ok</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_5=false?'fadeiInOut':''">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-0 text-xs">
+        <div class="table-responsive custom-scrollbar height-65vh">
+            <table class="table table-bordered table-head-fixed icon-hover td-height-fixed">
+                <thead class="shadow-sm z-index-top">
+                    <tr>
+                        <th class="bg-light-blue border-right px-2">
+                            <div class="btn-group btn-block">
+                                <a class="btn btn-w-default btn-sm text-xs" ng-click="openNav1()"><i class="far fa-sliders-h-square fa-lg text-blue"></i></a>
+                                <button type="button" class="btn btn-w-default btn-sm text-xs">Employees</button>
+                                <button type="button" class="btn btn-w-default btn-sm text-xs">Positions</button>
+                            </div>
+                            <div class="d-block mt-2 text-sm">
+                                <div class="row">
+                                    <div class="col-md-6"><a class="text-blue cursor-pointer text-xs text-normal" data-toggle="modal" data-target="#Manage_Employees">Manage Employees</a></div>
+                                    <div class="col-md-6 text-right">
+                                        <a class="text-blue p-0 cursor-pointer text-xs text-normal" data-toggle="dropdown">
+                                            <i class="fa fa-sort-amount-down-alt"></i> Sort by
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm">
+                                            <a class="dropdown-item text-xs">Custom</a>
+                                            <a class="dropdown-item text-xs">First Name</a>
+                                            <a class="dropdown-item text-xs">Last Name</a>
+                                            <a class="dropdown-item text-xs">Shift Count</a>
+                                            <a class="dropdown-item text-xs">Hours</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="text-align-center bcg-white text-sm">
+                            <a class="cursor-pointer text-blue">Today</a>
+                            <span class="d-block">
+                                <i class="far fa-eye text-grey"></i>
+                                <i class="far fa-edit text-grey" data-toggle="modal" data-target="#Edit_Headline"></i>
+                            </span>
+                            <span class="d-block text-xs text-grey text-normal">
+                                2 Shifts
+                            </span>
+                        </th>
+                        <th class="text-align-center bcg-white text-sm">
+                            <a class="cursor-pointer text-nowrap">Tue. 08 Aug</a>
+                            <span class="d-block">
+                                <i class="far fa-eye text-grey"></i>
+                                <i class="far fa-edit text-grey" data-toggle="modal" data-target="#Edit_Headline"></i>
+                            </span>
+                            <span class="d-block text-xs text-grey text-normal">
+                                2 Shifts
+                            </span>
+                        </th>
+                        <th class="text-align-center bcg-white text-sm">
+                            <a class="cursor-pointer text-nowrap">Wed. 09 Aug</a>
+                            <span class="d-block">
+                                <i class="far fa-eye text-grey"></i>
+                                <i class="far fa-edit text-grey" data-toggle="modal" data-target="#Edit_Headline"></i>
+                            </span>
+                            <span class="d-block text-xs text-grey text-normal">
+                                2 Shifts
+                            </span>
+                        </th>
+                        <th class="text-align-center bcg-white text-sm">
+                            <a class="cursor-pointer text-nowrap">Thu. 10 Aug</a>
+                            <span class="d-block">
+                                <i class="far fa-eye text-grey"></i>
+                                <i class="far fa-edit text-grey" data-toggle="modal" data-target="#Edit_Headline"></i>
+                            </span>
+                            <span class="d-block text-xs text-grey text-normal">
+                                2 Shifts
+                            </span>
+                        </th>
+                        <th class="text-align-center bcg-white text-sm">
+                            <a class="cursor-pointer text-nowrap">Fri. 11 Aug</a>
+                            <span class="d-block">
+                                <i class="far fa-eye text-grey"></i>
+                                <i class="far fa-edit text-grey" data-toggle="modal" data-target="#Edit_Headline"></i>
+                            </span>
+                            <span class="d-block text-xs text-grey text-normal">
+                                2 Shifts
+                            </span>
+                        </th>
+                        <th class="text-align-center bcg-white text-sm">
+                            <a class="cursor-pointer text-nowrap">Sat. 12 Aug</a>
+                            <span class="d-block">
+                                <i class="far fa-eye text-grey"></i>
+                                <i class="far fa-edit text-grey" data-toggle="modal" data-target="#Edit_Headline"></i>
+                            </span>
+                            <span class="d-block text-xs text-grey text-normal">
+                                2 Shifts
+                            </span>
+                        </th>
+                        <th class="text-align-center bcg-white text-sm">
+                            <a class="cursor-pointer text-nowrap">Sun. 13 Aug</a>
+                            <span class="d-block">
+                                <i class="far fa-eye-slash text-blue"></i>
+                                <i class="far fa-edit text-grey" data-toggle="modal" data-target="#Edit_Headline"></i>
+                            </span>
+                            <span class="d-block text-xs text-grey text-normal">
+                                2 Shifts
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bg-light-blue border-right">Open Shift</td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                    </tr>
+                    <!--<tr class="bg-dull-green">
+                        <td>
+                            Management
+                            <small class="float-right mt-1">
+                                24h 0m / 2 Shifts
+                            </small>
+                        </td>
+                        <td colspan="7">
+                            <span class="float-right">
+                                <i class="fa fa-chevron-down"></i>
+                                <i class="fa fa-edit" ng-click="openNav2()"></i>
+                            </span>
+                        </td>
+                    </tr>-->
+                    <tr>
+                        <td class="bg-light-blue border-right pos-relative">
+                            <div class="row">
+                                <div class="col-auto pt-1">
+                                    <span class="name-badge">CR</span>
+                                </div>
+                                <div class="col">
+                                    <span class="text-sm">
+                                        Chan Ranawat
+                                        <small class="d-block">0h 0m / 0 Shifts</small>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bs-icon">
+                                <i class="fas fa-pen mr-3 d-block mb-1" ng-click="openNav4()"></i>
+                                <i class="fas fa-bars mr-3 d-block mb-1"></i>
+                                <i class="fas fa-envelope mr-3 d-block"></i>
+                            </div>
+                        </td>
+                        <td class="bg-light-blue">
+                            <div class="row">
+                                <div class="col-md-12 cursor-pointer p-2" data-toggle="modal" data-target="#Create_Shift">
+                                    <span class="font-12">Bartender</span>
+                                    <h6 class="d-block font-14 text-nowrap">07:30 - 17:00</h6>
+                                    <small class="d-block text-nowrap">
+                                        <i class="far fa-clock m-0"></i>
+                                        <span class="text-uppercase">Clocked in 07:30</span>
+                                    </small>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <i class="fas fa-edit fa-xs icon-rounded-blue" data-toggle="modal" data-target="#Create_Shift"></i>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <i class="fas fa-ellipsis-v fa-xs icon-rounded-white m-0" data-toggle="dropdown"></i>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item text-xs">Add Shift</a>
+                                                <a class="dropdown-item text-xs">Apply Shift Type</a>
+                                                <a class="dropdown-item text-xs">Set Shift to open</a>
+                                                <a class="dropdown-item text-xs">Copy Shift</a>
+                                                <a class="dropdown-item text-xs">Delete Shift</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-right pr-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="select{{$index}}" value="option1">
+                                        <label for="select{{$index}}" class="custom-control-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="bg-light-blue">
+                            <div class="row">
+                                <div class="col-md-12 cursor-pointer p-2" data-toggle="modal" data-target="#Create_Shift">
+                                    <span class="font-12">Cook</span>
+                                    <h6 class="d-block font-14 text-nowrap">07:30 - 17:00</h6>
+                                    <small class="d-block text-nowrap">
+                                        <i class="far fa-clock m-0"></i>
+                                        <span class="text-uppercase">Clocked in 07:30</span>
+                                    </small>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <i class="fas fa-edit fa-xs icon-rounded-blue" data-toggle="modal" data-target="#Create_Shift"></i>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <i class="fas fa-ellipsis-v fa-xs icon-rounded-white m-0" data-toggle="dropdown"></i>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item text-xs">Add Shift</a>
+                                                <a class="dropdown-item text-xs">Apply Shift Type</a>
+                                                <a class="dropdown-item text-xs">Set Shift to open</a>
+                                                <a class="dropdown-item text-xs">Copy Shift</a>
+                                                <a class="dropdown-item text-xs">Delete Shift</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-right pr-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="select{{$index}}" value="option1">
+                                        <label for="select{{$index}}" class="custom-control-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                    </tr>
+                    <!--<tr class="bg-light-blue">
+                        <td>
+                            Head Chef
+                            <small class="float-right mt-1">
+                                77h 0m / 4 Shifts
+                            </small>
+                        </td>
+                        <td colspan="7">
+                            <span class="float-right">
+                                <i class="fa fa-chevron-down"></i>
+                                <i class="fa fa-edit" ng-click="openNav2()"></i>
+                            </span>
+                        </td>
+                    </tr>-->
+                    <tr>
+                        <td class="bg-light-blue border-right pos-relative">
+                            <div class="row">
+                                <div class="col-auto pt-1">
+                                    <span class="name-badge">AK</span>
+                                </div>
+                                <div class="col">
+                                    <span class="text-sm">
+                                        Aasim Sultan Khan
+                                        <small class="d-block">0h 0m / 0 Shifts</small>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bs-icon">
+                                <i class="fas fa-pen mr-3 d-block mb-1"></i>
+                                <i class="fas fa-bars mr-3 d-block mb-1"></i>
+                                <i class="fas fa-envelope mr-3 d-block"></i>
+                            </div>
+                        </td>
+                        <td class="bg-light-blue">
+                            <div class="row">
+                                <div class="col-md-12 cursor-pointer p-2" data-toggle="modal" data-target="#Create_Shift">
+                                    <span class="font-12">Chef</span>
+                                    <h6 class="d-block font-14 text-nowrap">07:30 - 17:00</h6>
+                                    <small class="d-block text-nowrap">
+                                        <i class="far fa-clock m-0"></i>
+                                        <span class="text-uppercase">Clocked in 07:30</span>
+                                    </small>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <i class="fas fa-edit fa-xs icon-rounded-blue" data-toggle="modal" data-target="#Create_Shift"></i>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <i class="fas fa-ellipsis-v fa-xs icon-rounded-white m-0" data-toggle="dropdown"></i>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item text-xs">Add Shift</a>
+                                                <a class="dropdown-item text-xs">Apply Shift Type</a>
+                                                <a class="dropdown-item text-xs">Set Shift to open</a>
+                                                <a class="dropdown-item text-xs">Copy Shift</a>
+                                                <a class="dropdown-item text-xs">Delete Shift</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-right pr-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="select{{$index}}" value="option1">
+                                        <label for="select{{$index}}" class="custom-control-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="bg-light-blue">
+                            <div class="row">
+                                <div class="col-md-12 cursor-pointer p-2" data-toggle="modal" data-target="#Create_Shift">
+                                    <span class="font-12">Kitchen Porter</span>
+                                    <h6 class="d-block font-14 text-nowrap">07:30 - 17:00</h6>
+                                    <small class="d-block text-nowrap">
+                                        <i class="far fa-clock m-0"></i>
+                                        <span class="text-uppercase">Clocked in 07:30</span>
+                                    </small>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <i class="fas fa-edit fa-xs icon-rounded-blue" data-toggle="modal" data-target="#Create_Shift"></i>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <i class="fas fa-ellipsis-v fa-xs icon-rounded-white m-0" data-toggle="dropdown"></i>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item text-xs">Add Shift</a>
+                                                <a class="dropdown-item text-xs">Apply Shift Type</a>
+                                                <a class="dropdown-item text-xs">Set Shift to open</a>
+                                                <a class="dropdown-item text-xs">Copy Shift</a>
+                                                <a class="dropdown-item text-xs">Delete Shift</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-right pr-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="select{{$index}}" value="option1">
+                                        <label for="select{{$index}}" class="custom-control-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="bg-light-green">
+                            <div class="row">
+                                <div class="col-md-12 cursor-pointer p-2" data-toggle="modal" data-target="#Create_Shift">
+                                    <span class="font-12 semibold">Bartender</span>
+                                    <h6 class="d-block font-14 text-nowrap">07:30 - 17:00</h6>
+                                    <small class="d-block text-nowrap">
+                                        <i class="fas fa-check-circle m-0"></i>
+                                        <span class="text-uppercase semibold">Approved</span>
+                                    </small>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <i class="fas fa-edit fa-xs icon-rounded-blue" data-toggle="modal" data-target="#Create_Shift"></i>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <i class="fas fa-ellipsis-v fa-xs icon-rounded-white m-0" data-toggle="dropdown"></i>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item text-xs">Add Shift</a>
+                                                <a class="dropdown-item text-xs">Apply Shift Type</a>
+                                                <a class="dropdown-item text-xs">Set Shift to open</a>
+                                                <a class="dropdown-item text-xs">Copy Shift</a>
+                                                <a class="dropdown-item text-xs">Delete Shift</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-right pr-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="select{{$index}}" value="option1">
+                                        <label for="select{{$index}}" class="custom-control-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="bg-light-blue border-right pos-relative">
+                            <div class="row">
+                                <div class="col-auto pt-1">
+                                    <span class="name-badge">SA</span>
+                                </div>
+                                <div class="col">
+                                    <span class="text-sm">
+                                        Sahil Khan
+                                        <small class="d-block">0h 0m / 0 Shifts</small>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bs-icon">
+                                <i class="fas fa-pen mr-3 d-block mb-1"></i>
+                                <i class="fas fa-bars mr-3 d-block mb-1"></i>
+                                <i class="fas fa-envelope mr-3 d-block"></i>
+                            </div>
+                        </td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="pos-relative cursor-pointer" data-toggle="modal" data-target="#Create_Shift"><i class="fas fa-plus-square fa-2x bs-icon add-icon text-blue shadow-sm"></i></td>
+                        <td class="bg-light-grey">
+                            <div class="row text-grey">
+                                <div class="col-md-12 cursor-pointer p-2" data-toggle="modal" data-target="#Create_Shift">
+                                    <span class="font-12">Bartender</span>
+                                    <h6 class="d-block font-14 text-nowrap">07:30 - 17:00</h6>
+                                    <small class="d-block text-nowrap">
+                                        <i class="far fa-clock m-0"></i>
+                                        <span class="text-uppercase">Clocked in 07:30</span>
+                                    </small>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <i class="fas fa-edit fa-xs icon-rounded-blue" data-toggle="modal" data-target="#Create_Shift"></i>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <i class="fas fa-ellipsis-v fa-xs icon-rounded-white m-0" data-toggle="dropdown"></i>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item text-xs">Add Shift</a>
+                                                <a class="dropdown-item text-xs">Apply Shift Type</a>
+                                                <a class="dropdown-item text-xs">Set Shift to open</a>
+                                                <a class="dropdown-item text-xs">Copy Shift</a>
+                                                <a class="dropdown-item text-xs">Delete Shift</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-right pr-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="select{{$index}}" value="option1">
+                                        <label for="select{{$index}}" class="custom-control-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="event-footer animated fadeInUp">
+    <div class="row">
+        <div class="col-md-3 m-2">
+            <i class="fas fa-minus-square text-blue font-12"></i>
+            <span class="font-12">1 of 20 Selected | <a class="text-blue cursor-pointer semibold">Deselect all</a></span>
+        </div>
+        <div class="col-md-6 text-center m-2">
+            <a class="cursor-pointer mx-2 hover-lg"><i class="far fa-edit fa-xs" data-toggle="tooltip" title="Edit"></i></a>
+            <a class="cursor-pointer mx-2 hover-lg"><i class="far fa-check-circle fa-xs" data-toggle="tooltip" title="Approve Shifts"></i></a>
+            <a class="cursor-pointer mx-2 hover-lg"><i class="far fa-user-plus fa-xs" data-toggle="tooltip" title="Add"></i></a>
+            <a class="cursor-pointer mx-2 hover-lg"><i class="far fa-trash fa-xs" data-toggle="tooltip" title="Delete"></i></a>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+<div class="modal fade" id="Manage_Employees">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Manage Employees</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="dragndrop">
+                    <ul id="columns">
+                        <li class="column" draggable="true"><header><i class="fa fa-bars mr-2"></i> Chan Ranawat</header></li>
+                        <li class="column" draggable="true"><header><i class="fa fa-bars mr-2"></i> Aasim Sultan Khan</header></li>
+                        <li class="column" draggable="true"><header><i class="fa fa-bars mr-2"></i> Sahil Khan</header></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo">Done</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Create_Shift">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <div class="row">
+                        <div class="col-md-1"><span class="name-badge">CR</span> </div>
+                        <div class="col-md-11">
+                            Create shift for Chan Ranawat
+                            <span class="d-block font-12">Tuesday, 10 August 2021</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeNav()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Time</label>
+                                <div class="input-group d-flex">
+                                    <select class="custom-select">
+                                        <option selected disabled value="1">From</option>
+                                        <option value="2">16:00 - 00:00</option>
+                                        <option value="3">11:00 - 23:00</option>
+                                        <option value="4">11:00 - 18:00</option>
+                                        <option value="5">07:30 - 16:00</option>
+                                        <option value="6">09:00 - 21:00</option>
+                                    </select>
+
+                                    <select class="custom-select">
+                                        <option selected disabled value="1">00:00</option>
+                                        <option value="2">16:00 - 00:00</option>
+                                        <option value="3">11:00 - 23:00</option>
+                                        <option value="4">11:00 - 18:00</option>
+                                        <option value="5">07:30 - 16:00</option>
+                                        <option value="6">09:00 - 21:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Shift Type <i class="fas fa-info-circle" data-toggle="tooltip" data-html="true" data-placement="right" data-original-title="Shift Type <br> Change the script type to track staff attention, such as sickness, training or absence. Create and edit shift types in Settings > Schedule > Shift types"></i></label>
+                                    <input type="text" class="form-control" ng-model="customSelected" placeholder="Custom template" uib-typeahead="state as state.name for state in statesWithFlags | filter:{name:$viewValue}" typeahead-template-url="customTemplate.html" typeahead-show-hint="true" typeahead-min-length="0">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <!--<pre>Model: {{customSelected | json}}</pre>-->
+                                    <label>Employee</label>
+                                    <input type="text" class="form-control dropdown-scrollbar" ng-model="customSelected" placeholder="Custom template" uib-typeahead="state as state.name for state in statesWithFlags | filter:{name:$viewValue}" typeahead-template-url="customTemplate.html" typeahead-show-hint="true" typeahead-min-length="0">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Position</label>
+                                    <select class="custom-select">
+                                        <option value="1">Bartender</option>
+                                        <option value="2">Waiter</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 offset-md-1">
+                        <div class="form-group">
+                            <label>Breaks</label>
+                            <span class="d-block">0mins <a class="cursor-pointer"><i class="far fa-pen" ng-click="openNav()"></i></a></span>
+                        </div>
+                        <div class="border-bottom"></div>
+                        <div class="form-group">
+                            <label>Payroll <i class="fas fa-info-circle" data-toggle="tooltip" data-html="true" data-placement="right" data-original-title="Check off to approve shifts as worked and approved for payroll."></i></label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="Approve">
+                                <label class="custom-control-label" for="Approve">Approve</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                            <li class="nav-item" ng-click="SHIFT_TAB(1)">
+                                <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-home" aria-selected="false">Comments</a>
+                            </li>
+                            <li class="nav-item"  ng-click="SHIFT_TAB(2)">
+                                <a class="nav-link" id="custom-content-above-home-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-home" aria-selected="false">Wage</a>
+                            </li>
+                            <!--<li class="nav-item"  ng-click="SHIFT_TAB(3)">
+                                <a class="nav-link" id="custom-content-above-home-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-home" aria-selected="false">Copy Shift</a>
+                            </li>
+                            <li class="nav-item"  ng-click="SHIFT_TAB(4)">
+                                <a class="nav-link" id="custom-content-above-home-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-home" aria-selected="false">Supplement</a>
+                            </li>-->
+                        </ul>
+
+                        <div class="tab-content" id="custom-content-above-tabContent">
+                            <div class="tab-pane fade show active"  ng-class="{'show active':SHIFT_FLAG==1}" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab" ng-show="SHIFT_FLAG==1">
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="tab-pane fade" ng-class="{'show active':SHIFT_FLAG==2}" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab" ng-show="SHIFT_FLAG==2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="input-group mb-3 d-flex">
+                                                    <input type="text" class="form-control">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">&pound;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group mt-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio" id="Per_Hour" name="customRadio">
+                                                        <label for="Per_Hour" class="custom-control-label">Per Hour</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group mt-2">
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" type="radio" id="Per_Shift" name="customRadio">
+                                                        <label for="Per_Shift" class="custom-control-label">Per Shift</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 font-12">
+                                                Changes only apply to this shift, and will override default payroll settings.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="tab-pane fade"  ng-class="{'show active':SHIFT_FLAG==3}"  id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab" ng-show="SHIFT_FLAG==3">
+                                <div class="row">
+                                    <div class="col-md-8 font-12">Select how many copies of the shift you want created.</div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Copies</label>
+                                            <input type="number" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade"  ng-class="{'show active':SHIFT_FLAG==4}" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab" ng-show="SHIFT_FLAG==4">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <select class="custom-select">
+                                                <option disabled selected>Select</option>
+                                                <option>option 2</option>
+                                                <option>option 3</option>
+                                                <option>option 4</option>
+                                                <option>option 5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row w-100">
+                    <div class="col-md-6">
+                        <div class="form-group mb-0">
+                            <button type="button" class="btn btn-wenodo">Create</button>
+                            <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="Notify_Employee">
+                            <label for="Notify_Employee" class="custom-control-label">Notify Employee</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="Message">
+                            <label for="Message" class="custom-control-label">Message</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mySidenav" class="sidenav">
+    <div class="card-header">
+        <h5 class="card-title mt-1">No breaks apply</h5>
+        <div class="card-tools ml-auto">
+            <button class="btn btn-tool py-0" ng-click="closeNav()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body custom-scrollbar height-82vh">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>Time</label>
+                    <div class="input-group d-flex">
+                        <input type="text" class="form-control" placeholder="From">
+                        <input type="text" class="form-control" placeholder="To">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-right">
+                <label class="d-block">&nbsp;</label>
+                <a class="cursor-pointer mt-3">00hrs <i class="far fa-times text-danger"></i></a>
+            </div>
+        </div>
+        <button type="button" class="btn btn-w-default"><i class="far fa-plus"></i> Add break</button>
+    </div>
+    <div class="modal-footer sidenav-footer-fixed">
+        <button type="button" class="btn btn-wenodo" ng-click="closeNav()">Close</button>
+    </div>
+</div>
+<div id="Myfilters" class="filter-panel">
+    <div class="card-header">
+        <h5 class="card-title mt-1">Filters</h5>
+        <div class="card-tools ml-auto">
+            <button class="btn btn-tool py-0" data-toggle="tooltip" data-html="true" data-placement="left" data-original-title="Reset Filters">
+                <i class="fas fa-undo"></i>
+            </button>
+            <button class="btn btn-tool py-0" ng-click="closeNav1()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body custom-scrollbar height-82vh">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="Hide_Rows">
+                        <label class="custom-control-label" for="Hide_Rows">Hide empty rows</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header cursor-pointer p-0" id="headingOne" data-toggle="collapse" data-target="#Shift_Time" aria-expanded="true" aria-controls="collapseOne" ng-click="SHIFT_TIME=!SHIFT_TIME">
+                            <button class="btn btn-link font-14" type="button">
+                                Shift Times
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!SHIFT_TIME"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="SHIFT_TIME"></i>
+                            </span>
+                        </div>
+
+                        <div id="Shift_Time" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="input-group d-flex">
+                                    <input type="text" class="form-control" placeholder="From">
+                                    <input type="text" class="form-control" placeholder="To">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header cursor-pointer p-0" id="headingTwo" data-toggle="collapse" data-target="#Status" aria-expanded="false" aria-controls="collapseTwo" ng-click="FSTATUS=!FSTATUS">
+                            <button class="btn btn-link font-14" type="button">
+                                Status
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!FSTATUS"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="FSTATUS"></i>
+                            </span>
+                        </div>
+                        <div id="Status" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Open" value="option1">
+                                        <label for="Open" class="custom-control-label"><i class="fas fa-circle text-green"></i> Open</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Assigned" value="option1">
+                                        <label for="Assigned" class="custom-control-label"><i class="fas fa-circle text-light-blue"></i> Assigned</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Approved" value="option1">
+                                        <label for="Approved" class="custom-control-label"><i class="fas fa-circle text-light-green"></i> Approved</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="For_Sale" value="option1">
+                                        <label for="For_Sale" class="custom-control-label"><i class="fas fa-circle text-warning"></i> For sale</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header cursor-pointer p-0" id="headingThree" data-toggle="collapse" data-target="#Shift_Type" aria-expanded="false" aria-controls="collapseThree" ng-click="SHT_TYPE=!SHT_TYPE">
+                            <button class="btn btn-link font-14" type="button">
+                                Shift Type
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!SHT_TYPE"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="SHT_TYPE"></i>
+                            </span>
+                        </div>
+                        <div id="Shift_Type" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="All_Shifts" value="option1">
+                                        <label for="All_Shifts" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Normal_Shifts" value="option1">
+                                        <label for="Normal_Shifts" class="custom-control-label"><i class="far fa-circle"></i> Normal</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Overtime" value="option1">
+                                        <label for="Overtime" class="custom-control-label"><i class="fas fa-circle"></i> Overtime</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Shift_Type_Absent" value="option1">
+                                        <label for="Shift_Type_Absent" class="custom-control-label"><i class="fas fa-circle text-purple"></i> Absent</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Shift_Type_Late" value="option1">
+                                        <label for="Shift_Type_Late" class="custom-control-label"><i class="fas fa-circle text-pink"></i> Late</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Shift_Type_SickNoPay" value="option1">
+                                        <label for="Shift_Type_SickNoPay" class="custom-control-label"><i class="fas fa-circle text-dull-green"></i> Sick No Pay</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Shift_Type_TimeOff" value="option1">
+                                        <label for="Shift_Type_TimeOff" class="custom-control-label"><i class="fas fa-circle text-orange"></i> Time Off</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Shift_Type_Training" value="option1">
+                                        <label for="Shift_Type_Training" class="custom-control-label"><i class="fas fa-circle text-cyan"></i> Training</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Shift_Type_SSP_Absence" value="option1">
+                                        <label for="Shift_Type_SSP_Absence" class="custom-control-label"><i class="fas fa-circle text-lime"></i> SSP Absence</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Shift_Type_Vacation" value="option1">
+                                        <label for="Shift_Type_Vacation" class="custom-control-label"><i class="fas fa-circle text-maroon"></i> Vacation</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header cursor-pointer p-0" id="headingFour" data-toggle="collapse" data-target="#Employees" aria-expanded="false" aria-controls="collapseThree" ng-click="EMP_DTS=!EMP_DTS">
+                            <button class="btn btn-link font-14" type="button">
+                                Employees
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!EMP_DTS"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="EMP_DTS"></i>
+                            </span>
+                        </div>
+                        <div id="Employees" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="All_Employees" value="option1">
+                                        <label for="All_Employees" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="No_Section" value="option1">
+                                        <label for="No_Section" class="custom-control-label">No Section</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="CR" value="option1">
+                                        <label for="CR" class="custom-control-label"><span class="name-badge">CR</span> Chan Ranawat</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="AS" value="option1">
+                                        <label for="AS" class="custom-control-label"><span class="name-badge">AK</span> Aasim Sultan Khan</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="SA" value="option1">
+                                        <label for="SA" class="custom-control-label"><span class="name-badge">AS</span> Sahil Khan</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header cursor-pointer p-0" id="headingFive" data-toggle="collapse" data-target="#Employee_Group" aria-expanded="false" aria-controls="collapseThree" ng-click="EMP_GRP=!EMP_GRP">
+                            <button class="btn btn-link font-14" type="button">
+                                Employee Position
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!EMP_GRP"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="EMP_GRP"></i>
+                            </span>
+                        </div>
+                        <div id="Employee_Group" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="All_Group" value="option1">
+                                        <label for="All_Group" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Manager" value="option1">
+                                        <label for="Manager" class="custom-control-label">Manager</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Barista" value="option1">
+                                        <label for="Barista" class="custom-control-label">Barista</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Waiter" value="option1">
+                                        <label for="Waiter" class="custom-control-label">Waiter</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Host" value="option1">
+                                        <label for="Host" class="custom-control-label">Host</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Bartender" value="option1">
+                                        <label for="Bartender" class="custom-control-label">Bartender</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Head_Chef" value="option1">
+                                        <label for="Head_Chef" class="custom-control-label">Head Chef</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Chef" value="option1">
+                                        <label for="Chef" class="custom-control-label">Chef</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Kitchen_Porter" value="option1">
+                                        <label for="Kitchen_Porter" class="custom-control-label">Kitchen Porter</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header cursor-pointer p-0" id="headingSix" data-toggle="collapse" data-target="#Positions" aria-expanded="false" aria-controls="collapseThree" ng-click="POS=!POS">
+                            <button class="btn btn-link font-14" type="button">
+                                Positions
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!POS"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="POS"></i>
+                            </span>
+                        </div>
+                        <div id="Positions" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="All_Positions" value="option1">
+                                        <label for="All_Positions" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="No_Section" value="option1">
+                                        <label for="No_Section" class="custom-control-label">No Section</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="No_Position" value="option1">
+                                        <label for="No_Position" class="custom-control-label">No Position</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer sidenav-footer-fixed">
+        <button type="button" class="btn btn-wenodo" ng-click="closeNav1()">Close</button>
+    </div>
+</div>
+<div id="mySidenav2" class="sidenav">
+    <div class="card-header">
+        <h5 class="card-title mt-1">Edit Section</h5>
+        <div class="card-tools ml-auto">
+            <button class="btn btn-tool py-0" ng-click="closeNav2()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body custom-scrollbar height-82vh">
+        <div class="row">
+            
+        </div>
+    </div>
+    <div class="modal-footer sidenav-footer-fixed">
+        <button type="button" class="btn btn-wenodo">Done</button>
+        <button type="button" class="btn btn-w-default" ng-click="closeNav2()">Close</button>
+    </div>
+</div>
+<div id="mySidenav3" class="sidenav">
+    <div class="card-header">
+        <h5 class="card-title mt-1">Settings</h5>
+        <div class="card-tools ml-auto">
+            <button class="btn btn-tool py-0" ng-click="closeNav3()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body custom-scrollbar height-82vh">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="semibold">Finance</h5>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Revenue">
+                    <label class="custom-control-label" for="Revenue">Revenue</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Payroll">
+                    <label class="custom-control-label" for="Payroll">Payroll hours & costs</label>
+                </div>
+            </div>
+            <div class="border-bottom"></div>
+            <div class="col-md-12">
+                <h5 class="semibold">Shifts</h5>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Shift_details">
+                    <label class="custom-control-label" for="Shift_details">Shift details</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Quick_edit_shifts">
+                    <label class="custom-control-label" for="Quick_edit_shifts">Quick edit shifts</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Flex">
+                    <label class="custom-control-label" for="Flex">Flex</label>
+                </div>
+            </div>
+            <div class="border-bottom"></div>
+            <div class="col-md-12">
+                <h5 class="semibold">Schedule</h5>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Availability">
+                    <label class="custom-control-label" for="Availability">Availability</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Bank_holidays">
+                    <label class="custom-control-label" for="Bank_holidays">Bank holidays / Vacations</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Contract_Rules">
+                    <label class="custom-control-label" for="Contract_Rules">Contract Rules</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Skills">
+                    <label class="custom-control-label" for="Skills">Skills</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer sidenav-footer-fixed">
+        <button type="button" class="btn btn-wenodo">Done</button>
+        <button type="button" class="btn btn-w-default" ng-click="closeNav3()">Close</button>
+    </div>
+</div>
+<div id="mySidenav4" class="sidenav">
+    <div class="card-header">
+        <h5 class="card-title mt-1">Edit Employee</h5>
+        <div class="card-tools ml-auto">
+            <button class="btn btn-tool py-0" ng-click="closeNav4()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body custom-scrollbar height-82vh">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <img src="../../dist/img/user1-128x128.jpg" alt="" class="img-circle img-fluid">
+                            </div>
+                            <div class="col-8">
+                                <h2 class="lead semibold">Nicole Pearson</h2>
+                                <p class="text-muted text-sm"><b>User Name: </b> nicole_pearson@wenodo.com </p>
+                                <ul class="mt-2 text-muted text-sm lh-24">
+                                    <li><span class="semibold">Email:</span> nicole_pearson@wenodo.com</li>
+                                    <li><span class="semibold">Mobile:</span>  + 800 - 12 12 23 52</li>
+                                    <li><span class="semibold">Birthday:</span>  26 Aug 1998</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-sm btn-wenodo" data-toggle="tooltip" data-html="true" data-placement="left" data-original-title="Invite Employee">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-w-default">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="border-bottom"></div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="d-block">Department</label>
+                        <button type="button" class="btn btn-sm btn-w-default" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_5=true"><i class="fa fa-plus"></i> Add</button>
+                        <span class="badge badge-light-grey p-2 m-2">Form of House <i class="fa fa-times cursor-pointer float-right ml-3"></i></span>
+                        <span class="badge badge-light-grey p-2 m-2">Management <i class="fa fa-times cursor-pointer float-right ml-3"></i></span>
+                    </div>
+
+                    <div class="mega-menu" ng-show="FILTER_SWTICH_ON_OFF_5" style="top:15rem">
+                        <div class="card-header">
+                            <h5 class="card-title mt-2 d-inline">Add Department</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-0">
+                                    <button type="button" class="btn btn-wenodo">Save</button>
+                                    <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_5=false">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-bottom"></div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="d-block">Employee Position</label>
+                        <button type="button" class="btn btn-sm btn-w-default" data-toggle="modal" data-target="#Add_Employee_Position"><i class="fa fa-plus"></i> Add</button>
+                        <span class="badge badge-light-grey p-2 m-2">Form of House <i class="fa fa-pen cursor-pointer float-right ml-3"></i></span>
+                        <span class="badge badge-light-grey p-2 m-2">Management <i class="fa fa-pen cursor-pointer float-right ml-3"></i></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer sidenav-footer-fixed">
+        <button type="button" class="btn btn-wenodo">Done</button>
+        <button type="button" class="btn btn-w-default" ng-click="closeNav4()">Close</button>
+    </div>
+</div>
+<div class="modal fade z-index-top" id="Add_Employee_Position">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Employee Position</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450 mn-height-300">
+                <div class="form-group">
+                    <label>Employee Positions <i class="fas fa-info-circle" data-toggle="tooltip" data-html="true" data-placement="right" data-original-title="Shift Type <br> Change the script type to track staff attention, such as sickness, training or absence. Create and edit shift types in Settings > Schedule > Shift types"></i></label>
+                    <input type="text" class="form-control" ng-model="customSelected" placeholder="Custom template" uib-typeahead="state as state.name for state in statesWithFlags | filter:{name:$viewValue}" typeahead-template-url="customTemplate.html" typeahead-show-hint="true" typeahead-min-length="0">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo">Done</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Edit_Headline">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Add to
+                    <span class="d-block font-12">Mon. 9 Aug</span>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="form-group">
+                    <label>Headline</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Note (Visible only to schedule managers)</label>
+                    <textarea class="form-control" rows="6" placeholder="Enter ..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo">Create</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Approve_Multiple_Shifts">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Approve Multiple Shifts
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+
+                <div class="col-md-12 text-center">
+                    Check off to approve shifts as worked and approved for payroll.
+                </div>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-1">
+                        <div class="form-group text-center">
+                            <label>Mon</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Monday" value="option1">
+                                <label for="Monday" class="custom-control-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group text-center">
+                            <label>Tue</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Tuesday" value="option1">
+                                <label for="Tuesday" class="custom-control-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group text-center">
+                            <label>Wed</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Wednesday" value="option1">
+                                <label for="Wednesday" class="custom-control-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group text-center">
+                            <label>Thu</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Thursday" value="option1">
+                                <label for="Thursday" class="custom-control-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group text-center">
+                            <label>Fri</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Friday" value="option1">
+                                <label for="Friday" class="custom-control-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group text-center">
+                            <label>Sat</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Saturday" value="option1">
+                                <label for="Saturday" class="custom-control-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group text-center">
+                            <label>Sun</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Sunday" value="option1">
+                                <label for="Sunday" class="custom-control-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <i class="fa fa-lightbulb-on text-warning"></i> <span class="semibold">Note:</span> Approving a future shift is not possible.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo">Approve</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<script type="text/javascript">
+    $('#divNewNotifications li').on('click', function () {
+        $('#dropdown_title').html($(this).find('a').html());
+    });
+</script>
+<script type="text/javascript">
+    var dragSrcEl = null;
+
+    function handleDragStart(e) {
+        // Target (this) element is the source node.
+        dragSrcEl = this;
+
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.outerHTML);
+
+        this.classList.add('dragElem');
+    }
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault(); // Necessary. Allows us to drop.
+        }
+        this.classList.add('over');
+
+        e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+        return false;
+    }
+
+    function handleDragEnter(e) {
+        // this / e.target is the current hover target.
+    }
+
+    function handleDragLeave(e) {
+        this.classList.remove('over');  // this / e.target is previous target element.
+    }
+
+    function handleDrop(e) {
+        // this/e.target is current target element.
+
+        if (e.stopPropagation) {
+            e.stopPropagation(); // Stops some browsers from redirecting.
+        }
+
+        // Don't do anything if dropping the same column we're dragging.
+        if (dragSrcEl != this) {
+            // Set the source column's HTML to the HTML of the column we dropped on.
+            //alert(this.outerHTML);
+            //dragSrcEl.innerHTML = this.innerHTML;
+            //this.innerHTML = e.dataTransfer.getData('text/html');
+            this.parentNode.removeChild(dragSrcEl);
+            var dropHTML = e.dataTransfer.getData('text/html');
+            this.insertAdjacentHTML('beforebegin', dropHTML);
+            var dropElem = this.previousSibling;
+            addDnDHandlers(dropElem);
+
+        }
+        this.classList.remove('over');
+        return false;
+    }
+
+    function handleDragEnd(e) {
+        // this/e.target is the source node.
+        this.classList.remove('over');
+
+        /*[].forEach.call(cols, function (col) {
+          col.classList.remove('over');
+        });*/
+    }
+
+    function addDnDHandlers(elem) {
+        elem.addEventListener('dragstart', handleDragStart, false);
+        elem.addEventListener('dragenter', handleDragEnter, false)
+        elem.addEventListener('dragover', handleDragOver, false);
+        elem.addEventListener('dragleave', handleDragLeave, false);
+        elem.addEventListener('drop', handleDrop, false);
+        elem.addEventListener('dragend', handleDragEnd, false);
+
+    }
+
+    var cols = document.querySelectorAll('#columns .column');
+    [].forEach.call(cols, addDnDHandlers);
+
+
+
+</script>
+<script type="text/ng-template" id="customTemplate.html">
+    <a>
+        <img ng-src="{{match.model.flag}}" width="16">
+        <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>

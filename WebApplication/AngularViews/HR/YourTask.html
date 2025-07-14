@@ -1,0 +1,41 @@
+﻿    <div class="card-header">
+        <h5 class="heading-text mb-2">Your task</h5>
+    </div>
+    <div class="card-body">
+        <div class="row content-bg p-2">
+            <div class="col-md-6">
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item list-group-padding cursor-pointer" ng-click="REDIRECT_INDEX(1)">
+                        <a href="javascript:void(0)">Reminders</a> <span class="float-right"><small class="indexing">{{YOUR_TASKS.REMINDER}}</small></span>
+                    </li>
+                    <li class="list-group-item list-group-padding cursor-pointer" ng-click="REDIRECT_INDEX(2)">
+                        <a href="javascript:void(0)">Approvals</a> <span class="float-right"><small class="indexing">{{YOUR_TASKS.APPROVALS}}</small></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group list-group-unbordered">
+                    <li ng-show="false" class="list-group-item list-group-padding cursor-pointer" ng-click="REDIRECT_INDEX(3)">
+                        <a href="javascript:void(0)">To Do</a> <span class="float-right"><small class="indexing">{{YOUR_TASKS.TODO}}</small></span>
+                    </li>
+                    <li class="list-group-item list-group-padding cursor-pointer" ng-click="REDIRECT_INDEX(4)">
+                        <a href="javascript:void(0)">My Requests</a> <span class="float-right"><small class="indexing">{{YOUR_TASKS.REQUEST}}</small></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12 mt-4">
+            <h5 class="heading-text mb-2">Your responsibility</h5>
+        </div>
+        <div class="col-md-12">
+            <div class="text-center" ng-show="EMPLOYEE_RESPONSBILITY.length==0" empty-grid>
+            </div>
+            <div class="row">
+                <div class="col-md-4" ng-repeat="EMP in EMPLOYEE_RESPONSBILITY" ng-init="inittask(EMP,$index)">
+                    <a class="d-block mb-3 fixed-height p-4 {{EMP.COLOR}} d-block" href="#!/RTask?ID={{EMP.POSITION_RESPONSIBILITY_ID}}" >
+                        <h5 class="heading-text">{{EMP.RESPONSIBILITY_NAME}}</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>

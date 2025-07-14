@@ -1,0 +1,2752 @@
+﻿<div class="card cashup-entry-body">
+    <templateurl template-url="../AngularViews/CashupApp/Cashup_Entry/CashupEntryHeader.html" class="cashup_entry_header"></templateurl>
+    <div class="card-body pt-1">
+        <div class="row gx-2 resSites cashup_entry_header_details">
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Site: <span class="f-w-700">{{SELECTED_SITE}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Area: <span class="f-w-700">{{SELECTED_AREA || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Session: <span class="f-w-700">{{SELECTED_SESSION || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Cashup Date: <span class="f-w-700">{{CASHUP_DATE | date:DISPLAY_DATE_FORMAT }}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button class="btn btn-light text-nowrap" ng-click="SELECT_CASHUP_DETAILS()">Edit Parameters</button>
+            </div>
+        </div>
+        
+        <div class="row g-1 mt-1">
+            <h5 class="headings">Cashup Entry</h5>
+            <!-- Left card -->
+            <div class="col-xxl-6 col-xl-6 col-md-6">
+                <div class="card resCashupHeader">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xxl-12 col-xl-12 col-md-12">
+                                <span class="headings">ePos</span>
+                                <button class="btn btn-light float-end " ng-click="EPOS_REFRESH(EPOS,7)"
+                                        ng-if="(CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID!=0
+                                                && CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID!=11
+                                                && CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID!=17
+                                                && CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID!=12
+                                                && CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID!=15
+                                                && CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID!=37)">
+                                    <i class="fa-light fa-rotate"></i>
+                                    Sync
+                                </button>
+                                <button class="btn btn-light float-end "
+                                        data-bs-target="#ePos_upload"
+                                        data-bs-toggle="modal"
+                                        ng-if="(CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==0
+                                                || CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==11
+                                                || CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==17
+                                                || CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==12
+                                                || CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==15
+                                                || CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==37)">
+                                    <i class="fa-light fa-arrow-up-from-bracket"></i>
+                                    Upload
+                                </button>
+                            </div>
+                            <!--<div class="col-xxl-auto col-xl-auto col-md-auto ">
+                            <div class="alert alert-light-primary fade show">
+                                <div class="row align-items-center ">
+                                    <div class="col-auto txt-primary">
+                                        <i class="fa-light fa-circle-info"></i>
+                                    </div>
+                                    <div class="col">
+                                        <p class="txt-primary">ePOS data was last synced on 6th Jun at 01:08</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+                        </div>
+                        <div class="table-responsive mt-2 resCashupTable" ng-show="EPOS_data.length > 0">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th width="25%"></th>
+                                        <th ng-repeat="session in SESSION_NAMES">{{ session }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="media in MEDIA_TYPES">
+                                        <td>{{ media }}</td>
+                                        <td ng-repeat="session in SESSION_NAMES">{{tableData[media][session] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td ng-repeat="session in SESSION_NAMES">{{ sessionTotals[session]  || '-' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th width="25%"></th>
+                                        <th ng-repeat="session in SESSION_NAMES">{{ session }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="category in CATEGORY_TYPES">
+                                        <td>{{ category }}</td>
+                                        <td ng-repeat="session in SESSION_NAMES">{{ categoryTableData[category][session] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td ng-repeat="session in SESSION_NAMES">{{ categorySessionTotals[session]|| '-' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right card -->
+            <div class="col-xxl-6 col-xl-6 col-md-6">
+                <div class="card resCashupHeader">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xxl-12 col-xl-12 col-md-12">
+                                <span class="headings">Covers</span>
+                                <button class="btn btn-light float-end" data-bs-target="#entry_covers_upload" data-bs-toggle="modal" ng-show="CASHUP_ENTRY_SEARCH.CASHUP_DATA_UPLOAD_TYPE==1">
+                                    <i class="fa-light fa-arrow-up-from-bracket"></i>
+                                    Upload
+                                </button>
+                                <button class="btn btn-light float-end d-none" ng-show="false">
+                                    <i class="fa-light fa-rotate"></i>
+                                    Sync
+                                </button>
+                            </div>
+                            <!--<div class="col-xxl-auto col-xl-auto col-md-auto">
+                            <div class="alert alert-light-primary fade show">
+                                <div class="row align-items-center ">
+                                    <div class="col-auto txt-primary">
+                                        <i class="fa-light fa-circle-info"></i>
+                                    </div>
+                                    <div class="col">
+                                        <p class="txt-primary">Covers was last updated on 6th June at 17:00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+                        </div>
+                        <div class="table-responsive mt-2 resCashupTable" ng-show="Show_covers">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th width="20%">
+                                            <span class="d-flex align-items-center">
+                                                Session
+                                                <i class="fa-regular fa-arrow-right me-2 text-grey c-pointer ms-auto"></i>
+                                            </span>
+                                        </th>
+                                        <th width="20%">Breakfast</th>
+                                        <th width="20%">Lunch</th>
+                                        <th width="20%">Dinner</th>
+                                        <th width="20%">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="3" class="vertical_text_container">
+                                            <span class="vertical_text">
+                                                Source
+                                            </span>
+
+                                        </td>
+                                        <td class="text-nowrap">
+                                            Walk-in
+                                        </td>
+                                        <td>{{ (COVERS_data.sources[0] == null || COVERS_data.sources[0] == undefined) || COVERS_data.sources[0].Breakfast  == 0 ? '-' : COVERS_data.sources[0].Breakfast }}</td>
+                                        <td>{{ (COVERS_data.sources[0] == null || COVERS_data.sources[0] == undefined) || COVERS_data.sources[0].Lunch == 0?'-' : COVERS_data.sources[0].Lunch }}</td>
+                                        <td>{{ (COVERS_data.sources[0] == null || COVERS_data.sources[0] == undefined) || COVERS_data.sources[0].Dinner== 0?'-' : COVERS_data.sources[0].Dinner }}</td>
+                                        <td>{{ (COVERS_data.sources[0] == null || COVERS_data.sources[0] == undefined) || COVERS_data.sources[0].Total == 0?'-' : COVERS_data.sources[0].Total }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap">
+                                            Reservation
+                                        </td>
+                                        <td>{{ (COVERS_data.sources[1] == null || COVERS_data.sources[1] == undefined) || COVERS_data.sources[1].Breakfast  == 0 ? '-' : COVERS_data.sources[1].Breakfast }}</td>
+                                        <td>{{ (COVERS_data.sources[1] == null || COVERS_data.sources[1] == undefined) || COVERS_data.sources[1].Lunch == 0?'-' : COVERS_data.sources[1].Lunch }}</td>
+                                        <td>{{ (COVERS_data.sources[1] == null || COVERS_data.sources[1] == undefined) || COVERS_data.sources[1].Dinner== 0?'-' : COVERS_data.sources[1].Dinner }}</td>
+                                        <td>{{ (COVERS_data.sources[1] == null || COVERS_data.sources[1] == undefined) || COVERS_data.sources[1].Total == 0?'-' : COVERS_data.sources[1].Total }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap">
+                                            Booking
+                                        </td>
+                                        <td>{{ (COVERS_data.sources[2] == null || COVERS_data.sources[2] == undefined) || COVERS_data.sources[2].Breakfast  == 0 ? '-' : COVERS_data.sources[2].Breakfast }}</td>
+                                        <td>{{ (COVERS_data.sources[2] == null || COVERS_data.sources[2] == undefined) || COVERS_data.sources[2].Lunch == 0?'-' : COVERS_data.sources[2].Lunch }}</td>
+                                        <td>{{ (COVERS_data.sources[2] == null || COVERS_data.sources[2] == undefined) || COVERS_data.sources[2].Dinner== 0?'-' : COVERS_data.sources[2].Dinner }}</td>
+                                        <td>{{ (COVERS_data.sources[2] == null || COVERS_data.sources[2] == undefined) || COVERS_data.sources[2].Total == 0?'-' : COVERS_data.sources[2].Total }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="3" class="vertical_text_container">
+                                            <span class="vertical_text pl-0">
+                                                Status
+                                            </span>
+
+                                        </td>
+                                        <td class="text-nowrap">
+                                            Completed
+                                        </td>
+                                        <td>{{ (COVERS_data.statuses[0]==null||COVERS_data.statuses[0]==undefined) || COVERS_data.statuses[0].Breakfast == 0 ? '-' :COVERS_data.statuses[0].Breakfast }}</td>
+                                        <td>{{ (COVERS_data.statuses[0]==null||COVERS_data.statuses[0]==undefined) || COVERS_data.statuses[0].Lunch == 0 ? '-' : COVERS_data.statuses[0].Lunch }}</td>
+                                        <td>{{ (COVERS_data.statuses[0]==null||COVERS_data.statuses[0]==undefined) || COVERS_data.statuses[0].Dinner== 0 ? '-' : COVERS_data.statuses[0].Dinner }}</td>
+                                        <td>{{ (COVERS_data.statuses[0]==null||COVERS_data.statuses[0]==undefined) || COVERS_data.statuses[0].Total == 0 ? '-' : COVERS_data.statuses[0].Total }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap">
+                                            No Show
+                                        </td>
+                                        <td>{{ (COVERS_data.statuses[2]==null||COVERS_data.statuses[2]==undefined) || COVERS_data.statuses[2].Breakfast == 0 ? '-' :COVERS_data.statuses[2].Breakfast }}</td>
+                                        <td>{{ (COVERS_data.statuses[2]==null||COVERS_data.statuses[2]==undefined) || COVERS_data.statuses[2].Lunch  == 0 ? '-' :COVERS_data.statuses[2].Lunch  }}</td>
+                                        <td>{{ (COVERS_data.statuses[2]==null||COVERS_data.statuses[2]==undefined) || COVERS_data.statuses[2].Dinner == 0 ? '-' :COVERS_data.statuses[2].Dinner  }}</td>
+                                        <td>{{ (COVERS_data.statuses[2]==null||COVERS_data.statuses[2]==undefined) || COVERS_data.statuses[2].Total  == 0 ? '-' :COVERS_data.statuses[2].Total  }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap">
+                                            Cancelled
+                                        </td>
+                                        <td>{{ (COVERS_data.statuses[1]==null||COVERS_data.statuses[1]==undefined) || COVERS_data.statuses[1].Breakfast == 0 ? '-' :COVERS_data.statuses[1].Breakfast  }}</td>
+                                        <td>{{ (COVERS_data.statuses[1]==null||COVERS_data.statuses[1]==undefined) || COVERS_data.statuses[1].Lunch == 0 ? '-' :COVERS_data.statuses[1].Lunch }}</td>
+                                        <td>{{ (COVERS_data.statuses[1]==null||COVERS_data.statuses[1]==undefined) || COVERS_data.statuses[1].Dinner== 0 ? '-' :COVERS_data.statuses[1].Dinner }}</td>
+                                        <td>{{ (COVERS_data.statuses[1]==null||COVERS_data.statuses[1]==undefined) || COVERS_data.statuses[1].Total == 0 ? '-' :COVERS_data.statuses[1].Total }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center text-nowrap"></td>
+                                        <td class="text-nowrap f-w-700">
+                                            Total
+                                        </td>
+                                        <td>{{ (COVERS_data.totals==null||COVERS_data.totals==undefined) || COVERS_data.totals.Breakfast == 0 ? '-' : COVERS_data.totals.Breakfast}}</td>
+                                        <td>{{ (COVERS_data.totals==null||COVERS_data.totals==undefined) || COVERS_data.totals.Lunch  == 0 ? '-' :COVERS_data.totals.Lunch }}</td>
+                                        <td>{{ (COVERS_data.totals==null||COVERS_data.totals==undefined) || COVERS_data.totals.Dinner == 0 ? '-' :COVERS_data.totals.Dinner }}</td>
+                                        <td>{{ (COVERS_data.totals==null||COVERS_data.totals==undefined) || COVERS_data.totals.Total  == 0 ? '-' :COVERS_data.totals.Total }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+        <div class="sticky_bottom_navigator">
+            <div class="card">
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                            <button class="btn btn-light" click-once ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" ng-click="UPD_RESET_CASHUP_HEADER()">Reset</button>
+                            <!--<button class="btn btn-light" click-once ng-disabled="CASHUP_ENTRY_SEARCH.STANDARD_ROLE_ID==19" ng-click="Fn_Cashup_entry_TAB_CLICK(TAB_ID,0)">Previous</button>-->
+                            <button class="btn btn-light" click-once ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" data-bs-target="#save" data-bs-toggle="modal">Save</button>
+                            <button class="btn btn-primary" click-once ng-click="Fn_Cashup_entry_TAB_CLICK(TAB_ID,1)" data-bs-toggle="modal">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+<div class="modal fade" id="entry_covers_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content" ng-show="true">
+            <div class="modal-header">
+                <h6 class="modal-title">Covers Upload</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="RESET_COVERS_UPLOAD()"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <div class="row g-2">
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <div id="reportrangeCoversUpload" class="form-control-box">
+                            <span></span>
+                            <i class="fa-regular fa-calendar float-end mt-1"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-7 col-xl-7 col-md-7">
+                        <div class="alert alert-light-primary fade show">
+                            <div class="row align-items-center ">
+                                <div class="col-auto txt-primary"> <i class="fa-light fa-circle-info"></i></div>
+                                <div class="col">
+                                    <p class="txt-primary">{{COVERS_UPLOAD_MESSAGE[1]}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                        <a class="btn download-template" href="{{DOWNLOAD_FILE_PATH}}">
+                            <i class="fa-solid fa-arrow-down-to-bracket me-1"></i>
+                            Download template
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="file" required="required" multiple="multiple"
+                                       id="uploadCoversExcel"
+                                       ng-click="FILEUPLOADCLICK()"
+                                       ng-files="Refreshdata();getTheFilesToUploadCovers($files, 'CoversUpload', 10, COVERS_UPLOAD_OBJ, 47, 1)">
+                                <div class="file-dummy h-100">
+                                    <i class="fa-light fa-file-plus fa-2xl"></i>
+                                    <p class="mb-1 mt-2"><span class="txt-primary">Choose a file </span> or drag and drop here</p>
+                                    <p class="mb-0">*.xls file limit 10MB</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xxl-12 col-ed-12 col-xl-12 resInputModal">
+                    <div class="file_container" ng-repeat="upls in COVERS_UPLOAD_OBJ.UploadedFiles">
+                        <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                        <span>
+                            <span class="file_name">
+                                {{upls.ORIGINAL_FILE_NAME}}
+                            </span>
+                        </span>
+                        <a class="ms-auto" ng-click="DELETE_UPLOAD_CARD_ALL(COVERS_UPLOAD_OBJ,upls,$index)">
+                            <i class="fa-light fa-trash-can txt-danger"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive mt-2">
+                    <h5 class="headings my-3">
+                        Preview <span ng-show="INVALID_EXCLE_CELL_COUNT>0"><i class="fa fa-exclamation-triangle txt-danger"></i> - Please provide the mandatory details to (marked in red).</span>
+                    </h5>
+                    <div class="table-responsive scrollbar-wrapper resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th ng-repeat="(key, value) in PREVIEW_COVERS_ENTRY[0]">{{key}}</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="ex in PREVIEW_COVERS_ENTRY" on-finish-render="ngRepeatFinishedRender">
+                                <tr>
+                                    <td ng-repeat="(key, value) in ex" ng-class="{'border-red':obj.IS_DATA_VALID}" ng-init="obj=ngintvalidationvalue(key,value)">
+                                        <span ng-show="false">
+                                            {{value}}
+                                        </span>
+                                        <span ng-class="{'border-red':obj.IS_VALID}">
+                                            <span ng-show="obj.IS_VALID"><i class="fa fa-exclamation-triangle text-danger"></i></span>
+                                            {{obj.DISPLAY_TEXT}}
+                                        </span>
+                                        <span ng-show="obj.IS_DATA_VALID">
+                                            <i class="fa fa-exclamation-triangle text-danger"></i>
+                                            {{obj.CODE}}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <!--<button class="btn btn-light" data-bs-target="#validate" data-bs-toggle="modal" data-bs-dismiss="modal">Validate</button>-->
+                <button class="btn btn-primary" data-bs-dismiss="modal" ng-disabled="INVALID_EXCLE_CELL_FLAG" ng-click="INS_UPD_CU_COVERS()">Save</button>
+            </div>
+        </div>
+        <!-- UPLOAD covers FILLED MODAL STARTS -->
+        <div class="modal-content" ng-show="false">
+            <div class="modal-header">
+                <h6 class="modal-title">Covers Upload (23 Aug 2024)</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="images" id="images" required="required" multiple="multiple">
+                                <div class="file-dummy">
+                                    <p class="mb-1 mt-3"><span class="txt-primary">eposdata23092023.xls</span></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <div class="file_container">
+                            <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                            <span>
+                                <span class="file_name">
+                                    filename.csv
+                                </span>
+                                <span class="file_size">
+                                    25.1 MB
+                                </span>
+                            </span>
+                            <a class="ms-auto">
+                                <i class="fa-light fa-trash-can txt-danger"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive resCashupTable">
+                    <h5 class="headings">
+                        Preview
+                    </h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="text-start">
+
+                                </th>
+                                <th class="text-start" width="20%">
+                                    Session
+                                </th>
+                                <th class="text-center" width="20%">
+
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Breakfast
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Lunch
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Dinner
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Total
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                                <td rowspan="3" class="vertical_text_container">
+                                    <span class="vertical_text">
+                                        Source
+                                    </span>
+
+                                </td>
+                                <td class="text-nowrap">
+                                    Walk-in
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Reservation
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Booking
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="vertical_text_container">
+                                    <span class="vertical_text pl-0">
+                                        Status
+                                    </span>
+
+                                </td>
+                                <td class="text-nowrap">
+                                    Completed
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+
+
+
+                            </tr>
+
+                            <tr>
+                                <td class="text-nowrap">
+                                    No Show
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+
+
+
+                            </tr>
+
+                            <tr>
+                                <td class="text-nowrap">
+                                    Cancelled
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+
+
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-nowrap"></td>
+
+                                <td class="text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" ng-click="RESET_UPLOAD()">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+
+        </div>
+        <!-- UPLOAD covers FILLED MODAL ENDS -->
+    </div>
+</div>
+
+
+<!-- UPLOAD ePOS MODAL STARTS -->
+<div class="modal fade" id="ePos_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">ePOS Upload ({{CASHUP_ENTRY_SEARCH.CASHUP_DATE}})</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="REMOVE_UPLOAD_Fn()"></button>
+            </div>
+            <div class="modal-body resBreadCrumbModal resInputModal">
+                <div class="row g-2">
+                    <div class="alert alert-light-primary fade show mt-2">
+                        <div class="row align-items-center ">
+                            <div class="col-auto txt-primary">
+                                <i class="fa-light fa-circle-info"></i>
+                            </div>
+                            <div class="col">
+                                <p class="txt-primary">Looks like you use {{CASHUP_ENTRY_SEARCH.SYSTEM_NAME}}. Please follow the below steps to download & upload sales data. </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-xxl-12 col-xl-12 col-md-12 breadcrumb_container">
+                        <span class="mb-2">Navigate on micros ePOS</span>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-gray">Reports</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-gray">Daily Sales</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-gray active">Export</a>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>-->
+
+                    <!--<div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="file" required="required" multiple="multiple"
+                                       id="uploadExcel"
+                                       ng-click="FILEUPLOADCLICK()"
+                                       ng-files="Refreshdata();getTheFilesToUploadCovers($files, 'CoversUpload', 10, COVERS_UPLOAD_OBJ, 47, 1)">
+                                <div class="file-dummy h-100">
+                                    <i class="fa-light fa-file-plus fa-2xl txt-primary"></i>
+                                    <p class="mb-1 mt-2"><span class="txt-primary">Choose a file </span> or drag and drop here</p>
+                                    <p class="mb-0">*.xls file limit 10MB</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>-->
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <!--<form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area" ng-show="EPOs_Search.UploadedFiles.length==0">
+                                <input type="file" name="file" id="EPOSuploadFile" required="required" multiple="multiple" ng-model="EPOs_Search.UploadedFiles"
+                                       ng-files="getTheFilesToUploadall($files,5,EPOs_Search,1, 'EPOSuploadFile','EPos_upload',52)" />
+                                <div class="file-dummy">
+                                    <i class="fa-light fa-file-plus fa-xl"></i>
+                                    <p class="mb-1 mt-3">
+                                        <span class="txt-primary">Choose a file</span>
+                                        <span>or drag and drop here</span>
+                                    </p>
+                                    <p class="mb-1">*.csv, .xls, .ics files limit 10MB</p>
+                                </div>
+                            </div>
+
+                        </form>-->
+                        
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area" ng-show="EPOs_Search.UploadedFiles.length==0">
+                                <input type="file" name="file" id="ngexcelfile" required="required" multiple="multiple"
+                                       ng-files="attachFile($files,EPOs_Search);getTheFilesToUpload($files, 'fileUpl_EvtInfo', 5)" /> <!--ng-model="EPOs_Search.UploadedFiles"-->
+                                <div class="file-dummy">
+                                    <i class="fa-light fa-file-plus fa-xl"></i>
+                                    <p class="mb-1 mt-3">
+                                        <span class="txt-primary">Choose a file</span>
+                                        <span>or drag and drop here</span>
+                                    </p>
+                                    <p class="mb-1">*.csv, .xls files limit 10MB</p>
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <div class="file_container" ng-repeat="_upload in EPOs_Search.UploadedFiles">
+                            <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                            <span>
+                                <span class="file_name">
+                                    {{_upload.name}}
+                                </span>
+                            </span>
+                            <a class="ms-auto" ng-click="REMOVE_UPLOAD_Fn()">
+                                <i class="fa-light fa-trash-can txt-danger"></i>
+                            </a>
+                        </div>
+                        <!--<ul class="list-group badge-list mb-3" ng-show="EPOs_Search.UploadedFiles.length>0">
+                            <li class="file-area py-2" ng-repeat="_upload in EPOs_Search.UploadedFiles">
+                                <span class="file w-100">
+                                    <i class="fa-light fa-download mx-2 txt-primary"></i>
+                                    <span class="text_truncat">{{_upload.name}}</span>
+                                    <span class="file_date">{{_upload.lastModifiedDate | date}}</span>
+                                    <span class="txt-danger c-pointer float-end me-2" ng-click="REMOVE_UPLOAD_Fn()">Remove</span>
+                                </span>
+                                <button type="button" class="btn btn-sm btn-outline" ng-show="false">
+                                    <i class="fa-light fa-memo fa-lg"></i> View
+                                    <i class="fa-light fa-up-right-from-square fa-lg ms-2"></i>
+                                </button>
+                            </li>
+                        </ul>-->
+                    </div>
+                </div>
+                <!--<div class="table-responsive my-3 resCashupTable">
+                    <h5 class="headings">
+                        Table
+                    </h5>
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-center" width="25%">
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Breakfast
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Lunch
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Dinner
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-start">
+                                    Cash
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start">
+                                    Card
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start">
+                                    Amex
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start">
+                                    Others
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-start" width="25%">
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Breakfast
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Lunch
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Dinner
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-start">
+                                    Food
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Drinks
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-star">
+                                    Others
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>-->
+            </div>
+            <div class="modal-footer text-end">
+                <div class="input-group-append">
+                    <img ng-if="Uploading" src="../../E_Content/images/loading.gif" style="height: 25px;margin-left:20px;" />
+                </div>
+                <button class="btn btn-primary" ng-show="CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==0 || 
+                        CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==11 || CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==17  || 
+                        CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==12  || CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==37" ng-click="ReadExcelData()">Save</button>
+                <!--<button class="btn btn-primary" ng-show="CASHUP_ENTRY_SEARCH.INTEGRATION_SYSTEM_ID==15" ng-click="ReadExcelData_Micros();">Save</button>-->
+            </div>
+        </div>
+        <div class="modal-content d-none">
+            <div class="modal-header">
+                <h6 class="modal-title">ePOS Upload (04-June-2024)</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="images" id="images" required="required" multiple="multiple">
+                                <div class="file-dummy txt-primary">
+                                    eposuploaad04062024.xls
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <div class="file_container">
+                            <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                            <span>
+                                <span class="file_name">
+                                    filename.csv
+                                </span>
+                                <span class="file_size">
+                                    25.1 MB
+                                </span>
+                            </span>
+                            <a class="ms-auto">
+                                <i class="fa-light fa-trash-can txt-danger"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive mt-2">
+                    <h5 class="headings">
+                        Table
+                    </h5>
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-center" width="25%">
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Breakfast
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Lunch
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Dinner
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Cash
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Card
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Amex
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Others
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-center" width="25%">
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Breakfast
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Lunch
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Dinner
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Food
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Drinks
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Others
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- UPLOAD ePOS MODAL ENDS -->
+<!-- UPLOAD COVER MODAL STARTS -->
+<div class="modal fade" id="covers_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Covers Upload</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resInputModal">
+                <div class="row">
+                    <div class="col-xxl-8 col-xl-8 col-md-8">
+                        <div class="alert alert-light-primary fade show">
+                            <div class="row align-items-center ">
+                                <div class="col-auto txt-primary">
+                                    <i class="fa-light fa-circle-info"></i>
+                                </div>
+                                <!--<div class="col">
+                                    <p class="txt-primary">Looks like you use Covers. Please download the template to fill in and & upload covers data. </p>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                        <button class="btn download-template">
+                            <i class="fa-solid fa-arrow-down-to-bracket me-1"></i>
+                            Download template
+                        </button>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="images" id="images" required="required" multiple="multiple">
+                                <div class="file-dummy">
+                                    <i class="fa-light fa-file-plus fa-xl"></i>
+                                    <p class="mb-1 mt-3">
+                                        <span class="txt-primary">Choose a file</span>
+                                        <span>or drag and drop here</span>
+                                    </p>
+                                    <p class="mb-1">*.csv, .xls, .ics files limit 10MB</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive resCashupTable">
+                    <h5 class="headings my-3">
+                        Preview
+                    </h5>
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-center">
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center">
+                                        Session
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Breakfast
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Lunch
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Dinner
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Total
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="3" class="vertical_text_container">
+                                    <span class="vertical_text">
+                                        Source
+                                    </span>
+                                </td>
+                                <td class="text-start text-nowrap">
+                                    &nbsp;&nbsp; Walk-in
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Reservation
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Booking
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="vertical_text_container">
+                                    <span class="vertical_text pl-0">
+                                        Status
+                                    </span>
+                                </td>
+                                <td class="text-start text-nowrap">
+                                    &nbsp;&nbsp; Completed
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    No Show
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Cancelled
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-start text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" data-bs-target="#validate" data-bs-toggle="modal" data-bs-dismiss="modal">Validate</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+        <!--Same modal but different content-->
+        <div class="modal-content d-none">
+            <div class="modal-header">
+                <h6 class="modal-title">Covers Upload (23 Aug 2024)</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resInputModal">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="images" id="images" required="required" multiple="multiple">
+                                <div class="file-dummy txt-primary">
+                                    Covers29082024.xls
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <div class="file_container">
+                            <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                            <span>
+                                <span class="file_name">
+                                    filename.csv
+                                </span>
+                                <span class="file_size">
+                                    25.1 MB
+                                </span>
+                            </span>
+                            <a class="ms-auto">
+                                <i class="fa-light fa-trash-can txt-danger"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive  mt-2 resCashupTable">
+                    <h5 class="headings my-3">
+                        Preview
+                    </h5>
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-center">
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center">
+                                        Session
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Breakfast
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Lunch
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Dinner
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Total
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="3" class="vertical_text_container">
+                                    <span class="vertical_text">
+                                        Source
+                                    </span>
+                                </td>
+                                <td class="text-nowrap">
+                                    Walk-inx
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end center text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Reservation
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Booking
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="vertical_text_container">
+                                    <span class="vertical_text pl-0">
+                                        Status
+                                    </span>
+                                </td>
+                                <td class="text-nowrap">
+                                    Completed
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    No Show
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Cancelled
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" data-bs-target="#reset_data" data-bs-toggle="modal" data-bs-dismiss="modal">Reset</button>
+                <button class="btn btn-light d-none" data-bs-target="#incorrect_data" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- UPLOAD COVER UPLOAD MODAL ENDS -->
+<!-- VALIDATE MODAL STARTS -->
+<div class="modal fade" id="validate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li>
+                            <img src="E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error">
+                        </li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Warning</h6>
+                    <p class="text-center text-dark"> The data was not input correctly in our template. Kindly enable editing and re-upload the file with correctly filled data.</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-12 col-md-12 col-md-12">
+                        <button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- VALIDATE MODAL ENDS -->
+<!-- RESET MODAL STARTS -->
+<div class="modal fade" id="reset_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <h6 class="text-center headings">Do you want to reset data?</h6>
+                    <p class="text-center text-dark">
+                        You are about to reset the entire data.
+                        Do you want to continue ?
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button class="btn btn-primary w-100" type="button" data-bs-dismiss="modal">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- RESET MODAL ENDS -->
+<!--Data input not correct Modal Starts-->
+<div class="modal fade" id="incorrect_data" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon_danger">
+                            <div class="badge text-bg-danger-modal">
+                                <i class="fa-solid fa-exclamation fa-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="headings text-center">The data was not input correctly in our template!</h5>
+                    <p class="modal_infoText text-center px-3">
+                        Something wrong in Excel or enable editing mode and re-upload the file with correctly filled data.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Data input not correct Modal Ends-->
+<!-- Proceed MODAL STARTS -->
+<div class="modal fade" id="proceed" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon_danger">
+                            <div class="badge text-bg-danger-modal">
+                                <i class="fa-solid fa-exclamation fa-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="modal_infoText">
+                        There is a Variance of £ 1000.00, do you still
+                        want to proceed?
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button class="btn btn-primary w-100" type="button" data-bs-dismiss="modal">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Proceed MODAL ENDS -->
+<!-- SAVE MODAL STARTS -->
+<div class="modal fade" id="save_currency" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon">
+                                    <span class="badge text-bg-success-modal">
+                                        <i class="fa-light fa-check fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="modal_heading">Successfully Saved Updates</h6>
+                            <p class="modal_content">Currency conversion rate has been saved successfully.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SAVE MODAL STARTS -->
+<!-- cards_upload MODAL STARTS-->
+<div class="modal fade" id="cards_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Upload</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <label>Document Upload <span class="txt-danger">*</span></label>
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="images" id="images" required="required" multiple="multiple">
+                                <div class="file-dummy">
+                                    <i class="fa-light fa-file-plus fa-xl"></i>
+                                    <p class="mb-1 mt-3">
+                                        <span class="txt-primary">Choose a file</span>
+                                        <span>or drag and drop here</span>
+                                    </p>
+                                    <p class="mb-1">*.csv, .xls, .ics files limit 10MB</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- cards_upload MODAL ENNDS-->
+<!-- ADD CUSTOMER MODAL STARTS-->
+<div class="modal fade" id="add_customer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Add Customer</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <label>Customer Name <span class="txt-danger">*</span></label>
+                        <input type="text" placeholder="Customer Name" />
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <label>Email</label>
+                        <input type="text" placeholder="Email" />
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <label>Contact Number</label>
+                        <input type="text" placeholder="Contact Number" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-light">Reset</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD CUSTOMER MODAL ENDS-->
+<!-- REDEEM VOUCHER MODAL STARTS-->
+<div class="modal fade" id="redeem_voucher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Redeem Vouchers</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <div class="row g-2">
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Voucher Type</label>
+                        <ul class="nav nav-pills min-w-120 mb-0">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        Select
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        Voucher 1
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Voucher 2
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Voucher 3
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Payment Method</label>
+                        <ul class="nav nav-pills min-w-120 mb-0">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        Select
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        Visa
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Cash
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Card
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Invoice Number</label>
+                        <input type="text" placeholder="Invoice Number" />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Voucher Number</label>
+                        <input type="text" placeholder="Voucher Number" />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Sold to</label>
+                        <input type="text" placeholder="Sold to" />
+                    </div>
+                </div>
+                <div class="table-responsive scrollbar-wrapper resCashupTable">
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Set_as_Default" type="checkbox" value="">
+                                        <label class="form-check-label text-nowrap" for="Set_as_Default">Invoice Number</label>
+                                    </div>
+                                </th>
+                                <th class="text-nowrap text-center">Voucher Type</th>
+                                <th class="text-nowrap text-center">Voucher Number</th>
+                                <th class="text-nowrap text-end">Amount</th>
+                                <th class="text-nowrap text-end">Remaining Amount</th>
+                                <th class="text-nowrap text-center">Sold to</th>
+                                <th class="text-nowrap text-center">Validity</th>
+                                <th class="text-nowrap text-center">Payment Method</th>
+                                <th class="notes">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Set_as_Default2" type="checkbox" value="">
+                                        <label class="form-check-label" for="Set_as_Default2">HDJ184949</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Open Voucher</td>
+                                <td class="text-nowrap text-center">1234</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">40.00</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td>Your Redeem Voucher Notes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Set_as_Default3" type="checkbox" value="">
+                                        <label class="form-check-label" for="Set_as_Default3">HDJ184949</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Open Voucher</td>
+                                <td class="text-nowrap text-center">1234</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">40.00</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td>Your Redeem Voucher Notes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Set_as_Default4" type="checkbox" value="">
+                                        <label class="form-check-label" for="Set_as_Default4">HDJ184949</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Open Voucher</td>
+                                <td class="text-nowrap text-center">1234</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">40.00</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td>Your Redeem Voucher Notes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Set_as_Default5" type="checkbox" value="">
+                                        <label class="form-check-label" for="Set_as_Default5">HDJ184949</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Open Voucher</td>
+                                <td class="text-nowrap text-center">1234</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">40.00</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td>Your Redeem Voucher Notes</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-sticky-bottom">
+                            <tr class="bg-gray">
+                                <td class="text-center">Total</td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-end text-nowrap"> 0.00</td>
+                                <td class="text-end text-nowrap">0.00</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary">Redeem</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- REDEEM VOUCHER MODAL ENDS-->
+<!-- DEPOSIT VOUCHER MODAL STARTS-->
+<div class="modal fade" id="redeem_deposits" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Redeem Deposits</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <div class="row g-2">
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Invoice Number </label>
+                        <input type="text" placeholder="Invoice Number" />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Deposit Reference</label>
+                        <input type="text" placeholder="Voucher Number" />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Name of Payee</label>
+                        <input type="text" placeholder="Sold to" />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Payment Method</label>
+                        <ul class="nav nav-pills min-w-120 mb-0">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        Select
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        Visa
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Cash
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Card
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="table-responsive scrollbar-wrapper resCashupTable">
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th width="10%">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Invoice_Number" type="checkbox" value="">
+                                        <label class="form-check-label text-nowrap" for="Invoice_Number">Invoice Number</label>
+                                    </div>
+                                </th>
+                                <th class="text-nowrap text-center" width="10%">Deposit Reference</th>
+                                <th class="text-nowrap text-center" width="10%">Name of Payee</th>
+                                <th class="text-nowrap text-center" width="10%">Date</th>
+                                <th class="text-nowrap text-center" width="10%">Payment Method</th>
+                                <th class="text-nowrap text-end" width="10%">Amount</th>
+                                <th class="text-nowrap text-end" width="10%">Remaining Amount</th>
+                                <th class="notes">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Invoice_Number1" type="checkbox" value="">
+                                        <label class="form-check-label" for="Invoice_Number1">99940383</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">1234</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">14 Jun 2024</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td class="text-nowrap text-end">40.00</td>
+                                <td class="text-nowrap text-end">50.00</td>
+                                <td>Your Redeem Deposit Notes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Invoice_Number2" type="checkbox" value="">
+                                        <label class="form-check-label" for="Invoice_Number2">99940383</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">1234</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">14 Jun 2024</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td class="text-nowrap text-end">40.00</td>
+                                <td class="text-nowrap text-end">50.00</td>
+                                <td>Your Redeem Deposit Notes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Invoice_Number3" type="checkbox" value="">
+                                        <label class="form-check-label" for="Invoice_Number3">99940383</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">1234</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">14 Jun 2024</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td class="text-nowrap text-end">40.00</td>
+                                <td class="text-nowrap text-end">50.00</td>
+                                <td>Your Redeem Deposit Notes</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Invoice_Number4" type="checkbox" value="">
+                                        <label class="form-check-label" for="Invoice_Number4">99940383</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">1234</td>
+                                <td class="text-nowrap text-center">Cagan</td>
+                                <td class="text-nowrap text-center">14 Jun 2024</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td class="text-nowrap text-end">40.00</td>
+                                <td class="text-nowrap text-end">50.00</td>
+                                <td>Your Redeem Deposit Notes</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-sticky-bottom">
+                            <tr class="bg-grey">
+                                <td class="text-center">Total</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-end">200.00</td>
+                                <td class="text-end">200.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary">Redeem</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DEPOSIT VOUCHER MODAL ENDS-->
+<!-- Add Vendor MODAL STARTS-->
+<div class="modal fade" id="add_vendor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Add Vendor</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <label class="text-nowrap">Vendor Name <span class="txt-danger">*</span></label>
+                        <input type="text" placeholder="Add here" />
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <label class="text-nowrap">Email</label>
+                        <input type="text" placeholder="Add here" />
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <label class="text-nowrap">Contact Number</label>
+                        <input type="text" placeholder="Add here" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Add Vendor MODAL ENDS-->
+<!-- Add Cost Category MODAL STARTS-->
+<div class="modal fade" id="add_cost_category" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Add Cost Category</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <label class="text-nowrap">Cost Category Name <span class="txt-danger">*</span></label>
+                        <input type="text" placeholder="Add here" />
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <label class="text-nowrap">GL Name  <span class="txt-danger">*</span></label>
+                        <input type="text" placeholder="Add here" />
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <label class="text-nowrap">GL  Code  <span class="txt-danger">*</span></label>
+                        <input type="text" placeholder="Add here" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Add Cost Category MODAL ENDS-->
+<!--Recieve Credits Modal-->
+<div class="modal fade ng-scope show" tabindex="-1" id="Recieve_Credits" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="myExtraLargeModal">Recieve Credits</h6>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <div class="row">
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Customer Name</label>
+                        <input type="text" placeholder="Vendor Name" />
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Company Name</label>
+                        <input type="text" placeholder="Company Name" />
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Invoice Number </label>
+                        <input type="text" placeholder="Invoice Number" />
+                    </div>
+                </div>
+                <div class="table-responsive scrollbar-wrapper resCashupTable">
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-nowrap">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="flexCheckChecked" type="checkbox" value="">
+                                        <label class="form-check-label ms-1" for="flexCheckChecked">Customer Name</label>
+                                    </div>
+                                </th>
+                                <th class="text-nowrap text-center">Company</th>
+                                <th class="text-nowrap text-center">Invoice Number</th>
+                                <th class="text-nowrap text-end">Amount</th>
+                                <th class="text-nowrap text-end">Remaining Amount</th>
+                                <th class="text-nowrap text-center">Payment Method</th>
+                                <th class="notes">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-nowrap">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="customerName" type="checkbox" value="">
+                                        <label class="form-check-label" for="customerName">Malik Wihowo</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Wenodo</td>
+                                <td class="text-center">123459690</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">30.00</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td>Your Recieve Credit Notes</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="customerName2" type="checkbox" value="">
+                                        <label class="form-check-label" for="customerName2">Malik Wihowo</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Wenodo</td>
+                                <td class="text-center">123459690</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">30.00</td>
+                                <td class="text-nowrap text-center">Visa</td>
+                                <td>Your Recieve Credit Notes</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="customerName3" type="checkbox" value="">
+                                        <label class="form-check-label" for="customerName3">Malik Wihowo</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Wenodo</td>
+                                <td class="text-center">123459690</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">30.00</td>
+                                <td class="text-nowrap text-center">Amex</td>
+                                <td>Your Recieve Credit Notes</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="customerName4" type="checkbox" value="">
+                                        <label class="form-check-label" for="customerName4">Malik Wihowo</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Wenodo</td>
+                                <td class="text-center">123459690</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">30.00</td>
+                                <td class="text-nowrap text-center">Pay by Link</td>
+                                <td>Your Recieve Credit Notes</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="customerName5" type="checkbox" value="">
+                                        <label class="form-check-label" for="customerName5">Malik Wihowo</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Wenodo</td>
+                                <td class="text-center">123459690</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">30.00</td>
+                                <td class="text-nowrap text-center">Crypto</td>
+                                <td>Your Recieve Credit Notes</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="customerName6" type="checkbox" value="">
+                                        <label class="form-check-label" for="customerName6">Malik Wihowo</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">Wenodo</td>
+                                <td class="text-center">123459690</td>
+                                <td class="text-nowrap text-end">20.00</td>
+                                <td class="text-nowrap text-end">30.00</td>
+                                <td class="text-nowrap text-center">Cash</td>
+                                <td>Your Recieve Credit Notes</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-sticky-bottom">
+                            <tr class="bg-gray">
+                                <td class="text-center">Total</td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-end">120.00</td>
+                                <td class="text-end">180.00 </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#Recieve_Credits_Select" class="btn btn-primary " data-bs-dismiss="modal">Select</button>
+                <!--Display None-->
+                <button type="button" data-bs-toggle="modal" data-bs-target="#Recieve_Credits_Empty" class="btn btn-primary d-none" data-bs-dismiss="modal">See Empty Screen</button>
+                <!--Display None-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--Recieve Credits Modal-->
+<!--Recieve Credits Empty Modal-->
+<div class="modal fade ng-scope show" tabindex="-1" id="Recieve_Credits_Empty" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="myExtraLargeModal">Recieve Credits</h6>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <div class="row">
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Customer Name <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Vendor Name" />
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Company Name</label>
+                        <input type="text" placeholder="Company Name" />
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Invoice Number </label>
+                        <input type="text" placeholder="Invoice Number" />
+                    </div>
+                </div>
+                <div class="table-responsive scrollbar-wrapper resCashupTable">
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-center">Customer Name</th>
+                                <th class="text-center">Company</th>
+                                <th class="text-center">Invoice Number</th>
+                                <th class="text-center">Amount</th>
+                                <th class="text-center">Payment Method</th>
+                                <th class="text-center">Remaining Amount</th>
+                                <th class="text-center">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3" class="border-end-0"></td>
+                                <td class="text-center border-end-0 text-nowrap">
+                                    <span class="badge-lg badge-light-grey mt-3"><i class="fa-sharp-duotone fa-solid fa-file-circle-xmark"></i></span>
+                                    <p>No data record</p>
+                                </td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Recieve Credits Empty Modal-->
+<!--Recieve Credits Select Modal-->
+<div class="modal fade ng-scope show" tabindex="-1" id="Recieve_Credits_Select" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="myExtraLargeModal">Recieve Credits</h6>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <div class="row">
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Customer Name </label>
+                        <input type="text" placeholder="Customer" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Company </label>
+                        <input type="text" placeholder="Company" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Invoice  </label>
+                        <input type="text" placeholder="Invoice" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md text-end">
+                        <label>Amount   </label>
+                        <input type="text" placeholder="Amount" class="text-end" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Received Amount <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Amount" class="text-end">
+                    </div>
+                    <div class="col-xxl col-xl col-md text-end">
+                        <label class="text-nowrap">Balance Amount</label>
+                        <input type="text" placeholder="Amount" class="text-end" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Payment Method</label>
+                        <ul class="nav nav-pills min-w-120">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        Select
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        Visa
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Cash
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Amex
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Card
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Note</label>
+                        <input type="text" placeholder="Note" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Customer Name </label>
+                        <input type="text" placeholder="Customer" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Company </label>
+                        <input type="text" placeholder="Company" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Invoice  </label>
+                        <input type="text" placeholder="Invoice" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md text-end">
+                        <label>Amount   </label>
+                        <input type="text" placeholder="Amount" class="text-end" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Received Amount <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Amount" class="text-end">
+                    </div>
+                    <div class="col-xxl col-xl col-md text-end">
+                        <label class="text-nowrap">Balance Amount</label>
+                        <input type="text" placeholder="Amount" class="text-end" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Payment Method</label>
+                        <ul class="nav nav-pills min-w-120">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        Select
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        Visa
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Cash
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Amex
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Card
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Note</label>
+                        <input type="text" placeholder="Note" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Customer Name </label>
+                        <input type="text" placeholder="Customer" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Company </label>
+                        <input type="text" placeholder="Company" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Invoice  </label>
+                        <input type="text" placeholder="Invoice" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md text-end">
+                        <label>Amount   </label>
+                        <input type="text" placeholder="Amount" class="text-end" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Received Amount <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Amount" class="text-end">
+                    </div>
+                    <div class="col-xxl col-xl col-md text-end">
+                        <label class="text-nowrap">Balance Amount</label>
+                        <input type="text" placeholder="Amount" class="text-end" disabled />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Payment Method</label>
+                        <ul class="nav nav-pills min-w-120">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        Select
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        Visa
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Cash
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Amex
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Card
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label>Note</label>
+                        <input type="text" placeholder="Note" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Recieve Credits Select Modal-->
+<!--Add New Customer Modal-->
+<div class="modal fade ng-scope show" tabindex="-1" id="Add_New_Cus" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="myExtraLargeModal">Add New Customer</h6>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <label>Customer Name <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Customer Name" />
+                    </div>
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <label>Company</label>
+                        <input type="text" placeholder="Company" />
+                    </div>
+                    <div class="col-xxl-2 col-xl-2 col-md-2 text-end">
+                        <label>Credit Amount <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Amount" class="text-end" />
+                    </div>
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <label>Invoice <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Invoice" />
+                    </div>
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <label>Payment Method</label>
+                        <ul class="nav nav-pills min-w-120">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        Select
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        Visa
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Cash
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Amex
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        Card
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <label>Note</label>
+                        <input type="text" placeholder="Note" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Add New Customer Modal-->
+<!--EPOS data Modal-->
+<div class="modal fade ng-scope show" tabindex="-1" id="EPOS_data" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-9 col-xl-9 col-md-9 mx-auto">
+                        <div class="text-center">
+                            <h6 class="headings"> Are you sure you want to fill EPOS data for Complimentary / Voids </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-md-6"><button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-md-6"><button class="btn btn-primary w-100" type="button" data-bs-dismiss="modal">Yes</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--EPOS data Select Modal-->
+<!--Select_Cashup_details Modal Ends-->
+<!--Select_Cashup_details Modal Starts-->
+<div class="modal fade" id="Select_Cashup_details_old" role="dialog" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content custom-modal">
+            <div class="modal-header">
+                <h5 class="modal-title"> Cashup details</h5>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="EntrySelectCashupDetailsForm" autocomplete="off" novalidate>
+                <div class="modal-body resCashupHeader">
+                    <div class="row g-2 cashup-register-modal">
+                        <div class="col-xxl-2 col-xl-2 col-md-2">
+                            <ul class="nav nav-pills mb-1">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer"
+                                       data-toggle="dropdown">
+                                        <span class="select-label" id="select_label">
+                                            <span class="truncate">
+                                                {{SELECTED_SITE || DD_DEFAULT_TEXT.SITE}}
+                                            </span>
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                        <li ng-click="RESET_SELECTIONS()">
+                                            {{DD_DEFAULT_TEXT.SITE}}
+                                        </li>
+                                        <li ng-repeat="_site in FILTERED_SITES_LIST"
+                                            ng-click="SELECT_SITE(_site)">
+                                            <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xxl-2 col-xl-2 col-md-2" ng-init="dateinputddmmyy()">
+                            <div class="date-column">
+                                <input type="text"
+                                       class="dateinputddmmyy"
+                                       placeholder="DD/MM/YY"
+                                       name=""
+                                       ng-model="CASHUP_ENTRY_SEARCH.CASHUP_DATE" />
+                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!--Left portion [Area]-->
+                            <div class="col-xxl-5 col-xl-5 col-md-5" ng-show="CASHUP_BY_AREA">
+                                <div class="row">
+                                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                                        <h5 class="headings my-2">Select Area</h5>
+                                    </div>
+                                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                                        <div class="row g-2 my-2" ng-show="AREA_LIST.length==0 && SELECTED_SITE==null">
+                                            <div class="col-xxl-3 col-xl-3 col-md-3">
+                                                <div class="form-check">
+                                                    <input class="radio_animated" id="All_Area" type="radio" name="area" ng-click="RESET_AREA()">
+                                                    <label class="form-check-label mb-0" for="All_Area">All </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-show="AREA_LIST.length==0 && SELECTED_SITE!=null">No Area has been set up. Please setup area from settings</div>
+                                        <div class="row g-2 my-2" ng-repeat="_area in AREA_LIST">
+                                            <div class="col-xxl-4 col-xl-4 col-md-4">
+                                                <div class="form-check">
+                                                    <input type="hidden"
+                                                           ng-model="SELECTED_AREA"
+                                                           ng-required="CASHUP_BY_AREA"
+                                                           name="area_{{$index}}"
+                                                           ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.area_{{$index}}.$error.required}" />
+                                                    <input class="radio_animated" id="{{ _area.AREA_NAME}}"
+                                                           type="radio" name="area" ng-click="SELECT_AREA(_area)"
+                                                           ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.area_{{$index}}.$error.required}">
+                                                    <label class="form-check-label mb-0" for="{{ _area.AREA_NAME}}">{{ _area.AREA_NAME}} </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Right portion [Session]-->
+                            <div class="col-xxl-7 col-xl-7 col-md-7" ng-show="CASHUP_BY_SESSION">
+                                <div class="row">
+                                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                                        <h5 class="headings my-2">Select Session</h5>
+                                    </div>
+                                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                                        <div class="row g-2 my-2" ng-show="SESSION_LIST.length==0 && SELECTED_SITE==null">
+                                            <div class="col-xxl-3 col-xl-3 col-md-3">
+                                                <div class="form-check">
+                                                    <input class="radio_animated" id="All_Session" type="radio" name="session">
+                                                    <label class="form-check-label mb-0" for="All_Session">All </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-show="SESSION_LIST.length==0 && SELECTED_SITE!=null">No Session has been set up. Please setup session from settings</div>
+                                        <div class="row g-2 my-2" ng-repeat="_session in SESSION_LIST" ng-show="_session.ACTIVE == true">
+                                            <div class="col-xxl-3 col-xl-3 col-md-3">
+                                                <div class="form-check">
+                                                    <input type="hidden"
+                                                           ng-model="SELECTED_SESSION"
+                                                           name="session_{{$index}}"
+                                                           required
+                                                           ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.session_{{$index}}.$error.required}" />
+                                                    <input class="radio_animated" id="{{ _session.SESSION_NAME}}" type="radio"
+                                                           name="session" ng-click="SELECT_SESSION(_session)"
+                                                           ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.session_{{$index}}.$error.required}">
+                                                    <label class="form-check-label mb-0" for="{{ _session.SESSION_NAME}}">{{ _session.SESSION_NAME}} </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                                <span class="badge badge-white">
+                                                    ePOS : {{(GET_HEADER_VALUE_FOR_PROMPT('epos',_session.SESSION_MAPPING_ID) | number:2)||'-' }}
+                                                </span>
+                                            </div>
+                                            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                                <span class="badge badge-white">
+                                                    Actual : {{(GET_HEADER_VALUE_FOR_PROMPT('actual',_session.SESSION_MAPPING_ID)|number:2)||'-'}}
+                                                </span>
+                                            </div>
+                                            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                                <span class="badge badge-white variance">
+                                                    Variance :
+                                                    <span class="txt-danger" ng-if="GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) < 0">
+                                                        <i class="fa-light fa-arrow-down-right txt-danger"></i>
+                                                        {{ GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) | number:2}}
+                                                    </span>
+                                                    <span class="txt-success" ng-if="GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) > 0">
+                                                        <i class="fa-light fa-arrow-up-right txt-success"></i>
+                                                        {{GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) | number:2}}
+                                                    </span>
+                                                    <span class="txt-success" ng-if="GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) == 0">
+                                                        <i class="fa-light"></i>
+                                                        {{GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) | number:2}}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                                <span ng-class="{'badge badge-light-warning':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==0,
+                                                  'badge badge-light-outline':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==1,
+                                                  'badge badge-light-primary':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==3,
+                                                  'badge badge-light-success':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==4,
+                                                  'badge badge-light-danger':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==5}">
+                                                    {{HEADER_STATUS_LIST[GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)]}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" click-once ng-click="INS_CASHUP_HEADER()">Proceed</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Select_Cashup_details Modal Ends-->
+
+<div class="modal fade" id="Select_Cashup_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop='static'>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Select Cashup details</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="EntrySelectCashupDetailsForm" autocomplete="off" novalidate>
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="col-xxl-3 col-xl-3 col-md-3">
+                            <ul class="nav nav-pills mb-1">
+                                <li class="dropdown w-100">
+                                    <input type="hidden"
+                                           ng-model="SELECTED_SITE"
+                                           name="SELECTED_SITE"
+                                           required
+                                           ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.SELECTED_SITE.$error.required}" />
+                                    <a class="text-limitations cursor-pointer"
+                                       data-toggle="dropdown">
+                                        <span class="select-label" id="select_label" ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.SELECTED_SITE.$error.required}">
+                                            <span class="truncate">
+                                                {{SELECTED_SITE || DD_DEFAULT_TEXT.SITE}}
+                                            </span>
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                        <li ng-click="RESET_SELECTIONS()">
+                                            {{DD_DEFAULT_TEXT.SITE}}
+                                        </li>
+                                        <li ng-repeat="_site in FILTERED_SITES_LIST"
+                                            ng-click="SELECT_SITE(_site)">
+                                            <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-xxl-3 col-xl-3 col-md-3" ng-init="dateinputddmmyy()">
+                            <div class="date-column">
+                                <input type="text"
+                                       class="dateinputddmmyy"
+                                       placeholder="DD/MM/YY"
+                                       name="CASHUP_DATE"
+                                       required
+                                       ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.CASHUP_DATE.$error.required}"
+                                       ng-model="CASHUP_ENTRY_SEARCH.CASHUP_DATE" />
+                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 mt-2" ng-show="CASHUP_BY_AREA==true">
+                        <div class="alert alert-light-warning mb-2" ng-show="AREA_LIST.length==0">
+                            <div class="row align-items-center">
+                                <div class="col-auto"><i class="fa-light fa-circle-exclamation txt-orange fa-lg"></i></div>
+                                <div class="col">
+                                    <p class="txt-orange">No Area has been set up. Please setup area from settings</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center px-3" ng-show="AREA_LIST.length>0">
+                            <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700">Area</div>
+                            <div class="col-xxl col-xl col-md">
+                                <div class="row mt-2">
+                                    <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700">Session</div>
+                                    <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700 text-center">Status</div>
+                                    <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700 text-center">Actions</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" ng-repeat="_area in AREA_LIST" ng-show="AREA_LIST.length>0">
+                            <div class="card-body p-2">
+                                <div class="row align-items-center">
+                                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                                        <span class="f-w-600" ng-class="{'txt-primary':SELECTED_AREA==_area.AREA_NAME}">{{ _area.AREA_NAME}} </span>
+                                        <!--<div class="form-check ps-0">
+                                            <input type="hidden"
+                                                   ng-model="SELECTED_AREA"
+                                                   ng-required="CASHUP_BY_AREA"
+                                                   name="area_{{$index}}"
+                                                   ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.area_{{$index}}.$error.required}" />
+                                            <input class="radio_animated" id="{{ _area.AREA_NAME}}" type="radio" name="area" ng-click="SELECT_AREA(_area)" ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.area_{{$index}}.$error.required}">
+                                            <label class="form-check-label mb-0 f-w-600" for="{{ _area.AREA_NAME}}">{{ _area.AREA_NAME}} </label>
+                                        </div>-->
+                                    </div>
+
+                                    <div class="col-xxl col-xl col-md">
+                                        <div class="row mt-2" ng-repeat="_session in SESSION_LIST| orderBy:'SORT_ORDER'">
+                                            <div class="col-xxl-4 col-xl-4 col-md-4">
+                                                <div class="form-check ps-0">
+                                                    <input type="hidden"
+                                                           ng-model="SELECTED_SESSION"
+                                                           required
+                                                           name="session_{{$index}}"
+                                                           ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}" />
+                                                    <input class="radio_animated" id="{{_area.AREA_NAME}}_{{ _session.SESSION_NAME}}"
+                                                           type="radio" name="session" ng-click="SELECT_SESSION(_session);SELECT_AREA(_area)"
+                                                           ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}">
+                                                    <label class="form-check-label mb-0" for="{{_area.AREA_NAME}}_{{_session.SESSION_NAME}}">{{ _session.SESSION_NAME}} </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xxl-4 col-xl-4 col-md-4 text-center">
+                                                <span class="badge-lg f-10" ng-class="{'badge-light-warning':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==0,
+                                                  'badge-light-outline':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==1,
+                                                  'badge-light-primary':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==3,
+                                                  'badge-light-success':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==4,
+                                                  'badge-light-danger':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==5}">
+                                                    {{HEADER_STATUS_LIST[GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)]}}
+                                                </span>
+                                            </div>
+                                            <div class="col-xxl-4 col-xl-4 col-md-4 text-center">
+                                                <button type="button" class="btn btn-sm btn-light" ng-disabled="!CLOSE_CASHUP_HEADER_PRIVILEGE(_session.SESSION_MAPPING_ID,_area.AREA_ID)" ng-click="CLOSE_CASHUP_HEADER(_session.SESSION_MAPPING_ID,_area.AREA_ID)">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 mt-2" ng-show="CASHUP_BY_AREA==false">
+                        <div class="alert alert-light-warning mb-2" ng-show="SESSION_LIST.length==0">
+                            <div class="row align-items-center">
+                                <div class="col-auto"><i class="fa-light fa-circle-exclamation txt-orange fa-lg"></i></div>
+                                <div class="col">
+                                    <p class="txt-orange">No Session has been set up. Please setup area from settings</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border b-r-5 mb-2 p-2" ng-show="SESSION_LIST.length>0">
+                            <div class="row align-items-center">
+
+                                <div class="col-xxl-6 col-xl-6 col-md-6 f-w-700">Session</div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 f-w-700 text-center">Status</div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 f-w-700 text-center">Actions</div>
+                            </div>
+                            <div class="row align-items-center mt-2" ng-repeat="_session in SESSION_LIST">
+                                <div class="col-xxl-6 col-xl-6 col-md-6">
+                                    <div class="form-check ps-0">
+                                        <input type="hidden"
+                                               ng-model="SELECTED_SESSION"
+                                               required
+                                               name="session_{{$index}}"
+                                               ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}" />
+                                        <input class="radio_animated" id="SESSION_{{_session.SESSION_NAME}}"
+                                               type="radio" name="session" ng-click="SELECT_SESSION(_session)"
+                                               ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}">
+                                        <label class="form-check-label mb-0" for="SESSION_{{_session.SESSION_NAME}}">{{ _session.SESSION_NAME}} </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 text-center">
+                                    <span class="badge-lg f-10" ng-class="{'badge-light-warning':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==0,
+                                                  'badge-light-outline':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==1,
+                                                  'badge-light-primary':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==3,
+                                                  'badge-light-success':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==4,
+                                                  'badge-light-danger':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==5}">
+                                        {{HEADER_STATUS_LIST[GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)]}}
+                                    </span>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 text-center"><button type="button" class="btn btn-sm btn-light" ng-disabled="!CLOSE_CASHUP_HEADER_PRIVILEGE(_session.SESSION_MAPPING_ID,_area.AREA_ID)" ng-click="!CLOSE_CASHUP_HEADER(_session.SESSION_MAPPING_ID)">Close</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer text-end">
+                <button class="btn btn-primary" click-once ng-click="INS_CASHUP_HEADER()">Proceed</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        $('.timepicker').timepicker({
+            interval: 30,
+        });
+    });
+    //Cash Add Tips JS
+    const addCashTipsBtn = document.querySelector(".add-cash-tips");
+    const cashTipsRow = document.querySelector(".cash-tips-row");
+    const collapseIcon = document.querySelector(".collapse-icon");
+    addCashTipsBtn.addEventListener("click", () => {
+        cashTipsRow.style.display = "block";
+    });
+    collapseIcon.addEventListener("click", () => {
+        cashTipsRow.style.display = "none";
+    });
+</script>

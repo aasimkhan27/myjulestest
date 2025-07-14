@@ -1,0 +1,329 @@
+﻿<div class="row">
+            <div class="col-md-3 custom-scrollbar height-77vh stick-top">
+                <div class="col-md-12 px-0 sticky-top bg-white">
+                    <form id="ProcSearchForm" name="ProcSearchForm" novalidate autocomplete="off">
+                        <div class="search-form-group">
+                            <input type="text" ng-model="ApprovalViewSearch.PROCESS_SEARCH_NAME" class="form-control" placeholder="Search by Item / Description / Request #" />
+                            <button type="submit" class="btn btn-wenodo" 
+                                     click-once
+                                    ng-click="GET_APPROVAL_HEADERS_FOR_APPROVER_PROCESS(1,4,false)"></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="detailed-card" ng-class="{'active':APL.PR_NUMBER==ApprovalViewSearch.PROCESS_REQUEST_DETAILS.PR_NUMBER}" ng-repeat="APL in PURCHASE_REQUESTS_PROCESS_LIST" ng-click="PURCHASE_REQUEST_PROCESSED_APPROVAL_CLICK(APL)">
+                    <div class="card-body">
+                        <div class="row align-items-center height-100p">
+                            <div class="col">
+                                <span class="po-details text-limit-2 font-12">{{APL.PR_NUMBER}} | {{APL.ITEM_NAME}}</span>
+                                <span class="po-supplier font-10 mt-2">{{APL.REQUESTOR_NAME}} </span>
+                            </div>
+                            <div class="col-auto text-right">
+                                <span class="badge" ng-class="{'border-badge':APL.APPROVER_STATUS_ID==74,'badge-light-green':APL.APPROVER_STATUS_ID==37,'badge-danger':APL.APPROVER_STATUS_ID==38 || APL.APPROVER_STATUS_ID==42}">{{APL.APPROVER_STATUS_NAME}}</span>
+                                <span class="po-supplier font-10 mt-2">{{APL.BRANCH_NAME}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="GetProcessData">
+                    <button type="button" ng-click="GET_APPROVAL_HEADERS_FOR_APPROVER_PROCESS_LAZY_LOAD()" class="btn btn-block btn-w-default">
+                        {{VIEWMORERECORD}}
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row align-content-center mn-height-66vh" ng-show="PURCHASE_REQUESTS_PROCESS_LIST.length==0">
+                    <div class="col-md-12 text-center">
+                        <h5 class="text-muted">
+                            <span class="d-block mb-3">
+                                <img src="../../../E_Content/images/sorted.png" />
+                            </span>
+                            Everything's sorted!
+                        </h5>
+                    </div>
+                </div>
+                <div class="card-body" ng-show="PURCHASE_REQUESTS_PROCESS_LIST.length>0">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="po-details font-14 ">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.PR_NUMBER}} | {{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.ITEM_NAME}} </h5>
+                        </div>
+                        <div class="col-auto">
+                            <span class="badge text-100" ng-class="{'badge-light-green':ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_STATUS_ID==37,'badge-danger':ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_STATUS_ID==38 || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_STATUS_ID==42}">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_STATUS_NAME}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="po-supplier"><span class="text-normal">By </span>{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.REQUESTOR_NAME}} <span class="text-normal">on</span> {{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.PR_CREATED_DATE | date}}</span>
+                            <span class="po-supplier"><span class="text-normal">Raised For</span> {{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.BRANCH_NAME}} </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 pr-4">
+
+
+                            <label class="text-bold mt-2">Description: <span class="po-supplier text-danger d-inline">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.URGENT_REQUEST?'Urgent':''}}</span></label>
+                            <span class="d-block font-12">
+                                {{ ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION==null || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION==''?'-': ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION | limitTo:LIMIT_TO}}
+                                <span ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION.length>LIMIT_TO">...</span>
+
+                                <span class="btn btn-xs btn-wenodo d-inline-flex"
+                                      ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION.length>LIMIT_TO || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION.length==LIMIT_TO"
+                                      ng-click="READ_MORE(ApprovalViewSearch.PROCESS_REQUEST_DETAILS,(ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION.length>LIMIT_TO?1:2))"
+                                      data-toggle="tooltip"
+                                      data-html="true"
+                                      data-original-title="{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION.length>LIMIT_TO?'Read More':'Hide'}}">
+                                    <i ng-class="{'fa-minus':ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION.length==LIMIT_TO,'fa-plus':ApprovalViewSearch.PROCESS_REQUEST_DETAILS.DESCRIPTION.length>LIMIT_TO}" class="far "></i>
+                                </span>
+                            </span>
+                            <label class="text-bold">Comments:</label>
+                            <span class="d-block font-12">
+                                {{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.COMMENTS==null || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.COMMENTS==''?'-': ApprovalViewSearch.PROCESS_REQUEST_DETAILS.COMMENTS | limitTo:COMMENTS_LIMIT_TO}}
+                                <span ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.COMMENTS.length>COMMENTS_LIMIT_TO">...</span>
+                                <span class="btn btn-xs btn-wenodo d-inline-flex" ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.COMMENTS.length>COMMENTS_LIMIT_TO" ng-click="READ_MORE_COMMENTS(ApprovalViewSearch.PROCESS_REQUEST_DETAILS,1)" data-toggle="tooltip" data-html="true" data-original-title="Read More"><i class="far fa-plus"></i></span>
+                                <span class="btn btn-xs btn-wenodo d-inline-flex" ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.COMMENTS.length==COMMENTS_LIMIT_TO" ng-click="READ_MORE_COMMENTS(ApprovalViewSearch.PROCESS_REQUEST_DETAILS,2)" data-toggle="tooltip" data-html="true" data-original-title="Hide"><i class="far fa-minus"></i></span>
+                            </span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-bold">Quantity:</label>
+                            <span class="po-supplier">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.QUANTITY | number:2}} {{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.UOM_NAME}}</span>
+                            <label class="mt-2 text-bold">Expected Amount:</label>
+                            <span class="po-supplier" ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.EXPECTED_PRICE!=null">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.EXPECTED_PRICE | number :2}}  <span class="text-bold">{{CURRENCY_CODE}}</span></span>
+                            <span class="po-supplier" ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.EXPECTED_PRICE==null">-</span>
+
+                            <label class="mt-2 text-bold">Required Date:</label>
+                            <span class="po-supplier">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.REQUIRED_DATE==null || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.REQUIRED_DATE=="" ?'-': ApprovalViewSearch.PROCESS_REQUEST_DETAILS.REQUIRED_DATE | date}}</span>
+
+                            <label class="mt-2 text-bold">Suggested Supplier:</label>
+                            <span class="po-supplier">
+                                {{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.SUGGESTED_SUPPLIER==null || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.SUGGESTED_SUPPLIER=="" ?'-':ApprovalViewSearch.PROCESS_REQUEST_DETAILS.SUGGESTED_SUPPLIER  }}
+                            </span>
+                            <label class="mt-2 text-bold">Attachments:</label>
+                            <div ng-show="ApprovalViewSearch.UploadedFiles.length==0">No attachment</div>
+                            <div id="attachmentblock">
+                                <div class="file-block" ng-repeat="FILE in ApprovalViewSearch.UploadedFiles track by $index">
+                                    <div class="file-info">
+                                        <i class="far fa-file-alt file-icon"></i>
+                                        <span class="text-limit-1"> <a href="../P2PFiles/{{FILE.FILE_PATH}}{{FILE.SERVER_FILE_NAME}}" download="{{FILE.ORIGINAL_FILE_NAME}}">  {{FILE.ORIGINAL_FILE_NAME}} </a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Expected Amount <span class="text-danger">*</span></label>
+                                <span class="po-supplier">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_EXPECTED_PRICE==null || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_EXPECTED_PRICE=="" ?'-':ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_EXPECTED_PRICE | number :2}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Project Name</label>
+                                <div class="form-group">
+                                    <span class="po-supplier">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.PROJECT_NAME==null || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.PROJECT_NAME=="" ?'-':ApprovalViewSearch.PROCESS_REQUEST_DETAILS.PROJECT_NAME}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">GL Account <span class="text-danger">*</span></label>
+                                <span class="po-supplier">{{ApprovalViewSearch.PROCESS_REQUEST_DETAILS.ACCOUNT_DETAILS==null || ApprovalViewSearch.PROCESS_REQUEST_DETAILS.ACCOUNT_DETAILS=="" ?'-':ApprovalViewSearch.PROCESS_REQUEST_DETAILS.ACCOUNT_DETAILS}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12" ng-show="false && ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_STATUS_ID!=38 &&  ApprovalViewSearch.PROCESS_REQUEST_DETAILS.APPROVER_STATUS_ID!=42 && P2P_PROCESS_BUDGET_MASTER_LIST.length>0">
+                        <div class="card-header w-100">
+                            <h5 class="card-title mt-1"> Budget <span ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length>0"> ({{ApprovalViewSearch.BUDGET_NAME}}) </span></h5>
+                            <div class="card-tools">
+                                <button type="button"
+                                        ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.OVERALL_STATUS_ID!=39 && ApprovalViewSearch.PROCESS_REQUEST_DETAILS.OVERALL_STATUS_ID!=38 && ApprovalViewSearch.PROCESS_REQUEST_DETAILS.OVERALL_STATUS_ID!=42"
+                                        ng-click="GET_P2P_BUDGET_SNAPSHOT(ApprovalViewSearch.PROCESS_REQUEST_DETAILS);ApprovalViewSearch.PROCESS_REQUEST_DETAILS.SHOW_REQ_BUDGET=!ApprovalViewSearch.PROCESS_REQUEST_DETAILS.SHOW_REQ_BUDGET;"
+                                        data-toggle="tooltip"
+                                        data-html="true"
+                                        class="btn btn-transparent-wenodo ml-2 border float-right">
+                                    View Requisition Budget
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2" ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length>0">
+                            <span class="po-amount">The following budgets would be affected by the approval of the request.</span>
+                        </div>
+                        <div class="col-md-12 text-center mt-2"
+                             ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length==0">
+                            <div class="alert bg-custom-blue">{{BUDGET_TEXT_VALIDATION}}</div>
+                        </div>
+                        <div class="card-body p-0 mt-2" ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length>0">
+                            <div class="table-responsive custom-scrollbar">
+                                <table class="table table-head-fixed table-hover">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>GL Account </th>
+                                            <th>Period</th>
+                                            <th class="text-right">Total</th>
+                                            <th class="text-right">Remaining</th>
+                                            <th class="text-right">Consumed</th>
+                                            <th class="text-right">Booked</th>
+                                            <th class="text-right">Credit Notes</th>
+                                            <th class="text-right">Current</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="BD in P2P_PROCESS_BUDGET_MASTER_LIST">
+                                        <tr>
+                                            <td rowspan="3">{{BD.GLACCOUNT_NAME}}</td>
+                                            <td colspan="7" ng-if="BD.DB_ACCOUNT_ID==0" class="text-align-center text-bold">There is no budget allocated in this GL Account</td>
+                                        </tr>
+                                        <tr ng-if="BD.DB_ACCOUNT_ID!=0" ng-repeat="BL in BD.BUDGET_DETAILS_LIST" ng-init="BL.CURRENT_PO_CUSTOM=0;"
+                                            ng-click="VIEW_BUDGET_fn(BD,ApprovalViewSearch.PROCESS_REQUEST_DETAILS.PR_CREATED_DATE,PurchaseRequestSearch.PROCESS_REQUEST_DETAILS.PROJECT_MASTER_ID,ApprovalViewSearch,PurchaseRequestSearch,'PR_PROC')">
+                                            <td>{{BL.PERIOD}}</td>
+                                            <td class="text-right">{{BL.TOTAL | number:2}}</td>
+                                            <td class="text-right" ng-class="{'text-red text-bold':BL.REMAINING_AMOUNT<0}">
+                                                {{(BL.REMAINING_AMOUNT=((BL.TOTAL*1)-((BL.BOOKED*1) +(BL.CURRENT_PO_CUSTOM*1)+(BL.CONSUMED*1)+(BL.MEMO*1)))) | number:2}}
+                                                <span ng-show="false">
+                                                    {{BD.IS_OVER_BUDGET=(BL.REMAINING_AMOUNT<0 && BD.BUDGET_DETAILS_LIST.length==BL.LINE_ID?true:BD.IS_OVER_BUDGET?true:false)}}
+                                                </span>
+                                            </td>
+                                            <td class="text-right">{{BL.CONSUMED | number :2}}</td>
+                                            <td class="text-right">{{BL.BOOKED  | number :2}}</td>
+                                            <td class="text-right">
+                                                <span ng-show="BL.MEMO==0">{{BL.MEMO*-1 | number :2}}</span><span ng-show="BL.MEMO!=0">({{BL.MEMO*-1 | number :2}})</span>
+                                            </td>
+                                            <td class="text-right">
+                                                <span ng-show="false">{{(BL.CURRENT_PO_CUSTOM=PurchaseRequestSearch.APPROVER_EXPECTED_PRICE>0?PurchaseRequestSearch.APPROVER_EXPECTED_PRICE:0)}}</span>
+                                                {{BL.CURRENT_PO_CUSTOM | number:2}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning-red" ng-show="(P2P_PROCESS_BUDGET_MASTER_LIST | filter:{IS_OVER_BUDGET:true}).length">
+                            <strong>Warning!</strong> This Requisition is going over budget.
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-header w-100">
+                            <h5 class="card-title mt-1">
+                                Requisition Budget (This shows the budget when the requisition was posted) <span ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.P2P_SNAP_SHOT_MASTER_LIST.length>0"></span>
+                            </h5>
+                            <div class="card-tools" ng-show="false">
+                                <button type="button" class="btn btn-transparent-wenodo border"
+                                        ng-click="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.SHOW_REQ_BUDGET=!ApprovalViewSearch.PROCESS_REQUEST_DETAILS.SHOW_REQ_BUDGET">
+                                    <i class="fa fa-close"
+                                       data-toggle="tooltip" data-html="true"
+                                       data-original-title="Hide"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center mt-2" ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.P2P_SNAP_SHOT_MASTER_LIST.length==0" empty-grid> </div>
+                        <div class="card-body p-0 mt-2" ng-show="ApprovalViewSearch.PROCESS_REQUEST_DETAILS.P2P_SNAP_SHOT_MASTER_LIST.length>0">
+                            <div class="table-responsive custom-scrollbar">
+                                <table class="table table-head-fixed table-hover">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>GL Account </th>
+                                            <th>Period</th>
+                                            <th class="text-right">Total</th>
+                                            <th class="text-right">Remaining</th>
+                                            <th class="text-right">Consumed</th>
+                                            <th class="text-right">Booked</th>
+                                            <th class="text-right">Credit Notes</th>
+
+                                            <th class="text-right">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="BD in ApprovalViewSearch.PROCESS_REQUEST_DETAILS.P2P_SNAP_SHOT_MASTER_LIST | unique:'ACCOUNT_ID'">
+                                        <tr>
+                                            <td rowspan="3">{{BD.ACCOUNT_DETAILS}}</td>
+                                            <td colspan="7" ng-if="BD.DB_ACCOUNT_ID==0" class="text-align-center text-bold">There is no budget allocated in this GL Account</td>
+                                        </tr>
+                                        <tr ng-if="BD.DB_ACCOUNT_ID!=0" ng-repeat="BL in ApprovalViewSearch.PROCESS_REQUEST_DETAILS.P2P_SNAP_SHOT_MASTER_LIST | filter:{ACCOUNT_ID:BD.ACCOUNT_ID}">
+                                            <td>{{BL.PERIOD}}</td>
+                                            <td class="text-right">{{BL.TOTAL | number:2}}</td>
+                                            <td class="text-right" ng-class="{'text-red text-bold':BL.REMAINING_AMOUNT<0}">
+                                                <span ng-show="false">
+                                                    {{BD.IS_OVER_BUDGET=(BL.REMAINING_AMOUNT<0 && BD.BUDGET_DETAILS_LIST.length==BL.LINE_ID?true:BD.IS_OVER_BUDGET?true:false)}}
+                                                </span>
+                                                {{(BL.REMAINING_AMOUNT=((BL.TOTAL*1)-((BL.BOOKED*1) +(BL.CURRENT*1)+(BL.CONSUMED*1)+(BL.MEMO*1)))) | number:2 }}
+                                            </td>
+                                            <td class="text-right">{{BL.CONSUMED | number :2}}</td>
+                                            <td class="text-right">{{BL.BOOKED  | number :2}}</td>
+                                            <td class="text-right">
+                                                <span ng-show="BL.MEMO==0">{{BL.MEMO*-1 | number :2}}</span><span ng-show="BL.MEMO!=0">({{BL.MEMO*-1 | number :2}})</span>
+                                            </td>
+                                            <td class="text-right">
+                                                {{BL.CURRENT | number:2}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning-red" ng-show="(ApprovalViewSearch.PROCESS_REQUEST_DETAILS.P2P_SNAP_SHOT_MASTER_LIST | filter:{IS_OVER_BUDGET:true}).length">
+                            <strong>Warning!</strong> This Requisition  is going over budget.
+                        </div>
+                    </div>
+                    <div class="card-header"><h5 class="card-title">Approval Workflow</h5></div>
+                    <div class="row align-items-center mt-3">
+                        <div class="col d-flex custom-scrollbar horizontal_scroll" style="min-height:350px;">
+                            <div class="col-md-2" ng-repeat-start="APL in PROCESSED_APPROVAL_HEADERS_CHAIN_LIST  | unique:'APPROVAL_CHAIN_GROUP_ID'" ng-init="InitiateApprover(APL)">
+                                <div class="row pl-2">
+                                    <span ng-show="false">{{APL.APL_INDEX=$index+1}}</span>
+                                    <div class="col-md-12 pl-1">
+                                        <button type="button" class="btn btn-w-default w-100 text-nowrap" ng-class="{'active':APL.STEP_ACTIVE==1, 'active-approved':APL.SEQUENCE_APPROVED}">{{APL.GROUP_NAME}} </button>
+                                    </div>
+                                    <span class="w-100 z-index-997">
+                                        Approval condition: {{APL.ANY_ALL_FLAG==0?'All':'Any'}} <span ng-show="APL.ANY_ALL_FLAG>0"> {{APL.ANY_ALL_FLAG}}</span>
+                                    </span>
+                                    <div class="col-auto pl-1 mt-2"
+                                         ng-repeat="User in PROCESSED_APPROVAL_HEADERS_CHAIN_LIST | filter:{APPROVAL_CHAIN_GROUP_ID:APL.APPROVAL_CHAIN_GROUP_ID}"
+                                         ng-init="InitiateNameApprover(User,APL)">
+                                        <div class="sec-center mt-1">
+                                            <span ng-show="false"> {{ User.ACTION_REQUIRED==1?APL.STEP_ACTIVE=true :''}}</span>
+                                            <input class="dropdown" type="checkbox" id="Prodropdown{{$index}}{{APL.APL_INDEX}}" name="dropdown{{$index}}" />
+                                            <label class="name-badge-short cursor-pointer"
+                                                   ng-class="{'name-badge-approved':User.STATUS_ID==37,'name-badge-action-required':User.ACTION_REQUIRED==1 &&  User.STATUS_ID==39,'name-badge-pending':User.ACTION_REQUIRED!=1 && User.STATUS_ID==39,'name-badge-rejected': User.STATUS_ID==38 || User.STATUS_ID==42,'name-badge-auto-approved': User.STATUS_ID==41,'name-badge-no-action-required': User.STATUS_ID==74}"
+                                                   for="Prodropdown{{$index}}{{APL.APL_INDEX}}">{{User.SHORT_NAME}}</label>
+                                            <div class="section-dropdown">
+                                                <div class="card-header">
+                                                    <div class="name-badge d-inline">{{User.SHORT_NAME}} </div>
+                                                    <span class="mt-2 ml-2">{{User.APPROVER_NAME}}</span>
+                                                    <span class="badge  text-white float-right"
+                                                          ng-class="{'name-badge-approved':User.STATUS_ID==37,'name-badge-pending':User.STATUS_ID==39,'name-badge-rejected': User.STATUS_ID==38 || User.STATUS_ID==42,'name-badge-auto-approved': User.STATUS_ID==41,'name-badge-no-action-required': User.STATUS_ID==74}">{{User.STATUS_NAME}}</span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <ul class="products-list product-list-in-card">
+                                                        <li class="item  pt-0">
+                                                            <div class="product-info ml-0">
+                                                                <div class="product-title">
+                                                                    {{User.APPROVER_EMAIL}}
+                                                                    <span class="d-block" ng-if="User.LAST_ACTION_TAKEN_DATE!=null">{{User.LAST_ACTION_TAKEN_DATE | toDate | date}}, {{User.LAST_ACTION_TAKEN_DATE | toDate | date:'H:mm'}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="product-info ml-0 font-12 custom-scrollbar" style="max-height:100px">
+                                                                {{User.COMMENTS==null?'-':User.COMMENTS}}
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-auto" ng-if="APL.showborder && !$last" ng-repeat-end><i class="far fa-angle-right text-grey mt-1"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+

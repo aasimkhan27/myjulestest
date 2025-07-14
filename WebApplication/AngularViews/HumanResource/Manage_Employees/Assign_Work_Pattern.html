@@ -1,0 +1,291 @@
+﻿<div class="mx-3 mt-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-3 col-md-3">
+                    <label>
+                        Work Pattern
+                    </label>
+                    <ul class="nav nav-pills mb-0">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    Pattern-001
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Pattern-002
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Pattern-003
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <span class="bulkUpdateSpan">
+                        You can change it individually once applied
+                    </span>
+                </div>
+                <div class="col-xxl-3 col-xl-3 col-md-3">
+                    <label>Effective From </label>
+                    <input type="date" />
+
+                </div>
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto">
+                    <label class="d-block responsiveLabel">&nbsp;</label>
+                    <button class="btn btn-primary applyBtn">Apply</button>
+                </div>
+            </div>
+            <div class="my-3"></div>
+            <div class="row">
+                <div class="col-xxl-4 col-xl-4 col-md-4">
+                    <label>Work Pattern Type</label>
+                    <input type="text" placeholder="Hours per day" disabled />
+                </div>
+                <div class="col-xxl col-xl col-md">
+                    <label>Mon</label>
+                    <input type="text" placeholder="8" disabled />
+                </div>
+                <div class="col-xxl col-xl col-md">
+                    <label>Tue</label>
+                    <input type="text" placeholder="8" disabled />
+                </div>
+                <div class="col-xxl col-xl col-md">
+                    <label>Wed</label>
+                    <input type="text" placeholder="8" disabled />
+                </div>
+                <div class="col-xxl col-xl col-md">
+                    <label>Thu</label>
+                    <input type="text" placeholder="8" disabled />
+                </div>
+                <div class="col-xxl col-xl col-md">
+                    <label>Fri</label>
+                    <input type="text" placeholder="8" disabled />
+                </div>
+                <div class="col-xxl col-xl col-md">
+                    <label>Sat</label>
+                    <input type="text" placeholder="-" disabled />
+                </div>
+                <div class="col-xxl col-xl col-md">
+                    <label>Sun</label>
+                    <input type="text" placeholder="8" disabled />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mx-3 mt-3">
+    <div class="card">
+        <div class="card-header pb-0">
+            <div class="row">
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <h5>Employee</h5>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2 ms-auto">
+                    <input type="text" name="search" placeholder="Search" />
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-lg fa-light fa-location-dot"></i>
+                                    Location
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Location 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Location 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-building fa-lg"></i>
+                                    Department
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Department 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Department 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-briefcase-blank fa-lg"></i>
+                                    Position
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Position 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Position 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-nowrap">Employee Name</th>
+                            <th width="25%">Position</th>
+                            <th width="25%">Work Pattern</th>
+                            <th class="text-nowrap" width="25%">Effective From</th>
+                            <th width="5%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-nowrap">
+                                <span class="text_avatar">mw</span>
+                                Malik Wihowo
+                            </td>
+                            <td><input type="text" disabled placeholder="Employee" class="mb-0" /></td>
+                            <td>
+                                <ul class="nav nav-pills mb-0">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label">
+                                                <span class="truncate-ellipsis">
+                                                    Pattern-001
+                                                </span>
+                                            </span>
+                                        </a>
+                                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                            <li class="DontHideOnClick">
+                                                <span>Pattern-002</span>
+
+                                            </li>
+                                            <li class="DontHideOnClick">
+                                                <span>Pattern-003</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+
+                            <td><input type="date" class="mb-0" /></td>
+                            <td class="text-center"><a class="c-pointer txt-dark"><i class="fa-light fa-chevron-up fa-lg"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th width="10%">Type</th>
+                                                <th width="10%">Total</th>
+                                                <th width="10%">Unit</th>
+                                                <th width="10%">Mon</th>
+                                                <th width="10%">Tue</th>
+                                                <th width="10%">Wed</th>
+                                                <th width="10%">Thu</th>
+                                                <th width="10%">Fri</th>
+                                                <th width="10%">Sat</th>
+                                                <th width="10%">Sun</th>
+                                                <th width="10%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="bg-grey text-nowrap">Hours per day</td>
+                                                <td class="bg-grey">30</td>
+                                                <td class="bg-grey">Hours</td>
+                                                <td>8</td>
+                                                <td>8</td>
+                                                <td>8</td>
+                                                <td>8</td>
+                                                <td>8</td>
+                                                <td>-</td>
+                                                <td>8</td>
+                                                <td><a class="c-pointer txt-dark"><i class="fa-light fa-pen"></i></a><!--<i class="fa-light fa-floppy-disk"></i>--></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap">
+                                <span class="text_avatar">mw</span>
+                                Malik Wihowo
+                            </td>
+                            <td><input type="text" disabled placeholder="Employee" class="mb-0" /></td>
+
+                            <td>
+                                <ul class="nav nav-pills mb-0">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label">
+                                                <span class="truncate-ellipsis">
+                                                    Pattern-001
+                                                </span>
+                                            </span>
+                                        </a>
+                                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                            <li class="DontHideOnClick">
+                                                <span>Pattern-002</span>
+                                            </li>
+                                            <li class="DontHideOnClick">
+                                                <span>Pattern-003</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+
+                            <td><input type="date" class="mb-0" /></td>
+                            <td class="text-center"><a class="c-pointer txt-dark"><i class="fa-light fa-chevron-down fa-lg"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="card-footer text-end">
+            <a href="#!/Employee_List" class="btn btn-outline" type="button">Cancel</a>
+            <a href="#!/Preview_And_Update_Accesses_Work_Pattern" class="btn btn-primary" type="button">Preview and update [2] accesses</a>
+        </div>
+    </div>
+</div>
+

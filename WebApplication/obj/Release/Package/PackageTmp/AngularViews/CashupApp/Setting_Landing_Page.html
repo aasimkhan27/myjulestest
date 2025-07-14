@@ -1,0 +1,346 @@
+﻿<div class="my-3 mx-3">
+    <div class="card">
+        <div class="card-header">
+            <h6>Hello {{USER_Obj.USER_NAME}}!</h6>
+        </div>
+        <div class="card-header px-0 border-0 resCashupTabs">
+            <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==1}" ng-click="Fn_TAB_CLICK(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                        Basic Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==2}" ng-click="Fn_TAB_CLICK(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                        Notification
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--BASIC SETUP-->
+        <div class="card-body resCashupHeader" ng-show="TAB_ID==1">
+                <div class="col-xxl-8 col-xl-8 col-md-8">
+                    <div class="row ">
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label>Name <span class="text-danger">*</span></label>
+                            <input type="text" ng-model="USER_Obj.USER_NAME" disabled />
+                        </div>
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label>Email <span class="text-danger">*</span></label>
+                            <input type="text" ng-model="USER_Obj.USER_EMAIL" disabled />
+                        </div>
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label>Mobile Number</label>
+                            <input type="text" ng-model="USER_Obj.USER_PHONE" disabled />
+                        </div>
+                    </div>
+                </div>
+            <hr />
+
+            <form name="AccountPasswordForm" novalidate autocomplete="off">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <h6 class="headings">Password</h6>
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Current Password<span class="text-danger">*</span></label>
+                        <input type="password" placeholder="Enter Current Password"
+                               ng-model="USER_Obj.USER_CURRENT_PASSWORD"
+                               required
+                               name="USER_CURRENT_PASSWORD"
+                               autocomplete="off"
+                               ng-class="{'error': AccountPasswordForm.submitted && AccountPasswordForm.USER_CURRENT_PASSWORD.$invalid}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>New Password<span class="text-danger">*</span> 
+                                           <span class="tooltipx mt-2">
+                                               <a class="ml-3">
+                                                   <i class="fa fa-question-circle font16px cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                               </a>
+                                               <div class="tooltiptextx" style="z-index:1">
+                                                   <div class="col-md-12">
+                                                       <b>Password Policy</b>
+                                                       <br>The password must have a minimum length of ten characters and include:
+                                                       <ul class="padding-left15px margin0px shadow-none">
+                                                           <li>at least one UPPERCASE (A-Z) character, and</li>
+                                                           <li>at least one lowercase (a-z) character, and</li>
+                                                           <li>at least one Special character (!, @, #, $, %, ^, &amp;, *, _), and</li>
+                                                           <li>at least one digit (0,1,2,3,4,5,6,7,8,9)</li>
+                                                       </ul>
+                                                   </div>
+                                               </div>
+                                           </span>
+                        </label>
+                        <input type="password" placeholder="Type New Password" 
+                               ng-model="USER_Obj.USER_NEW_PASSWORD"
+                               required
+                               name="USER_NEW_PASSWORD"
+                               autocomplete="off"
+                               ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
+                               ng-minlength="8" 
+                               ng-maxlength="20"
+                               ng-class="{'error': AccountPasswordForm.submitted && AccountPasswordForm.USER_NEW_PASSWORD.$invalid}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Confirm Password<span class="text-danger">*</span></label>
+                        <input type="password" placeholder="Confirm Password"
+                               required
+                               autocomplete="off"
+                               ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/"
+                               ng-minlength="8" 
+                               ng-maxlength="20"
+                               name="USER_CONFIRM_PASSWORD"
+                               ng-model="USER_Obj.USER_CONFIRM_PASSWORD"
+                               ng-class="{'error': AccountPasswordForm.submitted && AccountPasswordForm.USER_CONFIRM_PASSWORD.$invalid}"/>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12 mt-2 text-end">
+                        <button type="button" class="btn btn-light" ng-click="SetPassword()" click-once>Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Notification-->
+        <div class="card-body resCashupHeader" ng-show="TAB_ID==2">
+            <div class="col-xxl-9 col-md-9 col-xl-9">
+                <div class="row">
+                    <!--<div class="col-xxl-4 col-xl-4 col-md-4">
+            <div class="media form-control">
+                <label class="col-form-label">New Cashup Pending</label>
+                <div class="media-body switch-sm ms-auto">
+                    <label class="switch">
+                        <input type="checkbox" checked=""><span class="switch-state"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-md-4">
+            <div class="media form-control">
+                <label class="col-form-label">Cashup Submission</label>
+                <div class="media-body switch-sm ms-auto">
+                    <label class="switch">
+                        <input type="checkbox" checked=""><span class="switch-state"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-md-4">
+            <div class="media form-control">
+                <label class="col-form-label">Cashup Pending Approval</label>
+                <div class="media-body switch-sm ms-auto">
+                    <label class="switch">
+                        <input type="checkbox" checked=""><span class="switch-state"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-md-4">
+            <div class="media form-control">
+                <label class="col-form-label">Cashup Completed</label>
+                <div class="media-body switch-sm ms-auto">
+                    <label class="switch">
+                        <input type="checkbox" checked=""><span class="switch-state"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-4 col-xl-4 col-md-4">
+            <div class="media form-control">
+                <label class="col-form-label">Data Upload Pending</label>
+                <div class="media-body switch-sm ms-auto">
+                    <label class="switch">
+                        <input type="checkbox" checked=""><span class="switch-state"></span>
+                    </label>
+                </div>
+            </div>
+        </div>-->
+
+                    <div class="col-xxl-4 col-xl-4 col-md-4" ng-repeat="_notification in NOTIFICATIONS_MASTER_LIST">
+                        <div class="media form-control">
+                            <label class="col-form-label">{{_notification.NOTIFICATION_NAME}}</label>
+                            <div class="media-body switch-sm ms-auto">
+                                <label class="switch">
+                                    <input type="checkbox"
+                                           name="ACTIVE{{$index}}"
+                                           ng-checked="_notification.ACTIVE"
+                                           ng-model="_notification.ACTIVE"
+                                           ng-change="SET_NOTIFICATION(_notification)">
+                                    <span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12 mt-2 text-end">
+                        <button type="button" class="btn btn-light">Save</button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="card-footer">
+                
+            </div>-->
+            <hr />
+            <!--MAIL LOG-->
+            <div class="row g-2">
+                <div class="col-xxl-12 col-md-12 col-xl-12">
+                    <h5 class="headings">Mail Log</h5>
+                </div>
+                <div class="col-xxl-3 col-md-3 col-xl-3">
+                    <input type="text" name="search" placeholder="Search by Email.." ng-model="NOTIFICATION_SEARCH.SEARCH_TEXT" ng-change="GET_CASHUP_SETTING_MAIL_LOG()">
+                </div>
+                <div class="col-xxl-2 col-xl-2 col-md-2 ms-auto">
+                    <div id="reportrange" class="form-control-box">
+                        <span></span>
+                        <i class="fa-regular fa-calendar float-end mt-1"></i>
+                    </div>
+                </div>
+                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                    <ul class="nav nav-pills min-w-100">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    Status
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    <span class="truncate">Send</span>
+                                </li>
+                                <li class="DontHideOnClick">
+                                    <span class="truncate">Unsend</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills mb-1">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate">
+                                        {{NOTIFICATION_SEARCH.SELECTED_SITE.BRANCH_NAME || 'Branch'}}
+                                    </span>
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li ng-click="SELECT_SITE_FOR_NOTIFICATION()">
+                                    Choose
+                                </li>
+                                <li ng-repeat="_site in SITES_LIST"
+                                    ng-click="SELECT_SITE_FOR_NOTIFICATION(_site)">
+                                    <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills mb-1">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate">
+                                        {{NOTIFICATION_SEARCH.NOTIFICATION_TYPE.NOTIFICATION_NAME || 'Notification Type'}}
+                                    </span>
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li ng-click="SELECT_TYPE_FOR_NOTIFICATION()">
+                                    Choose
+                                </li>
+                                <li ng-repeat="_notification_type in NOTIFICATIONS_MASTER_LIST"
+                                    ng-click="SELECT_TYPE_FOR_NOTIFICATION(_notification_type)">
+                                    <span class="truncate">{{ _notification_type.NOTIFICATION_NAME}}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="NOTIFICATION_MAIL_LOG_LIST.length == 0">
+                    <div class="no-record text-center">
+                        <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+                    </div>
+                </div>
+                <div class="table-responsive scrollbar-wrapper" ng-show="NOTIFICATION_MAIL_LOG_LIST.length>0">
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+
+                                <th class="text-nowrap">Email Subject</th>
+                                <th class="text-nowrap">Notification Type</th>
+                                <th class="text-nowrap">Sent to</th>
+                                <th class="text-nowrap">Delivery Time</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ROW in NOTIFICATION_MAIL_LOG_LIST">
+                                <td class="text-nowrap">{{ROW.EMAIL_SUBJECT}}</td>
+                                <td class="text-nowrap">{{ROW.TYPE}}</td>
+                                <td class="text-nowrap">{{ROW.SENT_TO}}</td>
+                                <td class="text-nowrap">{{ROW.DELIVERY_TIME}}</td>
+                                <td class="text-center">
+                                    <span>{{ROW.STATUS}}</span>
+                                    <!--<span class="badge-lg badge-light-success">Sent</span>-->
+                                </td>
+                                <td class="text-center">
+                                    <div class="dropstart">
+                                        <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-ellipsis"></i></button>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-item"><a class="text-dark d-block" ng-click="RESEND_NOTIFICATION(ROW.SYSTEM_NOTIFICATION_ID)"><i class="fa-light fa-paper-plane me-2"></i> Resend</a></li>
+                                            <li class="dropdown-item"><a class="text-dark d-block" ng-click="SHOW_ERROR(ROW)"><i class="fa-light fa-circle-exclamation me-2"></i> View Error</a></li>
+                                            <!--<li class="dropdown-item"><a class="text-dark d-block"><i class="fa-light fa-eye me-2"></i> Preview</a></li>-->
+                                        </ul>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                        <tfoot class="t_foot_fixed" ng-show="GetData">
+                            <tr>
+
+                                <td colspan="6" class="text-center">
+                                    <button type="button" class="btn btn-sm btn-light btn_fixed" ng-click="GET_CASHUP_SETTING_MAIL_LOG(1)">Load More...</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+ </div>
+
+<div class="modal fade" id="notification_error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="table_heading">Error</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="NOTIFICATION_ERROR=null"></button>
+            </div>
+            <div class="modal-body resTextAreaCashup">
+                <textarea rows="5" class="mb-0"
+                          ng-model="NOTIFICATION_ERROR"
+                          disabled></textarea>
+            </div>
+        </div>
+    </div>
+</div>

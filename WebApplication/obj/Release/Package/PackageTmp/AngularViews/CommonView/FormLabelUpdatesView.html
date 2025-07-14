@@ -1,0 +1,301 @@
+﻿<div class="card-body" ng-repeat="HEADER in LIST.DATA.HEADER_LIST" ng-show="HEADER.FIELD_MASTER_ID!=146 &&  HEADER.FIELD_MASTER_ID != 145">
+    <div class="col-md-12 mt-3 pl-0">
+        <h5 class="heading-text-2">{{HEADER.HEADER_NAME}}</h5>
+    </div>
+    <div class="content-bg">
+        <div class="row">
+            <div class="col-md-4" ng-repeat="CUSTOM_FIELD in  HEADER.CUSTOM_FIELDS_LIST  |  filter: {ACTIVE:true}" 
+                 ng-init="initializeHistoryviewcustfields(CUSTOM_FIELD,$index, LIST.DATA,ObjectHistoryData)" 
+                 ng-if="CUSTOM_FIELD.FIELD_TYPE_ID!=null" on-finish-render="ngRepeatFinished">
+                <!--{{CUSTOM_FIELD.FIELD_MASTER_ID}}-->
+                <!--{{CUSTOM_FIELD.FIELD_TYPE_ID}}-->
+                <div class="form-group">
+                    <label class="mb-0" ng-show="CUSTOM_FIELD.FIELD_TYPE_ID!=6">
+                        {{CUSTOM_FIELD.ENTITY_COLUMN_NAME}}
+                    </label>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==1">
+                        <!--LongText-->
+                        <div class="" ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}">{{CUSTOM_FIELD.PREV_FIELD_VALUE==null?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'-' }}</div>
+                        <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE==''">{{CUSTOM_FIELD.PREV_FIELD_VALUE==''?'-':CUSTOM_FIELD.PREV_FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!=''">  {{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE==''">{{CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==2">
+                        <!--ShortText-->
+                        <div ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}">{{CUSTOM_FIELD.PREV_FIELD_VALUE==null?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'' }}</div>
+                        <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE==''">{{CUSTOM_FIELD.PREV_FIELD_VALUE==''?'-':CUSTOM_FIELD.PREV_FIELD_VALUE}}</span>
+                     
+                        <span  ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!=''">  {{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE=='' ?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE==''">{{CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                    </div>
+               <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==12">
+                         <!--ShortTextOnlyAlphabet-->
+                        <div ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}">{{CUSTOM_FIELD.PREV_FIELD_VALUE==null?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'' }}</div>
+                        <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE==''">{{CUSTOM_FIELD.PREV_FIELD_VALUE==''?'-':CUSTOM_FIELD.PREV_FIELD_VALUE}}</span>
+                     
+                        <span  ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!=''">  {{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE=='' ?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE==''">{{CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==3 && CUSTOM_FIELD.IS_DB_DROPDOWN">
+                        <!--DROPDOWN-->
+                        <!--{{CUSTOM_FIELD.PREV_FIELD_VALUE}}{{CUSTOM_FIELD.FIELD_VALUE}}asjflksjd-->
+                        <div class="" ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE==CUSTOM_FIELD.FIELD_VALUE">{{CUSTOM_FIELD.PREV_FIELD_VALUE==null?'-':CUSTOM_FIELD.PREV_FIELD_VALUE==CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'-' }}</div>
+
+                        <div class="" ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE"  
+                             ng-style="CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE && {'text-decoration':'line-through'}">
+                            <span  ng-style="CUSTOM_FIELD.FIELD_VALUE==null && {'text-decoration':'line-through'}">
+                                {{CUSTOM_FIELD.PREV_FIELD_VALUE==null?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:''}}
+                            </span>
+                            </div>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!='' && CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE">{{CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE==''">-</span>
+                      </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==3 && !CUSTOM_FIELD.IS_DB_DROPDOWN">
+                        <!--DROPDOWN-->
+                        <div class="" ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}">{{CUSTOM_FIELD.PREV_FIELD_VALUE==null?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'-' }}</div>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!=''">{{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE==''">{{CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==4">
+                        <!--Email-->
+                        <div class="" ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}">{{CUSTOM_FIELD.PREV_FIELD_VALUE==null || CUSTOM_FIELD.PREV_FIELD_VALUE==""?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'' }}</div>
+                        <span  ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!=''">{{CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE==''">-</span>
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==5">
+
+                        <!--{{CUSTOM_FIELD.PREV_FIELD_VALUE}}<br />
+                        {{CUSTOM_FIELD.FIELD_VALUE}}-->
+
+                        <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE== CUSTOM_FIELD.FIELD_VALUE">{{CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <div class="" ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE"  
+                             ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}">
+                        {{CUSTOM_FIELD.PREV_FIELD_VALUE==null || CUSTOM_FIELD.PREV_FIELD_VALUE==""?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'-' }}
+                        </div>
+                        <!--<span  ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!=''">{{CUSTOM_FIELD.FIELD_VALUE}}</span>-->
+                        <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE!= CUSTOM_FIELD.FIELD_VALUE">{{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE=='-'?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE=='' || CUSTOM_FIELD.FIELD_VALUE==null">-</span>
+
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==6">
+                        <label>
+                            <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE==null || CUSTOM_FIELD.PREV_FIELD_VALUE==''">
+                            <i  class="fas fa-times fa-lg text-danger"  ng-style="CUSTOM_FIELD.FIELD_VALUE!=CUSTOM_FIELD.PREV_FIELD_VALUE && {'text-decoration':'line-through'}"></i>
+                            </span>
+                            <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE!=null &&  CUSTOM_FIELD.PREV_FIELD_VALUE!=''">
+                             <i ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE"  class="fas fa-check fa-lg text-wenodo-light-blue" ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}"></i>
+                             <i  ng-show="!CUSTOM_FIELD.PREV_FIELD_VALUE || CUSTOM_FIELD.PREV_FIELD_VALUE==null || CUSTOM_FIELD.PREV_FIELD_VALUE==''" class="fas fa-times fa-lg text-danger" 
+                                ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}"></i></span> {{CUSTOM_FIELD.ENTITY_COLUMN_NAME}}<br />
+                            <span>
+                                <i ng-show="CUSTOM_FIELD.FIELD_VALUE && CUSTOM_FIELD.IS_CHANGE_FLAG" class="fas fa-check fa-lg text-wenodo-light-blue"></i>
+                                <i ng-show="!CUSTOM_FIELD.FIELD_VALUE && CUSTOM_FIELD.IS_CHANGE_FLAG" class="fas fa-times fa-lg text-danger"></i>
+                            </span>
+                            </label>
+                        
+                    </div>
+                    <div class="mt-2" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==7">
+                        <div  class="form-group mb-0" ng-style="CUSTOM_FIELD.IS_CHANGE_FLAG==1 && {'text-decoration':'line-through'}"  ng-repeat="Op in CUSTOM_FIELD.Prev_checkedOption" ng-show="CUSTOM_FIELD.Prev_checkedOption!=''">
+                            <label ng-style="CUSTOM_FIELD.IS_CHANGE_FLAG==1 && {'text-decoration':'line-through'}">
+                                <i class="fas fa-check text-wenodo-light-blue"></i>
+                                {{Op}}
+                            </label>
+                        </div>
+                        <span ng-show="CUSTOM_FIELD.Prev_checkedOption.length==0 || CUSTOM_FIELD.Prev_checkedOption==''">-</span>
+                        <br />
+                        <div class="form-group mb-0" ng-repeat="Op in CUSTOM_FIELD.checkedOption" ng-show="CUSTOM_FIELD.checkedOption!=''">
+                            <label>
+                                <i class="fas fa-check text-wenodo-light-blue"></i>
+                                {{Op}}
+                            </label>
+                        </div>
+                        <span ng-show="CUSTOM_FIELD.checkedOption.length==0 && CUSTOM_FIELD.IS_CHANGE_FLAG==1 || CUSTOM_FIELD.checkedOption=='' && CUSTOM_FIELD.IS_CHANGE_FLAG==1 ">-</span>
+                    </div>
+                    <div ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==8">
+                        <!--RADIO BUTTON-->
+                        <div class="" ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}">{{CUSTOM_FIELD.PREV_FIELD_VALUE==null?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'' }}</div>
+                        <span  ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!=''">{{CUSTOM_FIELD.FIELD_VALUE==null?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE==''">{{CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==9">
+                        <!--DATE-->
+                        <div  ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE!='0001-01-01T00:00:00' && CUSTOM_FIELD.PREV_FIELD_VALUE!='1/1/0001 12:00:00 AM'" ng-style="CUSTOM_FIELD.FIELD_VALUE!=null && {'text-decoration':'line-through'}" class="">
+                        {{CUSTOM_FIELD.PREV_FIELD_VALUE==null || CUSTOM_FIELD.PREV_FIELD_VALUE==''?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?(CUSTOM_FIELD.PREV_FIELD_VALUE | date):'-'}}
+                        </div>
+                        <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE=='0001-01-01T00:00:00' || CUSTOM_FIELD.PREV_FIELD_VALUE=='1/1/0001 12:00:00 AM'">-</span>
+                        <span  ng-show="CUSTOM_FIELD.FIELD_VALUE!=null && CUSTOM_FIELD.FIELD_VALUE!=''">
+                            <span ng-show="CUSTOM_FIELD.FIELD_VALUE!='0001-01-01T00:00:00' && CUSTOM_FIELD.FIELD_VALUE!='1/1/0001 12:00:00 AM'">{{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE | date}}</span>
+                            <span ng-show="CUSTOM_FIELD.FIELD_VALUE=='0001-01-01T00:00:00' || CUSTOM_FIELD.FIELD_VALUE=='1/1/0001 12:00:00 AM'">-</span>
+                            </span>
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==10">
+                        <!--Numeric Decimal-->
+                         <!--{{CUSTOM_FIELD.PREV_FIELD_VALUE}}
+                         {{CUSTOM_FIELD.FIELD_VALUE}}jghasjdk-->
+                        <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE== CUSTOM_FIELD.FIELD_VALUE">{{CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <div class="" ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE!= CUSTOM_FIELD.FIELD_VALUE" ng-style="CUSTOM_FIELD.PREV_FIELD_VALUE!= CUSTOM_FIELD.FIELD_VALUE && {'text-decoration':'line-through'}">
+                        {{CUSTOM_FIELD.PREV_FIELD_VALUE==null?'-':CUSTOM_FIELD.PREV_FIELD_VALUE!=CUSTOM_FIELD.FIELD_VALUE?CUSTOM_FIELD.PREV_FIELD_VALUE:'' }}
+                        </div>
+                        <span ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE==''">-</span>
+                        <span  ng-show="CUSTOM_FIELD.PREV_FIELD_VALUE!= CUSTOM_FIELD.FIELD_VALUE">{{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE=='-'?'-':CUSTOM_FIELD.FIELD_VALUE}}</span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE==''">-</span>
+
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==11">
+                        <!--Upload-->
+                        <span ng-repeat="File in CUSTOM_FIELD.UploadedFiles">
+                            <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="download"><i class="fa fa-download"></i> {{File.ORIGINAL_FILE_NAME}}</a>
+                            <br />
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body pb-0" ng-show="LIST.DATA.APP_PAGE_ID==9">
+    <h6 class="heading-text-2 ">Additional Payments/Deductions</h6>
+</div>
+<div class="card-body"  ng-show="ViewEffEmpSearch_1.APP_PAGE_ID==11">
+    <label class="mb-0 d-block">Attachment:</label>
+    <span ng-repeat="File in ViewEffEmpSearch_1.WORK_PERMIT_UPD" ng-show="ViewEffEmpSearch_1.WORK_PERMIT_UPD.length>0">
+        <a href="/Upload/{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="download"><i class="fa fa-download"></i> {{File.ORIGINAL_FILE_NAME}}</a>
+        <span ng-repeat="FILE1 in  File.PRE_LIST">
+            <a href="/Upload/{{FILE1.FILE_PATH}}{{FILE1.SERVER_FILE_NAME}}" download="download"><i class="fa fa-download"></i> {{FILE1.ORIGINAL_FILE_NAME}}</a>
+            <br />
+        </span>
+    </span>
+    <span ng-show="ViewEffEmpSearch_1.WORK_PERMIT_UPD.length==0">-</span>
+</div>
+
+
+<div class="card-body" ng-show="LIST.DATA.APP_PAGE_ID==9">
+    <div class="col-md-12 w-100" empty-grid ng-show="LIST.DATA.ADDITIONAL_PAY_LIST.length==0">
+    </div>
+    <div class="col-md-12" ng-show="LIST.DATA.ADDITIONAL_PAY_LIST.length>0">
+        <div class="row w-100">
+            <div class="table-responsive custom-scrollbar height-auto">
+                <table class="table table-striped">
+                    <thead class="bg-wenodo-dark-blue">
+                        <tr>
+                            <th>Pay Code</th>
+                            <th>Frequency</th>
+                            <th>Amount</th>
+                            <th>Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="PY_LIST in  LIST.DATA.ADDITIONAL_PAY_LIST" >
+                        <tr>
+                            <td>{{PY_LIST.PAY_CODE_NAME}} <span ng-show="PY_LIST.PAY_CODE_DESCRIPTION!=null">-</span> {{PY_LIST.PAY_CODE_DESCRIPTION}}</td>
+                            <td>{{PY_LIST.PAY_FREQUENCY_NAME}}</td>
+                            <td>{{PY_LIST.AMOUNT}}</td>
+                            <td>{{PY_LIST.RATE}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body"  ng-show="LIST.DATA.APP_PAGE_ID==8">
+    <div class="col-md-12">
+        <h5 class="heading-text-2">Qualifications</h5>
+    </div>
+    <div class="clearfix"></div>
+    <div class="content-bg" ng-repeat="CRS in ViewEffEmpSearch_1.CourseList">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="mb-0">Course Name :</label>
+                        <span class="form-content">
+                            <span class="" ng-show="CRS.CHANGE_LIST.length>0">{{CRS.CHANGE_LIST[0].COURSE_NAME==null || CRS.CHANGE_LIST[0].COURSE_NAME==''?'':CRS.CHANGE_LIST[0].COURSE_NAME!=CRS.COURSE_NAME?CRS.CHANGE_LIST[0].COURSE_NAME:''}} </span>
+                           {{CRS.COURSE_NAME==null || CRS.COURSE_NAME==''?'-':CRS.COURSE_NAME}} 
+                             <span ng-show="CRS.COURSE_ID==1">({{CRS.COURSE_NAME_OTHER}})</span>
+                         </span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="mb-0">Expiry Date:</label>
+                        <span class="form-content">
+                            <span class="" ng-show="CRS.CHANGE_LIST.length>0">
+                            {{CRS.CHANGE_LIST[0].EXPIRY_DATE==null || CRS.CHANGE_LIST[0].EXPIRY_DATE==''?'':CRS.CHANGE_LIST[0].EXPIRY_DATE!=CRS.EXPIRY_DATE?(CRS.CHANGE_LIST[0].EXPIRY_DATE | date):''}} 
+                            </span>
+                              {{CRS.EXPIRY_DATE==null || CRS.EXPIRY_DATE==''?'-':CRS.EXPIRY_DATE | date}}
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="mb-0">Certificate:</label>
+                        <span class="form-content" ng-show="CRS.UploadedFiles==null || CRS.UploadedFiles.length==0">-</span>
+                        <span class="form-content" ng-repeat="upls in CRS.UploadedFiles" ng-show="CRS.UploadedFiles.length>0">
+                            <i class="fad fa-file-upload text-blue"></i>
+                            <a href="/uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}" download="{{upls.SERVER_FILE_NAME}}"> 
+                            {{upls.ORIGINAL_FILE_NAME}}
+                                <br />
+                            </a>
+                        </span>
+                        <span class="form-content" ng-repeat="upls in CRS.CHANGE_LIST" ng-show="CRS.CHANGE_LIST.length>0">
+                            <i class="fad fa-file-upload text-blue"></i>
+                            <a href="/uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}" download="{{upls.SERVER_FILE_NAME}}">
+                                {{upls.ORIGINAL_FILE_NAME}}
+                                <br />
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="LIST.DATA.APP_PAGE_ID==10">
+    <div class="card-body pt-0">
+        <div class="text-center" ng-show="LIST.DATA.ABSENCE_TYPE_EMP_UPD.length==0" empty-grid></div>
+        <div class="table-responsive custom-scrollbar height-auto">
+            <table class="table table-striped  mb-0 ">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Absence type</th>
+                        <th>Allocation</th>
+                        <th>Units</th>
+                        <th>Start</th>
+                        <th>Year End</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="LL in LIST.DATA.ABSENCE_TYPE_EMP_UPD">
+                    <tr>
+                        <td>{{LL.ABSENCE_TYPE_NAME  }}</td>
+                        <td>{{LL.ALLOCATION_DAYS}}</td>
+                        <td>{{LL.UNIT_NAME  }}</td>
+                        <td>{{LL.START_DATE | date  }}</td>
+                        <td>{{LL.END_DATE | date }}</td>
+                        <td>
+                            <i class="fa fa-undo" ng-show="LL.CHANGE_LIST.length>0" ng-click="DisplayDetails(LL)"></i>
+                             <span ng-show="LL.DELETED_FLAG" class="text-danger">Deleted</span>
+                        </td>
+                    </tr>
+                    <tr class="div-show-hide" ng-show="LL.ShowDetails">
+                        <td colspan="6" class="p-4 ng-hide-remove">
+                            <div class="table-responsive custom-scrollbar height-auto" ng-show="LL.CHANGE_LIST.length>0">
+                                <table class="table shadow bg-white mb-0">
+                                    <tbody class="panel panel-default text-xs" ng-repeat="TM in LL.CHANGE_LIST" >
+                                        <tr>
+                                            <td>{{TM.ABSENCE_TYPE_NAME  }}</td>
+                                            <td>{{TM.ALLOCATION_DAYS}}</td>
+                                            <td>{{TM.UNIT_NAME }}</td>
+                                            <td>{{TM.START_DATE | date}}</td>
+                                            <td>{{TM.END_DATE | date}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

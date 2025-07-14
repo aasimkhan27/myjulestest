@@ -1,0 +1,317 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="heading-text-2">Requests</h5>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <!--<div class="col">
+        <form class="dropdown">
+            <input class="form-control mw-175" type="text" placeholder="Select Supplier" id="menu1" data-toggle="dropdown" autocomplete="off" ng-model="SUPPLIER_ID" name="SUPPLIER_ID">
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" >
+                <li role="presentation"><a class="text-sm" role="menuitem" tabindex="-1">{{SUP.NAME}}</a></li>
+                <li role="presentation"><a class="text-sm" role="menuitem" tabindex="-1">CSS</a></li>
+                <li role="presentation"><a class="text-sm" role="menuitem" tabindex="-1">JavaScript</a></li>
+            </ul>
+        </form>
+    </li>-->
+                <div class="col">
+                    <div class="form-group" id="AddCustomScroll">
+                        <label class="d-block">Select Supplier</label>
+                        <input type="text" name="CategorySearchBox"
+                               ng-model="RequestSearch.SUPPLIER_NAME"
+                               ng-change="SetValues(Supplier,$index)"
+                               uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIERList | filter:$viewValue"
+                               typeahead-loading="loading" typeahead-no-results="noResults"
+                               class="form-control form-control-sm" autocomplete="off"
+                               placeholder="Type to select Supplier Name..." />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Statement Date</label>
+                        <div id="reportrange" class="form-control form-control-sm">
+                            <i class="fa fa-calendar mt-1"></i>&nbsp;
+                            <span class="mt-1">Statement Date</span> <i class="fa fa-sort float-right mt-1"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Select Type</label>
+                        <select class="custom-select custom-select-sm" ng-model="RequestSearch.REQUEST_TYPE_ID" name="REQUEST_TYPE_ID"
+                                ng-options="REQ.ID as REQ.TYPE_NAME for REQ in REQUESTList">
+                            <option value="" selected="selected">Select Type</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Select Status</label>
+                        <select class="custom-select custom-select-sm" ng-model="RequestSearch.STATUS_IDS" name="STATUS_IDS">
+                            <option value="" selected="selected">Select Status</option>
+                            <option value="35">PENDING</option>
+                            <option value="36">CLOSE</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                    <div class="form-group">
+                        <label class="d-block">Branch Name</label>
+                        <select class="custom-select custom-select-sm min-w-250" name="BRN_LG"
+                                data-placeholder="Select Branch"
+                                ng-model="RequestSearch.BRANCH_LOGIN_ID"
+                                ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                        <label class="d-block">&nbsp;</label>
+                        <button type="submit" name="submit" class="btn btn-sm btn-wenodo"   click-once ng-click="GET_PYMNT_MANUAL_REQUEST(1);">Search</button>
+                        <button class="btn btn-sm btn-w-default" ng-click="RESETPAGESEARCH();">Reset</button>
+                        <!--<button ng-show="false" type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel"><i class="far fa-file-excel"></i></button>-->
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive custom-scrollbar height-60vh">
+            <div class="text-center" ng-show="MANUALIST.length==0" empty-grid></div>
+            <table class="table table-striped table-head-fixed table-hover compact_table" ng-show="MANUALIST.length>0">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th class="text-nowrap">Request Number</th>
+                        <th class="text-nowrap">Request Type</th>
+                        <th class="text-nowrap">Requested Statement Date</th>
+                        <th class="text-nowrap">Supplier Name</th>
+                        <th>Status</th>
+                        <th>Subject</th>
+                        <th width="2%">Action</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" class="text-center table-footer-fixed" ng-show="GetData">
+                            <a class="btn btn-secondary text-white"   click-once ng-click="LAZY_GET_REQUEST_LIST();">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="Request in MANUALIST" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td class="text-nowrap">{{Request.ID}}</td>
+                        <td>{{Request.REQUEST_TYPE_NAME}}</td>
+                        <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i>{{Request.STATEMENT_DATE| date}}</td>
+                        <td>{{Request.SUPPLIER_NAME}}</td>
+                        <td>{{Request.STATUS_NAME}}</td>
+                        <td>{{Request.SUBJECT}}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-transparent-danger" data-toggle="modal" ng-click="VIEW_CLOSE_REQUEST(Request);"><i class="fas fa-times" data-toggle="tooltip" data-html="true" data-original-title="Close Request"></i></button>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+                <!--<tbody ng-show="MANUALIST.length==0 && Msg!=''">
+                <tr>
+                    <td colspan="6" style="text-align:center;">
+                        <b> {{Msg}}</b>
+                    </td>
+                </tr>
+            </tbody>-->
+
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-white">
+        <div class="form-group">
+            <a href="#!/Request_Statement" class="btn btn-sm btn-wenodo">Schedule</a>
+            <button type="button" class="btn btn-sm btn-w-default" data-toggle="modal" ng-show="CheckSubModuleAccess(59)" data-target="#Manual_Statement">Manual Request</button>
+            <a href="#!/View_Schedule" class="btn btn-sm btn-w-default">View Schedule </a>
+            <!-- <button type="button" class="btn btn-w-default" data-toggle="modal" href="#!/View_Schedule" >View Schedule</button>-->
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade show" id="Manual_Statement">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title d-flex">
+                    Manual Request
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <form name="CustomForm">
+                    <div class="row">
+                        <div class="col-md-3" ng-show="BRANCH_LOGIN_LIST.length>0">
+                            <div class="form-group">
+                                <label class="d-block">Branch Name</label>
+                                <select class="custom-select custom-select-sm" name="BRN_LG"
+                                        data-placeholder="Select Branch"
+                                        ng-model="MANUAL.BRANCH_LOGIN_ID"
+                                        ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)" ng-change="GET_PYMNT_SUPPLIER();"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Supplier Name <span class="text-danger">*</span></label>
+                                <select class="custom-select custom-select-sm" ng-model="SUPPLIER_ID" name="SUPPLIER_ID" data-placeholder="Select Supplier"
+                                        ng-options="SUP.ID as SUP.SUPPLIER_NAME for SUP in SUPPLIERList" ng-class="{'error':!SUPPLIER_ID_VALID}">
+                                    <option value="" selected="selected">Select Name</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Requested Statement Date</label>
+                                <!--<div class="input-group date" data-provide="datepicker">
+                <input type="text" class="form-control" placeholder="Statement Date" ng-model="STATEMENT_DATE" name="STATEMENT_DATE">
+                <div class="input-group-addon">
+                    <i class="far fa-calendar-alt"></i>
+                </div>
+            </div>-->
+                                <input type="text"
+                                       class="form-control form-control-sm DateInputLoadStartForm"
+                                       name="STATEMENT_DATE"
+                                       autocomplete="off" placeholder="Request Statement Date"
+                                       readonly
+                                       ng-model="STATEMENT_DATE">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Request Type <span class="text-danger">*</span></label>
+                                <select class="custom-select custom-select-sm" ng-model="REQUEST_TYPE_ID" name="REQUEST_TYPE_ID" data-placeholder="Select Request Type"
+                                        ng-options="REQ.ID as REQ.TYPE_NAME for REQ in REQUESTList" ng-class="{'error':!REQUEST_TYPE_ID_VALID}">
+                                    <option value="" selected="selected">Select Type</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Email <span class="text-danger">*</span></label>
+                                <input type="text" ng-model="EMAIL" name="EMAIL" class="form-control form-control-sm" ng-class="{'error':!EMAIL_VALID}"
+                                       ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/" placeholder="Email" required />
+                                <span style="color:Red" ng-show="CustomForm.EMAIL.$dirty&&CustomForm.EMAIL.$error.pattern">Please Enter Valid Email</span>
+                                <!--ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/" />
+            <small class="text-danger" ng-show="CustomForm.EMAIL.$error.pattern">Please Enter Valid Email<br /></small>-->
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Subject <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" ng-model="SUBJECT" name="SUBJECT" placeholder="Subject" ng-class="{'error':!SUBJECT_VALID}" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Body  </label>
+                                <textarea class="form-control form-control-sm" rows="4" ng-model="BODY" name="BODY" ng-trim="false" maxlength="2000" ng-class="{'error':!BODY_VALID}" placeholder="Body" />
+                                <span class="d-block text-xs text-gray semibold"> {{2000 - BODY.length}} Character Limit </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-wenodo"    click-once ng-click="INS_UPD_PYMNT_REQUESTS();">Send</button>
+                <button type="button" class="btn btn-sm btn-w-default" ng-click="RESETMANUAL();">Reset</button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade show" id="View_Schedule">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title d-flex">
+                    Schedule List
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <div class="table-reponsive">
+                    <table class="table table-striped table-hover compact_table">
+                        <thead class="bg-wenodo-dark-blue">
+                            <tr>
+                                <th>Supplier Name</th>
+                                <th>Active From</th>
+                                <th>Schedule</th>
+                                <th>Category</th>
+                                <th>Request Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Wenodo PVT. LTD</td>
+                                <td><i class="fal fa-calendar-alt text-blue"></i> Mar 10, 2022</td>
+                                <td>Daily</td>
+                                <td><span class="badge badge-wenodo">Food and Beverages</span></td>
+                                <td>Invoice</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td>Restratech PVT. LTD</td>
+                                <td><i class="fal fa-calendar-alt text-blue"></i> Mar 4, 2022</td>
+                                <td>Daily</td>
+                                <td><span class="badge badge-wenodo">Starters</span></td>
+                                <td>Statement</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade show" id="Close_Request">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title d-flex">
+                   Close Request
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <div class="table-reponsive">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>COMMENTS [ <span style="color:#ff0000;"> (*) {{2000 - COMMENTS.length}} Character Limit </span>]</label>
+                            <textarea class="form-control" rows="4" ng-model="COMMENTS" name="COMMENTS" ng-trim="false" maxlength="2000" ng-class="{'error':!COMMENTS_VALID}"/>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo" ng-click="CLOSE_PYMNT_REQUESTS();">Submit</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

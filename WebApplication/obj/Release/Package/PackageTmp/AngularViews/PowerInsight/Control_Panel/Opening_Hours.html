@@ -1,0 +1,71 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Opening Hours</h6>
+                </div>
+                <div class="card-body">
+                    <form id="ReservationMappingForm" name="ReservationMappingForm" novalidate>
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <div class="date-column">
+                                    <input class="form-control py-2 mb-2"
+                                           placeholder="Select opening hours"
+                                           format="HH"
+                                           name="START_TIME"
+                                           moment-picker="ShiftEmpSearch.START_TIME" 
+                                           readonly
+                                           ng-model="TimeSearch.START_TIME"
+                                           show-header="0"
+                                           ng-model-options="{ updateOn: 'blur' }"
+                                           change="UPDATE_TOTAL_DURATION_Fn(ShiftEmpSearch.START_TIME,ShiftEmpSearch.END_TIME,2)"
+                                           required
+                                           ng-class="{'error': SHIFT_FORM.submitted && SHIFT_FORM.START_TIME.$error.required}" />
+                                    <i class="date-icon fa-light fa-clock" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-md-12 mt-2">
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="Save" ng-click="UPD_CUSTOMER_OPENING_HOUR();">Save</button>
+                    </div>
+
+                    <div class="col-xxl-12 col-xl-12 col-md-12 mt-2" ng-show="CUSTOMER_OPENING_HOUR_LIST.length == 0">
+                        <div class="no-record text-center">{{LOAD_FETCH_TEXT}}</div>
+                    </div>
+
+                    <div class="table-responsive scrollbar-wrapper UserManagementTable mt-2 user_access accCreManTable" ng-show="CUSTOMER_OPENING_HOUR_LIST.length>0">
+                        <table>
+                            <thead class="table-sticky-top">
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <th>Time</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="open in CUSTOMER_OPENING_HOUR_LIST">
+                                    <td class="text-nowrap">{{open.CUSTOMER_NAME}}</td>
+                                    <td class="text-nowrap">{{open.OPENING_HOUR}}</td>
+                                    <td class="text-center">
+                                        <div class="dropstart">
+                                            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-light fa-ellipsis"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-item">
+                                                    <a class="text-dark d-block" ng-click="EDIT_Fn(open)"><i class="fa-light fa-pen me-2"></i> Edit</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

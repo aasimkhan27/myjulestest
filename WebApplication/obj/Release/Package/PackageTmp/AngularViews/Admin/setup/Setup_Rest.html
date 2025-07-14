@@ -1,0 +1,228 @@
+﻿<div class="card-header">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Customer:*</label>
+                <select class="custom-select"
+                        name="CUSTOMER_ID"
+                        ng-model="EntitySearch.CUSTOMER_ID"
+                        ng-options="CT.CUSTOMER_ID as CT.CUSTOMER_NAME for CT in CUSTOMER_LIST "
+                        required
+                        ng-class="{'error':EntForm.submitted && EntForm.CUSTOMER_ID.$error.required}">
+                    <option value="">- Please Select Customer-</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Entity Name:*</label>
+                <input type="text"
+                       class="form-control"
+                       maxlength="250"
+                       name="ENTITY_NAME"
+                       ng-model="EntitySearch.ENTITY_NAME"
+                       placeholder="Enter ..."
+                       required
+                       ng-class="{'error':EntForm.submitted && EntForm.ENTITY_NAME.$error.required}">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Entity Code:*</label>
+                <input type="text"
+                       class="form-control"
+                       maxlength="100"
+                       name="ENTITY_CODE"
+                       ng-model="EntitySearch.ENTITY_CODE"
+                       placeholder="Enter ..."
+                       ng-class="{'error':EntForm.submitted && EntForm.ENTITY_CODE.$error.required}">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-inline mb-2">
+                <div class="col-md-4">
+                    <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" id="EntitySearch.ACTIVE" name="grp"
+                               ng-model="EntitySearch.ACTIVE"
+                               ng-value="1">
+                        <label for="EntitySearch.ACTIVE" class="custom-control-label justify-content-left">Active</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" id="EntitySearch.InActive" name="grp"
+                               ng-model="EntitySearch.ACTIVE"
+                               ng-value="0">
+                        <label for="EntitySearch.InActive" class="custom-control-label justify-content-left">In-Active</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" id="EntitySearch.All" name="grp"
+                               ng-value="-1"
+                               ng-model="EntitySearch.ACTIVE" />
+                        <label for="EntitySearch.All" class="custom-control-label justify-content-left">ALL</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="form-group">
+                <button ng-click="CREATE_ENTITY_CLICK()" href="#" class="btn btn-wenodo">Create New Entity</button>
+                <button ng-click="ADMIN_GET_ENTITIES(1)" type="submit" class="btn btn-w-default">Search</button>
+                <button ng-click="RESET_ENT()" href="#" class="btn btn-w-default">Reset</button>
+
+                <!--<a href="#!/Setup_CreateEntity" class="btn btn-w-default">Create New Entity</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    <div class="text-center" ng-show="ENTITIES_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="ENTITIES_LIST.length>0">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th class="text-nowrap">Customer Name</th>
+                    <th class="text-nowrap">Entity Name</th>
+                    <th class="text-nowrap">Entity Code</th>
+                    <th class="mw-300">Address</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Postcode</th>
+                    <th>Currency</th>
+                    <th class="text-nowrap">Contact Name</th>
+                    <th class="text-nowrap">Contact Number</th>
+                    <th class="text-nowrap">Contact Email</th>
+                    <th class="text-nowrap">CR Number</th>
+                    <th class="text-nowrap">Company Name</th>
+                    <th class="text-nowrap">Creation Date</th>
+                    <th>Is Live</th>
+                    <th>Status</th>
+                    <th class="headcol-right-header"></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="10" align="center" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_ENTITIES()">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody ng-repeat="EL in ENTITIES_LIST" on-finish-render="ngRepeatFinished">
+                <tr>
+                    <td class="text-nowrap">{{EL.CUSTOMER_NAME}}</td>
+                    <td>{{EL.ENTITY_NAME}}</td>
+                    <td>{{EL.ENTITY_CODE}}</td>
+                    <td>{{EL.ADDRESS}}</td>
+                    <td class="text-nowrap">{{EL.Country_Name}}</td>
+                    <td class="text-nowrap">{{EL.State_Name}}</td>
+                    <td class="text-nowrap">{{EL.CITY_NAME}}</td>
+                    <td>{{EL.ZIPCODE}}</td>
+                    <td>{{EL.CURRENCY_NAME}}</td>
+                    <td>{{EL.CONTACT_NAME}}</td>
+                    <td>{{EL.CONTACT_NUMBER}}</td>
+                    <td>{{EL.CONTACT_EMAIL}}</td>
+                    <td>{{EL.COMPANY_REGISTRATION_NO}}</td>
+                    <td>{{EL.LIMITED_COMPANY_NAME}}</td>
+
+                    <td>{{EL.CREATED_DATE | date}}</td>
+                    <td>{{EL.IS_LIVE?'Yes':'No'}}</td>
+                    <td>{{EL.ACTIVE?'ACTIVE':'Inactive'}}</td>
+                    <td class="headcol-right" style="min-width:100px">
+                        <!--<a ng-click="EDIT_INS_UPD_ENTITIES(EL)"><i class="fal fa-edit fa-lg text-green"></i></a>-->
+                        <a ng-click="EditEntity(EL)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        <a ng-show="EL.ACTIVE" ng-click="COPY_ENTITY_POPUP(EL);" data-toggle="tooltip" data-html="true" data-original-title="Copy"><i class="fad fa-paste fa-lg"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <!--<div class="col-md-12 text-center mt-2" ng-show="GetData">
+        <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_ENTITIES()">{{VIEWMORERECORD}}</a>
+    </div>-->
+</div>
+<div class="modal fade" id="POP_MODAL" ng-model="POP_MODAL">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Copy Entity</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="CLOSE_COPY_ENTITY_POPUP();">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Customer:*</label>
+                            <select class="custom-select"
+                                    name="CUSTOMER_ID"
+                                    ng-model="EntitySearch.COPY_CUSTOMER_ID"
+                                    ng-options="CT.CUSTOMER_ID as CT.CUSTOMER_NAME for CT in CUSTOMER_LIST "
+                                    required
+                                    ng-class="{'error':EntForm.submitted && EntForm.CUSTOMER_ID.$error.required}">
+                                <option value="">- Please Select Customer-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Entity Name:*</label>
+                            <input type="text"
+                                   class="form-control"
+                                   maxlength="250"
+                                   name="NEW_ENTITY_NAME"
+                                   ng-model="EntitySearch.NEW_ENTITY_NAME"
+                                   placeholder="Enter ..."
+                                   required
+                                   ng-class="{'error':EntForm.submitted && EntForm.ENTITY_NAME.$error.required}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Comments:</label>
+                            <input type="text"
+                                   class="form-control"
+                                   maxlength="250"
+                                   name="COMMENTS"
+                                   ng-model="EntitySearch.COPY_COMMENTS"
+                                   placeholder="Enter ..."
+                                   ng-class="{'error':EntForm.submitted && EntForm.COMMENTS.$error.required}">
+                        </div>
+                    </div>
+                    <!--<label>Entity</label>
+            <br />-->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Logo:*</label>
+                            <div class="form-group">
+                                <div class="input-group-prepend" ng-class="{'error':EntForm.submitted && EntitySearch.UploadedFiles==null  || EntForm.submitted && EntitySearch.UploadedFiles.length==0,'':EntitySearch.UploadedFiles.length>0}">
+                                    <label for="logo1" class="btn btn-upload mb-0">
+                                        <i class="fal fa-upload"></i> Logo
+                                    </label>
+                                    <span class="hidden-input">
+                                        <input id="logo1" name="file" ng-files="getTheFilesToUploadall($files,5,EntitySearch,1, 'logo','ENTITY')" type="file">
+                                    </span>
+                                </div>
+                            </div>
+                            <span ng-repeat="File in EntitySearch.UploadedFiles">
+                                <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="download"><i class="fa fa-download"></i> {{File.SERVER_FILE_NAME}}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="ADMIN_COPY_ENTITY();" class="btn btn-wenodo"> Save </button>
+                <button type="button" ng-click="CLOSE_COPY_ENTITY_POPUP();" class="btn btn-w-default"> Cancel </button>
+            </div>
+        </div>
+    </div>
+</div>

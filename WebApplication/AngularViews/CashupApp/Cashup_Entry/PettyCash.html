@@ -1,0 +1,761 @@
+﻿<div class="card">
+    <templateurl template-url="../AngularViews/CashupApp/Cashup_Entry/CashupEntryHeader.html" class="cashup_entry_header"></templateurl>
+    
+    <div class="card-body pt-1 cashup-entry-body">
+        <div class="row gx-2 resSites cashup_entry_header_details">
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Site: <span class="f-w-700">{{SELECTED_SITE}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Area: <span class="f-w-700">{{SELECTED_AREA || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Session: <span class="f-w-700">{{SELECTED_SESSION || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Cashup Date: <span class="f-w-700">{{CASHUP_DATE | date:DISPLAY_DATE_FORMAT }}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Actual : {{CASHUP_INFO.ACTUAL = TOTAL_GROSS | number:2 }}
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    ePOS : {{CASHUP_INFO.EPOS|number:2}}
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Variance : <span class="txt-danger" ng-if="(TOTAL_GROSS-CASHUP_INFO.EPOS) < 0">
+                        <i class="fa-light fa-arrow-down-right txt-danger"></i>
+                        {{(TOTAL_GROSS-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+
+                    <span class="txt-success" ng-if="(TOTAL_GROSS-CASHUP_INFO.EPOS) > 0">
+                        <i class="fa-light fa-arrow-up-right txt-success"></i>
+                        {{(TOTAL_GROSS-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+                    <span class="txt-success" ng-if="(TOTAL_GROSS-CASHUP_INFO.EPOS) == 0">
+                        <i class="fa-light"></i>
+                        {{(TOTAL_GROSS-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xxl-12 col-xl-12 col-md-12 mt-2">
+                <h5 class="headings ">Petty Cash</h5>
+                <form name="PcashEntryForm" autocomplete="off" novalidate>
+                    <div class="table-responsive resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-center text-nowrap" width="10%">
+                                        Vendor
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-center text-nowrap" width="10%">
+                                        Cost Category
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-center text-nowrap" width="10%">Goods<span class="txt-danger">*</span></th>
+                                    <th class="text-end text-nowrap" width="10%">
+                                        Gross Amounts
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-end text-nowrap" width="10%">VAT Amount <span class="txt-danger">*</span></th>
+                                    <th class="text-end text-nowrap" width="10%">Net Amount</th>
+                                    <th class="text-center text-nowrap" width="10%">
+                                        Authorized By
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-center text-nowrap" width="10%">Uploads</th>
+                                    <th class="text-center text-nowrap" width="10%">Action</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in PETTY_CASH_DECLARATION_LIST"
+                                    ng-show="ROW.ACTIVE==1"
+                                    ng-init="nginit_pettycash(ROW)">
+                                    <td>
+                                        <ul class="nav nav-pills">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer"
+                                                   data-toggle="dropdown"
+                                                   ng-class="{'disabled':!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}">
+                                                    <!--ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"-->
+                                                    <span class="select-label" id="select_label" ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.PAID_TO_{{$index}}.$error.required,'disabled':!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}">
+                                                        {{ROW.PAID_TO || 'Add here'}}
+                                                    </span>
+                                                </a>
+                                                <input type="hidden"
+                                                       ng-model="ROW.PAID_TO"
+                                                       name="PAID_TO_{{$index}}"
+                                                       required
+                                                       ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.PAID_TO_{{$index}}.$error.required}" />
+                                                <ul ID="divNewNotifications" class="dropdown-menu unique-dropdown scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li class="DontHideOnClick unique-dropdown-list">
+                                                        <input type="text"
+                                                               placeholder="Search"
+                                                               name="searchableVendorButton"
+                                                               ng-model="ROW.VENDOR_TEXT"
+                                                               ng-change="GET_CASHUP_PTY_CSH_VNDR_SJTNS(ROW)"
+                                                               autocomplete="off"
+                                                               id="searchInput"
+                                                               ng-keydown="handleSecondaryKeyDown($event)"
+                                                               aria-autocomplete="none"
+                                                               class="mb-0 dropdownSearchInput" />
+                                                    </li>
+                                                    <li class="unique-dropdown-list" ng-click="ADD_NEW_VENDOR_POPUP()">
+                                                        <span class="truncate unique-dropdown-content petty-cash">Add New Vendor</span>
+                                                    </li>
+                                                    <li class="unique-dropdown-list"
+                                                        ng-repeat="vendor in ROW.FILTERED_VENDOR_LIST"
+                                                        ng-click="SELECT_VENDOR(ROW,vendor)">
+                                                        <span class="truncate unique-dropdown-content petty-cash">{{vendor.VENDOR_NAME}}</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer"
+                                                   data-toggle="dropdown" ng-class="{'disabled':!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}">
+                                                    <!--ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"-->
+                                                    <span class="select-label" id="select_label" ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.COST_CATEGORY_NAME_{{$index}}.$error.required}">
+                                                        {{ROW.COST_CATEGORY_NAME || 'Add here'}}
+                                                    </span>
+                                                </a>
+                                                <input type="hidden"
+                                                       ng-model="ROW.COST_CATEGORY_NAME"
+                                                       name="COST_CATEGORY_NAME_{{$index}}"
+                                                       required
+                                                       ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.COST_CATEGORY_NAME_{{$index}}.$error.required}" />
+                                                <ul ID="divNewNotifications" class="dropdown-menu unique-dropdown scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li class="DontHideOnClick unique-dropdown-list">
+                                                        <input type="text"
+                                                               placeholder="Search"
+                                                               name="searchableCostCategoryButton"
+                                                               ng-model="ROW.COST_CATEGORY_TEXT"
+                                                               ng-change="SEARCH_COST_CATEGORY(ROW)"
+                                                               autocomplete="off"
+                                                               id="searchInput"
+                                                               ng-keydown="handleSecondaryKeyDown($event)"
+                                                               aria-autocomplete="none"
+                                                               class="mb-0 dropdownSearchInput" />
+                                                    </li>
+                                                    <li class="unique-dropdown-list" ng-click="ADD_NEW_COST_CATEGORY_POPUP()">
+                                                        <span class="truncate unique-dropdown-content petty-cash">Add Cost Category</span>
+                                                    </li>
+                                                    <li class="unique-dropdown-list"
+                                                        ng-repeat="cc in ROW.FILTERED_COST_CATEGORY_LIST"
+                                                        ng-click="SELECT_COST_CATEGORY(ROW,cc)">
+                                                        <span class="truncate unique-dropdown-content petty-cash">{{cc.COST_CATEGORY_NAME}}</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Add Here" class="mb-0 min-w-80" ng-model="ROW.ITEM"
+                                               name="ITEM_{{$index}}"
+                                               required
+                                               ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.ITEM_{{$index}}.$error.required}"
+                                               ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                               placeholder="Add Here"
+                                               class="mb-0 text-end min-w-80"
+                                               only-digits
+                                               ng-model="ROW.TOTAL_VALUE"
+                                               ng-change="CALCULATE_NET_AMOUNT(ROW);VALIDATE_AMOUNT(ROW,'GROSS');"
+                                               name="TOTAL_VALUE_{{$index}}"
+                                               required
+                                               ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.TOTAL_VALUE_{{$index}}.$error.required}"
+                                               ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Add Here" class="mb-0 text-end min-w-80"
+                                               only-digits ng-model="ROW.VAT_AMOUNT" ng-change="CALCULATE_NET_AMOUNT(ROW);VALIDATE_AMOUNT(ROW,'VAT');"
+                                               ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"
+                                               name="VAT_AMOUNT_{{$index}}"
+                                               required
+                                               ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.VAT_AMOUNT_{{$index}}.$error.required}"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Add Here" class="mb-0 text-end min-w-80"
+                                               disabled ng-model="ROW.NET_AMOUNT | number:2" />
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer" id="modeOfPaymentDDL"
+                                                   data-toggle="dropdown" ng-class="{'disabled':!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}">
+                                                    <!--ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"-->
+                                                    <span class="select-label" id="select_label" ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.AUTHORIZED_BY_NAME_{{$index}}.$error.required}">
+                                                        {{ROW.AUTHORIZED_BY_NAME || 'Add'}}
+                                                    </span>
+                                                </a>
+                                                <input type="hidden"
+                                                       ng-model="ROW.AUTHORIZED_BY_NAME"
+                                                       name="AUTHORIZED_BY_NAME_{{$index}}"
+                                                       required
+                                                       ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.AUTHORIZED_BY_NAME_{{$index}}.$error.required}" />
+                                                <ul ID="divNewNotifications" class="dropdown-menu unique-dropdown scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li class="unique-dropdown-list"
+                                                        ng-repeat="auth in AUTHORIZER_LIST" ng-click="SELECT_AUTHORIZER(ROW,auth)">
+                                                        <span class="truncate unique-dropdown-content petty-cash">{{auth.NAME}}</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                        <!--<div class="dropdown">
+                                        <input type="hidden"
+                                               ng-model="ROW.AUTHORIZED_BY_NAME"
+                                               name="AUTHORIZED_BY_NAME_{{$index}}"
+                                               required
+                                               ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.AUTHORIZED_BY_NAME_{{$index}}.$error.required}" />
+                                        <div class="dropdown w-100" aria-labelledby="modeOfPaymentDDL">
+                                            <button class="select-label"
+                                                    type="button"
+                                                    id="modeOfPaymentDDL"
+                                                    ng-class="{'error':PcashEntryForm.submitted && PcashEntryForm.AUTHORIZED_BY_NAME_{{$index}}.$error.required}"
+                                                    data-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                    ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                                <span class="truncate">{{ROW.AUTHORIZED_BY_NAME || 'Add'}}</span>
+                                            </button>
+
+                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                                <li ng-repeat="auth in AUTHORIZER_LIST" ng-click="SELECT_AUTHORIZER(ROW,auth)">
+                                                    {{auth.NAME}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>-->
+
+                                    </td>
+                                    <td class="text-center">
+                                        <label for="CardFile{{$index}}" class="btn btn-primary text-nowrap" ng-show="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                            <i class="fa-light fa-arrow-up-from-bracket"></i>
+                                            Upload
+                                        </label>
+                                        <span class="hidden-input">
+                                            <input type="file" name="file" required="required"
+                                                   id="CardFile{{$index}}"
+                                                   ng-files="getTheFilesToUploadPcash($files, 'PcashFile', 10, ROW, 13, $index)"
+                                                   ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                        </span>
+                                        <div ng-repeat="upls in ROW.UploadedFiles">
+                                            <button class="btn btn-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                                                <span class="truncate"><i class="fa-solid fa-file-pdf me-2"></i>{{upls.ORIGINAL_FILE_NAME| limitTo: 10}}</span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-block dropdown-menu-end" style="">
+                                                <li>
+                                                    <a class="dropdown-item d-block" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                                        <i class="fa-light fa-eye me-2"></i>
+                                                        View
+                                                    </a>
+                                                </li>
+                                                <li ng-show="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                                    <a class="dropdown-item d-block" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && DELETE_UPLOAD_CARD_ALL(ROW,upls,$index)">
+                                                        <i class="fa-light fa-trash-can me-2"></i>
+                                                        Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <button click-once type="button" class="btn btn-transparent c-pointer" ng-click="DELETE_DECLARATION(ROW)" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"><i class="fa-light fa-trash-can txt-danger"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray">
+                                    <td class="text-center">Total</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-end">{{TOTAL_GROSS | number:2}}</td>
+                                    <td class="text-end">{{TOTAL_VAT | number:2}}</td>
+                                    <td class="text-end">{{TOTAL_NET | number:2}}</td>
+                                    <!--<td class="text-end">{{( TOTAL_GROSS = ( ( (PETTY_CASH_DECLARATION_LIST ) | total:'TOTAL_VALUE' )| number:2) )}}</td>
+                                <td class="text-end">{{( TOTAL_VAT = ( ( (PETTY_CASH_DECLARATION_LIST ) | total:'VAT_AMOUNT' )| number:2) )}}</td>
+                                <td class="text-end">{{( TOTAL_NET = ( ( (PETTY_CASH_DECLARATION_LIST ) | total:'NET_AMOUNT' )| number:2) )}}</td>-->
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="10">
+                                        <button click-once type="button" class="btn btn-outline w-100" ng-click="ADD_NEW_ROW()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                            <i class="fa-light fa-plus"></i> Add New Row
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+                <hr />
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <h6 class="headings">Comments</h6>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resTextAreaCashup">
+                        <textarea rows="4" placeholder="Add Comments..." ng-model="CASHUP_ENTRY_NOTE" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"></textarea>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once type="button" class="btn btn-primary" ng-click="INS_UPD_CASHUP_HEADER_NOTES()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">Comment</button>
+                    </div>
+                </div>
+                <div class="textarea-bg resText" ng-repeat="COM in PETTY_CASH_TAB_NOTE_LIST">
+                    <div class="comment-elements">
+                        <span class="text_avatar">{{COM.USER_NAME | limitTo:1}}</span>
+                        <span>{{COM.USER_NAME}}</span>
+                        <span class="text-gray">{{COM.CREATED_DATE | date:'dd-MMM-yyyy hh:mm a'}}</span>
+                        <span class="comment-pen-icon">
+                            <i class="fa-light fa-pen ms-1 c-pointer" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && EDIT_COMMENT(COM)"></i>
+                            <i class="fa-light fa-trash-alt ms-1 c-pointer txt-danger" ng-show="!COM.isEditable" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && DELETE_COMMENT(COM)"></i>
+                        </span>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-xl-auto col-md-auto empty-coloumn">
+                            <span>&nbsp;</span>
+                        </div>
+                        <div class="col-xxl col-xl col-md resTextAreaCashup">
+                            <textarea ng-readonly="!COM.isEditable"
+                                      ng-model="COM.NOTE"
+                                      ng-class="{'bg-white':COM.isEditable==true,'bg-gray':COM.isEditable==false}"
+                                      ng-blur="INS_UPD_CASHUP_HEADER_NOTES(COM)">{{COM.NOTE}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <!--Comments Code Ends-->
+            </div>
+        </div>
+    </div>
+    <div class="sticky_bottom_navigator">
+        <div class="card">
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once class="btn btn-light" ng-click="PREVIOUS()">Previous</button>
+                        <button click-once class="btn btn-light" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" data-bs-target="#save" data-bs-toggle="modal" ng-click="INS_PETTY_CASH_DECLARATION(0)">Save</button>
+                        <button click-once class="btn btn-primary" ng-click="CONTINUE()" data-bs-toggle="modal">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="add_vendor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form name="VENDER_FORM" novalidate>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Add Vendor</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <label class="text-nowrap">Vendor Name <span class="txt-danger">*</span></label>
+                            <input type="text" name="VENDOR_NAME" id="VENDOR_NAME"
+                                   placeholder="Add here" ng-model="ADD_VENDOR.NAME"
+                                   autocomplete="off"
+                                   aria-autocomplete="none"
+                                   required 
+                                   maxlength="500"
+                                   ng-class="{'error':VENDER_FORM.submitted && VENDER_FORM.VENDOR_NAME.$error.required}"/>
+
+                        </div>
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label class="text-nowrap">Email <span class="txt-danger">*</span></label>
+                            <input type="text" name="VENDOR_EMAIL" id="VENDOR_EMAIL"
+                                   placeholder="Add here" ng-model="ADD_VENDOR.EMAIL"
+                                   maxlength="500"
+                                   autocomplete="off"
+                                   aria-autocomplete="none"
+                                   required
+                                   ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+                                   ng-class="{'error':VENDER_FORM.submitted && VENDER_FORM.VENDOR_EMAIL.$error.required}" />
+                            <small class="text-danger" ng-show="VENDER_FORM.VENDOR_EMAIL.$dirty && VENDER_FORM.VENDOR_EMAIL.$error.pattern">Please Enter Valid Email</small>
+
+                        </div>
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label class="text-nowrap">Contact Number <span class="txt-danger">*</span></label>
+                            <input type="text" name="VENDOR_CONTACT" id="VENDOR_CONTACT"
+                                   placeholder="Add here" ng-model="ADD_VENDOR.CONTACT"
+                                   maxlength="15"
+                                   autocomplete="off"
+                                   aria-autocomplete="none"
+                                   required
+                                   ng-class="{'error':VENDER_FORM.submitted && VENDER_FORM.VENDOR_CONTACT.$error.required}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-end">
+                    <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button>
+                    <button click-once class="btn btn-primary" type="submit" ng-click="INS_UPD_CASHUP_VENDORS()">Save</button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+
+<!--<div class="modal fade" id="pcash_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Upload</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <label>Document Upload <span class="txt-danger">*</span></label>
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="file" required="required" multiple="multiple"
+                                       id="CardFile{{SELECTED_ROW_FOR_UPLOAD.SELECTED_INDEX}}"
+                                       ng-files="getTheFilesToUploadPcash($files, 'PcashFile', 10, SELECTED_ROW_FOR_UPLOAD, 13, SELECTED_ROW_FOR_UPLOAD.SELECTED_INDEX)">
+                                <div class="file-dummy">
+                                    <i class="fa-light fa-file-plus fa-xl"></i>
+                                    <p class="mb-1 mt-3">
+                                        <span class="txt-primary">Choose a file</span>
+                                        <span>or drag and drop here</span>
+                                    </p>
+                                    <p class="mb-1">*.jpg, .png, .pdf, .docx files limit 10MB</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-primary" data-bs-dismiss="modal">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+
+<div class="modal fade" id="add_vendor_success" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon">
+                                    <span class="badge text-bg-success-modal">
+                                        <i class="fa-light fa-check fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="modal_heading">Successfully Saved Updates</h6>
+                            <p class="modal_content">New Vendor been saved successfully.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add_vendor_failure" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon_danger">
+                                    <span class="badge text-bg-danger-modal">
+                                        <i class="fa-light fa-exclamation fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="modal_heading">Error Saving Updates</h6>
+                            <p class="modal_content">New Vendor was not saved successfully.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Cost Category MODAL STARTS-->
+<div class="modal fade" id="add_cost_category" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form name="CC_FORM" novalidate>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Add Cost Category</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <label class="text-nowrap">Cost Category Name <span class="txt-danger">*</span></label>
+                            <input type="text" name="CC_NAME" id="CC_NAME"
+                                   placeholder="Add here" ng-model="ADD_CC.NAME"
+                                   maxlength="250"
+                                   autocomplete="off"
+                                   aria-autocomplete="none"
+                                   required 
+                                   ng-class="{'error':CC_FORM.submitted && CC_FORM.CC_NAME.$error.required}"/>
+                        </div>
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label class="text-nowrap">GL Name  <span class="txt-danger">*</span></label>
+                            <input type="text" name="CC_GL_NAME" id="CC_GL_NAME"
+                                   placeholder="Add here" ng-model="ADD_CC.GL_NAME"
+                                   maxlength="250"
+                                   autocomplete="off"
+                                   aria-autocomplete="none"
+                                   required
+                                   ng-class="{'error':CC_FORM.submitted && CC_FORM.CC_NAME.$error.required}"/>
+                        </div>
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label class="text-nowrap">GL  Code  <span class="txt-danger">*</span></label>
+                            <input type="text" name="CC_GL_CODE" id="CC_GL_CODE"
+                                   placeholder="Add here" ng-model="ADD_CC.GL_CODE"
+                                   maxlength="250"
+                                   autocomplete="off"
+                                   aria-autocomplete="none"
+                                   required 
+                                   ng-class="{'error':CC_FORM.submitted && CC_FORM.CC_NAME.$error.required}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-end">
+                    <button class="btn btn-light" type="button" data-bs-dismiss="modal">Cancel</button>
+                    <button click-once type="button" class="btn btn-primary" ng-click="INS_UPD_PETTY_CASH_COST_CATEGORIES()">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--  Add Cost Category MODAL ENDS-->
+
+<div class="modal fade" id="add_cc_success" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon">
+                                    <span class="badge text-bg-success-modal">
+                                        <i class="fa-light fa-check fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="modal_heading">Successfully Saved Updates</h6>
+                            <p class="modal_content">New Cost Category been saved successfully.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add_cc_failure" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon_danger">
+                                    <span class="badge text-bg-danger-modal">
+                                        <i class="fa-light fa-exclamation fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="modal_heading">Error Saving Updates</h6>
+                            <p class="modal_content">New Cost Category was not saved successfully.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="save_success" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon_danger">
+                                    <span class="badge text-bg-danger-modal">
+                                        <i class="fa-light fa-exclamation fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="modal_heading">Successfully Saved Updates</h6>
+                            <p class="modal_content">Records have been saved successfully.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="save_failure" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon_danger">
+                                    <span class="badge text-bg-danger-modal">
+                                        <i class="fa-light fa-exclamation fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="modal_heading">Error Saving Updates</h6>
+                            <p class="modal_content">Records was not saved successfully.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="proceed" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button> <!--ng-click="RESET_ON_MODAL_CLOSE()"-->
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon_danger">
+                            <div class="badge text-bg-danger-modal">
+                                <i class="fa-solid fa-exclamation fa-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="modal_infoText">
+                        There is a Variance of {{CURRENCY_SYMBOL}}  {{(TOTAL_GROSS-CASHUP_INFO.EPOS) | number:2}}, do you still want to proceed?
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button> <!--ng-click="RESET_ON_MODAL_CLOSE()"-->
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button click-once class="btn btn-primary w-100" type="button" data-bs-dismiss="modal" ng-click="INS_PETTY_CASH_DECLARATION(1)">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var dropdownMenu;
+
+    $('table').on('show.bs.dropdown', function (e) {
+        var $target = $(e.target);
+        dropdownMenu = $target.find('.unique-dropdown');
+
+        $('body').append(dropdownMenu.detach());
+
+
+        var targetOffset = $target.offset();
+        dropdownMenu.css({
+            'display': 'block',
+            'top': targetOffset.top + $target.outerHeight(),
+            'left': targetOffset.left,
+            'min-width': $target.outerWidth(),
+            'max-width': '250px',
+            'max-height': '300px',
+            'z-index': '1060',
+            'overflow': 'auto',
+            'position': 'absolute',
+
+        });
+    });
+
+    $('table').on('hide.bs.dropdown', function (e) {
+        var $target = $(e.target);
+        $target.append(dropdownMenu.detach());
+        dropdownMenu.hide();
+    }); 
+
+</script>

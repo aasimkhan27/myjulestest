@@ -1,0 +1,157 @@
+﻿
+<style>
+    h5 {
+        font-size: 12px;
+    }
+</style>
+
+<!--<div class="animated fadeInLeft" id="Floatcash" role="tabpanel" ng-show="CASHUP.STEP_NO==1" aria-labelledby="custom-content-below-home-tab2">-->
+<!--<div ng-controller="FloatController">-->
+<!--<div class="overlay_loading_div" id="overlay_loading_div" style="display:{{overlay_loading_div}}!important">-->
+<div class="overlay_loadingNew" style="display:{{overlay_loadingNew}}!important"></div>
+<div id="LOADER_ID">
+    <!--style="z-index:999;"-->
+    <div class="card-header">
+        <ul class="nav nav-pills float-left">
+            <li class="nav-item border radius-50">
+                <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Area: <span class="cash-up-header">{{CASHUP.AreaList[0].NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <!--<span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION_NAME}}</span></span-->
+                <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">CashUp Date: <span class="cash-up-header">{{CASHUP.CASHUP_DATE|date}}</span></span>
+            </li>
+        </ul>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto  mt-0">
+                <li class="nav-item border radius-50">
+                    <span class="font-12 text-bold">Initial: <span class="cash-up-header" style="text-decoration:line-through">0.00</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{ CASHUP.TOTAL_FLOAT=(DECLERATION_MASTER| total:'CUSTOM_CURRENCY_AMOUNT')| number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Variance: <span class="cash-up-header" style="text-decoration:line-through">0.00</span></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <!--<table class="table table-hover table-striped" ng-if="CASHUP.TABLIST[1].FLAG==1">-->
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th style="width:10%"></th>
+                        <th style="width:5%"></th>
+                        <th width="10%">Quantity</th>
+                        <th style="width:5%"></th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--<tr ng-repeat="FLOAT in DECLERATION_MASTER " ng-init="init_decleration_details(FLOAT)">-->
+                    <!--<tr ng-repeat="FLOAT in CASHUP.DECLERATION_MASTER | filter:{DECLARATION_TYPE_ID:1}" ng-init="init_decleration_details(FLOAT)">-->
+                    <tr ng-repeat="FLOAT in DECLERATION_MASTER | filter:{DECLARATION_TYPE_ID:1}" ng-init="init_decleration_details(FLOAT)">
+                        <td class="text-center" ng-if="!FLOAT.IS_PRECISION"> <span ng-bind-html="FLOAT.SYMBOL"></span>&nbsp;{{FLOAT.VALUE}}</td>
+                        <td class="text-center" ng-if="FLOAT.IS_PRECISION">{{FLOAT.VALUE}}&nbsp;{{(FLOAT.PRECISION_SYMBOL | customSplitString)[1]}}</td>
+                        <td class="text-center">x</td>
+                        <td><input type="text" class="form-control" ng-model="FLOAT.QUANTITY" only-numbers></td>
+                        <td class="text-center">=</td>
+                        <td>{{FLOAT.CUSTOM_CURRENCY_AMOUNT=FLOAT.VALUE*FLOAT.QUANTITY*FLOAT.MULTIPLICATION_FACTOR | number:2}}</td>
+                    </tr>
+                </tbody>
+                <tfoot class="card-footer">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><h6 class="text-bold">Total</h6></td>
+                        <td><h6 class="text-bold">{{ CASHUP.TOTAL_FLOAT=((DECLERATION_MASTER ) | total:'CUSTOM_CURRENCY_AMOUNT')| number:2 }}</h6></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="col-md-12  p-5" ng-show="CASHUP.TABLIST[1].FLAG==2">
+
+                <div class="form-group">
+                    <label for="noteLayout" class="m-0">Total Float:</label>
+                    <input type="text" class="form-control" ng-model="CASHUP.TOTAL_FLOAT" only-digits>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="noteLayout" class="m-0 pl-1">Comments:</label>
+                <textarea class="form-control d-block"
+                          rows="4"
+                          id="noteLayout"
+                          placeholder="{{WRITE_A_COMMENT}}"
+                          name="text"
+                          ng-model="CASHUP.FLOAT_NOTES"
+                          ng-blur="INS_UPD_CASHUP_HEADER_NOTES()"></textarea>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label for="noteLayout" class="border-bottom m-0 pl-1">Comments</label>
+            <div class="text-center ng-isolate-scope" ng-show="FLOAT_NOTE_LIST.length==0"><div class="alert bg-custom-blue">{{NO_COMMENTS}}</div></div>
+            <blockquote class="blockquote text-sm text-success" ng-repeat="FNL in FLOAT_NOTE_LIST" ng-init="NOTE_INIT(FNL)">
+                <span class="float-right mb-2">
+                    <a class="btn btn-w-default" ng-show="!FNL.IS_EDIT && FNL.IS_TIME_EDIT_FLAG" ng-click="EDIT_COMMENTS(FNL)"><i class="far fa-edit text-success"></i></a>
+                    <a class="btn btn-w-default" ng-show="FNL.IS_EDIT" ng-click="SAVE_COMMENTS(FNL)"><i class="far fa-save text-success"></i></a>
+                    <a class="btn btn-w-default" ng-show="FNL.IS_EDIT" ng-click="EDIT_CANCEL(FNL)"><i class="far fa-times text-danger"></i></a>
+                    <!--<a class="btn btn-w-default"><i class="far fa-trash text-danger"></i></a>-->
+                </span>
+                <p class="text-success" ng-show="!FNL.IS_EDIT">{{FNL.NOTE}}</p>
+                <textarea class="form-control d-block"
+                          ng-show="FNL.IS_EDIT"
+                          rows="2"
+                          id="noteLayout"
+                          placeholder="{{WRITE_A_COMMENT}}"
+                          name="text"
+                          ng-keyup="CHECK_EVENTS($event,FNL)"
+                          ng-model="FNL.NOTE"></textarea>
+                <div ng-show="FNL.IS_EDIT">
+                    <span>Press Esc to Cancel</span>
+                    <a ng-click="EDIT_CANCEL(FNL)" class="text-blue cursor-pointer">
+                        Cancel
+                    </a>
+                </div>
+                <footer class="blockquote-footer" ng-show="!FNL.IS_EDIT">
+                    {{FNL.USER_NAME}},
+                    <cite title="">{{FNL.USER_EMAIL}}</cite>
+                    <br />
+                    <cite class="ml-3">{{FNL.CREATED_DATE | date:'dd-MMM-yyyy HH:mm' }}</cite>
+                    <div class="border-bottom"></div>
+
+                </footer>
+                <span class="semibold ml-3"
+                      ng-show="FNL.IS_TIME_EDIT_FLAG">
+                    Remaining time to edit this comment -
+                    {{FNL.START_COUNTDOWN }}
+                </span>
+            </blockquote>
+        </div>
+    </div>
+</div>
+<div class="event-footer animated fadeInUp">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12 d-inline m-2 text-right">
+                <button class="btn btn-w-default btn-sm" ng-click="PreviousLink()"><i class="fa fa-angle-double-left"></i> Previous</button>
+                <button class="btn btn-wenodo btn-sm" ng-click="NextLink('Cash')"><i class="fa fa-angle-double-right"></i> Continue</button>
+                <!--<button class="btn btn-wenodo btn-sm" ng-click="UPD_CASHUP_HEADER_SUBMIT()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==0 || CashUp_Main_STATUS_ID==1 || CashUp_Main_STATUS_ID==5)"><i class="fa fa-angle-double-right"></i> Submit</button>
+                <button class="btn btn-wenodo btn-sm" ng-click="APP_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Approve</button>
+                <button class="btn btn-danger btn-sm" ng-click="REJ_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Return</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->

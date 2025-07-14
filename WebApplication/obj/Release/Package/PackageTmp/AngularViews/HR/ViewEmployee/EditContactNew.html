@@ -1,0 +1,80 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/HeaderDtlsNew.html?v=1{{AppVersion}}">
+    </div>
+    <div class="col-auto mn-w-250">
+        <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/Employee_Tabs.html?v={{AppVersion}}">
+    </div>
+    <div class="col">
+        <form id="CustomForm" name="CustomForm" novalidate class="w-100">
+            <div class="col-md-12">
+                <div class="row">
+                    <templateurl class="w-100" template-url="../AngularViews/CommonView/FormView.html?v=1{{AppVersion}}">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div data-ng-show="CustomForm.submitted && CustomForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                        <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CustomForm.$valid">
+                            <span class="help-block">{{InvalidUser}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button click-once ng-click="POP_EMPLOYEE_STEP_FLAG()" class="btn btn-sm btn-wenodo">Save</button>
+                            <button type="button" ng-click="VIEW_TAB_CLICK(2)" class="btn btn-sm btn-w-default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="EFFECTIVE_DATA">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Updates </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-400" ng-init="dateinputOpenDate('bottom')">
+                <form id="EFFECTIVEForm" name="EFFECTIVEForm" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Effective Date:*</label>
+                            <input type="text"
+                                   class="form-control dateinputOpenDate"
+                                   autocomplete="off"
+                                   name="EFFECTIVE_DATE"
+                                   readonly
+                                   placeholder="Select ..."
+                                   ng-model="EFFECTIVE_SEARCH.EFFECTIVE_DATE"
+                                   ng-value="EFFECTIVE_SEARCH.EFFECTIVE_DATE | date"
+                                   required
+                                   ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.EFFECTIVE_DATE.$error.required}" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Comments:</label>
+                            <textarea rows="8"
+                                      class="form-control "
+                                      name="COMMENTS"
+                                      ng-model="EFFECTIVE_SEARCH.COMMENTS"
+                                      placeholder="Enter ..."
+                                      ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.COMMENTS.$error.required}" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer justify-content-left">
+                <button type="button" click-once  ng-click="POP_EMPLOYEE_STEP_FLAG('VIEW',2);" class="btn btn-sm btn-wenodo">Save</button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

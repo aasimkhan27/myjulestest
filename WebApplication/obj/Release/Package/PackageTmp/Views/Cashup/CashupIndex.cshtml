@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "CashupEntry";
+    Layout = "~/Views/Shared/_Layout_Main.cshtml";
+}
+
+
+<style>
+    .datepicker table tr td span.active {
+        background: #04c !important;
+        border-color: #04c !important;
+    }
+
+    .datepicker .datepicker-days tr td.active {
+        background: #05A6F0 !important;
+    }
+
+    #week-picker-wrapper .datepicker .datepicker-days tr td.active ~ td, #week-picker-wrapper .datepicker .datepicker-days tr td.active {
+        color: #fff;
+        background-color: #05A6F0;
+        border-radius: 0;
+    }
+
+    #week-picker-wrapper .datepicker .datepicker-days tr:hover td, #week-picker-wrapper .datepicker table tr td.day:hover, #week-picker-wrapper .datepicker table tr td.focused {
+        color: #000 !important;
+        background: #e5e2e3 !important;
+        border-radius: 0 !important;
+    }
+    /* EOS CALENDAR WEEK CSS*/
+    /* EOS TEMPLATE-->COPY WEEK CSS*/
+
+    #week-picker-copy-wrapper .datepicker .datepicker-days tr td.active ~ td, #week-picker-copy-wrapper .datepicker .datepicker-days tr td.active {
+        color: #fff;
+        background-color: #04c;
+        border-radius: 0;
+    }
+
+    #week-picker-copy-wrapper .datepicker .datepicker-days tr:hover td, #week-picker-copy-wrapper .datepicker table tr td.day:hover, #week-picker-copy-wrapper .datepicker table tr td.focused {
+        color: #000 !important;
+        background: #e5e2e3 !important;
+        border-radius: 0 !important;
+    }
+    .overlay_loadingNew {
+        background-image: url(/E_Content/images/loading.gif);
+        background-color: #666;
+        opacity: 0.4;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+    }
+
+    .overlay_loading_div {
+        background-image: url(/E_Content/images/loading.gif);
+        _background-color: #666;
+        _opacity: 0.4;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: block;
+        _width: 100%;
+        height: auto;
+        _position: absolute;
+        _top: 0;
+        _left: 0;
+        z-index: 9999;
+    }
+
+</style>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.6/xls.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
+<div ng-controller="CashSubMasterControllerNew">
+    <div class="card shadow-none">
+        <div class="idealsteps-nav">
+            <ul class="nav entry-nav-tabs" id="custom-content-below-tab" role="tablist">
+                <li ng-if="CASHUP.TABLIST[0].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='CashEntry','idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>0}">
+                    <a class="pt-1" ng-click="ChangeLink('CashEntry')" aria-controls="custom-content-below-home" aria-selected="true">Cashup Entry <!--<span class="counter">Variance {{CASHUP.STEP_NO}}{{CASHUP.ACTUAL_STEP_NO}}</span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[1].FLAG==1 || CASHUP.TABLIST[1].FLAG==2" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='Float', 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>1}">
+
+                    <a class="pt-1" ng-click="ChangeLink('Float')" aria-controls="custom-content-below-home_float" aria-selected="true">Float <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[2].FLAG==1 || CASHUP.TABLIST[2].FLAG==2" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='Cash', 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>2}">
+                    <a class="pt-1" ng-click="ChangeLink('Cash')" aria-controls="custom-content-below-profile" aria-selected="false">Cash <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[3].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='Cards', 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>3}">
+                    <a class="pt-1" ng-click="ChangeLink('Cards')" aria-controls="custom-content-below-messages" aria-selected="false">Cards <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[4].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='PtyCash','idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>4}">
+                    <a class="pt-1" ng-click="ChangeLink('PtyCash')" aria-controls="custom-content-below-settings" aria-selected="false">Petty Cash <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[5].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='Delivery','idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>5}">
+                    <a class="pt-1" ng-click="ChangeLink('Delivery')" aria-controls="custom-content-below-messages" aria-selected="false">Delivery <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[6].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='AccountCustomer','idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>6}">
+                    <a class="pt-1" ng-click="ChangeLink('AccountCustomer')" aria-controls="custom-content-below-settings" aria-selected="false">Account Customer <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[7].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='Vouchers','idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>7}">
+                    <a class="pt-1" ng-click="ChangeLink('Vouchers')" aria-controls="custom-content-below-messages" aria-selected="false">Vouchers <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[8].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='Deposits','idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>8}">
+                    <a class="pt-1" ng-click="ChangeLink('Deposits')" aria-controls="custom-content-below-messages" aria-selected="false">Deposits <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[9].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='Complimentary','idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>9}">
+                    <a class="pt-1" ng-click="ChangeLink('Complimentary')" aria-controls="custom-content-below-messages" aria-selected="false">Complimentary <!--<span class="counter">100 </span>--></a>
+                </li>
+                <li ng-if="CASHUP.TABLIST[10].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.KeyColor=='Review','idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>10}">
+                    <a class="pt-1" ng-click="ChangeLink('Review')" aria-controls="custom-content-below-messages" aria-selected="false">Review </a>
+                </li>
+            </ul>
+        </div>
+
+        <!--<div ng-include="'../../AngularViews/CashUp/CashupEntryNew.html'"> </div>-->
+
+        <div class="tab-content" id="custom-content-below-tabContent">
+         
+                <ng-view> </ng-view>
+                
+            </div>
+        </div>
+
+
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+<script src="~/AngularControllers/CashupControllerNew.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/FloatController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/CashController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/CardController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/PettyCashController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/DeliveryController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/AccountCustomerController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/VouchersController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/DepositsController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/ComplimentaryController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/ReviewsController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/CashUpEntry/AddDepositsController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+
+<link href="~/E_Scripts/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
+<script src="~/E_Scripts/daterangepicker-master/daterangepicker.js"></script>
+
+
+
+

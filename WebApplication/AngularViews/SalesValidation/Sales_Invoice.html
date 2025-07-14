@@ -1,0 +1,582 @@
+﻿<form id="SalesValidationForm" name="SalesValidationForm" novalidate>
+    <div class="card shadow-none">
+        <div class="card-header">
+            <span class="text-bold">{{SELECTED_INVOICE_ID}}</span>
+            <!--<span class="badge badge-success text-100 ml-2">{{SELECTED_INVOICE_ID_STATUS}}</span>-->
+            <div class="card-tools">
+                <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-sm btn-w-default" ng-click="BACK_TO_SALES_DATA();">Back</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table compact_table">
+                    <thead class="bg-wenodo-border">
+                        <tr>
+                            <!--<th class="bg-white app-text" width="20%">To</th>-->
+                            <th width="25%">Date</th>
+                            <th width="25%">Due Date</th>
+                            <th width="25%">Invoice #</th>
+                            <th width="25%">Reference</th>
+                            <!--<th class="text-right bg-white app-text">Total</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{INVOICE_HEARDER_ROW_DATA.INVOICE_DATE | date}}</td>
+                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{INVOICE_HEARDER_ROW_DATA.DUE_DATE |  date}}</td>
+                            <td>{{INVOICE_HEARDER_ROW_DATA.INVOICE_NUMBER}}</td>
+                            <td>{{INVOICE_HEARDER_ROW_DATA.REFERENCE_NUMBER}}</td>
+                            <!--<td class="text-bold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{(CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA | total :'UNIT_AMOUNT') |  number:2}}</td>-->
+                        </tr>
+                    </tbody>
+                </table>
+                <!--<p class="text-right text-sm app-text">Amounts are <span class="text-bold">Tax Exclusive</span></p>-->
+                <div class="table-responsive">
+                    <table class="table compact_table table-hover table-striped mb-0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-nowrap" width="10%">Revenue Center</th>
+                                <th ng-repeat="TrackingCat in XERO_TRACKING_CATEGORIES">{{TrackingCat.NAME}}</th>
+                                <th width="15%">Account</th>
+                                <th width="10%">Tax</th>
+                                <th width="5%">Tax Rate</th>
+                                <!--<th>Currency</th>-->
+                                <th class="text-right text-nowrap">Tax Amount</th>
+                                <th class="text-right text-nowrap">Net Amount</th>
+                                <th class="text-right text-nowrap">Gross Amount</th>
+                                <!--<th class="text-center">Actions</th>-->
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="item_body in CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA"
+                               on-finish-render="ngRepeatFinished"
+                               ng-init="InitiateInvoiceData(item_body,$index);">
+                            <tr>
+                                <td>{{item_body.DESCRIPTION}}</td>
+                                <td>{{item_body.REVENUE_CENTER}}</td>
+                                <td ng-repeat="TrackingCat in XERO_TRACKING_CATEGORIES" ng-init="InitiateXeroTrackingCategories(item_body);">
+                                    <select class="custom-select custom-select-sm"
+                                            ng-model="item_body.SELECTED_CATEGORY_OPTION"
+                                            ng-options="XT as XT.NAME for XT in XERO_TRACKING_CATEGORIES_OPTIONS | filter:{XERO_TRACKING_CATEGORIES_ID:TrackingCat.TABLE_ID}"
+                                            ng-disabled="QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52">
+                                        <option value="">- Please Select -</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select class="custom-select custom-select-sm"
+                                                name="XERO_ACCOUNT_CODE{{$index}}"
+                                                ng-model="item_body.XERO_ACCOUNT"
+                                                ng-options="XT as XT.CODE+' - '+XT.NAME for XT in XERO_ACCOUNT_CODES"
+                                                required
+                                                ng-change="AccountCodeChange(item_body)"
+                                                ng-disabled="QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52"
+                                                ng-class="{'error':SalesValidationForm.submitted && SalesValidationForm.XERO_ACCOUNT_CODE{{$index}}.$error.required}">
+                                            <option value="">- Please Select -</option>
+                                        </select>
+                                        <span class="input-group-text cursor-pointer bg-blue" ng-show="item_body.XERO_ACCOUNT_DEFAULT ==null || item_body.XERO_ACCOUNT_DEFAULT.CODE!=item_body.XERO_ACCOUNT.CODE" data-toggle="tooltip" data-html="true" data-original-title="Set as default"
+                                              ng-click="UPD_DEFAULT_XERO_ACCOUNT_CATEGORY_PAYMENT_MAPPING(item_body.XERO_ACCOUNT.CODE,false,true,item_body.DESCRIPTION,item_body);">
+                                            <i class="far fa-check-circle fa-sm"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group mb-0">
+                                        <select class="custom-select custom-select-sm"
+                                                name="TAX_TYPE{{$index}}"
+                                                ng-model="item_body.TAX_TYPE"
+                                                ng-options="XT.ID as XT.NAME for XT in item_body.XERO_TAXES"
+                                                required
+                                                ng-disabled="QUERYSTRING_XERO_INVOICE_CREATION_STATUS != 51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS != 52"
+                                                ng-change="TAXPERCENTAGE_CHANGE(item_body.TAX_TYPE,item_body);"
+                                                ng-class="{'error':SalesValidationForm.submitted && SalesValidationForm.TAX_TYPE{{$index}}.$error.required}">
+                                            <option value="">- Please Select Tax -</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>{{item_body.TAX_PERCENTAGE}}%</td>
+                                <!--<td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>-->
+                                <td class="text-right">{{item_body.TAX_AMOUNT | number:2}}</td>
+                                <td class="text-right semibold">{{item_body.UNIT_AMOUNT | number:2}}</td>
+                                <td class="text-right semibold">{{item_body.SUB_TOTAL=(item_body.UNIT_AMOUNT+item_body.TAX_AMOUNT) | number:2}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="{{6+XERO_TRACKING_CATEGORIES.length}}" class="border-white"></td>
+                                <td class="text-right">Net Total</td>
+                                <td class="text-right text-bold">
+                                    <span ng-bind-html="CURRENCY_SYMBOL"></span> {{(CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA | total :'UNIT_AMOUNT') | number:2}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="{{6+XERO_TRACKING_CATEGORIES.length}}" class="border-white"></td>
+                                <td class="text-right">Total Tax</td>
+                                <td class="text-right text-bold">
+                                    <span ng-bind-html="CURRENCY_SYMBOL"></span> {{(CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA | total :'TAX_AMOUNT') | number:2}}
+                                </td>
+                            </tr>
+                            <tr ng-repeat="item in XERO_TAXES | filter:filterselectedTaxData" on-finish-render="ngRepeatFinished">
+                                <td colspan="{{6+XERO_TRACKING_CATEGORIES.length}}" class="border-white"></td>
+                                <td class="text-right"> {{item.NAME}}</td>
+                                <td class="text-right text-bold">{{(item.CALCULATED_TOTAL=((CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA | filter :{'TAX_TYPE':item.ID}:true) | total : 'TAX_AMOUNT')) | number:2}}</td>
+                            </tr>
+                            <!--<tr>
+                                <td colspan="7" class="border-white"></td>
+                                <td class="text-right">Total VAT 20%</td>
+                                <td class="text-right text-bold"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{(CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA | filter :{'TAX_TYPE':'OUTPUT2'}) | total : 'TAX_AMOUNT'}}</td>
+                                <td></td>
+                            </tr>
+                            <tr ng-if="{{(CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA | filter :{'TAX_TYPE':'RRINPUT'})}}">
+                                <td colspan="7" class="border-white"></td>
+                                <td class="text-right font-12 text-bold">Calculated Total</td>
+                                <td class="text-right font-12 text-bold"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{(CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA | filter :{'TAX_TYPE':'RRINPUT'}) | total : 'TAX_AMOUNT'}}</td>
+                                <td></td>
+                            </tr>-->
+                            <tr >
+                                <td colspan="{{6+XERO_TRACKING_CATEGORIES.length}}" class="border-white"></td>
+                                <td class="text-right font-14 text-bold bg-blue">Invoice Amount(Calculated)</td>
+                                <td class="text-right font-14 text-bold bg-blue">{{CALCULATED_TOTAL=(CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA | total :'SUB_TOTAL') | number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="{{6+XERO_TRACKING_CATEGORIES.length}}" class="border-white"></td>
+                                <td class="text-right font-12">EPOS Total(Payments)</td>
+                                <td class="text-right font-12 text-bold">{{EPOS_TOTAL=((XERO_EPOS_DATA | total :'AMOUNT')) | number:2}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="{{6+XERO_TRACKING_CATEGORIES.length}}" class="border-white"></td>
+                                <td class="text-right font-12">Invoice Amount & Payment Variance</td>
+                                <td class="text-right font-14 semibold text-red">{{CALCULATED_TOTAL-EPOS_TOTAL | number:2}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="row pt-3">
+                <div class="col-md-4">
+                    <table class="table table-striped table-hover compact_table">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Payment Type</th>
+                                <th class="text-right">EPOS</th>
+                                <th class="text-right">
+                                    CashUp 
+                                    <a class="btn btn-sm btn-transparent-wenodo" data-toggle="modal" data-target="#View_Card_Detail" ng-click="GET_CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA();">
+                                        <i class="far fa-credit-card-front" data-toggle="tooltip"
+                                           data-html="true" data-original-title="View card details"></i>
+                                    </a>
+                                </th>
+                                <th class="text-right">EPOS - CashUp</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="item in CASHUP_PAYMENT_DATA | unique:'DISPLAY_NAME'" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td>  {{item.DISPLAY_NAME}}</td>
+                                <td class="text-right">{{CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT' | number:2}}</td>
+
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==3">{{item.CASHUPAMT=(CASHUP_ACTUAL_FLOAT_CASH_DATA | filter:{TYPE:'CASH'})[0].AMOUNT | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==4">{{item.CASHUPAMT=(CASHUP_ACTUAL_CARD_PAYMENT_DATA[0].AMEX+CASHUP_ACTUAL_CARD_PAYMENT_DATA[0].MASTERCARD+CASHUP_ACTUAL_CARD_PAYMENT_DATA[0].VISA+CASHUP_ACTUAL_CARD_PAYMENT_DATA[0].OTHERS) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==5">{{item.CASHUPAMT=(CASHUP_ACTUAL_PETTY_CASH | total:'GROSS') | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==7">{{item.CASHUPAMT= (CASHUP_ACTUAL_ACCOUNT_CREDIT | filter: {PAYMENT_METHOD_NAME:'Account(Credit)'} | total:'AMOUNT') | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==8">{{item.CASHUPAMT=0 | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==3">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==4">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==5">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==7">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==8">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+
+
+                            </tr>
+                        </tbody>
+                        <!--<tbody ng-repeat="item in CASHUP_MASTER_DATA | filter:{ID:'!6'}" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td>
+                                    {{item.DISPLAY_NAME}}
+                                </td>
+                                <td class="text-right">{{CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT' | number:2}}</td>
+
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==3">{{item.CASHUPAMT=(CASHUP_ACTUAL_FLOAT_CASH_DATA | filter:{TYPE:'CASH'})[0].AMOUNT | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==4">{{item.CASHUPAMT=(CASHUP_ACTUAL_CARD_PAYMENT_DATA[0].AMEX+CASHUP_ACTUAL_CARD_PAYMENT_DATA[0].MASTERCARD+CASHUP_ACTUAL_CARD_PAYMENT_DATA[0].VISA+CASHUP_ACTUAL_CARD_PAYMENT_DATA[0].OTHERS) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==5">{{item.CASHUPAMT=(CASHUP_ACTUAL_PETTY_CASH | total:'GROSS') | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==7">{{item.CASHUPAMT= (CASHUP_ACTUAL_ACCOUNT_CREDIT | filter: {PAYMENT_METHOD_NAME:'Account(Credit)'} | total:'AMOUNT') | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==3">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==4">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==5">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+                                <td class="text-right" ng-if="item.CASHUP_TAB_ID==7">{{((CASHUP_PAYMENT_DATA | filter:{CASHUP_TAB_ID:item.CASHUP_TAB_ID} | total :'SALES_AMT')-item.CASHUPAMT) | number:2}}</td>
+
+                            </tr>
+                        </tbody>-->
+                        <tfoot>
+
+                            <tr>
+                                <td  class="font-14 text-bold">Payments Total </td>
+
+                                <td class="text-right font-14 text-bold">{{EPOS_TOTAL_1=(CASHUP_PAYMENT_DATA | total :'SALES_AMT') | number:2}}</td>
+                                <td class="text-right font-14 text-bold">{{CASHUP_TOTAL=(CASHUP_PAYMENT_DATA | total :'CASHUPAMT') | number:2}}</td>
+                                <td class="text-right font-14 text-bold">{{EPOS_TOTAL_1-CASHUP_TOTAL | number:2}}</td>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!--        <table class="table table-striped table-hover compact_table">
+                        <thead>
+                            <tr>
+                                <th>EPOS Payment Type</th>
+                                <th class="text-right">EPOS Amount</th>
+                                <th width="3%">
+                                    <a class="btn btn-sm btn-transparent-wenodo" data-toggle="modal" data-target="#View_Card_Detail" ng-click="GET_CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA();">
+                                        <i class="far fa-credit-card-front" data-toggle="tooltip"
+                                           data-html="true" data-original-title="View card details"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="item in XERO_EPOS_DATA" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td>{{item.REFERENCE}}</td>
+                                <td class="text-right">{{item.AMOUNT | number:2}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+
+                            <tr>
+                                <td>Total</td>
+
+                                <td class="text-right font-12 text-bold">{{EPOS_TOTAL=((XERO_EPOS_DATA | total :'AMOUNT')) | number:2}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    -->
+                </div>
+                <div class="col-md-8">
+                    <!--<label colspan="5" class="semibold">Card</label>-->
+
+                    <table class="table compact_table v-align-top">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th></th>
+                                <th>Remarks</th>
+                                <th>Date</th>
+                                <th>GL Account</th>
+                                <th>Payment Type</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--<tr>
+                                <td colspan="6" class="semibold border-top-white">{{item.REFERENCE}}</td>
+                            </tr>-->
+                            <tr ng-repeat="item in CASHUP_LIST_XERO_OUTBOUND_INVOICE_LINE_PAYMENT_COPY"
+                                on-finish-render="ngRepeatFinished">
+                                <td class="border-white">{{$index+1}}.</td>
+                                <td class="border-white">
+                                    <div class="form-group mb-0">
+                                        <input type="text" class="form-control form-control-sm" placeholder="Remark"
+                                               ng-disabled="QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52"
+                                               ng-model="item.REMARK" />
+                                    </div>
+                                </td>
+                                <td ng-init="item.TODAY_DATE=item.DATE;DateInputLoadStartForm(item,1)">
+                                    <span class="text-sm">
+                                        <input type="text" class="form-control form-control-sm DateInputLoadStartForm" name="DATE" placeholder="Date"
+                                               ng-model="item.DATE"
+                                               ng-value="item.DATE | date" />
+                                    </span>
+                                </td>
+                                <td class="text-right border-white" width="30%">
+                                    <!--<span>Less Payment </span>-->
+                                    <div class="input-group">
+                                        <select class="custom-select custom-select-sm"
+                                                name="PAYMENT_XERO_ACCOUNT_CODE{{$index}}"
+                                                ng-model="item.XERO_ACCOUNT_CODE"
+                                                ng-options="XT.CODE as XT.NAME group by XT.TYPE for XT in XERO_ACCOUNT_CODES | filter:PaymentAccountCodeFilter"
+                                                required
+                                                ng-disabled="QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52"
+                                                ng-class="{'error':SalesValidationForm.submitted && SalesValidationForm.PAYMENT_XERO_ACCOUNT_CODE{{$index}}.$error.required}">
+                                            <option value="">- Please Select -</option>
+                                        </select>
+                                        <span class="input-group-text cursor-pointer bg-blue" data-toggle="tooltip" data-html="true" data-original-title="Set as default"
+                                              ng-show="item.XERO_ACCOUNT_CODE_COPY!=item.XERO_ACCOUNT_CODE && item.XERO_ACCOUNT_CODE !=null && item.REFERENCE_COPY==item.REFERENCE && item.INDEX==undefined"
+                                              ng-click="UPD_DEFAULT_XERO_ACCOUNT_CATEGORY_PAYMENT_MAPPING(item.XERO_ACCOUNT_CODE,true,false,item.REFERENCE,item);">
+                                            <i class="far fa-check-circle fa-sm"></i>
+                                        </span>
+                                    </div>
+
+                                </td>
+                                <td class="border-white">
+                                    <input class="form-control form-control-sm" type="text"
+                                           name="REFERENCE{{$index}}"
+                                           ng-model="item.REFERENCE"
+                                           value="item.REFERENCE"
+                                           autocomplete="off"
+                                           required
+                                           ng-disabled="(QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52) || (item.CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID!=2 && item.CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID!=5)"
+                                           ng-class="{'error':SalesValidationForm.submitted && SalesValidationForm.REFERENCE{{$index}}.$error.required}" />
+                                </td>
+                                <td class="text-right text-bold text-blue border-white">                                    
+                                    <span ng-show="false">{{item.LESS_PAYMENT=(item.AMOUNT | number:2)}}</span>
+                                    <input class="form-control form-control-sm text-right" type="text" only-digits
+                                           name="AMOUNT{{$index}}"
+                                           ng-model="item.AMOUNT"
+                                           value="{{item.AMOUNT | number:2}}"
+                                           autocomplete="off"
+                                           required
+                                           ng-disabled="(QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52)"
+                                           ng-change="LESS_PAYMENT_SET_TO_ZERO_IF_EMPTY(item);"
+                                           ng-class="{'error':SalesValidationForm.submitted && SalesValidationForm.AMOUNT{{$index}}.$error.required}" />
+                                </td>
+                                <td class="text-nowrap text-right border-white">
+
+                                    <a class="btn btn-sm " ng-show="item.CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID==2 || item.CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID==5"
+                                       ng-click="EDIT_XERO_PAYMENT_BYFURCATION(item.REFERENCE,item.LESS_PAYMENT,item, $index);"
+                                       data-toggle="tooltip"
+                                       ng-class="{'btn-transparent-wenodo': QUERYSTRING_XERO_INVOICE_CREATION_STATUS == 51 || QUERYSTRING_XERO_INVOICE_CREATION_STATUS ==52,
+                                           'cursor-none btn-default text-grey':QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52}"
+                                       data-html="true" data-original-title="Add More"><i class="fas fa-plus"></i></a>
+                                    <a class="btn btn-sm " ng-show="item.CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID==2 || item.CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID==5"
+                                       ng-click="DELETE_XERO_PAYMENT_BYFURCATION_ROW($index,item);"
+                                       data-toggle="tooltip"
+                                       ng-class="{'btn-transparent-danger':QUERYSTRING_XERO_INVOICE_CREATION_STATUS ==51 || QUERYSTRING_XERO_INVOICE_CREATION_STATUS ==52,
+                                           'cursor-none btn-default text-grey':QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52}"
+                                       data-html="true" data-original-title="Remove"><i class="fas fa-minus"></i></a>
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td class="border-whtie" colspan="4"></td>
+                                <td class="text-right font-14 text-bold text-nowrap" ng-class="{'text-red':SalesValidationSearch.VARIANCE<0}">Amount Due To Record<span ng-show="false">{{SalesValidationSearch.VARIANCE=(ConvertTo2Decimal(CALCULATED_TOTAL)-ConvertTo2Decimal(CASHUP_LIST_XERO_OUTBOUND_INVOICE_LINE_PAYMENT_COPY | total :'AMOUNT'))}}</span></td>
+                                <td class="text-right font-14 text-bold" ng-class="{'text-red':SalesValidationSearch.VARIANCE<0}">{{SalesValidationSearch.VARIANCE | number:2}}</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-0">
+        <div class="card-header semibold">Your Comments:<span ng-show="SalesValidationSearch.NG_REQUIRED_FOR_COMMENT">*</span></div>
+        <div class="card-body">
+            <div class="col-md-12">
+                <textarea class="form-control" rows="5" name="COMMENTS"
+                          ng-model="SalesValidationSearch.COMMENTS"
+                          ng-required="SalesValidationSearch.NG_REQUIRED_FOR_COMMENT"
+                          ng-class="{'error':SalesValidationForm.submitted &&  SalesValidationForm.COMMENTS.$error.required}"
+                          maxlength="1000"
+                          ng-disabled="QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=51 && QUERYSTRING_XERO_INVOICE_CREATION_STATUS !=52">
+                        </textarea>
+                <span class="font-11 semibold text-danger mb-2">
+                    {{1000 - SalesValidationSearch.COMMENTS.length}} Characters Remaining
+                </span>
+            </div>
+            <div class="col-md-12 mt-2">
+                <button type="button" class="btn btn-sm btn-wenodo" ng-if="(QUERYSTRING_XERO_INVOICE_CREATION_STATUS ==51 || QUERYSTRING_XERO_INVOICE_CREATION_STATUS ==52) && CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA.length>0" ng-click="VALIDATE_DATE_FOR_XERO_INVOICE_OUTBOUND_DATA(false);">Save</button>
+                <button type="button" class="btn btn-sm btn-w-default" ng-if="(QUERYSTRING_XERO_INVOICE_CREATION_STATUS ==51 || QUERYSTRING_XERO_INVOICE_CREATION_STATUS ==52) && CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA.length>0" ng-click="VALIDATE_DATE_FOR_XERO_INVOICE_OUTBOUND_DATA(true);">Send To Xero</button>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-0" ng-show="XERO_INVOICE_OUTBOUND_HISTORY_HEADER.length>0">
+        <div class="card-header semibold">History & notes</div>
+        <div class="card-body">
+            <div class="table-responsive custom-scrollbar height-74vh">
+                <table class="table compact_table table-head-fixed">
+                    <thead class="bg-wenodo-border">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Date</th>
+                            <th width="40%">Comment</th>
+                            <th width="5%" class="text-center">History</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="XERO_INVOICE_OUTBOUND_HISTORY_HEADER in XERO_INVOICE_OUTBOUND_HISTORY_HEADER" on-finish-render="ngRepeatFinished" id="TBODY_{{XERO_INVOICE_OUTBOUND_HISTORY_HEADER.XERO_OUTBOUND_INVOICE_HISTORY_HEADER_ID}}">
+                        <tr>
+                            <td class="text-nowrap">{{XERO_INVOICE_OUTBOUND_HISTORY_HEADER.ARCHIVE_BY_NAME}}</td>
+                            <td class="text-nowrap">{{XERO_INVOICE_OUTBOUND_HISTORY_HEADER.ARCHIVE_BY_EMAIL}}</td>
+                            <td><i class="fal fa-calendar-alt text-blue"></i> {{XERO_INVOICE_OUTBOUND_HISTORY_HEADER.ARCHIVE_DATE | date}}</td>
+                            <td>{{XERO_INVOICE_OUTBOUND_HISTORY_HEADER.ARCHIVE_COMMENTS}}</td>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-transparent-wenodo"
+                                   id="plus{{XERO_INVOICE_OUTBOUND_HISTORY_HEADER.XERO_OUTBOUND_INVOICE_HISTORY_HEADER_ID}}"
+                                   ng-show="!XERO_INVOICE_OUTBOUND_HISTORY_HEADER.SHOWDETAILS"
+                                   ng-click="GET_XERO_INVOICE_OUTBOUND_HISTORY_DETAILS(XERO_INVOICE_OUTBOUND_HISTORY_HEADER,true,XERO_INVOICE_OUTBOUND_HISTORY_HEADER.XERO_OUTBOUND_INVOICE_HISTORY_HEADER_ID);">
+                                    <i class="far fa-plus"></i>
+                                </a>
+                                <a class="btn btn-sm btn-transparent-wenodo"
+                                   id="minus{{XERO_INVOICE_OUTBOUND_HISTORY_HEADER.XERO_OUTBOUND_INVOICE_HISTORY_HEADER_ID}}"
+                                   ng-show="XERO_INVOICE_OUTBOUND_HISTORY_HEADER.SHOWDETAILS"
+                                   ng-click="GET_XERO_INVOICE_OUTBOUND_HISTORY_DETAILS(XERO_INVOICE_OUTBOUND_HISTORY_HEADER,false,XERO_INVOICE_OUTBOUND_HISTORY_HEADER.XERO_OUTBOUND_INVOICE_HISTORY_HEADER_ID);">
+                                    <i class="far fa-minus"></i>
+                                </a>
+                                <i class="fas fa-circle-notch fa-spin" id="loader_{{XERO_INVOICE_OUTBOUND_HISTORY_HEADER.XERO_OUTBOUND_INVOICE_HISTORY_HEADER_ID}}" style="visibility: hidden"></i>
+                            </td>
+                        </tr>
+                        <tr ng-show="XERO_INVOICE_OUTBOUND_HISTORY_HEADER.SHOWDETAILS">
+                            <td colspan="5" class="p-0">
+                                <div class="table-responsive custom-scrollbar height-auto">
+                                    <table class="table compact-table mb-0">
+                                        <thead class="bg-blue">
+                                            <tr>
+                                                <th class="text-white">Invoice#</th>
+                                                <th class="text-white">Desc.</th>
+                                                <th class="text-white">Qty.</th>
+                                                <th class="text-white">Site</th>
+                                                <th class="text-white text-nowrap text-right">Unit Amount</th>
+                                                <th class="text-white text-nowrap text-right">Tax Amount</th>
+                                                <th class="text-white text-nowrap">Tax %</th>
+                                                <th class="text-white text-nowrap">Tax Type</th>
+                                                <th class="text-white text-nowrap">Inv. Type</th>
+                                                <th class="text-white text-nowrap">Ac. Code</th>
+                                                <th class="text-white text-nowrap">Create Date</th>
+                                                <th class="text-white text-nowrap">Due Date</th>
+                                                <th class="text-white text-nowrap">Inv. Date</th>
+                                                <th class="text-white">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="item_History in XERO_INVOICE_OUTBOUND_HISTORY_HEADER.XERO_INVOICE_OUTBOUND_HISTORY_DETAILS" on-finish-render="ngRepeatFinished">
+                                            <tr>
+                                                <td class="text-nowrap">{{item_History.INVOICE_NUMBER}}</td>
+                                                <td>{{item_History.DESCRIPTION}}</td>
+                                                <td>{{item_History.QUANTITY}}</td>
+                                                <td>{{item_History.SITE}}</td>
+                                                <td class="text-right text-nowrap">{{item_History.UNIT_AMOUNT | number:2}}</td>
+                                                <td class="text-right text-nowrap">{{item_History.TAX_AMOUNT | number:2}}</td>
+                                                <td>{{item_History.TAX_PERCENTAGE}}</td>
+                                                <td>{{item_History.TAX_TYPE}}</td>
+                                                <td>{{item_History.TYPE}}</td>
+                                                <td>{{item_History.XERO_ACCOUNT_CODE}}</td>
+                                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{item_History.CREATED_DATE | date}}</td>
+                                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{item_History.DUE_DATE | date}}</td>
+                                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{item_History.INVOICE_DATE | date}}</td>
+                                                <td>{{item_History.STATUS}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal fade show" id="View_Card_Detail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title font-14">Cashup Details</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="SchIMapStatementForm" name="SchIMapStatementForm" novalidate>
+                <div class="modal-body custom-scrollbar">
+                    <h4 class="modal-title font-14" ng-show="CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_CARD.length>0">Card Details</h4>
+                    <div class="table-responsive" ng-show="CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_CARD.length>0">
+                        <table class="table table-striped table-hover compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>PDQ Terminal</th>
+                                    <th>Currency</th>
+                                    <th class="text-right">AMEX</th>
+                                    <th class="text-right">MASTER CARD</th>
+                                    <th class="text-right">VISA</th>
+                                    <th class="text-right">Others</th>
+                                    <th>File</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="CL in CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_CARD">
+                                <tr>
+                                    <td>{{CL.PDQ_CODE}}</td>
+                                    <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                                    <td class="text-right">{{CL.AMEX | number:2}}</td>
+                                    <td class="text-right">{{CL.MASTERCARD | number:2}}</td>
+                                    <td class="text-right">{{CL.VISA | number:2}}</td>
+                                    <td class="text-right">{{CL.OTHERS | number:2}}</td>
+                                    <td>
+                                        <span ng-repeat="CLUF in CL.UPLOADED_FILES">
+                                            <a download="{{CLUF.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{CLUF.SERVER_FILE_NAME}}">
+                                                <i class="fad fa-download text-blue"></i> {{CLUF.ORIGINAL_FILE_NAME}}
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h4 class="modal-title font-14" ng-show="CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_VOUCHER.length>0">Voucher Details</h4>
+                    <div class="table-responsive" ng-show="CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_VOUCHER.length>0">
+                        <table class="table table-striped table-hover compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Voucher # </th>
+                                    <th>Currency</th>
+                                    <th class="text-right">Amount</th>
+                                    <th class="text-right">Validity</th>
+                                    <th class="text-right">Redeemed By</th>
+                                    <th class="text-right">Payment Method </th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="VD in CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_VOUCHER">
+                                <tr>
+                                    <td>{{VD.CHECK_NO}}</td>
+                                    <td>{{VD.CODE}}</td>
+                                    <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                                    <td class="text-right">{{VD.VALUE | number:2}}</td>
+                                    <td class="text-right">{{VD.VALIDITY_DATE | date}}</td>
+                                    <td class="text-right">{{VD.CUSTOMER_NAME}}</td>
+                                    <td class="text-right">{{VD.PAYMENT_METHOD_NAME}}</td>
+                                    <td>{{VD.NOTE}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h4 class="modal-title font-14" ng-show="CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_ACCOUNT.length>0">Account Details</h4>
+                    <div class="table-responsive" ng-show="CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_ACCOUNT.length>0">
+                        <table class="table table-striped table-hover compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <th>Company</th>
+                                    <th>Invoice # </th>
+                                    <th class="text-right">Amount</th>
+
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="VD in CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA_ACCOUNT">
+                                <tr>
+                                    <td>{{VD.CUSTOMER_NAME}}</td>
+                                    <td>{{VD.COMPANY}}</td>
+                                    <td>{{VD.CHECK_NO}}</td>
+                                    <td class="text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{VD.AMOUNT | number:2}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--<div class="row" ng-repeat="item in CASHUP_DATA_XERO_INVOICE_OUTBOUND_DATA" on-finish-render="ngRepeatFinished">
+                        <div class="col-md-4 border text-sm" ng-repeat="(key,value) in item">
+                            <span class="semibold app-text">{{key}} </span><br /> {{value}}
+                        </div>
+                    </div>-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

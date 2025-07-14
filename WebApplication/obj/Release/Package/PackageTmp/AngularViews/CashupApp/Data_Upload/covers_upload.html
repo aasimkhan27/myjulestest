@@ -1,0 +1,476 @@
+﻿<div class="card" ng-show="CASHUP_PRIVILEGE==true">
+    <div class="card-header">
+        <h6>Covers Upload</h6>
+        
+    </div>
+    
+    <div class="card-body">
+
+        <div class="row g-1 resCashupHeader">
+
+            <div class="col-xxl-1 col-xl-1 col-md-1">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a data-toggle="dropdown">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate">
+                                    {{ COVERS_ENTRY_SEARCH.SELECTED_SITE.BRANCH_NAME || 'Select' }}
+                                </span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                            <li ng-repeat="site in FILTERED_SITES_LIST"
+                                ng-click="selectSite(site)">
+                                <span class="truncate">{{ site.BRANCH_NAME }}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <div id="reportrange" class="form-control-box">
+                    <span></span>
+                    <i class="fa-regular fa-calendar float-end mt-1"></i>
+                </div>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button type="button" ng-click="RESET_COVERS_ENTRY_SEARCH()" class="btn btn-outline w-100"><i class="fa-light fa-undo"></i></button>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <button class="btn btn-light w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+                <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                    <li><a class="dropdown-item d-block" ng-click="EXPORT_COVERS(2)">XLS</a></li>
+                    <li><a class="dropdown-item" ng-click="EXPORT_COVERS(1)">CSV</a></li>
+                    <!--<li><a class="dropdown-item">PDF</a></li>-->
+                </ul>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button class="btn btn-primary" data-bs-target="#covers_upload"
+                        data-bs-toggle="modal"
+                        ng-show="COVERS_ENTRY_SEARCH.DATA_ENTRY_ENABLED==true && COVERS_UPLOAD_OBJ.CASHUP_DATA_UPLOAD_MASTER_ID==1">
+                    <i class="fa-light fa-arrow-up-from-bracket"></i>
+                    Upload
+                </button>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto d-none">
+                <button class="btn btn-primary">
+                    <i class="fa-light fa-rotate"></i>
+                    Sync
+                </button>
+            </div>
+        </div>
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="COVERS_ENTRY_LIST.length == 0">
+            <div class="no-record text-center">
+                <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+            </div>
+        </div>
+        <div class="table-responsive dataTable resCashupTable scrollbar-wrapper" ng-show="COVERS_ENTRY_LIST.length>0">
+            <table class="mb-0">
+                <thead class="table-sticky-top">
+                    <tr>
+                        <th class="text-center text-nowrap">Site</th>
+                        <th class="text-center text-nowrap">Date</th>
+                        <th class="text-center text-nowrap">Covers</th>
+                        <th class="text-end text-nowrap">SPH</th>
+                        <th class="text-end text-nowrap">Breakfast</th>
+                        <th class="text-end text-nowrap">Lunch</th>
+                        <th class="text-end text-nowrap">Dinner</th>
+                        <th class="text-end text-nowrap">All</th>
+                        <th class="text-end text-nowrap">Completed</th>
+                        <th class="text-center text-nowrap">No Show</th>
+                        <th class="text-center text-nowrap">Cancelled</th>
+                        <!--<th class="text-center text-nowrap">Action</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ROW in COVERS_ENTRY_LIST">
+                        <td class="text-center text-nowrap">
+                            {{ROW.BRANCH_NAME}}
+                        </td>
+                        <td class="text-center text-nowrap">
+                            {{ROW.Date | date:DISPLAY_DATE_FORMAT}}
+                        </td>
+                        <td class="text-center text-nowrap">
+                            {{ROW.Covers}}
+                        </td>
+                        <td class="text-end text-nowrap">
+                            {{CURRENCY_SYMBOL}} {{ROW.SPH | number:2}}
+                        </td>
+                        <td class="text-end text-nowrap">
+                            {{CURRENCY_SYMBOL}} {{ROW.Breakfast}}
+                        </td>
+                        <td class="text-end text-nowrap">
+                            {{CURRENCY_SYMBOL}} {{ROW.Lunch}}
+                        </td>
+                        <td class="text-end text-nowrap">
+                            {{CURRENCY_SYMBOL}} {{ROW.Dinner}}
+                        </td>
+                        <td class="text-end text-nowrap">
+                            {{CURRENCY_SYMBOL}} {{ROW.ALL}}
+                        </td>
+                        <td class="text-end text-nowrap">
+                            {{ROW.Completed}}
+                        </td>
+                        <td class="text-center text-nowrap">
+                            {{ROW.No_Show}}
+                        </td>
+                        <td class="text-center text-nowrap">
+                            {{ROW.Canceled}}
+                        </td>
+                        <!--<td class="text-center text-nowrap">
+                        <a class="c-pointer">
+                            <i class="fa-light fa-trash-can txt-danger"></i>
+                        </a>
+                    </td>-->
+                    </tr>
+                </tbody>
+                <tfoot ng-show="GetData">
+                    <tr>
+                        <td colspan="11" class="text-center"><button type="button" class="btn btn-sm btn_fixed btn-light" ng-click="GET_DATA_UPLOAD_COVERS_ENTRY(1)">{{PAGINATION_TEXT}}</button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_PRIVILEGE==false">
+    <div class="no-record text-center">
+        <span class="d-block text-center">You do not have access to Covers Entry. Please contact Admin for access.</span>
+    </div>
+</div>
+<!-- UPLOAD COVER MODAL STARTS -->
+<div class="modal fade" id="covers_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content" ng-show="true">
+            <div class="modal-header">
+                <h6 class="modal-title">Covers Upload</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="RESET_UPLOAD()"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <div class="row g-2">
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <!--<ul class="nav nav-pills mb-1">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label" id="select_label">
+                                        <span class="truncate">{{ COVERS_UPLOAD_OBJ.SELECTED_SITE.BRANCH_NAME || 'Select' }}</span>
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li ng-repeat="site in FILTERED_SITES_LIST"
+                                        ng-click="SELECT_SITE_FOR_UPLOAD(site)">
+                                        {{ site.BRANCH_NAME }}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>-->
+                        <input type="text" disabled ng-model="COVERS_UPLOAD_OBJ.SELECTED_SITE.BRANCH_NAME"/>
+                    </div>
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <div id="reportrangeCoversUpload" class="form-control-box">
+                            <span></span>
+                            <i class="fa-regular fa-calendar float-end mt-1"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xxl-7 col-xl-7 col-md-7">
+                        <div class="alert alert-light-primary fade show">
+                            <div class="row align-items-center ">
+                                <div class="col-auto txt-primary"> <i class="fa-light fa-circle-info"></i></div>
+                                <div class="col">
+                                    <p class="txt-primary">{{COVERS_UPLOAD_MESSAGE[1]}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                        <a class="btn download-template" href="{{DOWNLOAD_FILE_PATH}}">
+                            <i class="fa-solid fa-arrow-down-to-bracket me-1"></i>
+                            Download template
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name ="file" required="required" multiple="multiple"
+                                       id="uploadExcel"
+                                       ng-click="FILEUPLOADCLICK()"
+                                       ng-files="Refreshdata();getTheFilesToUploadCovers($files, 'CoversUpload', 10, COVERS_UPLOAD_OBJ, 47, 1)">
+                                <div class="file-dummy h-100">
+                                    <i class="fa-light fa-file-plus fa-2xl txt-primary"></i>
+                                    <p class="mb-1 mt-2"><span class="txt-primary">Choose a file </span> or drag and drop here</p>
+                                    <p class="mb-0">*.xls file limit 10MB</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xxl-12 col-ed-12 col-xl-12 resInputModal">
+                    <div class="file_container" ng-repeat="upls in COVERS_UPLOAD_OBJ.UploadedFiles">
+                        <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                        <span>
+                            <span class="file_name">
+                                {{upls.ORIGINAL_FILE_NAME}}
+                            </span>
+                        </span>
+                        <a class="ms-auto" ng-click="DELETE_UPLOAD_CARD_ALL(COVERS_UPLOAD_OBJ,upls,$index)">
+                            <i class="fa-light fa-trash-can txt-danger"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive mt-2">
+                    <h5 class="headings my-3">
+                        Preview <span ng-show="INVALID_EXCLE_CELL_COUNT>0"><i class="fa fa-exclamation-triangle txt-danger"></i> - Please provide the mandatory details to (marked in red).</span>
+                    </h5>
+                    <div class="table-responsive scrollbar-wrapper resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th ng-repeat="(key, value) in PREVIEW_COVERS_ENTRY[0]">{{key}}</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="ex in PREVIEW_COVERS_ENTRY" on-finish-render="ngRepeatFinishedRender">
+                                <tr>
+                                    <td ng-repeat="(key, value) in ex" ng-class="{'border-red':obj.IS_DATA_VALID}" ng-init="obj=ngintvalidationvalue(key,value)">
+                                        <span ng-show="false">
+                                            {{value}}
+                                        </span>
+                                        <span ng-class="{'border-red':obj.IS_VALID}">
+                                            <span ng-show="obj.IS_VALID"><i class="fa fa-exclamation-triangle text-danger"></i></span>
+                                            {{obj.DISPLAY_TEXT}}
+                                        </span>
+                                        <span ng-show="obj.IS_DATA_VALID">
+                                            <i class="fa fa-exclamation-triangle text-danger"></i>
+                                            {{obj.CODE}}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <!--<button class="btn btn-light" data-bs-target="#validate" data-bs-toggle="modal" data-bs-dismiss="modal">Validate</button>-->
+                <button class="btn btn-primary" data-bs-dismiss="modal" ng-disabled="INVALID_EXCLE_CELL_FLAG" ng-click="INS_UPD_CU_COVERS()">Save</button>
+            </div>
+        </div>
+        <!-- UPLOAD covers FILLED MODAL STARTS -->
+        <div class="modal-content" ng-show="false">
+            <div class="modal-header">
+                <h6 class="modal-title">Covers Upload (23 Aug 2024)</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="images" id="images" required="required" multiple="multiple">
+                                <div class="file-dummy">
+                                    <p class="mb-1 mt-3"><span class="txt-primary">eposdata23092023.xls</span></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                        <div class="file_container">
+                            <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                            <span>
+                                <span class="file_name">
+                                    filename.csv
+                                </span>
+                                <span class="file_size">
+                                    25.1 MB
+                                </span>
+                            </span>
+                            <a class="ms-auto">
+                                <i class="fa-light fa-trash-can txt-danger"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive resCashupTable">
+                    <h5 class="headings">
+                        Preview
+                    </h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="text-start">
+
+                                </th>
+                                <th class="text-start" width="20%">
+                                    Session
+                                </th>
+                                <th class="text-center" width="20%">
+
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Breakfast
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Lunch
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Dinner
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                                <th class="text-center" width="20%">
+
+                                    <span class="d-flex align-items-center text-nowrap">
+                                        Total
+                                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                                <td rowspan="3" class="vertical_text_container">
+                                    <span class="vertical_text">
+                                        Source
+                                    </span>
+
+                                </td>
+                                <td class="text-nowrap">
+                                    Walk-in
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Reservation
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Booking
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="vertical_text_container">
+                                    <span class="vertical_text pl-0">
+                                        Status
+                                    </span>
+
+                                </td>
+                                <td class="text-nowrap">
+                                    Completed
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+
+
+
+                            </tr>
+
+                            <tr>
+                                <td class="text-nowrap">
+                                    No Show
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+
+
+
+                            </tr>
+
+                            <tr>
+                                <td class="text-nowrap">
+                                    Cancelled
+                                </td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+                                <td class="text-end text-nowrap">£323.93</td>
+
+                                <td class="text-end text-nowrap">£323.93</td>
+
+
+                            </tr>
+
+                            <tr>
+                                <td class="text-center text-nowrap"></td>
+
+                                <td class="text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+
+                                <td class="text-end text-nowrap f-w-700">£323.93</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" ng-click="RESET_UPLOAD()">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+
+        </div>
+        <!-- UPLOAD covers FILLED MODAL ENDS -->
+    </div>
+</div>
+<!-- UPLOAD COVER UPLOAD MODAL ENDS -->
+<!-- VALIDATE MODAL STARTS -->
+<div class="modal fade" id="validate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Warning</h6>
+                    <p class="text-center text-dark"> The data was not input correctly in our template. Kindly enable editing and re-upload the file with correctly filled data.</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-12 col-md-12 col-md-12"><button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- VALIDATE MODAL ENDS -->

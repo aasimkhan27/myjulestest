@@ -1,0 +1,556 @@
+﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script>
+
+    //function testPdf() {
+    //    debugger;
+    //    //send the div to PDF
+    //    html2canvas($("#qrcode"), { // DIV ID HERE
+    //        onrendered: function (canvas) {
+    //            var imgData = canvas.toDataURL('image/png');
+    //            var doc = new jsPDF('landscape');
+    //            doc.addImage(imgData, 'PDF', 10, 10);
+    //            doc.save('sample-file.pdf'); //SAVE PDF FILE
+    //        }
+    //    });
+    //}
+    //function preventBack() {
+    //    window.history.forward();
+    //}
+    //setTimeout("preventBack()", 0);
+    //window.onunload = function () { null };
+    //====================
+
+    //window.history.forward();
+    //function noBack() {
+    //    window.history.forward();
+    //}
+</script>
+<div id="message" class="message"></div>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mt-2">Clock-In/Clock-Out</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item"><a class="btn btn-wenodo" data-toggle="modal" data-target="#Login">Back</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 border">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-8 text-center">
+                            <div class="app-text semibold">Please scan the QR Code!</div>
+                        </div>
+                        <div class="col">
+                            <label>Select Branch</label>
+                            <select class="form-control select2" placeholder="Select Location..."
+                                    name="LOCATION_ID"
+                                    ng-model="ClockInOutSearch.BRANCH_ID"
+                                    ng-options="LO.BRANCH_ID as LO.BRANCH_NAME for LO in BRANCH_AND_SECTION_LIST"
+                                    ng-change="GET_VALUE_FOR_QR_GENERATION();"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12 text-center py-5"><div id="RenderHtml"> </div></div>
+                    <div class="col-md-12 text-center">
+                        <button type="button" class="btn btn-wenodo mt-3" ng-click="GET_VALUE_FOR_QR_GENERATION(1)">Refresh QR Code</button>
+                        <button type="button" class="btn btn-wenodo mt-3" ng-show="false" ng-click="QRCODE_PRINT()">Print</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 border">
+                <form autocomplete="false" id="ClockInOutForm" name="ClockInOutForm" novalidate>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="btn-group form-group" ng-show="false">
+                                    <angucomplete id="ex1"
+                                                  placeholder="Search Employees" pause="100"
+                                                  selectedobject="selectedEmployee"
+                                                  localdata="EMPLOYEE_LIST"
+                                                  searchfields="code,name"
+                                                  titlefield="code,name"
+                                                  minlength="1"
+                                                  imagefield="image"
+                                                  inputclass="form-control border-radius-right"
+                                                  matchclass="highlight" />
+                                    <div class="input-group-append autocomplete-height">
+                                        <button class="btn btn-default border app-text border-radius-left" ng-click="SELECT_EMP_RESULT()">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-0">
+                                        <label class="d-block text-nowrap">Employee No./Login Email</label>
+                                        <input type="text"
+                                               ng-model="ClockInOutSearch.USER_NAME"
+                                               class="form-control"
+                                               name="USER_NAME"
+                                               placeholder="Employee No./Login Email"
+                                               required
+                                               maxlength="250"
+                                               autocomplete="off"
+                                               readonly
+                                               onfocus="this.removeAttribute('readonly')"
+                                               ng-class="{'error':ClockInOutForm.submitted && ClockInOutForm.USER_NAME.$error.required}" />
+                                    </div>
+                                    <!--ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"-->
+                                    <!--<small class="text-danger" ng-show="ClockInOutForm.USER_NAME.$dirty && ClockInOutForm.USER_NAME.$error.pattern">Please Enter Valid Email<br /></small>-->
+                                </div>
+                                <div class="col-md-3" ng-show="SETTING_VALUE_25==1">
+                                    <div class="form-group mb-0">
+                                        <label class="d-block">Password</label>
+                                        <input type="password"
+                                               ng-model="ClockInOutSearch.PASSWORD"
+                                               class="form-control"
+                                               placeholder="Password"
+                                               maxlength="250"
+                                               name="PASSWORD"
+                                               ng-required="SETTING_VALUE_25==1"
+                                               autocomplete="off"
+                                               readonly
+                                               onfocus="this.removeAttribute('readonly')"
+                                               ng-class="{'error':ClockInOutForm.submitted && ClockInOutForm.PASSWORD.$error.required}" />
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <label class="d-block">&nbsp;</label>
+                                    <button class="btn btn-wenodo"
+                                            type="submit"
+                                            click-once
+                                            ng-click="GET_EMP_PRS_ID()">
+                                        Submit
+                                    </button>
+                                    <button type="button" class="btn btn-w-default" ng-click="RESET_EMP()">Reset</button>
+                                </div>
+                                <div class="col-auto ml-auto">
+                                    <div class="countdown">
+                                        <div class="bloc-time hours">
+                                            <span class="count-title">Hours</span>
+                                            <div class="figure hours hours-1">
+                                                <span class="top">{{CURRENT_TIME_HOURS}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="bloc-time min">
+                                            <span class="count-title">Minutes</span>
+                                            <div class="figure min min-1">
+                                                <span class="top">{{CURRENT_TIME_MINUTE}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="bloc-time sec">
+                                            <span class="count-title">Seconds</span>
+                                            <div class="figure sec sec-1">
+                                                <span class="top">{{CURRENT_TIME_SECOND}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-0 mt-1">
+                                <div data-ng-show="ClockInOutForm.submitted && ClockInOutForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3 mb-0">
+                                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                                </div>
+                                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="ClockInOutForm.$valid">
+                                    <span class="help-block">{{InvalidUser}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center px-2" ng-show="PAGE_LOAD==1">
+                            <div class="col-md-12 text-center bg-light-grey p-3 text-sm">Please enter Login Email / User name to get Shift Detail </div>
+                        </div>
+                        <div class="row align-items-center" ng-show="CLICK_BUTTON && PAGE_LOAD==2">
+                            <div class="col-md-12 text-center h-auto"><i class="fas fa-solid fa-3x fa-spinner fa-spin-pulse text-finforeca mt-5"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-auto" ng-show="EMP_PRS_ID>0">
+                                <label class="mb-0 app-text font-18">Hello,</label>
+                                <span class="app-text text-bold font-18">{{ClockInOutSearch.FIRST_NAME}} {{ClockInOutSearch.LAST_NAME}}!</span>
+                            </div>
+                            <hr />
+                            <h5 class="font-14 semibold" ng-show="PAGE_LOAD==2">Clocked-In Shift</h5>
+                            <div class="Clock_In_box" ng-show="CLOCK_IN_SHIFT_LIST.length==0 && !CLICK_BUTTON && PAGE_LOAD==2" empty-grid> </div>
+                            <div class="Clock_In_box" ng-repeat="TDY in CLOCK_IN_SHIFT_LIST" ng-show="CLOCK_IN_SHIFT_LIST.length>0 && !CLICK_BUTTON && PAGE_LOAD==2"
+                                 ng-init="NG_INIT_CLOCK_IN_SHIFT_DETAILS_FY(TDY)">
+                                <div class="col-md-12 bg-light-blue border-radius-50 h-60px">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img src="../../E_Content/images/Clock_In_disabled.png" class="float-left Clock_In" />
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="text-blue text-bold pt-2">{{TDY.SECTION_NAME}}</div>
+                                            <div class="d-block app-text semibold text-sm">
+                                                {{TDY.START_TIME | date:'HH:mm'}} - {{TDY.END_TIME | date:'HH:mm'}}
+                                                <span class="" ng-click="ROTA_INS_SHIFT_BREAKS(TDY)"
+                                                      ng-if="TDY.LOGIN_START && (TDY.ON_BREAK_TABLE_ID==0 || TDY.ON_BREAK_TABLE_ID>0)">
+                                                    <i class="fas fa-mug-hot " ng-class="{'text-success':TDY.ON_BREAK_TABLE_ID==0,'text-danger':TDY.ON_BREAK_TABLE_ID>1}"></i>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <img src="../../E_Content/images/Clock_Out_g.png" ng-click="ROTA_INS_UPD_LOGIN_LOGOUT(TDY,TDY)" class="float-right Clock_Out" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 text-blue semibold mt-2">{{TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGIN_DATE | date:'HH:mm'}}</div>
+                                    <div class="col text-center">
+                                        <a class="text-sm d-block app-text semibold mt-2 cursor-pointer" ng-click="SHOW_VIEW_DETAILS(TDY,$index,'MENU')" id="showmenu">
+                                            View Details
+                                            <i class="fal fa-chevron-down" ng-show="!TDY.HIDE_SHOW"></i>
+                                            <i class="fal fa-chevron-up" ng-show="TDY.HIDE_SHOW"></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2 text-blue semibold mt-2 text-right">
+                                        <span ng-show="TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGOUT_DATE==null">Clock Out</span>
+                                        <span ng-show="TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGOUT_DATE!=null"> {{TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGOUT_DATE | date:'HH:mm'}}</span>
+                                    </div>
+                                </div>
+                                <div class="menu" id="MENU{{$index}}" style="display: none;">
+                                    <hr />
+                                    <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link" ng-class="{'active':TDY.STEP_FLAG==1,'':TDY.STEP_FLAG!=1}" ng-click="TAB_CLICK(1,TDY)" id="custom-content-above-profile-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" ng-class="{'active':TDY.STEP_FLAG==2,'':TDY.STEP_FLAG!=2}" ng-click="TAB_CLICK(2,TDY);" id="custom-content-above-UnEmp-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-UnEmp" aria-selected="false">Breaks</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="custom-content-above-tabContent">
+                                        <div class="tab-pane fade" ng-show="TDY.STEP_FLAG==1" ng-class="{'show active':TDY.STEP_FLAG==1,'':TDY.STEP_FLAG!=1}" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Paid Break <small>(mins)</small></label>
+                                                        <span class="d-block">{{TDY.PAID_BREAK}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Unpaid Break <small>(mins)</small></label>
+                                                        <span class="d-block">{{TDY.UNPAID_BREAK}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Shift Type</label>
+                                                        <span class="d-block">{{TDY.SHIFT_TYPE}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col" ng-show="TDY.STATUS_ID==23">
+                                                    <div class="form-group">
+                                                        <label>Status</label>
+                                                        <span class="d-block"><span class="badge badge-success">Approved</span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label class="text-nowrap">Clock-In Image</label>
+                                                        <img class="profile-pic d-block" ng-show="TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH==null" src="../dist/img/user1-128x128.jpg" />
+                                                        <img class="profile-pic d-block" ng-click="ON_SHIFT_CLICK(TDY,1)" ng-show="TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH!=null" src="/Uploads/{{TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH}}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label class="text-nowrap">Clock-Out Image</label>
+                                                        <img class="profile-pic d-block" ng-show="TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH==null" src="../dist/img/user1-128x128.jpg" />
+                                                        <img class="profile-pic d-block" ng-click="ON_SHIFT_CLICK(TDY,2)" ng-show="TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH!=null" src="/Uploads/{{TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH}}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Tags</label>
+                                                        <span class="d-block">
+                                                            <span class="badge badge-light-blue mr-2" ng-show="TDY.SHIFT_TAGS_LIST.length==0">-</span>
+                                                            <span class="badge badge-light-blue mr-2" ng-repeat="SGL in TDY.SHIFT_TAGS_LIST">{{SGL.TAG_NAME}}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Comments</label>
+                                                        <span class="p-3 border border-radius-5 d-block">{{TDY.NOTES==""?'-':TDY.NOTES}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" ng-show="TDY.STEP_FLAG==2" ng-class="{'show active':TDY.STEP_FLAG==2,'':TDY.STEP_FLAG!=2}" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover compact_table">
+                                                    <thead class="bg-wenodo-dark-blue">
+                                                        <tr>
+                                                            <th>Break Start</th>
+                                                            <th>Break End</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody ng-repeat="ABL in TDY.ACTUAL_BREAK_LIST">
+                                                        <tr>
+                                                            <td>
+                                                                <span ng-show="ABL.BREAK_START==null">-</span>
+                                                                <span ng-show="ABL.BREAK_START!=null"> {{ABL.BREAK_START | date:'HH:mm' }} </span>
+                                                            </td>
+                                                            <td>
+                                                                <span ng-show="ABL.BREAK_END==null">-</span>
+                                                                <span ng-show="ABL.BREAK_END!=null"> {{ABL.BREAK_END | date:'HH:mm' }} </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+
+                            <h5 class="font-14 mt-3 semibold" ng-show="PAGE_LOAD==2">Today's Shifts</h5>
+                            <div class="Clock_In_box" ng-repeat="TDY in TODAY_SHIFT_LIST" ng-init="NG_INIT_CLOCK_IN_SHIFT_DETAILS_FY(TDY)">
+                                <div class="col-md-12 bg-light-blue border-radius-50 h-60px">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <span ng-show="false">
+                                                {{TDY.CLCIN_IN=CURRENT_TIME_ACCORDING_TIME_ZONE>TDY.START_TIME_TOLERANCE}}
+                                                {{TDY.CLCIN_CLCOUT_GONE=(CURRENT_TIME_ACCORDING_TIME_ZONE>TDY.END_TIME_MOMENT)}}
+                                                {{TDY.CLCIN_IN_GONE=(TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGIN_DATE!=null)}}
+                                            </span>
+                                            <img src="../../E_Content/images/Clock_In_disabled.png"
+                                                 ng-click="MESSAGE_CLICK(TDY,1)"
+                                                 ng-if="!TDY.CLCIN_IN || TDY.CLCIN_CLCOUT_GONE || TDY.CLCIN_IN_GONE"
+                                                 class="float-left Clock_In" />
+                                            <img src="../../E_Content/images/Clock_Out_g.png"
+                                                 ng-click="ROTA_INS_UPD_LOGIN_LOGOUT(TDY,TDY)"
+                                                 ng-if="TDY.CLCIN_IN && !TDY.CLCIN_CLCOUT_GONE && !TDY.CLCIN_IN_GONE"
+                                                 class="float-left Clock_In" />
+
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="text-blue text-bold pt-2">{{TDY.SECTION_NAME}}</div>
+                                            <div class="d-block app-text semibold text-sm">
+                                                {{TDY.START_TIME | date:'HH:mm'}} - {{TDY.END_TIME | date:'HH:mm'}}
+                                                <span class="" ng-click="ROTA_INS_SHIFT_BREAKS(TDY)"
+                                                      ng-if="TDY.LOGIN_START && (TDY.ON_BREAK_TABLE_ID==0 || TDY.ON_BREAK_TABLE_ID>0)">
+                                                    <i class="fas fa-mug-hot " ng-class="{'text-success':TDY.ON_BREAK_TABLE_ID==0,'text-danger':TDY.ON_BREAK_TABLE_ID>1}"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <img src="../../E_Content/images/Clock_Out_g.png"
+                                                 ng-click="ROTA_INS_UPD_LOGIN_LOGOUT(TDY,TDY)"
+                                                 ng-if="TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGOUT_DATE==null && TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGIN_DATE!=null"
+                                                 class="float-right Clock_Out" />
+                                            <img src="../../E_Content/images/Clock_In_disabled.png"
+                                                 ng-click="MESSAGE_CLICK(TDY,2)"
+
+                                                 ng-if="TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGOUT_DATE!=null || TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGIN_DATE==null"
+                                                 class="float-right Clock_Out" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 text-blue semibold mt-2">
+                                        <span ng-show="TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGIN_DATE==null || TDY.CLOCK_IN_SHIFT_DETAILS==null">Clock In</span>
+                                        <span>{{TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGIN_DATE | date:'HH:mm'}}</span>
+                                    </div>
+                                    <div class="col text-center">
+                                        <a class="text-sm d-block app-text semibold mt-2 cursor-pointer"
+                                           ng-click="SHOW_VIEW_DETAILS(TDY,$index,'TODAY')">
+                                            View Details
+                                            <i class="fal fa-chevron-down" ng-show="!TDY.HIDE_SHOW"></i>
+                                            <i class="fal fa-chevron-up" ng-show="TDY.HIDE_SHOW"></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2 text-blue semibold mt-2 text-right">
+                                        <!--22:30-->
+                                        <span ng-show="TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGOUT_DATE==null">Clock Out</span>
+                                        <span ng-show="TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGOUT_DATE!=null"> {{TDY.CLOCK_IN_SHIFT_DETAILS[0].LOGOUT_DATE | date:'HH:mm'}}</span>
+                                    </div>
+                                </div>
+                                <div class="menu" id="TODAY{{$index}}" style="display: none;">
+                                    <hr />
+                                    <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link" ng-class="{'active':TDY.STEP_FLAG==1,'':TDY.STEP_FLAG!=1}" ng-click="TAB_CLICK(1,TDY)" id="custom-content-above-profile-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" ng-class="{'active':TDY.STEP_FLAG==2,'':TDY.STEP_FLAG!=2}" ng-click="TAB_CLICK(2,TDY);" id="custom-content-above-UnEmp-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-UnEmp" aria-selected="false">Breaks</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="custom-content-above-tabContent">
+                                        <div class="tab-pane fade" ng-show="TDY.STEP_FLAG==1" ng-class="{'show active':TDY.STEP_FLAG==1,'':TDY.STEP_FLAG!=1}" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Paid Break <small>(mins)</small></label>
+                                                        <span class="d-block">{{TDY.PAID_BREAK}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Unpaid Break <small>(mins)</small></label>
+                                                        <span class="d-block">{{TDY.UNPAID_BREAK}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Shift Type</label>
+                                                        <span class="d-block">{{TDY.SHIFT_TYPE}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col" ng-show="TDY.STATUS_ID==23">
+                                                    <div class="form-group">
+                                                        <label>Status</label>
+                                                        <span class="d-block"><span class="badge badge-success">Approved</span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label class="text-nowrap">Clock-In Image</label>
+
+                                                        <img class="profile-pic d-block" ng-show="TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH==null" src="../dist/img/user1-128x128.jpg" />
+                                                        <a data-toggle="modal" ng-click="ON_SHIFT_CLICK(TDY,1)">   <img class="profile-pic d-block" ng-show="TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH!=null" src="/Uploads/{{TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH}}" /></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label class="text-nowrap">Clock-Out Image</label>
+                                                        <img class="profile-pic d-block" ng-show="TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH==null" src="../dist/img/user1-128x128.jpg" />
+                                                        <img class="profile-pic d-block" ng-click="ON_SHIFT_CLICK(TDY,2)" ng-show="TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH!=null" src="/Uploads/{{TDY.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH}}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Tags</label>
+                                                        <span class="d-block">
+                                                            <span class="badge badge-light-blue mr-2" ng-show="TDY.SHIFT_TAGS_LIST.length==0">-</span>
+                                                            <span class="badge badge-light-blue mr-2" ng-repeat="SGL in TDY.SHIFT_TAGS_LIST">{{SGL.TAG_NAME}}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>Comments</label>
+                                                        <span class="p-3 border border-radius-5 d-block">{{TDY.NOTES==""?'-':TDY.NOTES}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="tab-pane fade" ng-show="TDY.STEP_FLAG==2" ng-class="{'show active':TDY.STEP_FLAG==2,'':TDY.STEP_FLAG!=2}" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover compact_table">
+                                                    <thead class="bg-wenodo-dark-blue">
+                                                        <tr>
+                                                            <th>Break Start</th>
+                                                            <th>Break End</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody ng-repeat="ABL in TDY.ACTUAL_BREAK_LIST">
+                                                        <tr>
+                                                            <td>
+                                                                <span ng-show="ABL.BREAK_START==null">-</span>
+                                                                <span ng-show="ABL.BREAK_START!=null"> {{ABL.BREAK_START | date:'HH:mm' }} </span>
+                                                            </td>
+                                                            <td>
+                                                                <span ng-show="ABL.BREAK_END==null">-</span>
+                                                                <span ng-show="ABL.BREAK_END!=null"> {{ABL.BREAK_END | date:'HH:mm' }} </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Login">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Login</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Username&nbsp;</label>
+                        <span class="d-block form-control pt-2 bg-light-grey">{{User_Email}}</span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" ng-model="ClockInOutSearch.MANAGER_PASSWORD" placeholder="Enter Password" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="LOGIN_MANAGER()" class="btn btn-wenodo">Login</button>
+                <button type="button" ng-click="RESET_LOGIN_MANAGER()" class="btn btn-w-default">Reset</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-CLOCKIN" id="Preview_Image" role="dialog" aria-labelledby="CLOCKIN" ng-click="MODAL_CLOCKIN()" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="Preview_Image">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <span ng-show="SELECT_FLAG==1">
+                    <img ng-show="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH==null" src="../dist/img/user1-128x128.jpg" class="imagepreview w-100" />
+                    <img ng-show="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH!=null" src="/Uploads/{{SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKIN_FILE_PATH}}" class="imagepreview w-100" />
+                </span>
+                <span ng-show="SELECT_FLAG==2">
+                    <img ng-show="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH==null" src="../dist/img/user1-128x128.jpg" class="imagepreview w-100" />
+                    <img ng-show="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH!=null" src="/Uploads/{{SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS_BY_ID[0].CLOCKOUT_FILE_PATH}}" class="imagepreview w-100" />
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="name"></div>
+<script type = "text/javascript" >  
+    $(document).ready(function () {
+        function disablePrev() { window.history.forward() }
+        window.onload = disablePrev();
+        window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+    });
+</script> 
+<!--<div class="modal fade" id="PRINT_QRCODE">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">QR CODE</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+
+                <div class="w-100" ng-include="'../AngularViews/HR/IN_OUT_QRCODE_PRINT.html?v=6{{AppVersion}}'"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="PRINT_QRCODE()" class="btn btn-wenodo">Download</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>-->

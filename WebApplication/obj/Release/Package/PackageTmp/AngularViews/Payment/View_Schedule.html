@@ -1,0 +1,239 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="heading-text-2">
+            Schedules
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <div class="form-group" id="AddCustomScroll">
+                    <label class="d-block">Select Supplier</label>
+                    <input type="text" name="CategorySearchBox"
+                           ng-model="PaymentSearch.SUPPLIER_NAME"
+                           ng-change="SetValues(Supplier,$index)"
+                           uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIERLIST"
+                           typeahead-loading="loading" typeahead-no-results="noResults"
+                           class="form-control form-control-sm" autocomplete="off"
+                           placeholder="Type to select Supplier Name..." />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="d-block">Active Date</label>
+                    <div id="reportrange" class="form-control form-control-sm text-xs p-1 py-2">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span>ACTIVE Date</span> <i class="fa fa-caret-down"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="d-block">Select Schedule</label>
+                    <select class="custom-select custom-select-sm" ng-model="PaymentSearch.SCHEDULE_FREQUENCY" name="SCHEDULE_FREQUENCY"
+                            ng-options="SFRQ.SCHEDULE_FREQUENCY as SFRQ.Name for SFRQ in SCHEDULE_FREQUENCYLIST">
+                        <option value="" selected="selected">Select Schedule</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="d-block">Select Category</label>
+                    <select class="custom-select custom-select-sm" ng-model="PaymentSearch.CATEGORY_ID" name="CATEGORY_ID"
+                            ng-options="CAT.ID as CAT.CATEGORY_NAME for CAT in CATEGORY_LIST">
+                        <option value="" selected="selected">Select Category</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label class="d-block">Select Type</label>
+                    <select class="custom-select custom-select-sm" ng-model="PaymentSearch.REQUEST_TYPE_ID" name="REQUEST_TYPE_ID"
+                            ng-options="REQ.ID as REQ.TYPE_NAME for REQ in REQUEST_LIST">
+                        <option value="" selected="selected">Select Type</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                <div class="form-group">
+                    <label class="d-block">Branch Name</label>
+                    <select class="custom-select custom-select-sm min-w-250" name="BRN_LG"
+                            data-placeholder="Select Branch"
+                            ng-model="PaymentSearch.BRANCH_LOGIN_ID"
+                            ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+                    <button class="btn btn-sm btn-wenodo"   click-once ng-click="GET_PYMNT_REQUEST_SCHEDULES(1);">Search</button>
+                    <button class="btn btn-sm btn-w-default" ng-click="RESETPAGESEARCH();">Reset</button>
+                    <a href="#!/Request" class="btn btn-sm btn-w-default">Back</a>
+                    <!--<button type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel"><i class="far fa-file-excel"></i></button>-->
+                </div>
+            </div>
+        </div>
+        <div class="table-reponsive custom-scrollbar height-47vh">
+            <div class="text-center" ng-show="SCHEDULES_LIST.length==0" empty-grid></div>
+            <table class="table table-striped table-head-fixed table-hover compact_table" ng-show="SCHEDULES_LIST.length>0">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th>Supplier Name</th>
+                        <th>Active From</th>
+                        <th>Schedule</th>
+                        <th>Category</th>
+                        <th>Request Type</th>
+                        <th width="5%">Actions</th>
+                    </tr>
+                </thead>
+                <!--<tfoot>
+                <tr>
+                    <td colspan="8" align="center" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" ng-click="LAZY_GET_REQUEST_SCHEDULES_LIST();">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>-->
+                <tbody ng-repeat="Schedular in SCHEDULES_LIST" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{Schedular.SUPPLIER_NAME}}</td>
+                        <td><i class="fal fa-calendar-alt text-blue"></i>{{Schedular.ACTIVE_DATE|date}}</td>
+                        <td>
+                            <span ng-show="Schedular.SCHEDULE_FREQUENCY==1">Daily</span>
+                            <span ng-show="Schedular.SCHEDULE_FREQUENCY==2">Weekly</span>
+                            <span ng-show="Schedular.SCHEDULE_FREQUENCY==3">Fortnightly</span>
+                            <span ng-show="Schedular.SCHEDULE_FREQUENCY==4">Monthly</span>
+                        </td>
+                        <td><span class="badge badge-wenodo">{{Schedular.CATEGORY_NAME}}</span></td>
+                        <td>{{Schedular.REQUEST_TYPE_NAME}}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-transparent" data-toggle="modal" data-target="#Edit_Schedule" ng-click="EDIT_SCHEDULE(Schedular);"><i class="fas fa-edit text-success" data-toggle="tooltip" data-html="true" data-original-title="Edit"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+                <!--<tbody ng-show="SCHEDULES_LIST.length==0 && Msg!=''">
+                <tr>
+                    <td colspan="6" style="text-align:center;">
+                        <b> {{Msg}}</b>
+                    </td>
+                </tr>
+            </tbody>-->
+
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-white">
+        <div class="form-group">
+            <a href="#!/Request_Statement" class="btn btn-sm btn-wenodo">Schedule</a>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" id="Edit_Schedule">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title d-flex">
+                    Edit Schedule
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <form name="CustomForm">
+                    <div class="row">
+                        <!--<div class="col-md-3">
+                            <div class="form-group">
+                                <label class="d-block">Branch Name</label>
+                                <select class="custom-select custom-select-sm" name="BRN_LG"
+                                        data-placeholder="Select Branch"
+                                        ng-model="EDITSCHEDULE.BRANCH_LOGIN_ID"
+                                        ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)" ng-change="GET_PYMNT_SUPPLIER_SEARCH();"></select>
+                            </div>
+                        </div>-->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Active From <span class="text-danger">*</span></label>
+
+                                <input type="text"
+                                       class="form-control form-control-sm DateInputLoadStartForm"
+                                       name="ACTIVE_DATE"
+                                       autocomplete="off"
+                                       readonly
+                                       ng-model="EDITSCHEDULE.ACTIVE_DATE"
+                                       ng-class="{'error':!EDITSCHEDULE.ACTIVE_DATE}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Schedule<span class="text-danger">*</span></label>
+                                <!-- <select class="custom-select mw-150" ng-model="EDITSCHEDULE.SCHEDULE_FREQUENCY" name="SCHEDULE_FREQUENCY">-->
+                                <select class="custom-select custom-select-sm" ng-model="EDITSCHEDULE.SCHEDULE_FREQUENCY" name="EDITSCHEDULE.SCHEDULE_FREQUENCY"
+                                        ng-options="SFRQ.SCHEDULE_FREQUENCY as SFRQ.Name for SFRQ in SCHEDULE_FREQUENCYLIST" ng-class="{'error':!EDITSCHEDULE.SCHEDULE_FREQUENCY_VALID }">
+                                    <option>Select Schedule</option>
+                                </select>
+                                <!--<option value="0">Select Schedule</option>
+            <option value="1">Daily</option>
+            <option value="2">Weekly</option>
+            <option value="3">Fortnightly</option>
+            <option value="4">Monthly</option>-->
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Category<span class="text-danger">*</span></label>
+                                <select class="custom-select custom-select-sm" ng-model="EDITSCHEDULE.CATEGORY_ID" name="CATEGORY_ID"
+                                        ng-options="CAT.ID as CAT.CATEGORY_NAME for CAT in CATEGORY_LIST" ng-class="{'error':!EDITSCHEDULE.CATEGORY_ID_VALID }">
+                                    <option>Select Category</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Request Type<span class="text-danger">*</span></label>
+                                <select class="custom-select custom-select-sm" ng-model="EDITSCHEDULE.REQUEST_TYPE_ID" name="REQUEST_TYPE_ID"
+                                        ng-options="REQ.ID as REQ.TYPE_NAME for REQ in REQUEST_LIST" ng-class="{'error':!EDITSCHEDULE.REQUEST_TYPE_ID_VALID }">
+                                    <option>Select Type</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Email <span class="text-danger">*</span></label>
+                                <input type="text" ng-model="EDITSCHEDULE.EMAIL" name="EMAIL" class="form-control form-control-sm" ng-class="{'error':!EDITSCHEDULE.EMAIL_VALID}" />
+
+                                <!--  <span style="color:Red" ng-show="CustomForm.EDITSCHEDULE.EMAIL.$dirty&&CustomForm.EDITSCHEDULE.EMAIL.$error.pattern">Please Enter Valid Email</span>-->
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Subject <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" ng-model="EDITSCHEDULE.SUBJECT" name="SUBJECT" ng-class="{'error':!EDITSCHEDULE.SUBJECT_VALID }" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Body </label>
+                                <textarea class="form-control"
+                                          rows="4"
+                                          ng-model="EDITSCHEDULE.BODY"
+                                          name="BODY"
+                                          ng-trim="false"
+                                          maxlength="2000"
+                                          ng-class="{'error':!EDITSCHEDULE.BODY_VALID }" />
+                                <span class="d-block text-xs text-gray semibold" maxlength="2000">{{2000 - EDITSCHEDULE.BODY.length}} Character Limit </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-wenodo"   click-once ng-click="UPD_PYMNT_REQUEST_SCHEDULE();">Submit</button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

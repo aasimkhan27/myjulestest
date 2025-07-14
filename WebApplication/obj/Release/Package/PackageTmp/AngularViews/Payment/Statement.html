@@ -1,0 +1,297 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="heading-text-2">Statements</h5>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group" id="AddCustomScroll">
+                        <label class="d-block">Select Payee Name</label>
+                        <input type="text" name="CategorySearchBox"
+                               ng-model="StatementSearch.SUPPLIER_NAME"
+                               ng-change="SetValues(Supplier,$index)"
+                               uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIERLIST | filter:$viewValue"
+                               typeahead-loading="loading" typeahead-no-results="noResults"
+                               class="form-control form-control-sm" autocomplete="off"
+                               placeholder="Select Payee Name..." />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">	Statement Date</label>
+                        <div id="reportrange" class="form-control form-control-sm">
+                            <i class="fa fa-calendar mt-1"></i>&nbsp;
+                            <span class="mt-1">Statement Date</span> <i class="fa fa-sort float-right mt-1"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Select Status</label>
+                        <!--<select class="custom-select custom-select-sm" ng-model="StatementSearch.STATUS_IDS" name="STATUS_IDS">
+                            <option value="" selected="selected">Select Status</option>
+                            <option value="40">PENDING</option>
+                        </select>-->
+                        <select class="custom-select custom-select-sm" name="STATUS_TYPE"
+                                ng-model="StatementSearch.STATUS_IDS"
+                                ng-options="SL.STATUS_ID  as SL.STATUS_NAME for SL in (STATUS_LIST)">
+                            <option value="" selected="selected">Select Status</option>
+                        </select>
+                    </div>
+                </div>
+                <!--<div class="nav-item mr-2">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Payee Name" />
+                    </div>TOTAL_AMOUNT
+                </div>
+                <div class="nav-item mr-2 mt-1">
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" placeholder="Statement Date">
+                        <div class="input-group-addon">
+                            <i class="far fa-calendar-alt"></i>
+                        </div>
+                    </div>
+                </li>-->
+                <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                    <div class="form-group">
+                        <label class="d-block">Branch Name</label>
+                        <select class="custom-select custom-select-sm min-w-250" name="BRN_LG"
+                                data-placeholder="Select Branch"
+                                ng-model="StatementSearch.BRANCH_LOGIN_ID"
+                                ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                        <label class="d-block">&nbsp;</label>
+                        <button type="submit" name="submit" class="btn btn-sm btn-wenodo"   click-once ng-click="GET_PYMNT_STATEMENTS(1);">Search</button>
+                        <button class="btn btn-sm btn-w-default" ng-click="RESETPAGESTATEMENT();">Reset</button>
+                        <button type="button" class="btn btn-sm btn-w-default" ng-show="CheckSubModuleAccess(55)" data-toggle="modal" data-target="#Upload_Statement"><i class="fas fa-upload text-blue"></i> Upload Statement</button>
+                        <!--<button ng-show="false" type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel"><i class="far fa-file-excel"></i></button>-->
+                    </div>
+                </div>
+                <!--<li class="nav-item">
+                    <button type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel"><i class="far fa-file-excel"></i></button>
+                </li>-->
+            </div>
+        </form>
+        <div class="table-responsive custom-scrollbar height-47vh">
+            <div class="text-center" ng-show="STATEMENT_LIST.length==0" empty-grid></div>
+            <table class="table table-head-fixed table-striped table-hover compact_table" ng-show="STATEMENT_LIST.length>0">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th>Payee</th>
+                        <th>Reference</th>
+                        <th class="text-nowrap">Statement Date</th>
+                        <th>Currency</th>
+                        <th class="text-right">Amount</th>
+                        <th class="text-nowrap">Reconciliation Status</th>
+                        <th class="text-nowrap">Service Status</th>
+                        <th width="10%">Actions</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" align="center" ng-show="GetData">
+                            <a class="btn btn-sm btn-secondary text-white"   click-once ng-click="LAZY_GET_STATEMENT_LIST();">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="STATE in STATEMENT_LIST" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{STATE.SUPPLIER_NAME}}</td>
+                        <td>{{STATE.REFERENCE}}</td>
+                        <td><i class="fal fa-calendar-alt text-blue text-nowrap"></i> {{STATE.STATEMENT_DATE | date}}</td>
+                        <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                        <td class="text-right text-nowrap">{{STATE.AMOUNT|number:2}}</td>
+                        <td>
+                            <span class="badge "
+                                  ng-class="{'badge-danger':STATE.STATUS_ID==49,'badge-light-green':STATE.STATUS_ID==50,'badge-light-grey':STATE.STATUS_ID==40}">
+                                {{STATE.STATUS_NAME}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge badge-light-grey" ng-show="STATE.READ_STATUS==0">Pending</span>
+                            <span class="badge badge-light-blue" ng-show="STATE.READ_STATUS==1">In Progress</span>
+                            <span class="badge badge-light-green" ng-show="STATE.READ_STATUS==2">Completed</span>
+                            <span class="badge badge-light-red" ng-show="STATE.READ_STATUS==3">Error</span>
+                            <span class="badge badge-light-grey" ng-show="STATE.READ_STATUS==4">No Mapping</span>
+                            <span class="badge badge-danger" ng-show="STATE.READ_STATUS==5">Error in Mapping</span>
+                            <span class="badge badge-light-red" ng-show="STATE.READ_STATUS==6">Error in AWS Fetching</span>
+                        </td>
+                        <td>
+                            <a href="#!/Statement_View?STATEMENT_ID={{STATE.ID}}" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fas fa-eye"></i></a>
+                            <!--<button type="button" class="btn btn-sm btn-w-default" data-toggle="modal" data-target="#Reply"><i class="fas fa-reply" data-toggle="tooltip" data-html="true" data-original-title="Reply"></i></button>-->
+                            <!--<button type="button" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download"><i class="fas fa-download"></i></button>-->
+                            <a class="btn btn-sm btn-transparent" data-toggle="tooltip" data-html="true" data-original-title="Download" href="/Uploads{{STATE.FILE_PATH}}{{STATE.SERVER_FILE_NAME}}" download="{{STATE.SERVER_FILE_NAME}}"><i class="fas fa-download"></i></a>
+                            <a class="btn btn-sm btn-transparent" ng-click="GET_PYMNT_STATEMENTS_COLUMN_HEADERS(STATE, STATE.ID)" ng-if="STATE.READ_STATUS==4" data-toggle="tooltip" data-html="true" data-original-title="Map"><i class="fas fa-street-view"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td class="text-bold text-right">Total</td>
+                        <td class="text-bold text-nowrap text-right"> <span class="semibold text-nowrap" ng-bind-html="CURRENCY_SYMBOL"></span> {{(STATEMENT_LIST |  total :'AMOUNT') | number:2}}</td>
+                        <td colspan="3"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade show" id="Upload_Statement">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Upload Statement</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar overflow-visible">
+                <div class="row">
+                    <div class="col-md-3" ng-show="BRANCH_LOGIN_LIST.length>0">
+                        <div class="form-group">
+                            <label class="d-block">Branch Name</label>
+                            <select class="custom-select custom-select-sm" name="BRN_LG"
+                                    data-placeholder="Select Branch"
+                                    ng-model="UPLOAD.BRANCH_LOGIN_ID"
+                                    ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)" ng-change="GET_PYMNT_SUPPLIER();"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group AddCustomScroll">
+                            <label class="d-block">Payee <span class="text-danger">*</span></label>
+                            <!--<select class="custom-select custom-select-sm" ng-model="SUPPLIER_ID" name="SUPPLIER_ID"
+                                    ng-options="SUP.ID as SUP.SUPPLIER_NAME for SUP in SUPPLIERLIST" ng-class="{'error':!SUPPLIER_ID_VALID}">
+                                <option value="" selected="selected">Select Name</option>
+                            </select>-->
+                            <input type="text" name="SUPPLIER_ID"
+                                   ng-model="SUPPLIER_NAME"
+                                   uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIERLIST | filter:$viewValue"
+                                   typeahead-loading="loading" typeahead-no-results="noResults"
+                                   class="form-control form-control-sm" autocomplete="off"
+                                   required
+                                   ng-class="{'error':!SUPPLIER_ID_VALID}"
+                                   placeholder="Select Name..." />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="d-block">Reference</label>
+                            <input type="text" class="form-control form-control-sm" ng-model="REFERENCE" name="Reference" placeholder="Reference"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" ng-show="false">
+                        <div class="form-group">
+                            <label class="d-block">Amount </label>
+                            <div class="input-group d-flex">
+                                <div class="input-group-prepend">
+                                    <!--<span class="input-group-text bg-white text-sm text-blue">&pound;</span>-->
+                                    <span class="input-group-text input-group-text-sm bg-white text-sm text-blue" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                </div>
+                                <input type="text" class="form-control form-control-sm" placeholder="Enter Amount" ng-model="AMOUNT" only-digits>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <!--<label class="d-block">&nbsp;</label>-->
+                            <label for="StatementFile" class="btn btn-sm btn-w-default mb-0" data-toggle="tooltip" data-html="true" data-original-title="Upload Statement">
+                                <i class="fas fa-upload text-blue"></i>
+                                <span class="text-blue">Upload Statement</span>
+                                <span class="hidden-input">
+                                    <!--<input id="certificate0" name="file" type="file">-->
+                                    <input id="StatementFile" ng-files="getTheFilesToUploadStatement($files, 'StatementFile', 5,UPLOADSTATEMENT_DOC,26)" name="file" type="file" />
+                                </span>
+                            </label>
+                        </div>
+                        <span class="d-block border-top py-2 font-13" ng-repeat="upls in UPLOADSTATEMENT_DOC">
+                            <br ng-if="$index!=0" />
+                            <span ng-if="$index!=0" />
+                            <a download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">  <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>
+                            <span> <i ng-click="DELETE_UPLOAD_STATEMENT_ALL(upls,$index)" class="fa fa-times text-danger mt-1 float-right cursor-pointer"></i> </span>
+                            <!--<span> <i ng-click="DELETE_UPLOAD_CARD_ALL(Card,upls,$index)" class="fa fa-times text-danger fa-sm mt-1 float-right cursor-pointer"></i> </span>-->
+                        </span>
+                        <!--<span class="d-block border-top py-2 font-13">
+                            <a href=""> <i class="fad fa-download text-blue"></i> Bank_Statement.pdf</a>
+                            <span> <i class="fa fa-times text-danger mt-1 float-right cursor-pointer"></i> </span>
+                        </span>-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-wenodo"   click-once ng-click="INS_PYMNT_STATEMENTS()">Submit</button>
+                <button type="button" class="btn btn-sm btn-w-default" ng-click="RESET_UPLOAD_STATEMENT()">Reset</button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade show" id="MAP_STATEMENT">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Map Wenodo with Supplier Statement Headers</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="SchIMapStatementForm" name="SchIMapStatementForm" novalidate>
+                <div class="modal-body custom-scrollbar">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-head-fixed table-striped table-hover compact_table">
+                                <thead class="bg-wenodo-border">
+                                    <tr>
+                                        <th class="text-nowrap">Wenodo</th>
+                                        <th width="40%" class="text-nowrap">Supplier Statement</th>
+                                        <th width="20%">Prefix</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="header in MAPPING_HEADERS" ng-init="FillSelectedMapping(header);">
+                                        <td>{{header.DISPLAY_NAME}}</td>
+                                        <td>
+                                            <select class="custom-select custom-select-sm"
+                                                    name="SELECTED_STATEMENT_HEAD"
+                                                    ng-model="header.SELECTED_STATEMENT_HEAD"
+                                                    ng-class="{'error':SchIMapStatementForm.submitted && SchIMapStatementForm.SELECTED_STATEMENT_HEAD.$error.required}"
+                                                    required                                                   
+                                                    ng-options="SH as SH.VALUE for SH in STATEMENT_HEADERS">
+                                                <option value="">Select Statement Header</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" ng-model="header.VALUE" ng-if="header.COLUMN_ID==2" class="form-control form-control-sm"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12">
+                        <div data-ng-show="SchIMapStatementForm.submitted && SchIMapStatementForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                        <div id="divInvlidUser" class="hideshowdiv" data-ng-show="SchIMapStatementForm.$valid">
+                            <span class="help-block">{{InvalidUser}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-wenodo" ng-click="INS_SUPPLIER_STATEMENT_MAPPING()">Submit</button>
+                    <button type="button" class="btn btn-sm btn-w-default" ng-click="RESET_SUPPLIER_STATEMENT_MAPPING()">Reset</button>
+                    <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

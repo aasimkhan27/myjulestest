@@ -1,0 +1,124 @@
+﻿<style>
+    h5 {
+        font-size: 12px;
+    }
+</style>
+<!--<div class="animated fadeInLeft" id="chequePaidAccount" role="tabpanel" ng-show="CASHUP.STEP_NO==5" aria-labelledby="custom-content-below-settings-tab">-->
+<div class="overlay_loadingNew" style="display:{{overlay_loadingNew}}!important"></div>
+<div id="LOADER_ID">
+    <div class="card-header">
+        <ul class="nav nav-pills float-left">
+            <li class="nav-item border radius-50">
+                <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Area: <span class="cash-up-header">{{CASHUP.AreaList[0].NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">CashUp Date: <span class="cash-up-header">{{CASHUP.CASHUP_DATE|date}}</span></span>
+            </li>
+        </ul>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item border radius-50">
+                    <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Delivery"})[0].SALES_AMT | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{ CASHUP.TOTAL_CHEQUE | number:2 }}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_CHEQUE!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_CHEQUE=(CASHUP.TOTAL_CHEQUE-(CASHUP.EPOS_DATA | filter:{"MEDIA":"Delivery"})[0].SALES_AMT) |number:2}}</span></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-2">
+                <label for="check">Delivery Partner</label>
+            </div>
+            <div class="col-lg-1">
+                <label for="check">Units</label>
+            </div>
+            <div class="col-lg-1">
+                <label for="date">Date:</label>
+            </div>
+            <div class="col-lg-2">
+                <label for="check">Payment Method</label>
+            </div>
+            <div class="col-lg-2">
+                <label for="value">Amount</label>
+            </div>
+
+            <div class="col-lg-4">
+                <label for="note">Note</label>
+            </div>
+        </div>
+        <div class="row" ng-repeat="Cheque in ChequeList| filter:{IS_DELETED:0}" on-finish-render="ngRepeatFinished">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="Cheque.NAME" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="form-group">
+                    <input type="text" class="form-control" only-digits ng-model="Cheque.PAID_BY_TYPE">
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="form-group">
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                        <input class="form-control" id="datecontrol" type="text" style="padding: 0rem 0.25rem;"
+                               readonly="readonly" ng-model="Cheque.DATE" ng-value="Cheque.DATE=(CASHUP.CASHUP_DATE |date)" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <select class="custom-select text-xs" ng-model="Cheque.TRANSFER_TYPE">
+                        <option value="">Select</option>
+                        <option value="2">Bank Transfer</option>
+                        <option value="1">Others</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <input type="text" class="form-control" only-digits ng-model="Cheque.AMOUNT">
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="d-flex">
+                    <input type="text" class="form-control" ng-model="Cheque.NOTE">
+                    <a class="add_dreceived_button" ng-click="AddChequeLine()" click-once ng-show="$last" data-toggle="tooltip" data-html="true" data-original-title="Add More"><i class="fas fa-plus-circle ml-2"></i></a>
+                    <!--<a class="add_dreceived_button" ng-click="DeleteLine(ChequeList, $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>-->
+                    <a class="add_dreceived_button" ng-click="DeleteLine(ChequeList, $index,Cheque)"  data-toggle="tooltip" data-html="true" data-original-title="Remove"><i class="fas fa-minus-circle ml-2" ></i></a>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-right">
+            <h6 class="app-text text-bold">Total: {{ CASHUP.TOTAL_CHEQUE=(ChequeList| filter:{"IS_DELETED":"0"} | total:'AMOUNT')| number:2 }}</h6>
+        </div>
+    </div>
+</div>
+<div class="event-footer animated fadeInUp">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12 d-inline m-2 text-right">
+                <!--<button class="btn btn-w-default btn-sm" ng-click="ShowDiv(GetPreviousStep())" ng-show="CASHUP.STEP_NO!=0"><i class="fa fa-angle-double-left"></i> Previous</button>-->
+                <button class="btn btn-w-default btn-sm" ng-click="PreviousLink()"><i class="fa fa-angle-double-left"></i> Previous</button>
+                <button class="btn btn-wenodo btn-sm" ng-click="NextLink('AccountCustomer')"><i class="fa fa-angle-double-right"></i> Continue</button>
+                <!--<button class="btn btn-wenodo btn-sm" ng-click="UPD_CASHUP_HEADER_SUBMIT()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==0 || CashUp_Main_STATUS_ID==1 || CashUp_Main_STATUS_ID==5)"><i class="fa fa-angle-double-right"></i> Submit</button>
+                <button class="btn btn-wenodo btn-sm" ng-click="APP_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Approve</button>
+                <button class="btn btn-danger btn-sm" ng-click="REJ_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Return</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->

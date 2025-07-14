@@ -1,0 +1,219 @@
+﻿<form>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">EPOS Validations</h5>
+            <a class="float-right" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fas fa-chevron-down" data-toggle="tooltip" data-original-title="Show/Hide Filters"></i>
+            </a>
+        </div>
+        <div class="collapse card-body pb-0" id="collapseExample">
+            <div class="row">
+                <div class="col" ng-init="$parent.dateinputOpenDate()">
+                    <div class="form-group">
+                        <label class="d-block">Select Date:</label>
+                        <input type="text"
+                               class="form-control dateinputOpenDate"
+                               readonly
+                               name="asd"
+                               placeholder="DD\MM\YY"
+                               ng-model="VALIDATION_SEARCH.START_DATE"
+                               ng-value="VALIDATION_SEARCH.START_DATE | date" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label class="d-block">Entity:</label>
+                        <select class="custom-select custom-select-sm"
+                                name="ENTITY_ID"
+                                ng-model="VALIDATION_SEARCH.ENTITY_ID"
+                                ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                                ng-change="ADMIN_GET_BRANCH()">
+                            <option value="">- Please Select Entity-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label class="d-block">Branch:</label>
+                        <select class="custom-select custom-select-sm"
+                                name="BRANCH_ID"
+                                ng-model="VALIDATION_SEARCH.BRANCH_ID"
+                                ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST"
+                                ng-change="GET_INTEGRATION_DETAILS_BY_CUST_ENT_BRNH()">
+                            <option value="">- Please Select Branch-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label class="d-block">EPOS System:</label>
+                        <select class="custom-select custom-select-sm"
+                                name="INTEGRATION_SYSTEM_ID"
+                                ng-model="VALIDATION_SEARCH.INTEGRATION_SYSTEM_ID"
+                                ng-options="EL.INTEGRATION_SYSTEM_ID as EL.INTEGRATION_SYSTEM_NAME for EL in INTEGRATIONSYSTEM_LIST | filter:{INTEGRATION_TYPE_ID: 1} ">
+                            <option value="">- Please Select EPOS System-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group mb-0">
+                        <label class="d-block">Submitted By:</label>
+                        <input type="text"
+                               class="form-control"
+                               autocomplete="off"
+                               maxlength="250"
+                               name="USER_NAME"
+                               placeholder=""
+                               ng-model="VALIDATION_SEARCH.USER_NAME" />
+                    </div>
+                </div>
+                <div class="col">
+                    <label>Show MisMatch:</label>
+                    <span class="bigcheck d-flex">
+                        <label class="bigcheck mb-0" for="Show MisMatch">
+                            <input type="checkbox"
+                                   class="bigcheck"
+                                   id="Show MisMatch"
+                                   ng-model="VALIDATION_SEARCH.SHOW_MISMATCH" />
+                            <span class="bigcheck-target"></span>
+                        </label>
+                    </span>
+
+                    <!--<div class="form-group mb-0">
+                        <label class="d-block">Show MisMatch:</label>
+                        <input type="checkbox"
+                               class="form-control"
+                               ng-model="VALIDATION_SEARCH.SHOW_MISMATCH" />
+                    </div>-->
+                </div>
+                <div class="col-auto">
+                    <label class="d-block">&nbsp;</label>
+                    <button type="button" class="btn btn-wenodo" click-once ng-click="GET_EPOS_SALES_VALIDATION(1)">Search</button>
+                </div>
+                <div class="col-auto">
+                    <label class="d-block">&nbsp;</label>
+                    <button type="button" class="btn btn-w-default" click-once ng-click="RESET_SEARCH()">Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive custom-scrollbar mx-height-validations">
+            <table class="table table-striped thead-fixed compact_table">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th style="width:10%">Entity | Branch</th>
+                        <th style="width:10%">
+                            EPOS System | Submitted By
+                            <span ng-show="SHOWHIDE==false"><i class="fas fa-plus-circle ml-2" ng-click="SET_SHOWHIDE(SHOWHIDE)"></i></span>
+                            <span ng-show="SHOWHIDE==true"><i class="fas fa-minus-circle ml-2" ng-click="SET_SHOWHIDE(SHOWHIDE)"></i></span>
+                        </th>
+                        <th width="7%" class="text-right" ng-show="SHOWHIDE==true">Net Sales</th>
+                        <th width="7%" class="text-right" ng-show="SHOWHIDE==true">Tax</th>
+                        <th width="7%" class="text-right" ng-show="SHOWHIDE==true">Gross Exc. Disc</th>
+                        <th width="7%" class="text-right" ng-show="SHOWHIDE==true">Discounts</th>
+                        <th width="7%" class="text-right" ng-show="SHOWHIDE==true">Tips</th>
+                        <th width="7%" class="text-right" ng-show="SHOWHIDE==true">Service Charge</th>
+                        <th width="7%" class="text-right">Gross+Tips+Srv.chg</th>
+                        <th width="7%" ng-show="false">Sales Status</th>
+                        <th width="7%" class="text-right">Comments</th>
+                        <th width="7%">Xero Status</th>
+                        <th width="7%">Inventory Status</th>
+                        <th width="7%">Staff Status</th>
+                        <!--<th width="10%">Attachments</th>
+                        <th>Comments</th>-->
+                    </tr>
+                </thead>
+
+                <tbody ng-repeat="EPOS in EPOS_SALES_LIST | filter:{MISMATCH:VALIDATION_SEARCH.SHOW_MISMATCH}">
+                    <tr ng-init="init_EPOS_Upload_List(EPOS)" on-finish-render="ngRepeatFinished">
+                        <td>
+                            <span class="d-block">{{EPOS.ENTITY_NAME}}</span>
+                            <span class="font-10 text-secondary">{{EPOS.BRANCH_NAME}}</span>
+                        </td>
+
+                        <td>
+                            <span class="d-block">{{EPOS.SYSTEM_NAME}}  ({{EPOS.ID}})</span>
+                            <span class="font-10 text-secondary">{{EPOS.USER_NAME}}</span>
+                        </td>
+
+                        <td class="text-right" ng-show="SHOWHIDE==true" ng-class="{'bg-danger font-16 font-weight-bolder':EPOS.NET_SALES_MATCH}">
+                            <span class="d-block">{{EPOS.VALIDATION_NET}}</span>
+                            <span ng-show="EPOS.EPOS_NET!=null">{{EPOS.EPOS_NET |number:2}}</span>
+                            <span ng-show="EPOS.EPOS_NET==null">No data</span>
+                        </td>
+                        <td class="text-right" ng-show="SHOWHIDE==true" ng-class="{'bg-danger font-16 font-weight-bolder':EPOS.TAX_MATCH}">
+                            <span class="d-block">{{EPOS.VALIDATION_TAX}}</span>
+                            <span ng-show="EPOS.EPOS_TAX!=null">{{EPOS.EPOS_TAX |number:2}}</span>
+                            <span ng-show="EPOS.EPOS_TAX==null">No data</span>
+                        </td>
+                        <td class="text-right" ng-show="SHOWHIDE==true" ng-class="{'bg-danger font-16 font-weight-bolder':EPOS.GROSS_EXC_DISC_MATCH}">
+                            <span class="d-block">{{EPOS.VALIDATION_GROSS}}</span>
+                            <span ng-show="EPOS.EPOS_GROSS!=null">{{EPOS.EPOS_GROSS |number:2}}</span>
+                            <span ng-show="EPOS.EPOS_GROSS==null">No data</span>
+                        </td>
+                        <td class="text-right" ng-show="SHOWHIDE==true" ng-class="{'bg-danger font-16 font-weight-bolder':EPOS.DISCOUNT_MATCH}">
+                            <span class="d-block">{{EPOS.VALIDATION_DISCOUNT}}</span>
+                            <span ng-show="EPOS.EPOS_DISCOUNT!=null">{{EPOS.EPOS_DISCOUNT |number:2}}</span>
+                            <span ng-show="EPOS.EPOS_DISCOUNT==null">No data</span>
+                        </td>
+                        <td class="text-right" ng-show="SHOWHIDE==true" ng-class="{'bg-danger font-16 font-weight-bolder':EPOS.TIPS_MATCH}">
+                            <span class="d-block">{{EPOS.VALIDATION_TIPS}}</span>
+                            <span ng-show="EPOS.EPOS_TIPS!=null">{{EPOS.EPOS_TIPS |number:2}}</span>
+                            <span ng-show="EPOS.EPOS_TIPS==null">No data</span>
+                        </td>
+                        <td class="text-right" ng-show="SHOWHIDE==true" ng-class="{'bg-danger font-16 font-weight-bolder':EPOS.SERVICE_CHARGE_MATCH}">
+                            <span class="d-block">{{EPOS.VALIDATION_SERVICE_CHARGE}}</span>
+                            <span ng-show="EPOS.EPOS_SERVICE_CHARGE!=null">{{EPOS.EPOS_SERVICE_CHARGE |number:2}}</span>
+                            <span ng-show="EPOS.EPOS_SERVICE_CHARGE==null">No data</span>
+                        </td>
+                        <td class="text-right" ng-class="{'bg-danger font-16 font-weight-bolder':EPOS.TOTAL_MATCH}">
+                            <span class="d-block">{{EPOS.TOTAL_VALIDATION|number:2}}</span>
+                            <span ng-show="EPOS.TOTAL_EPOS!=null">{{EPOS.TOTAL_EPOS|number:2}}</span>
+                            <span ng-show="EPOS.TOTAL_EPOS==null || EPOS.TOTAL_EPOS==undefined"></span>
+                        </td>
+                        <td ng-show="false" ng-class="{'bg-danger font-16 font-weight-bolder':(EPOS.SALES_INTEGRATION_STATUS==0 || EPOS.SALES_INTEGRATION_STATUS==5 ||EPOS.SALES_INTEGRATION_STATUS==1 || EPOS.SALES_INTEGRATION_STATUS==3 || EPOS.SALES_INTEGRATION_STATUS==4)}">
+                            <span ng-show="EPOS.SALES_INTEGRATION_PICKUP_DATE!=null">{{EPOS.SALES_INTEGRATION_PICKUP_DATE | date:'dd/MM/yyyy hh:mm' }}</span>
+                            <span ng-show="EPOS.SALES_INTEGRATION_PICKUP_DATE==null">NA</span>
+                            <br />
+
+                            <i class="fas fa-info-circle txt-primary" data-toggle="tooltip" data-html="true" ng-show="EPOS.SALES_SERVICE_ERROR!=''" data-original-title="{{EPOS.SALES_SERVICE_ERROR}}"></i>
+                        </td>
+                        <!--Added a column for comments-->
+                        <td class="text-right">
+
+                            <span ng-show="EPOS.COMMENTS!=null">{{EPOS.COMMENTS}}</span>
+                            <span ng-show="EPOS.COMMENTS==null">-</span>
+                        </td>
+                        <td ng-class="{'bg-danger font-16 font-weight-bolder':(EPOS.XERO_CUSTOMER_INTEGRATION_ID!=null && (EPOS.XERO_INTEGRATION_STATUS==0 || EPOS.XERO_INTEGRATION_STATUS==5 ||EPOS.XERO_INTEGRATION_STATUS==1 || EPOS.XERO_INTEGRATION_STATUS==3)) || (EPOS.XERO_INTEGRATION_STATUS==2 && EPOS.XERO_LPD_HOURS>24)}">
+                            <span ng-show="EPOS.XERO_LAST_PICKUP_DATE!=null">{{EPOS.XERO_LAST_PICKUP_DATE| date:'dd/MM/yyyy hh:mm' }}</span>
+                            <span ng-show="EPOS.XERO_LAST_PICKUP_DATE==null && EPOS.XERO_CUSTOMER_INTEGRATION_ID==null">NA</span>
+                            <br />
+
+                            <i class="fas fa-info-circle txt-primary" data-toggle="tooltip" data-html="true" ng-show="EPOS.XERO_ERROR_DESCRIPTION!=''" data-original-title="{{EPOS.XERO_ERROR_DESCRIPTION}}"></i>
+                        </td>
+                        <td ng-class="{'bg-danger font-16 font-weight-bolder':(EPOS.INV_CUSTOMER_INTEGRATION_ID!=null && (EPOS.INV_INTEGRATION_STATUS==0 || EPOS.INV_INTEGRATION_STATUS==5 ||EPOS.INV_INTEGRATION_STATUS==1 || EPOS.INV_INTEGRATION_STATUS==3)) || (EPOS.INV_INTEGRATION_STATUS==2 && EPOS.INV_LPD_HOURS>24) }">
+                            <span ng-show="EPOS.INV_LAST_PICKUP_DATE!=null">{{EPOS.INV_LAST_PICKUP_DATE |date:'dd/MM/yyyy hh:mm' }}</span>
+                            <span ng-show="EPOS.INV_LAST_PICKUP_DATE==null && EPOS.INV_CUSTOMER_INTEGRATION_ID==null">NA</span>
+                            <br />
+
+                            <i class="fas fa-info-circle txt-primary" data-toggle="tooltip" data-html="true" ng-show="EPOS.INV_ERROR_DESCRIPTION!=''" data-original-title="{{EPOS.INV_ERROR_DESCRIPTION}}"></i>
+                        </td>
+                        <td ng-class="{'bg-danger font-16 font-weight-bolder':(EPOS.ROTA_CUSTOMER_INTEGRATION_ID!=null && (EPOS.ROTA_INTEGRATION_STATUS==0 || EPOS.ROTA_INTEGRATION_STATUS==5 ||EPOS.ROTA_INTEGRATION_STATUS==1 || EPOS.ROTA_INTEGRATION_STATUS==3)) ||  (EPOS.ROTA_INTEGRATION_STATUS==2 && EPOS.ROTA_LPD_HOURS>24)}">
+                            <span ng-show="EPOS.ROTA_LAST_PICKUP_DATE!=null ">{{EPOS.ROTA_LAST_PICKUP_DATE | date:'dd/MM/yyyy hh:mm' }}</span>
+                            <span ng-show="EPOS.ROTA_LAST_PICKUP_DATE==null && EPOS.ROTA_CUSTOMER_INTEGRATION_ID==null">NA</span>
+                            <br />
+
+                            <i class="fas fa-info-circle txt-primary" data-bs-toggle="tooltip" data-html="true" ng-show="EPOS.ROTA_ERROR_DESCRIPTION!=''" data-bs-title="EPOS.ROTA_ERROR_DESCRIPTION"></i>
+                        </td>
+                        <!--<td>
+                            <div class="col-xxl-12 col-xl-12 col-md-12" ng-repeat="File in EPOS.UploadedFiles">
+                                <a class="truncate" href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="download"><i class="fa fa-download"></i> {{File.ORIGINAL_FILE_NAME| limitTo: 10}}</a>
+                            </div>
+                        </td>-->
+                        <!--<td>{{EPOS.COMMENTS}}</td>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</form>

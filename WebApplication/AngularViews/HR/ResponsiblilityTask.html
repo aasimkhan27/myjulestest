@@ -1,0 +1,32 @@
+﻿<div class="card">
+    <div class="col-md-12">
+        <a href="#!/YourTask" class="text-bold"><i class="fal fa-chevron-left fa-lg mr-2 mb-4"></i> Back to tasks</a>
+    </div>
+    <div class="card-header">
+        <h5 class="heading-text mb-2">Name of Responsibility</h5>
+    </div>
+    <div class="card-body">
+        <div class="col-md-12">
+            <p>
+            {{EMPLOYEE_RESPONSBILITY[RESPONSBILITY_INDEX].RESPONSIBILITY_NAME}}
+            </p>
+        </div>
+        <div class="col-md-12" ng-repeat="EMP in EMPLOYEE_RESPONSBILITY[RESPONSBILITY_INDEX].TASK_LIST">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox"
+                           id="Employee{{$index}}"
+                           value="Employee{{$index}}"
+                           ng-model="EmpSearch_3.EMP_OVERSEAS_EMP">
+                    <label for="Employee" class="custom-control-label app-text">{{EMP.TASK_NAME}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <a ng-click="PREV_VISIBLE(RESPONSBILITY_INDEX)" class="text-bold text-black-50 float-left cursor-pointer" ng-show="RESPONSBILITY_INDEX>0"><i class="fal fa-chevron-left fa-lg mr-2"></i> Previous Responsibility</a>
+        <a ng-click="NEXT_VISIBLE(RESPONSBILITY_INDEX)" class="text-bold text-black-50 float-right cursor-pointer" ng-show="IS_NEXT_VISIBLE && (RESPONSBILITY_INDEX<(EMPLOYEE_RESPONSBILITY.length-1))"> Next Responsibility <i class="fal fa-chevron-right fa-lg ml-2"></i></a>
+    </div>
+
+</div>

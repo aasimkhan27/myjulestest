@@ -1,0 +1,205 @@
+﻿<div class="row align-items-center" style="height:80vh" ng-show="!LINK_EXPIRE_FLAG && PAGE_LOAD==1">
+    <div class="col-xxl-6 col-md-6 col-xl-6 text-center">
+        <h4 class="heading-text d-block mb-2">Link is not valid any more!</h4>
+        <p>Oops this invite URL is not valid anymore.</p>
+        <a href="../Login/Index" type="button" class="btn btn-primary">Take me home</a>
+    </div>
+    <div class="col-xxl-6 col-md-6 col-xl-6 text-center">
+        <a  href="../Login/Index">
+            <img src="../../../E_Content/images/rota-login.png" class="img-fluid" style="max-height:500px" />
+        </a>
+    </div>
+</div>
+<div class="row basic_details" ng-show="LINK_EXPIRE_FLAG && PAGE_LOAD==1">
+    <div class="col-xxl-2 col-md-2 col-xl-2">
+            <div id="sidenav" class="bg-grey">
+                <div class="wrapper">
+                    <div class="menu scrollbar-wrapper mx-height-100">
+                        <ul class="bg-grey">
+                            <li class="active" ng-click="LET_GET_START_Fn(1)"><a href=""><span class="badge badge-primary me-2 active">1</span> <span>Basic Details</span></a></li>
+                            <li ng-click="LET_GET_START_Fn(2)"><a href=""><span class="badge badge-white me-2">2</span> Enter Sites</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="col-xxl-10 col-md-10 col-xl-10 bg-white">
+        <div class="card shadow-none border-0">
+            <div class="card-body">
+                <div class="right-panel container-sm">
+                    <form name="BASIC_FORM" novalidate>
+                        <div class="row">
+                            <h4 class="heading-text">Let’s Get Started</h4>
+
+                            <div class="col-xxl-6 col-xl-6 col-md-6">
+                                <label>First Name <span class="text-danger">*</span></label>
+                                <input type="text"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       name="FIRST_NAME"
+                                       onkeypress="return (event.charCode > 64 && eventcharCode < 91) || (event.charCode > 96  && eventcharCode < 123) || (event.charCode > 38 && event.charCode < 40) || event.charCode ===32"
+                                       required
+                                       ng-model="BasicDetails.FIRST_NAME"
+                                       ng-class="{'error':BASIC_FORM.submitted && BASIC_FORM.FIRST_NAME.$error.required}">
+                            </div>
+
+                            <div class="col-xxl-6 col-xl-6 col-md-6">
+                                <label>Last Name <span class="text-danger">*</span></label>
+                                <input type="text"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       name="LAST_NAME"
+                                       onkeypress="return (event.charCode > 64 && eventcharCode < 91) || (event.charCode > 96  && eventcharCode < 123) || (event.charCode > 38 && event.charCode < 40) || event.charCode ===32"
+                                       required
+                                       ng-model="BasicDetails.LAST_NAME"
+                                       ng-class="{'error':BASIC_FORM.submitted && BASIC_FORM.LAST_NAME.$error.required}">
+                            </div>
+
+                            <div class="col-xxl-6 col-xl-6 col-md-6">
+                                <label>Email <span class="text-danger">*</span></label>
+                                <input type="email"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+                                       id="EMAIL"
+                                       name="EMAIL"
+                                       autocomplete="off"
+                                       required
+                                       ng-model="BasicDetails.EMAIL"
+                                       ng-class="{'error':BASIC_FORM.submitted && BASIC_FORM.EMAIL.$error.required}">
+                                <small class="text-danger" ng-show="BASIC_FORM.EMAIL.$dirty && BASIC_FORM.EMAIL.$error.pattern">Please Enter Valid Email</small>
+                            </div>
+
+                            <div class="col-xxl-6 col-xl-6 col-md-6">
+                                <label class="d-block">Phone <span class="text-danger">*</span></label>
+                                <span class="international-num w-100">
+                                    <input type="hidden" name="phone_number[full]">
+                                    <span class="row gx-0">
+                                        <span class="col-xxl-2 col-xl-2 col-md-2 ipad_int_columns">
+                                            <input id="country"
+                                                   type="tel"
+                                                   name="PHONE"
+                                                   only-numbers
+                                                   maxlength="15"
+                                                   class="flag_input"
+                                                   ng-model="BasicDetails.PHONE">
+                                        </span>
+                                        <span class="col-xxl-10 col-xl-10 col-md-10 ipad_int_numbers">
+                                            <input type="tel"
+                                                   name="PHONE_TEXT"
+                                                   required
+                                                   only-numbers
+                                                   maxlength="15"
+                                                   placeholder="{{PLACE_HOLDER}}"
+                                                   ng-model="BasicDetails.PHONE_TEXT"
+                                                   class="int_numbers" ng-pattern="/(^[1-9]\d{0,15}$)/"
+                                                   ng-class="{'error':BASIC_FORM.submitted && BASIC_FORM.PHONE_TEXT.$error.required}">
+                                        </span>
+                                        <span class="f-11 text-danger" ng-show="BASIC_FORM.PHONE_TEXT.$dirty && BASIC_FORM.PHONE_TEXT.$error.pattern">
+                                            Please enter valid number should not be start a number 0.
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+
+                            <div class="col-xxl-12 col-xl-12 col-md-12" ng-init="BasicDetails.SHOW_PWD = false">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <label>
+                                        Password <span class="text-danger">*</span>  <span class="tooltipx mt-2">
+                                            <a class="ml-3">
+                                                <i class="fa fa-question-circle c-pointer" aria-hidden="true"></i>&nbsp;
+                                            </a>
+                                            <span class="tooltiptextx" style="z-index:1">
+                                                <span class="col-md-12">
+                                                    <b>Password Policy</b>
+                                                    <br>The password must have a minimum length of 8 characters and include:
+                                                    <ul>
+                                                        <li>at least one UPPERCASE (A-Z) character, and</li>
+                                                        <li>at least one lowercase (a-z) character, and</li>
+                                                        <li>at least one Special character (!, @, #, $, %, ^, &amp;, *, _), and</li>
+                                                        <li>at least one digit (0,1,2,3,4,5,6,7,8,9)</li>
+                                                    </ul>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                    <a class="txt-primary c-pointer" ng-show="false">Generate Password</a>
+                                </div>
+                                <div ng-class="{'placeholder_eye_basic':BasicDetails.SHOW_PWD == false,'placeholder_eye_slash_basic':BasicDetails.SHOW_PWD == true}" ng-click="BasicDetails.SHOW_PWD = !BasicDetails.SHOW_PWD"></div>
+                                <input type="{{BasicDetails.SHOW_PWD == true ? 'text' : 'password'}}"
+                                       id="PASSWORD"
+                                       required
+                                       autocomplete="off"
+                                       ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*[^a-zA-Z])/"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       ng-minlength="8"
+                                       ng-maxlength="20"
+                                       ng-model="BasicDetails.PASSWORD"
+                                       name="PASSWORD"
+                                       ng-class="{'error':BASIC_FORM.submitted && BASIC_FORM.PASSWORD.$invalid}"
+                                       class="form-control">
+
+                            </div>
+                            <div class="col-xxl-12 col-xl-12 col-md-12" ng-init="BasicDetails.SHOW_CNF_PWD = false">
+                                <div class=" d-flex justify-content-between">
+                                    <label>
+                                        Confirm Password <span class="text-danger">*</span>  <span class="tooltipx mt-2">
+                                            <a class="ml-3">
+                                                <i class="fa fa-question-circle font16px cursor-pointer" aria-hidden="true"></i>&nbsp;
+                                            </a>
+                                            <span class="tooltiptextx" style="z-index:1">
+                                                <span class="col-md-12">
+                                                    <b>Password Policy</b>
+                                                    <br>The password must have a minimum length of 8 characters and include:
+                                                    <ul>
+                                                        <li>at least one UPPERCASE (A-Z) character, and</li>
+                                                        <li>at least one lowercase (a-z) character, and</li>
+                                                        <li>at least one Special character (!, @, #, $, %, ^, &amp;, *, _), and</li>
+                                                        <li>at least one digit (0,1,2,3,4,5,6,7,8,9)</li>
+                                                    </ul>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div ng-class="{'placeholder_eye_basic':BasicDetails.SHOW_CNF_PWD == false,'placeholder_eye_slash_basic':BasicDetails.SHOW_CNF_PWD == true}" ng-click="BasicDetails.SHOW_CNF_PWD = !BasicDetails.SHOW_CNF_PWD"></div>
+                                <input type="{{BasicDetails.SHOW_CNF_PWD == true ? 'text' : 'password'}}"
+                                       id="ConfirmPassword"
+                                       required
+                                       autocomplete="off"
+                                       name="ConfirmPassword"
+                                       placeholder="Confirm Password"
+                                       ng-pattern="BasicDetails.PASSWORD"
+                                       ng-model="BasicDetails.ConfirmPassword"
+                                       ng-class="{'error':BASIC_FORM.submitted && BASIC_FORM.ConfirmPassword.$invalid}"
+                                       class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <div data-ng-show="BASIC_FORM.submitted && BASIC_FORM.$invalid" class="badge badge-light-danger w-100 txt-normal text-start p-3" style="line-height:24px;">
+                            <span class="d-block" ng-show="!BASIC_FORM.PASSWORD.$error.required && (BASIC_FORM.PASSWORD.$error.minlength || BASIC_FORM.PASSWORD.$error.maxlength) && BASIC_FORM.PASSWORD.$dirty">
+                                <i class="fa-light fa-exclamation-triangle"></i> Passwords must be between 8 and 20 characters.
+                            </span>
+                            <span class="d-block" ng-show="!BASIC_FORM.PASSWORD.$error.required && !BASIC_FORM.PASSWORD.$error.minlength && !BASIC_FORM.PASSWORD.$error.maxlength && BASIC_FORM.PASSWORD.$error.pattern && BASIC_FORM.PASSWORD.$dirty">
+                                <i class="fa-light fa-exclamation-triangle"></i> Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)
+                            </span>
+                            <span ng-show="!BASIC_FORM.ConfirmPassword.$error.required && BASIC_FORM.ConfirmPassword.$invalid">
+                                <i class="fa-light fa-exclamation-triangle"></i> Passwords do not match.
+                            </span>
+                            <span class="d-block" data-ng-show="BASIC_FORM.submitted && BASIC_FORM.PASSWORD.$error.required">
+                                <i class="fa-light fa-exclamation-triangle"></i> Please enter password.
+                            </span>
+                            <span class="d-block" data-ng-show="BASIC_FORM.submitted && BASIC_FORM.ConfirmPassword.$error.required">
+                                <i class="fa-light fa-exclamation-triangle"></i>  Please enter Confirm Password.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="button" class="btn btn-primary" ng-click="INS_UPD_USER_DATA_FOR_BASIC_DETAILS()">Next</button>
+                </div>
+
+            </div>
+            
+        </div>
+
+    </div>
+</div>

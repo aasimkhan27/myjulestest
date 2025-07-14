@@ -1,0 +1,442 @@
+﻿<style>
+    @keyframes skeletonAnimate {
+        0% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .skeleton-content {
+        opacity: 0;
+        animation-name: skeletonAnimate;
+        _animation-duration: 1000ms;
+        animation-direction: forward;
+        animation-delay: 0;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-timing-function: ease-out;
+    }
+
+    @keyframes bgAnimate {
+        0% {
+            background-position: 50% 0;
+        }
+
+        100% {
+            background-position: -150% 0;
+        }
+    }
+
+    .skeleton {
+        height: 10px;
+        width: 200px;
+        background-image: linear-gradient( to right, hsla(210, 2%, 54%, 20%) 0%, hsla(210, 4%, 89%, 20%) 10%, hsla(210, 2%, 54%, 20%) 40%, hsla(210, 2%, 54%, 20%) 100%);
+        background-repeat: repeat-x;
+        background-size: 200% 100%;
+        box-shadow: 0 4px 6px -1px hsla(0, 0%, 0%, 0.1), 0 2px 4px -2px hsla(0, 0%, 0%, 0.1);
+        animation: bgAnimate 2s linear infinite;
+    }
+</style>
+<div class="card">
+    <div class="card-header">
+        <div class="row gx-2">
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <h5 class="mt-3">Bulk Management of Shifts ({{ApprovedShiftSearch.START_DATE | date }})</h5>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2 ms-auto">
+                <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                    <input type="hidden"
+                           name="BRANCH_ID"
+                           ng-model="ApprovedShiftSearch.BRANCH_ID" />
+                    <ul class="nav nav-pills min-w-220 mb-2">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate-site">{{ApprovedShiftSearch.CUSTOM_BRANCH_NAME}}</span>
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto"
+                                style="min-width:100%">
+                                <li class="DontHideOnClick"
+                                    ng-repeat="_branch in SCHEDULE_BRANCH_LIST">
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                               id="Site-{{$index}}"
+                                               type="checkbox"
+                                               ng-show="false"
+                                               ng-change="SELECTED_SCHEDULE_BRANCH_Fn(_branch)"
+                                               ng-model="_branch.IS_SELECTED"
+                                               prevent-double-click="2000"
+                                               checked="">
+                                        <label class="form-check-label truncate text-nowrap" for="Site-{{$index}}">{{_branch.BRANCH_NAME}}</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2 ">
+                <ul class="nav nav-pills mb-0">
+                    <li class="dropdown w-100">
+                        <a class="cursor-pointer" data-toggle="dropdown">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate_dropdown">
+                                    {{ApprovedShiftSearch.CUSTOM_APPROVE_NAME}}
+                                </span>
+                            </span>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                            <li class=""
+                                ng-show="AbsenceSearch.CUSTOM_ABSENCE_TYPE!=AbsenceSearch.DD_DEFAULT_TEXT"
+                                ng-click="SELECTED_APPROVE_Fn('')">{{ApprovedShiftSearch.DD_DEFAULT_TEXT}}</li>
+                            <li ng-repeat="_approve in APPROVAL_LIST"
+                                ng-click="SELECTED_APPROVE_Fn(_approve)">
+                                <a class="txt-dark d-block text-nowrap">{{_approve.NAME}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto" ng-show="false">
+                <button type="button" class="btn btn-primary" ng-click="HistoryBack()">Approve All</button>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <div class="date-column">
+                    <input type="text"
+                           class="Managerdateinput mb-0"
+                           placeholder="Select Date"
+                           name="BUSINESS_DATE"
+                           ng-change="APPROVE_EMP_ROTA_Fn()"
+                           ng-model="ApprovedShiftSearch.START_DATE" />
+                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button type="button" class="btn btn-primary" ng-click="HistoryBack()">Back</button>
+            </div>
+        </div>
+    </div>
+    <div class="skeleton-content" ng-if="PAGE_LOAD==0">
+        <div class="table-responsive" style="min-height: 200px;">
+            <table>
+                <thead>
+                    <tr style="height:35px">
+                        <th width="16%"><div class="skeleton" style="width:120px;"></div></th>
+                        <th width="10%"><div class="skeleton" style="width:130px;"></div></th>
+                        <th><div class="skeleton" style="width:130px;"></div></th>
+                        <th><div class="skeleton" style="width:120px;"></div></th>
+                        <th><div class="skeleton" style="width:120px;"></div></th>
+                        <th><div class="skeleton" style="width:120px;"></div></th>
+                        <th><div class="skeleton" style="width:120px;"></div></th>
+                        <th><div class="skeleton" style="width:120px;"></div></th>
+                        <th><div class="skeleton" style="width:20px;"></div></th>
+                        <th><div class="skeleton" style="width:30px;"></div></th>
+                        <th><div class="skeleton" style="width:100px;"></div></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="x in [].constructor(CONSTRUCTOR) track by $index">
+                    <tr ng-show="$first && false"></tr>
+                    <tr style="height:50px">
+                        <td><div class="skeleton" style="width:120px;"></div></td>
+                        <td><div class="skeleton" style="width:120px;"></div></td>
+                        <td><div class="skeleton" style="width:20px;"></div></td>
+                        <td><div class="skeleton" style="width:120px;"></div></td>
+                        <td><div class="skeleton" style="width:20px;"></div></td>
+                        <td><div class="skeleton" style="width:120px;"></div></td>
+                        <td><div class="skeleton" style="width:150px;"></div></td>
+                        <td><div class="skeleton" style="width:150px;"></div></td>
+                        <td><div class="skeleton" style="width:20px;"></div></td>
+                        <td><div class="skeleton" style="width:20px;"></div></td>
+                        <td><div class="skeleton" style="width:100px;"></div></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="EMPLOYEE_SHIFTS_LIST.length == 0 && PAGE_LOAD==1">
+            <div class="no-record text-center">{{LOAD_FETCH_TEXT}}</div>
+        </div>
+        <div class="table-responsive bulk_management_height" style="min-height: 200px;" ng-show="EMPLOYEE_SHIFTS_LIST.length > 0 && PAGE_LOAD==1">
+            <table class="mb-0">
+                <thead class="thead_fixed">
+                    <tr>
+                        <th>Employees</th>
+                        <th>Branch</th>
+                        <th>Schedule Start-End</th>
+                        <th>Schedule Paid Break (mins)</th>
+                        <th>Schedule Unpaid Break (mins)</th>
+                        <th>Actual Start-End</th>
+                        <th>Actual Break (mins)</th>
+                        <th>Choose An Option</th>
+                        <th>Approve Start</th>
+                        <th>Approve End</th>
+                        <th>Approve Break (mins)</th>
+                        <th class="text-center">Add Break</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="_emp_shift in EMPLOYEE_SHIFTS_LIST | filter:excludeApproved"
+                       ng-init="nginit_approval(_emp_shift)">
+                    <tr ng-show="_emp_shift.GROUP_BY_ID>0">
+                        <td class="heading-primary-rota bg-light-gray exception_border">
+                            <i ng-class="{'fa-lightbulb-exclamation text-secondary':_emp_shift.GROUP_BY_NAME=='No Exception', 'fa fa-eye-slash txt-danger':_emp_shift.GROUP_BY_NAME=='No Show', 'fa fa-triangle-exclamation txt-orange':_emp_shift.GROUP_BY_NAME=='Clock In &amp; Out Variance'}" class="fa fa-eye-slash txt-danger"></i>
+                            {{_emp_shift.GROUP_BY_NAME}} ({{(EMPLOYEE_SHIFTS_LIST | filter:{'CHILD_GROUP_ID':_emp_shift.GROUP_BY_ID}:true).length }})
+                        </td>
+                        <td colspan="11"></td>
+                    </tr>
+                    <tr ng-show="_emp_shift.SCHDL_SHIFT_ID>0">
+                        <td class="text-nowrap">
+                            <span ng-show="false">
+                                {{_emp_shift.INDEX=$index}}
+                            </span>
+                            <label class="form-check-label mb-0" for="Malik10">
+                                <span ng-show="_emp_shift.PROFILE_PIC_PATH==null || _emp_shift.PROFILE_PIC_PATH==''" class="text_avatar">{{_emp_shift.SHORT_NAME}}</span>
+                                <img ng-show="_emp_shift.PROFILE_PIC_PATH!=null && _emp_shift.PROFILE_PIC_PATH!=''" src="{{_emp_shift.PROFILE_PIC_PATH}}" width="24" height="24" class="rounded-circle">
+                            </label>
+                            {{_emp_shift.EMPLOYEE_NAME}}
+                        </td>
+                        <td><span class="text-nowrap">{{_emp_shift.BRANCH_NAME}}</span></td>
+                        <td><span class="text-nowrap">{{_emp_shift.SCHEDULED_START | toDate | date : TIME_FORMAT}}-{{_emp_shift.SCHEDULED_END | toDate | date : TIME_FORMAT}}</span></td>
+                        <td><span class="text-nowrap">{{_emp_shift.SCHEDULED_PAID_BREAK_MINUTES}}</span></td>
+                        <td><span class="text-nowrap">{{_emp_shift.SCHEDULED_UNPAID_BREAK_MINUTES}}</span></td>
+                        <td><span class="text-nowrap">{{_emp_shift.CLOCK_IN | date :TIME_FORMAT}}-{{_emp_shift.CLOCK_OUT | date : TIME_FORMAT}}</span></td>
+                        <td>
+                            <span class="text-nowrap">{{_emp_shift.ACTUAL_BREAK_DURATION_MINUTES}}</span>
+                        </td>
+                        <td>
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" ng-class="{'disabled': _emp_shift.STATUS_ID==93}">
+                                        <span class="select-label" id="select_label" style="min-width:125px; z-index:1">
+                                            {{_emp_shift.TIME_TYPE}}
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications"
+                                        class="dropdown-menu  scrollbar-wrapper w-auto" style="min-width:100%">
+                                        <li ng-repeat="timetype in CHOOSE_APPROVAL_TIME"
+                                            ng-click="CHOOSE_APPROVAL_Fn(timetype,_emp_shift)">{{timetype.NAME}}</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <div class="date-column">
+                                <input class="form-control py-2 mb-0" style="min-width:125px"
+                                       placeholder="Select time"
+                                       format="HH:mm"
+                                       name="APPROVE_START{{$index}}"
+                                       moment-picker="APPROVE_START"
+                                       autocomplete="off"
+                                       show-header="0"
+                                       ng-disabled="_emp_shift.STATUS_ID==93"
+                                       ng-change="APPROVE_START_Fn(_emp_shift)"
+                                       ng-pattern="/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/"
+                                       readonly
+                                       ng-model="_emp_shift.APPROVED_CLOCK_IN"
+                                       ng-model-options="{ updateOn: 'blur'}"
+                                       required
+                                       only-digits
+                                       ng-class="{'error': _emp_shift.submitted && (_emp_shift.APPROVED_CLOCK_IN==null || _emp_shift.APPROVED_CLOCK_IN=='')}" />
+                                <i class="date-icon fa-light fa-clock" aria-hidden="true"></i>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="date-column">
+                                <input class="form-control py-2 mb-0" style="min-width:125px"
+                                       placeholder="Select time"
+                                       format="HH:mm"
+                                       name="APPROVE_END{{$index}}"
+                                       moment-picker="APPROVE_END"
+                                       autocomplete="off"
+                                       show-header="0"
+                                       ng-disabled="_emp_shift.STATUS_ID==93"
+                                       ng-pattern="/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/"
+                                       readonly
+                                       ng-model="_emp_shift.APPROVED_CLOCK_OUT"
+                                       ng-model-options="{ updateOn: 'blur'}"
+                                       required
+                                       only-digits
+                                       ng-class="{'error': _emp_shift.submitted && (_emp_shift.APPROVED_CLOCK_OUT==null || _emp_shift.APPROVED_CLOCK_OUT=='')}" />
+                                <i class="date-icon fa-light fa-clock" aria-hidden="true"></i>
+                            </div>
+                        </td>
+                        <td>
+                            {{_emp_shift.APPROVED_BREAK_DURATION_EXCLUDING_PAID_BREAK_MINUTES}}
+                        </td>
+                        <td class="text-center">
+                            <button type="button"
+                                    ng-click="POP_ADD_NEW_BREAK_IN_Fn(null,null,false,0,_emp_shift,0,$index)"
+                                    class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-original-title="Add Breaks">
+                                <i class="" ng-class="{'fa fa-minus': _emp_shift.BREAK_SHOW_HIDE==true,'fa fa-plus': _emp_shift.BREAK_SHOW_HIDE!=true}"></i>
+                            </button>
+                        </td>
+                        <td class="text-center">
+                            <button type="button"
+                                    ng-class="{'btn-danger': _emp_shift.STATUS_ID==93,'btn-light-success': _emp_shift.STATUS_ID!=93}"
+                                    ng-click="HRM_SCHDL_APPROVE_BY_SHIFT_ID(_emp_shift)"
+                                    class="btn btn-sm text-nowrap">
+                                {{_emp_shift.STATUS_ID==93?'Revert':'Approve'}}
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="_break in _emp_shift.BREAK_IN_LIST | filter:{'IS_DISCARDED':false}" ng-init="InitializeBreaks(_break,_emp_shift)" ng-show="_emp_shift.BREAK_SHOW_HIDE">
+                        <td>
+                            <div class="date-column">
+                                <input class="form-control py-2 mb-0"
+                                       placeholder="Select time"
+                                       moment-picker="_break.BREAK_IN"
+                                       format="HH:mm"
+                                       change="UPDATE_TOTAL_DURATION_Fn(_break.BREAK_IN,_break.BREAK_OUT, 4, _break)"
+                                       name="BREAK_IN"
+                                       show-header="0"
+                                       required
+                                       readonly
+                                       autocomplete="off"
+                                       ng-pattern="/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/"
+                                       ng-model="_break.BREAK_IN"
+                                       ng-disabled="_emp_shift.STATUS_ID==93"
+                                       ng-model-options="{ updateOn: 'blur' }" />
+                                <i class="date-icon fa-light fa-clock" aria-hidden="true"></i>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="date-column">
+                                <input class="form-control py-2 mb-0"
+                                       moment-picker="_break.BREAK_OUT"
+                                       format="HH:mm"
+                                       change="UPDATE_TOTAL_DURATION_Fn(_break.BREAK_IN,_break.BREAK_OUT, 4, _break)"
+                                       placeholder="Select time"
+                                       name="BREAK_OUT"
+                                       required
+                                       readonly
+                                       show-header="0"
+                                       minutes-step="5"
+                                       ng-disabled="_emp_shift.STATUS_ID==93"
+                                       autocomplete="off"
+                                       ng-pattern="/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/"
+                                       ng-model="_break.BREAK_OUT"
+                                       ng-model-options="{ updateOn: 'blur' }" />
+                                <i class="date-icon fa-light fa-clock" aria-hidden="true"></i>
+                            </div>
+                        </td>
+                        <td>{{_break.DURATION.toFixed(0)}}</td>
+                        <td class="text-center" ng-show="ENABLE_APPROVE_BUTTON"
+                            ng-click="REMOVE_BREAK_IN_Fn(_break)"
+                            ng-disabled="_emp_shift.STATUS_ID==93">
+                            <i class="fa-light fa-xmark txt-danger c-pointer" data-bs-toggle="tooltip" data-bs-title="Discard"></i>
+                        </td>
+                        <td colspan="7"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-xs btn-light" ng-show="$last" ng-click="ADD_NEW_BREAK_IN_Fn(null,null,false,0,_emp_shift,1)" data-bs-toggle="tooltip" data-bs-original-title="Add More"><i class="fa fa-plus"></i></button>
+                            <button type="button" class="btn btn-xs btn-outline-danger" ng-click="DISCARD_Fn(_emp_shift,_break)">
+                                <i class="fa-light fa-xmark" data-bs-toggle="tooltip" data-bs-title="Discard"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="AddBreak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title modal_custom_color">{{SELECTED_EMPLOYEE.EMPLOYEE_NAME}} shift on <span class="txt-primary">{{ApprovedShiftSearch.START_DATE | date : format : mediumDate}}</span></h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="RESET_Fn()"></button>
+            </div>
+            <div class="modal-body scrollbar-wrapper">
+                <form name="ActualForm" novalidate autocomplete="off">
+                    <h6 class="span-head break_column">Breaks</h6>
+                    <div class="table-responsive">
+                        <table class="mb-0">
+                            <thead>
+                                <tr>
+                                    <th>In</th>
+                                    <th>Out</th>
+                                    <th>Minutes</th>
+                                    <th class="text-center" ng-show="EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].STATUS_ID!=93">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="_break in EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].BREAK_IN_LIST | filter:{'IS_DISCARDED':false}"
+                                    ng-init="InitializeBreaks(_break,EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX])">
+                                    <td>
+                                        <div class="date-column">
+                                            <input class="form-control py-2 mb-0"
+                                                   placeholder="Select time"
+                                                   moment-picker="_break.BREAK_IN"
+                                                   format="HH:mm"
+                                                   change="UPDATE_TOTAL_DURATION_Fn(_break.BREAK_IN,_break.BREAK_OUT, 4, _break)"
+                                                   name="BREAK_IN"
+                                                   show-header="0"
+                                                   required
+                                                   readonly
+                                                   autocomplete="off"
+                                                   ng-pattern="/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/"
+                                                   ng-model="_break.BREAK_IN"
+                                                   ng-disabled="_emp_shift.STATUS_ID==93"
+                                                   ng-model-options="{ updateOn: 'blur' }" />
+                                            <i class="date-icon fa-light fa-clock" aria-hidden="true"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="date-column">
+                                            <input class="form-control py-2 mb-0"
+                                                   moment-picker="_break.BREAK_OUT"
+                                                   format="HH:mm"
+                                                   change="UPDATE_TOTAL_DURATION_Fn(_break.BREAK_IN,_break.BREAK_OUT, 4, _break)"
+                                                   placeholder="Select time"
+                                                   name="BREAK_OUT"
+                                                   required
+                                                   readonly
+                                                   show-header="0"
+                                                   minutes-step="5"
+                                                   ng-disabled="_emp_shift.STATUS_ID==93"
+                                                   autocomplete="off"
+                                                   ng-pattern="/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/"
+                                                   ng-model="_break.BREAK_OUT"
+                                                   ng-model-options="{ updateOn: 'blur' }" />
+                                            <i class="date-icon fa-light fa-clock" aria-hidden="true"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{_break.DURATION.toFixed(0)}}
+
+                                    </td>
+                                    <td class="text-center" ng-show="EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].STATUS_ID!=93">
+                                        <i ng-show="EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].STATUS_ID!=93" ng-click="REMOVE_BREAK_IN_Fn(_break)" class="fa-light fa-xmark txt-danger c-pointer" data-bs-toggle="tooltip" data-bs-title="Discard"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" ng-show="EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].STATUS_ID!=93">
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline w-100"
+                                                ng-click="ADD_NEW_BREAK_IN_Fn()">
+                                            Add New
+                                        </button>
+                                        <span ng-show="false">
+                                            {{(EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].BREAK_IN_LIST | filter:{'IS_DISCARDED':false} | total:'DURATION').toFixed(0)>0?EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].APPROVED_BREAK_DURATION_EXCLUDING_PAID_BREAK_MINUTES=(EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].BREAK_IN_LIST | filter:{'IS_DISCARDED':false} | total:'DURATION').toFixed(0): EMPLOYEE_SHIFTS_LIST[ACTIVE_INDEX].APPROVED_BREAK_DURATION_EXCLUDING_PAID_BREAK_MINUTES}}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

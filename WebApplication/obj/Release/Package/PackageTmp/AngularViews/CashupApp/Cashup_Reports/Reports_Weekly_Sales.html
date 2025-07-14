@@ -1,0 +1,643 @@
+﻿<div class="container-fluid"  ng-show="CASHUP_REPORTS_PRIVILEGE==true">
+    <div class="my-2 py-2 pb-3 scrollbar-wrapper d-flex">
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Daily_Cashup">Daily Cashup</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Weekly_Cashup">Weekly Cashup</a>
+        <a class="btn-tabs active" href="#!/CashUpApp_Reports_Weekly_Sales">Weekly Sales</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Cash_Banking">Cash_Banking</a>
+        <a class="btn-tabs " href="#!/CashUpApp_Reports_Account_Customer">Account Customer</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Cashup_Deposit">Cashup Deposit</a>
+        <a class="btn-tabs" href="#!/Reports_Petty_Cash">Petty Cash</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Voucher">Reports Voucher</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Comps">Comps</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Voids">Voids</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Float">Float</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Total_Cash">Total Cash</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Comments">Comments</a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="row g-1 resCashupHeader">
+                <div class="col-xxl-1 col-xl-1 col-md-1">
+                    <ul class="nav nav-pills mb-0">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    Site
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications"
+                                class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto"
+                                style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Site 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Site 2
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Site 3
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Site 4
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Site 5
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-xxl-1 col-xl-1 col-md-1">
+                    <ul class="nav nav-pills mb-0">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    Area
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications"
+                                class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto"
+                                style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Area 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Area 2
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Area 3
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Area 4
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Area 5
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto">
+                    <div class="col-xxl-auto col-xl-auto col-md-auto">
+                        <div class="date-column">
+                            <input type="text"
+                                   class="dateinputddmmyy mb-0"
+                                   placeholder="DD/MM/YY"
+                                   name=""
+                                   ng-model="DATE_FILTER"
+                                   required />
+                            <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                    <div class="media form-control justify-content-between mb-0">
+                        <label class="col-form-label m-r-10" for="Credit">Net</label>
+                        <div class="media-body switch-sm">
+                            <label class="switch">
+                                <input type="checkbox" id="Week_Day_View"><span class="switch-state bg-primary"></span>
+                            </label>
+                        </div>
+                        <label class="col-form-label m-l-10" for="Recieved">Gross</label>
+                    </div>
+
+
+                </div>
+                <div class="col-xxl-auto col-xl-auto col-md-auto ">
+                    <button type="button" class="btn btn-primary">
+                        <i class="fa-thin fa-print"></i>
+                        Print
+                    </button>
+                </div>
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto ">
+                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+                    <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                        <li><a class="dropdown-item d-block">XLS</a></li>
+                        <li><a class="dropdown-item">CSV</a></li>
+                        <li><a class="dropdown-item">PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive resCashupTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="text-end "></th>
+                            <th class="text-end">M</th>
+                            <th class="text-end ">T</th>
+                            <th class="text-end ">W</th>
+                            <th class="text-end ">T</th>
+                            <th class="text-end ">F</th>
+                            <th class="text-end ">S</th>
+                            <th class="text-end ">S</th>
+                            <th class="text-end  f-w-700">Total</th>
+                            <th class="text-end">MTD</th>
+                            <th class="text-end">YTD</th>
+                            <th class="text-end">LY</th>
+                            <th class="text-end">Budget</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="6" class="vertical_text_container">
+                                <span class="vertical_text">
+                                    Breakfast
+                                </span>
+                            </td>
+                            <td class="text-nowrap">Food</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Drinks</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Others</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap text-danger"><i class="fa-regular fa-arrow-down me-2"></i> 1.2%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Covers</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Spend</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr class="bg-gray">
+
+                            <td class="text-nowrap f-w-700">Total</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td rowspan="6" class="vertical_text_container">
+                                <span class="vertical_text">
+                                    Lunch
+                                </span>
+                            </td>
+                            <td class="text-nowrap">Food</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Drinks</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Others</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap text-danger"><i class="fa-regular fa-arrow-down me-2"></i> 1.2%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Covers</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap text-danger"><i class="fa-regular fa-arrow-down me-2"></i> 1.2%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Spend</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr class="bg-gray">
+
+                            <td class="text-nowrap f-w-700">Total</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td rowspan="6" class="vertical_text_container">
+                                <span class="vertical_text">
+                                    Dinner
+                                </span>
+                            </td>
+                            <td class="text-nowrap">Food</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap text-danger"><i class="fa-regular fa-arrow-down me-2"></i> 1.2%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Drinks</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Others</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Covers</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap text-danger"><i class="fa-regular fa-arrow-down me-2"></i> 1.2%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Spend</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr class="bg-gray">
+
+                            <td class="text-nowrap f-w-700">Total</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+
+                        <tr class="bg-gray">
+                            <td rowspan="3" class="bg-white border-start-0"></td>
+                            <td class="text-nowrap f-w-700">Total Sales</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                        </tr>
+
+                        <tr class="bg-gray">
+                            <td class="text-nowrap f-w-700">Total Covers</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                        </tr>
+
+                        <tr class="bg-gray">
+                            <td class="text-nowrap f-w-700">Spend</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                        </tr>
+
+
+                        <tr>
+                            <td rowspan="5" class="vertical_text_container" style="width:15px">
+                                <span class="vertical_text text-nowrap">
+                                    Sales by Payment Type
+                                </span>
+                            </td>
+                            <td class="text-nowrap">Cash</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Card</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Amex</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-nowrap">Others</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+
+                        </tr>
+
+
+                        <tr class="bg-gray">
+                            <td class="text-nowrap f-w-700">Total</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap"> £ 50</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                            <td class="text-end text-nowrap txt-green"><i class="fa-regular fa-arrow-up me-2"></i> 2.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_REPORTS_PRIVILEGE==false">
+    <div class="no-record text-center">
+        <span class="d-block text-center">You do not have access to Reports. Please contact Admin for access.</span>
+    </div>
+</div>

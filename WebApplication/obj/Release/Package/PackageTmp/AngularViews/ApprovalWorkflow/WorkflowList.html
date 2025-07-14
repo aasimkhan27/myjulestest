@@ -1,0 +1,57 @@
+﻿<div class="card-header border-0">
+    <h5 class="card-title  pl-0">Approval Workflows</h5>
+    <div class="card-tools mt-2">
+        <ul class="nav nav-pills ml-auto">
+            <li class="nav-item d-flex mr-4 mt-1">
+                <span class="mr-2">Showing</span>
+                <div class="form-group mb-0" ng-show="RECORDS.length>0">
+                    <select class="custom-form-control filter-dropdown shadow-none height-25 select2bs4" 
+                            ng-options="RD.ID as RD.NAME for RD in RECORDS" ng-model="SHOWING_PAGE_SIZE" ng-change="GET_APP_CHAIN_HEADER()"></select>
+                </div>
+                <span class="ml-1">of {{RESULT_COUNT}}</span>
+            </li>
+            <li class="nav-item mx-4">
+                <button type="button" class="btn btn-filter" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH();OptionTab()">
+                    Filter Options
+                    <i class="far fa-chevron-down" ng-show="!FILTER_SWTICH_ON_OFF"></i> <i class="far fa-times" ng-show="FILTER_SWTICH_ON_OFF"></i>
+                </button>
+            </li>
+            <li class="nav-item ml-2">
+                <a href="#!/WFS" class="btn btn-prex  mr-2"><i class="fal fa-plus"></i> Create Workflow</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="table-responsive custom-scrollbar height-auto">
+    <table id="example1" class="table table-hover text-xs" ng-show="WORKFLOW_LIST.length>0">
+        <thead>
+            <tr>
+                <!--<th width="2%">Line Count</th>-->
+                <th class="text-nowrap">Type</th>
+                <th class="text-nowrap">Name </th>
+                <th class="text-nowrap">Location</th>
+                <th class="text-nowrap">Sequence No.</th>
+                <th class="text-nowrap">Default Approver</th>
+                <th class="text-nowrap">Created Date</th>
+                <th class="text-nowrap">Status</th>
+            </tr>
+        </thead>       
+        <tbody ng-repeat="WORKFLOW in WORKFLOW_LIST" on-finish-render="ngRepeatFinished" >
+            <tr>
+                <td>{{WORKFLOW.CHAIN_TYPE}}</td>                
+                <td>{{WORKFLOW.NAME}}</td>
+                <td>{{WORKFLOW.LOCATION_NAME}}</td>
+                <td>{{WORKFLOW.SEQ_NO}}</td>
+                <td>{{WORKFLOW.USER_NAME}}<br />{{WORKFLOW.EMAIL}}</td>
+                <td>{{WORKFLOW.CREATED_DATE | date}}</td>     
+                <td>{{WORKFLOW.ACTIVE=='1'?'Active':WORKFLOW.ACTIVE=='2'?'Draft':'Inactive'}}</td>   
+                <td>
+                    
+                    <a class="float-right text-red mt-1"><i class="fal fa-times-circle fa-lg"></i></a>
+                    <a href="#!/WFS?wid={{WORKFLOW.APP_CHAIN_HDR_ID}}&wtid={{WORKFLOW.APP_CHAIN_TYPE_ID}}&lid={{WORKFLOW.LOCATION_ID}}" class="float-right  text-green mt-1 mr-2"><i class="far fa-edit fa-lg"></i></a>
+                </td>
+            </tr>
+      
+        </tbody>
+    </table>
+</div>

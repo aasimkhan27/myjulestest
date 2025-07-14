@@ -1,0 +1,1422 @@
+﻿<nav class="breadcrumb">
+
+    <a class="breadcrumb-item">Employee Onboarding</a>
+    <span class="breadcrumb-item txt-dark">Detail Card</span>
+</nav>
+<div class="card">
+    <div class="row sticky_tabs">
+        <templateurl class="w-100" template-url="../AngularViews/HumanResource/Manage_Employees/Employee/HRM_EmployeeHeader.html?v=1{{AppVersion}}">
+    </div>
+    <div class="card-header px-0 border-0 d-none">
+        <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+            <li class="nav-item ps-2">
+                <a class="nav-link tab-info active" ng-class="{'active':TAB_INTERNAL_ID==1}" ng-click="Fn_INTERNAL_TAB_CLICK(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    Holiday
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_INTERNAL_ID==2}" ng-click="Fn_INTERNAL_TAB_CLICK(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    Other Absences
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_INTERNAL_ID==3}" ng-click="Fn_INTERNAL_TAB_CLICK(3)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    Sickness
+                </a>
+            </li>
+        </ul>
+    </div>
+    <form name="AbsenceSearchform" novalidate>
+        <div class="card-body" ng-show="TAB_INTERNAL_ID == 1">
+            <div class="row align-items-center">
+                <div class="col-xxl col-md col-xl"><h6 class="headings mb-0">Entitlement</h6></div>
+                <div class="col-xxl-auto col-md-auto col-xl-auto end">
+                    <h6 class="f-14">Fiscal Year : {{FISCAL_YEAR_START | date : DISPLAY_DATE_FORMAT}} - {{FISCAL_YEAR_END | date : DISPLAY_DATE_FORMAT}}</h6>
+                </div>
+                <div class="col-xxl-auto col-md-auto col-xl-auto" ng-show="EDIT_STEP_NO==9 && MY_PROFILE_FLAG==0 && false">
+                    <button type="button" ng-show="SHOW_EDIT_ACCESS" class="btn btn-sm btn-light text-nowrap" ng-class="{'btn-edit-mode':!EDIT_MODE, 'btn-light':EDIT_MODE}" 
+                            ng-click="HRM_EDIT_DETAILS()"><i class="fa-light fa-pen float-start mt-1 me-2"></i> Edit Data</button>
+                </div>
+            </div>
+            <div class="mt-2" id="outlineaccordion" ng-class="{'':EntitlementArray.length == 0,'accordion':EntitlementArray.length>0}">
+                <div class="" ng-class="{'':EntitlementArray.length == 0,'accordion-item border':EntitlementArray.length > 0}"
+                     ng-repeat="_absence in EntitlementArray"
+                     ng-init="nginit_entitlement(_absence)">
+                    <h2 class="accordion-header" id="outlineaccordionone">
+                        <button class="accordion-button  bg-white" type="button" ng-class="{'':EntitlementArray.length == $index+1, 'collapsed':EntitlementArray.length > 1}"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#left-collapseOne{{$index}}" aria-expanded="true" aria-controls="left-collapseOne">
+                            {{_absence.HOLIDAY_ENTITLEMENT_PLAN}}<span ng-show="_absence.HOLIDAY_ENTITLEMENT_PLAN!='New Entitlement'">-{{_absence.ABSENCE_TYPE}}</span>
+                            <div class="btn btn-light ms-auto"
+                                 ng-show="EDIT_STEP_NO<9 || _absence.EMPLOYEE_ABSENCE_ID==0"
+                                 ng-click="REMOVE_ENTITLEMENT_Fn($index)">
+                                <i class="fa-light fa-trash float-start me-2 mt-1"></i> Remove
+                            </div>
+                            <span class="" ng-class="{'ms-auto':_absence.OLD_ENTITLEMENT_ACTIVE==0 && _absence.EMPLOYEE_ABSENCE_ID && EDIT_STEP_NO==9 || _absence.OLD_ENTITLEMENT_ACTIVE==1 && _absence.EMPLOYEE_ABSENCE_ID  && EDIT_STEP_NO==9 }">
+                                <span ng-show="_absence.OLD_ENTITLEMENT_ACTIVE==0  && _absence.EMPLOYEE_ABSENCE_ID && EDIT_STEP_NO==9" class="badge badge-light-grey">
+                                {{_absence.ABSENCE_EFFECTIVE_DATE | date:DISPLAY_DATE_FORMAT}}-{{_absence.ABSENCE_END_DATE | date:DISPLAY_DATE_FORMAT}}</span>
+                                <span ng-show="_absence.OLD_ENTITLEMENT_ACTIVE==1 && _absence.EMPLOYEE_ABSENCE_ID  && EDIT_STEP_NO==9" class="badge badge-light-success">{{_absence.ABSENCE_EFFECTIVE_DATE | date:DISPLAY_DATE_FORMAT}}-{{_absence.ABSENCE_END_DATE | date:DISPLAY_DATE_FORMAT}}</span>
+                            </span>
+                        </button>
+                        
+                    </h2>
+                    <div class="accordion-collapse collapse bg-white p-3"
+                         ng-class="{'show':EntitlementArray.length == $index+1}"
+                         id="left-collapseOne{{$index}}"
+                         aria-labelledby="outlineaccordionone"
+                         data-bs-parent="#outlineaccordion">
+                        <div class="row">
+                            <h6 class="headings">General</h6>
+                            <div class="col-xxl-3 col-xl-3 col-md-3">
+                                <label class="text-nowrap">Holiday Entitlement Plan <span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       name="HOLIDAY_ENTITLEMENT_ID_{{$index}}"
+                                       required
+                                       ng-model="_absence.HOLIDAY_ENTITLEMENT_ID"
+                                       ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.HOLIDAY_ENTITLEMENT_ID_{{$index}}.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.HOLIDAY_ENTITLEMENT_ID_{{$index}}.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer"
+                                           ng-class="{'disabled':EDIT_STEP_NO==9 && _absence.EMPLOYEE_ABSENCE_ID>0 && _absence.ACTUAL_TAKEN>0 ||  _absence.ACTUAL_TAKEN==0 && EDIT_MODE || _absence.OLD_ENTITLEMENT_ACTIVE==0}"
+                                           data-toggle="dropdown"
+                                           aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                <span class="truncate">
+                                                    {{_absence.CUSTOM_ENTITLEMENT_NAME}}
+                                                </span>
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                            <li class=""
+                                                ng-show="DD_DefaultText != _absence.CUSTOM_ENTITLEMENT_NAME"
+                                                ng-click="SELECTED_ENTITLEMENT_Fn('',_absence)">{{_absence.ENTITLEMENT_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-repeat="_entitlement in HOLIDAY_ENTITLEMENTS_LIST"
+                                                ng-click="SELECTED_ENTITLEMENT_Fn(_entitlement,_absence,$parent.$index)">
+                                                <span class="">{{_entitlement.ENTITLEMENT_NAME}}-{{_entitlement.ABSENCE_TYPE}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </div>
+                            <div class="col-xxl-3 col-xl-3 col-md-3" ng-init="DATE_INPUT_LOAD((EDIT_STEP_NO<9 || _absence.ACTUAL_TAKEN==0?'OPEN_ALL':''),0)">
+                                <label>Effective Date <span class="txt-danger">*</span></label>
+                                <div class="date-column">
+                                    <input type="text"
+                                           class=""
+                                           name="ABSENCE_EFFECTIVE_DATE_{{$index}}"
+                                           placeholder="Add here"
+                                           required
+                                           readonly
+                                           autocomplete="off"
+                                           ng-model="_absence.ABSENCE_EFFECTIVE_DATE"
+                                           ng-disabled="EDIT_STEP_NO == 9 && _absence.EMPLOYEE_ABSENCE_ID>0  && _absence.ACTUAL_TAKEN>0 ||  _absence.ACTUAL_TAKEN==0 && EDIT_MODE || _absence.OLD_ENTITLEMENT_ACTIVE==0"
+                                           ng-change="CHECK_EFFECTIVEDATE_BY_HIRINGDATE(_absence)"
+                                           ng-blur="CHECK_EFFECTIVEDATE_BY_HIRINGDATE(_absence)"
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.ABSENCE_EFFECTIVE_DATE_{{$index}}.$error.required,'dateinputOpen':_absence.ACTUAL_TAKEN==0 || EDIT_STEP_NO<9,'dateinput':EDIT_STEP_NO==9 && _absence.ACTUAL_TAKEN>0}" />
+                                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-xl-3 col-md-3">
+                                <label>Annual Allowance</label>
+                                <div class="placeholder"
+                                     data-type="{{_absence.UNITS}}">
+                                    <input type="text"
+                                           placeholder="0"
+                                           name="ANNUAL_ALLOWANCE_{{$index}}"
+                                           ng-model="_absence.ANNUAL_ALLOWANCE"
+                                           disabled
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.ANNUAL_ALLOWANCE_{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <h6 class="headings">Holiday</h6>
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label>Accrued</label>
+                                <div class="placeholder" data-type="{{_absence.UNITS}}">
+                                    <input class="pe-5"
+                                           type="text"
+                                           placeholder="0"
+                                           only-digits
+                                           autocomplete="off"
+                                           maxlength="9"
+                                           name="ACCRUED_{{$index}}"
+                                           ng-model="_absence.ACCRUED"
+                                           disabled
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.ACCRUED_{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label>Adjustment </label>
+                                <div class="placeholder" data-type="{{_absence.UNITS}}">
+                                    <input class="pe-5" type="text"
+                                           placeholder="0"
+                                           name="ADJUSTMENT_{{$index}}"
+                                           ng-model="_absence.ADJUSTMENT"
+                                           only-digits
+                                           autocomplete="off"
+                                           maxlength="9"
+                                           ng-disabled="EDIT_MODE || _absence.OLD_ENTITLEMENT_ACTIVE==0"
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.ADJUSTMENT_{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label>Taken Till Date </label>
+                                <div class="placeholder" data-type="{{_absence.UNITS}}">
+                                    <input class="pe-5" type="text" placeholder="0"
+                                           name="TAKEN_{{$index}}"
+                                           ng-model="_absence.TAKEN"
+                                           only-digits
+                                           maxlength="9"
+                                           autocomplete="off"
+                                           ng-disabled="EDIT_STEP_NO == 9 && _absence.EMPLOYEE_ABSENCE_ID>0 && _absence.ACTUAL_TAKEN>0  ||  _absence.ACTUAL_TAKEN==0 && EDIT_MODE || _absence.OLD_ENTITLEMENT_ACTIVE==0"
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.TAKEN_{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label>Available Till Date </label>
+                                <div class="placeholder" data-type="{{_absence.UNITS}}">
+                                    <input class="pe-5" type="text"
+                                           placeholder="0"
+                                           name="AVAILABLE_TILL_DATE_{{$index}}"
+                                           ng-model="_absence.AVAILABLE_TILL_DATE"
+                                           only-digits
+                                           autocomplete="off"
+                                           maxlength="9"
+                                           disabled
+                                           ng-disabled="true"
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.AVAILABLE_TILL_DATE_{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label>Future Approved</label>
+                                <div class="placeholder" data-type="{{_absence.UNITS}}">
+                                    <input class="pe-5" type="text"
+                                           placeholder="0"
+                                           name="BOOKED_{{$index}}"
+                                           ng-model="_absence.BOOKED_APPROVED"
+                                           only-digits
+                                           autocomplete="off"
+                                           maxlength="9"
+                                           disabled
+                                           ng-disabled="true"
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.BOOKED_{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label>Future Pending</label>
+                                <div class="placeholder" data-type="{{_absence.UNITS}}">
+                                    <input class="pe-5" type="text"
+                                           placeholder="0"
+                                           name="BOOKED_{{$index}}"
+                                           ng-model="_absence.BOOKED_PENDING"
+                                           only-digits
+                                           autocomplete="off"
+                                           maxlength="9"
+                                           disabled
+                                           ng-disabled="true"
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.BOOKED_{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label class="text-nowrap w-100">Remaining Annual Bal. <i class="fa-light fa-refresh float-end mt-1 txt-primary c-pointer" ng-show="false"></i></label>
+                                <div class="placeholder" data-type="{{_absence.UNITS}}">
+                                    <input class="pe-5" type="text"
+                                           placeholder="0"
+                                           name="REMAINING_ANNUAL_BALANCE_{{$index}}"
+                                           ng-model="_absence.REMAINING_ANNUAL_BALANCE"
+                                           only-digits
+                                           autocomplete="off"
+                                           maxlength="9"
+                                           disabled
+                                           ng-disabled="true"
+                                           ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.REMAINING_ANNUAL_BALANCE_{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="col-md-12 balance_border b-r-5 balance_bg">
+                            <div class="row p-3 pb-0">
+                                <h6 class="headings">Holiday Pay Details </h6>
+                                <div class="col-xxl-3 col-xl-3 col-md-3">
+                                    <label>Total Days Worked </label>
+                                    <div class="placeholder" data-type="Days">
+                                        <input class="pe-5" type="text"
+                                               placeholder="0"
+                                               name="TOTAL_DAYS_WORKED_{{$index}}"
+                                               ng-model="_absence.TOTAL_DAYS_WORKED"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               ng-disabled="EDIT_STEP_NO == 9 && _absence.EMPLOYEE_ABSENCE_ID > 0 && _absence.ACTUAL_TAKEN>0  ||  _absence.ACTUAL_TAKEN==0 && EDIT_MODE || _absence.OLD_ENTITLEMENT_ACTIVE==0"
+                                               ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.TOTAL_DAYS_WORKED_{{$index}}.$error.required}" />
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3">
+                                    <label>Avg. Hours Worked </label>
+                                    <div class="placeholder" data-type="Hours">
+                                        <input class="pe-5" type="text"
+                                               placeholder="0"
+                                               name="AVG_HOURS_WORKED_{{$index}}"
+                                               ng-model="_absence.AVG_HOURS_WORKED"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               ng-disabled="EDIT_STEP_NO == 9 && _absence.EMPLOYEE_ABSENCE_ID > 0 && _absence.ACTUAL_TAKEN>0  ||  _absence.ACTUAL_TAKEN==0 && EDIT_MODE || _absence.OLD_ENTITLEMENT_ACTIVE==0"
+                                               ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.AVG_HOURS_WORKED_{{$index}}.$error.required}" />
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3">
+                                    <label>Avg. Pay </label>
+                                    <div class="placeholder" data-type="">
+                                        <input type="text"
+                                               placeholder="0"
+                                               name="AVG_PAY_{{$index}}"
+                                               ng-model="_absence.AVG_PAY"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               ng-disabled="EDIT_STEP_NO == 9 && _absence.EMPLOYEE_ABSENCE_ID > 0 && _absence.ACTUAL_TAKEN>0  ||  _absence.ACTUAL_TAKEN==0 && EDIT_MODE || _absence.OLD_ENTITLEMENT_ACTIVE==0"
+                                               ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.AVG_PAY_{{$index}}.$error.required}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-xxl-auto col-xl-auto col-md-auto" ng-show="MY_PROFILE_FLAG==0">
+                    <button type="button"
+                            class="btn btn-light"
+                            ng-disabled="EDIT_MODE"
+                            ng-click="ADD_ENTITLEMENT_Fn()">
+                        <i class="fa-light fa-plus float-start me-2 mt-1"></i> Add more
+                    </button>
+                </div>
+                <div class="col-xxl-auto col-xl-auto col-md-auto" ng-show="EDIT_STEP_NO==9">
+                    <button type="button"
+                            class="btn btn-light"
+                            ng-click="GET_OLD_ENTITLEMENT_Fn()">
+                        <i class="fa-light fa-history float-start me-2 mt-1"></i> Show History
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="card-footer text-end" ng-show="MY_PROFILE_FLAG==0 " ng-if="SHOW_EDIT_ACCESS">
+        <button type="button" class="btn btn-light" click-once ng-click="HRM_INS_UPD_EMPLOYEE_ABSENCES(1)">Save for later</button>
+        <button type="button" class="btn btn-primary" click-once ng-click="HRM_INS_UPD_EMPLOYEE_ABSENCES()">Save & Continue</button>
+    </div>
+</div>
+<div class="card" ng-show="EDIT_STEP_NO==9">
+    <div class="card-header pb-1">
+        <div class="row">
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <span class="circle_icon">
+                    <i class="fa-light fa-plane-departure"></i>
+                </span>
+                <h5 class="mx-1">Leave History</h5>
+            </div>
+
+            <div class="col-xxl-2 col-xl-2 col-md-2 ms-auto">
+                <!--<form id="SearchForm" name="SearchForm" novalidate autocomplete="off">
+                    <input type="text"
+                           placeholder="Search"
+                           autocomplete="off"
+                           ng-model="TeamLeaveFormSearch.FILTER_TEAM_SEARCH"
+                           name="search" />
+                    <button type="submit" class="btn btn-wenodo" ng-show="false" click-once ng-click="TEAM_HRM_LEAVE_REQUEST_LIST(1)">Search</button>
+                </form>-->
+            </div>
+
+            <div class="col-xxl-2 col-md-2 col-xl-2">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100 show">
+                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate">{{TeamLeaveFormSearch.CUSTOM_FILFTER_TEAM_ABSENCE_TYPE_NAME}}</span>
+                            </span>
+                        </a>
+                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper  w-100">
+                            <li class=""
+                                ng-show="TeamLeaveFormSearch.DD_DEFAULT_TEXT!=TeamLeaveFormSearch.CUSTOM_FILFTER_TEAM_ABSENCE_TYPE_NAME"
+                                ng-click="SELECTED_FILTER_ABSENCE_TYPE_TEAM_Fn('')">{{TeamLeaveFormSearch.DD_DEFAULT_TEXT}}</li>
+                            <li class=""
+                                ng-click="SELECTED_FILTER_ABSENCE_TYPE_TEAM_Fn(_absence)"
+                                ng-repeat="_absence in SELF_ABSENCE_TYPES_FOR_EMPLOYEE_LEAVE_LIST">
+                                <span class="">{{_absence.ABSENCE_TYPE}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xxl-2 col-md-2 col-xl-2">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100 show">
+                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate">{{TeamLeaveFormSearch.CUSTOM_TEAM_STATUS_NAME}}</span>
+                            </span>
+                        </a>
+                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper  w-100">
+                            <li class=""
+                                ng-show="TeamLeaveFormSearch.DD_DEFAULT_TEXT!=TeamLeaveFormSearch.CUSTOM_TEAM_STATUS_NAME"
+                                ng-click="SELECTED_TEAM_STATUS_Fn('')">{{TeamLeaveFormSearch.DD_DEFAULT_TEXT}}</li>
+                            <li class=""
+                                ng-click="SELECTED_TEAM_STATUS_Fn(_status)"
+                                ng-repeat="_status in STATUS_LIST">
+                                <span class="">{{_status.STATUS_NAME}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xxl-2 col-md-2 col-xl-2">
+                <div class="date-column">
+                    <input type="text"
+                           name="month"
+                           class="TeammonthPicker"
+                           placeholder="MM/YYYY"
+                           ng-change="DATE_FILTER_CHANGE_Fn(2)"
+                           ng-model="TeamLeaveFormSearch.FILTER_DATE" />
+                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                </div>
+            </div>
+            <!--<div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button class="btn btn-primary" ><span><i class="fa-thin fa-circle-arrow-down me-2"></i></span> Download</button>
+            </div>-->
+        </div>
+    </div>
+
+    <div class="card-body p-0" ng-show="EDIT_STEP_NO==9">
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="TEAM_LEAVE_REQUEST_LIST.length==0">
+            <div class="no-record text-center">{{LOAD_FETCH_TEXT}}</div>
+        </div>
+        <div class="table-responsive scrollbar-wrapper mx-height-leave" ng-show="TEAM_LEAVE_REQUEST_LIST.length>0">
+            <table>
+                <thead class="thead_fixed">
+                    <tr>
+
+                        <th class="text-nowrap">
+                            <label>Absence Type</label>
+                        </th>
+                        <th class="text-nowrap">
+                            <label>Start Date</label>
+                        </th>
+                        <th class="text-nowrap">
+                            <label>End Date</label>
+                        </th>
+                        <th>
+                            <label>Duration</label>
+                        </th>
+                        <th class="text-center">Action by</th>
+                        <th class="text-center">
+                            <label>Status</label>
+                        </th>
+                        <th class="text-center" width="13%">
+                            <label>Actions</label>
+                        </th>
+                        <th class="text-center">
+
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody ng-repeat="_team_leave in TEAM_LEAVE_REQUEST_LIST"
+                       ng-init="_team_leave.SHOW_HIDE=false;nginitteamleave_Fn(_team_leave)">
+                    <tr>
+
+                        <td>{{_team_leave.ABSENCE_TYPE}}</td>
+                        <td class="text-nowrap">
+                            {{_team_leave.START_DATE | date:DISPLAY_DATE_FORMAT}}
+                        </td>
+                        <td class="text-nowrap">
+                            {{_team_leave.END_DATE | date:DISPLAY_DATE_FORMAT}}
+                        </td>
+                        <td class="text-nowrap">
+                            {{_team_leave.DURATION}} {{_team_leave.UNITS_ID==1?'Days':_team_leave.UNITS_ID==2?'Shifts':'Hours'}}
+                        </td>
+                        <td class="text-nowrap">
+                            <span ng-show="_team_leave.STATUS_ID==86">-</span>
+                            <span class="d-block" ng-show="_team_leave.STATUS_ID==87 || _team_leave.STATUS_ID==88 || _team_leave.STATUS_ID==90">
+                                <span class="d-block">{{_team_leave.APP_REJ_BY}}</span>
+                                <span><i class="fa-light fa-calendar-lines text-grey"></i> {{_team_leave.APP_REJ_DATE | date}}</span>
+                                <span class="time_block"><i class="fa-light fa-clock text-blue"></i> {{_team_leave.APP_REJ_DATE| date :'h:mm'}}</span>
+                            </span>
+                            <span class="d-block" ng-show="_team_leave.STATUS_ID==89">
+                                <span class="d-block">{{_team_leave.CANCELLED_BY}}</span>
+                                <span><i class="fa-light fa-calendar-lines text-grey"></i> {{_team_leave.CANCELLATION_DATE | date}}</span>
+                                <span class="time_block"><i class="fa-light fa-clock text-blue"></i> {{_team_leave.CANCELLATION_DATE | date :'h:mm'}}</span>
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge-lg" ng-class="{'badge-light-warning':_team_leave.STATUS_ID==86,'badge-light-success':_team_leave.STATUS_ID==87,'badge-light-danger':_team_leave.STATUS_ID==88,'badge-light-secondary':_team_leave.STATUS_ID==89,'badge-light-info':_team_leave.STATUS_ID==90}">
+                                {{ (STATUS_LIST | filter:{'STATUS_ID':_team_leave.STATUS_ID})[0].STATUS_NAME }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="text-center" ng-show="IS_SELF">
+                                <div class="text-center" ng-show="_team_leave.STATUS_ID==86">
+                                    <button class="btn btn-outline" ng-click="CANCEL_LEAVE_POP_Fn(_team_leave)">
+                                        <i class="fa-light fa-circle-xmark txt-danger fa-lg"></i>
+                                    </button>
+                                </div>
+                                <div class="text-center" ng-show="_team_leave.STATUS_ID!=86">
+                                    <button class="btn btn-outline text-grey"
+                                            ng-disabled="true"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-original-title="Cancel">
+                                        <i class="fa-light fa-circle-xmark fa-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-center" ng-show="!IS_SELF">
+                                <button class="btn w-resp"
+                                        data-bs-toggle="tooltip" data-bs-original-title="Approve"
+                                        ng-disabled="_team_leave.STATUS_ID!=86"
+                                        click-once
+                                        ng-class="{'btn-outline text-grey':_team_leave.STATUS_ID!=86 ,'btn-outline-success':_team_leave.STATUS_ID==86}"
+                                        ng-click="APPROVE_LEAVE_POP_Fn(_team_leave)">
+                                    <i class="fa-light fa-circle-check fa-lg"></i>
+                                </button>
+                                <button data-bs-toggle="tooltip"
+                                        data-bs-original-title="Reject"
+                                        ng-hide="CheckStandardRoleAccess(5) || CheckStandardRoleAccess(10) || CheckStandardRoleAccess(15)"
+                                        class="btn btn-outline-danger w-resp"
+                                        click-once
+                                        ng-disabled="!(_team_leave.STATUS_ID==86 && _team_leave.IS_REJECTED)"
+                                        ng-class="{'btn-outline text-grey':!(_team_leave.STATUS_ID==86 && _team_leave.IS_REJECTED)}"
+                                        ng-click="REJECT_LEAVE_POP_Fn(_team_leave)">
+                                    <i class="fa-light fa-trash-xmark fa-lg"></i>
+                                </button>
+                                <button class="btn btn-outline-danger w-resp"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-original-title="Cancel"
+                                        click-once
+                                        ng-disabled="{{ ((_team_leave.STATUS_ID==90 || _team_leave.STATUS_ID==87) && _team_leave.IS_REJECTED) ?false:true}}"
+                                        ng-class="{'btn-outline text-grey':_team_leave.STATUS_ID==88 || _team_leave.STATUS_ID==89  || !((_team_leave.STATUS_ID==90 || _team_leave.STATUS_ID==87) && _team_leave.IS_REJECTED)} "
+                                        ng-click="CANCEL_LEAVE_POP_Fn(_team_leave)">
+                                    <i class="fa-light fa-circle-xmark fa-lg"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <i class="fa-regular c-pointer" ng-click="OPEN_LEAVE_DETAIL_Fn(_team_leave)"
+                                   ng-class="{'fa-chevron-up':_team_leave.SHOW_HIDE,'fa-chevron-down':!_team_leave.SHOW_HIDE}"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-show="_team_leave.SHOW_HIDE">
+                        <td colspan="9">
+                            <div class="row gx-2">
+                                <div class="col-xxl-9 col-xl-9 col-md-9">
+                                    <div class="row gx-2">
+                                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                                            <div class="border b-r-8 p-3 my-2">
+                                                <label>Balance</label>
+                                                <div class="row">
+                                                    <div class="col-xxl-4 col-xl-6 col-md-6">
+                                                        <div class="border b-r-8 p-2 d-flex justify-content-between mt-2">
+                                                            <span>Total Allowance</span>
+                                                            <span class="f-w-700">{{(_team_leave.EMPLOYEE_ABSENCES_COUNT_LIST_TEAM.ANNUAL_ALLOWANCE + _team_leave.EMPLOYEE_ABSENCES_COUNT_LIST_TEAM.ADJUSTMENT) | number:2}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-xl-6 col-md-6">
+                                                        <div class="border b-r-8 p-2 d-flex justify-content-between mt-2">
+                                                            <span>Accrued</span>
+                                                            <span class="f-w-700">{{_team_leave.EMPLOYEE_ABSENCES_COUNT_LIST_TEAM.CALCULATED_ACCRUED | number:2}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-xl-6 col-md-6">
+                                                        <div class="border b-r-8 p-2 d-flex justify-content-between mt-2">
+                                                            <span>Taken till date</span>
+                                                            <span class="f-w-700">{{_team_leave.EMPLOYEE_ABSENCES_COUNT_LIST_TEAM.TAKEN | number:2}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-xl-6 col-md-6">
+                                                        <div class="border b-r-8 p-2 d-flex justify-content-between mt-2">
+                                                            <span>Available till date</span>
+                                                            <span class="f-w-700">{{_team_leave.EMPLOYEE_ABSENCES_COUNT_LIST_TEAM.AVAILABLE_TILL_DATE | number:2}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-xl-6 col-md-6">
+                                                        <div class="border b-r-8 p-2 d-flex justify-content-between mt-2">
+                                                            <span>Future Approved</span>
+                                                            <span class="f-w-700">{{_team_leave.EMPLOYEE_ABSENCES_COUNT_LIST_TEAM.BOOKED_APPROVED | number:2}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-xl-6 col-md-6">
+                                                        <div class="border b-r-8 p-2 d-flex justify-content-between mt-2">
+                                                            <span>Future Pending</span>
+                                                            <span class="f-w-700">{{_team_leave.EMPLOYEE_ABSENCES_COUNT_LIST_TEAM.BOOKED_PENDING | number:2}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-xl-6 col-md-6">
+                                                        <div class="border b-r-8 p-2 d-flex justify-content-between mt-2">
+                                                            <span>Balance</span>
+                                                            <span class="f-w-700">{{_team_leave.EMPLOYEE_ABSENCES_COUNT_LIST_TEAM.REMAINING_BALANCE | number:2}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                                            <div class="border b-r-8 p-3 my-2">
+                                                <label>Others Absent During Same Period</label>
+                                                <div class="row">
+                                                    <div class="col-xxl-6 col-xl-6 col-md-6" ng-repeat="_em_leave in _team_leave.EMPLOYEE_LIST_TEAM | unique:'ABSENCE_TYPE_ID'"
+                                                         ng-click="POP_OPEN_LEAVER_DTL_Fn(_em_leave,_team_leave)">
+                                                        <div class="border p-2 d-flex align-items-center justify-content-between b-r-8 c-pointer">
+                                                            <span>{{_em_leave.ABSENCE_TYPE}} ({{(_team_leave.EMPLOYEE_LIST_TEAM | filter:{'ABSENCE_TYPE_ID':_em_leave.ABSENCE_TYPE_ID}:true).length }})</span>
+                                                            <div class="avatarContainer">
+                                                                <div ng-repeat="_team in _team_leave.EMPLOYEE_LIST_TEAM | filter:{'ABSENCE_TYPE_ID':_em_leave.ABSENCE_TYPE_ID}:true | limitTo:3"
+                                                                     ng-init="nginitteamleave_Fn(_team,2)">
+                                                                    <span class="text_avatar_24 me-1" ng-if="_team.IMG_PATH==null || _team.IMG_PATH==''">{{_team.SHORT_NAME}}</span>
+                                                                    <img ng-if="_team.IMG_PATH!=null && _team.IMG_PATH!=''" src="..{{_team.IMG_PATH}}"
+                                                                         height="24"
+                                                                         width="24"
+                                                                         class="rounded-circle" />
+                                                                    <span ng-if="$last && (_team_leave.EMPLOYEE_LIST_TEAM | filter:{'ABSENCE_TYPE_ID':_em_leave.ABSENCE_TYPE_ID}:true).length>3">{{(_team_leave.EMPLOYEE_LIST_TEAM | filter:{'ABSENCE_TYPE_ID':_em_leave.ABSENCE_TYPE_ID}:true).length-3}}+</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xxl-3 col-xl-3 col-md-3">
+                                            <div class="border b-r-8 p-3 my-2">
+                                                <div class="row">
+                                                    <div class="col-xxl col-xl col-md">
+                                                        <label>Reason</label>
+                                                        <div class="border p-2 d-flex justify-content-between b-r-8">
+                                                            <p>
+                                                                {{_team_leave.REASON==null || _team_leave.REASON==''?'-':_team_leave.REASON}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-xl-3 col-md-3">
+                                            <div class="border b-r-8 p-3 my-2">
+                                                <label>Comments</label>
+                                                <div class="border p-2 b-r-8">
+                                                    <p class="text-break mb-0" ng-show="_team_leave.STATUS_ID==86">-</p>
+                                                    <p class="text-break mb-0" ng-show="_team_leave.STATUS_ID==89">
+                                                        {{_team_leave.CANCELLATION_COMMENTS==null || _team_leave.CANCELLATION_COMMENTS==''?'-':_team_leave.CANCELLATION_COMMENTS}}
+                                                    </p>
+                                                    <p class="text-break mb-0" ng-show="_team_leave.STATUS_ID==87 || _team_leave.STATUS_ID==88 || _team_leave.STATUS_ID==90">
+                                                        {{_team_leave.APP_REJ_COMMENTS==null || _team_leave.APP_REJ_COMMENTS==''?'-':_team_leave.APP_REJ_COMMENTS}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                                            <div class="border b-r-8 p-3 my-2">
+                                                <div class="row">
+                                                    <div class="col-xxl col-xl col-md">
+                                                        <label>Upload</label>
+                                                        <div class="no-record" ng-show="_team_leave.UploadedFiles.length==0">No Attachment</div>
+                                                        <div class="border p-2 d-flex justify-content-between b-r-8" ng-repeat="_upls in _team_leave.UploadedFiles">
+                                                            <span class="w-100 d-flex align-items-center">
+                                                                <i class="fa-light fa-download mx-2"></i>
+                                                                <a class="truncate-rota" download="{{_upls.SERVER_FILE_NAME}}" href="..{{_upls.FILE_PATH}}{{_upls.SERVER_FILE_NAME}}"> {{_upls.ORIGINAL_FILE_NAME}}</a>
+                                                                <span class="txt-danger c-pointer ms-auto" ng-show="MY_PROFILE_FLAG==0" ng-disabled="EDIT_MODE" ng-click="DELETE_UPLOAD_ASSET_Fn(_asset,_upls,$index)"><i class="fa-light fa-xmark"></i></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3">
+                                    <div class="border_box my-2">
+                                        <div class="col-xxl-12 col-xl-12 col-md-12 text-center my-2">
+                                            <span class="me-3"><i class="fa-solid fa-circle-check txt-success"></i> Working Day</span>
+                                            <i class="fa-solid fa-circle-xmark" style="color:#ededed"></i> Non-Working Day
+                                        </div>
+                                        <div class="table-responsive scrollbar-wrapper" style="max-height:253px;">
+                                            <table class="mb-0 leave_table table_non_editable">
+                                                <thead> </thead>
+                                                <tbody class="checkbox_group" ng-repeat="month in _team_leave.calendarMonths track by $index">
+                                                    <tr>
+                                                        <td colspan="7" class="txt-primary f-w-700">
+                                                            <span class="ps-2">{{ month.monthName }}</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="thead_fixed bg-white" style="z-index: 1;">
+                                                        <td class="text-center f-w-600" ng-repeat="d in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']">{{d}}</td>
+                                                    </tr>
+                                                    <tr ng-repeat="week in month.weeks track by $index">
+                                                        <td ng-repeat="day in week.days track by $index" ng-class="{'outside': day.DATE.getMonth() !== month.monthIndex}">
+
+                                                            <span ng-show="false"> {{day.Value = day.DATE < _team_leave.minDate || day.DATE > _team_leave.maxDate}}</span>
+                                                            <div ng-show="day.DATE.getMonth() === month.monthIndex && day.Value==false">
+
+                                                                <input type="checkbox" id="day{{month.monthIndex}}{{week.WEEK_INDEX}}{{day.DATE_INDEX}}"
+                                                                       name="checkbox_choices{{month.monthIndex}}{{week.WEEK_INDEX}}{{day.DATE_INDEX}}"
+                                                                       ng-model="day.SELECTED_DURATION"
+                                                                       ng-disabled="true"
+                                                                       checked>
+                                                                <label for="day{{month.monthIndex}}{{week.WEEK_INDEX}}{{day.DATE_INDEX}}">
+                                                                    <span class="leave_date">{{ day.DATE | date:'d' }}</span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <tfoot class="t_foot_fixed" ng-show="GetDataTeam">
+                    <tr>
+                        <td colspan="8" class="text-center">
+                            <button type="button"
+                                    ng-click="LAZY_LOAD_TEAM_LEAVE_REQUEST_LIST()"
+                                    class="btn btn-sm btn-light btn_fixed">
+                                Load More...
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="Discard_pop" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Discard</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <textarea rows="5" class="mb-0" maxlength="500" ng-model="DISCARD_COMMENTS"></textarea>
+                <span class="float-end text-gray">{{500-DISCARD_COMMENTS.length}}/500</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" ng-click="HRM_DISCARD_PENDING_UPDATES()" class="btn btn-danger">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="Process_pop" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="d-flex justify-content-center">
+                    <div class="tickIcon">
+                        <span class="badge text-bg-success-modal">
+                            <i class="fa-light fa-user-cog fa-lg"></i>
+                        </span>
+                    </div>
+                </div>
+                <h6 class="text-center pb-2 fw-500">Are you sure you want to continue this process?</h6>
+            </div>
+            <div class="modal-footer">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <button type="button" ng-click="HRM_PROCESS_PENDING_UPDATES()" class="btn btn-primary w-100">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card" ng-show="EDIT_STEP_NO==9 && MY_PROFILE_FLAG==0">
+    <div class="row">
+        <templateurl class="w-100" template-url="../AngularViews/HumanResource/Manage_Employees/Employee/EffectiveHistoryList.html?v={{AppVersion}}">
+    </div>
+</div>
+
+<div class="modal fade" id="Reject_Leave" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon_danger">
+                            <span class="badge text-bg-danger-modal">
+                                <i class="fa-light fa-exclamation fa-lg"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <h6 class="text-center pb-2 fw-500">Reject Leave Request</h6>
+                    <p class="text-center text-dark">You are about to reject {{SELECTED_LEAVE_DETAILS.EMPLOYEE_NAME}} leave request applied for {{SELECTED_LEAVE_DETAILS.START_DATE | date:DISPLAY_DATE_FORMAT}} to {{SELECTED_LEAVE_DETAILS.END_DATE | date:DISPLAY_DATE_FORMAT}}</p>
+                </div>
+                <div>
+                    <textarea ng-model="SELECTED_LEAVE_DETAILS.COMMENTS" rows="3" placeholder="Enter Comments"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" ng-click="HRM_LEAVE_APP_REJ_LEAVE_REQUESTS(88)" type="button" data-bs-dismiss="modal">Proceed</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Cancel_Leave" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon_danger">
+                            <span class="badge text-bg-danger-modal">
+                                <i class="fa-light fa-exclamation fa-lg"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <h6 class="text-center pb-2 fw-500">Cancel Leave Request</h6>
+                    <p class="text-center text-dark">You are about to cancel leave request applied for {{SELECTED_LEAVE_DETAILS.START_DATE | date:DISPLAY_DATE_FORMAT}} to {{SELECTED_LEAVE_DETAILS.END_DATE | date:DISPLAY_DATE_FORMAT}}</p>
+                </div>
+                <div>
+                    <textarea ng-model="SELECTED_LEAVE_DETAILS.COMMENTS" rows="3" placeholder="Enter Comments"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" ng-click="HRM_LEAVE_APP_REJ_LEAVE_REQUESTS(89)" type="button" data-bs-dismiss="modal">Proceed</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="entitlement_old_data" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h4 class="modal-title">Entitlement History</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="" id="outlineaccordion" ng-class="{'':ABSENCES_HISTORY_LIST.length == 0, 'accordion':ABSENCES_HISTORY_LIST.length > 0}">
+                    <div class="" ng-class="{'':ABSENCES_HISTORY_LIST.length == 0,'accordion-item border':ABSENCES_HISTORY_LIST.length > 0}"
+                         ng-repeat="_absence in ABSENCES_HISTORY_LIST"
+                         ng-init="nginit_entitlement(_absence)">
+                        <h2 class="accordion-header" id="outlineaccordionone">
+                            <button class="accordion-button  bg-white" type="button" ng-class="{'':ABSENCES_HISTORY_LIST.length == $index+1, 'collapsed':ABSENCES_HISTORY_LIST.length > 1}"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#left-collapseOne{{$index}}" aria-expanded="true" aria-controls="left-collapseOne">
+                                {{_absence.HOLIDAY_ENTITLEMENT_PLAN}}<span>-</span>{{_absence.ABSENCE_TYPE}}
+                            </button>
+
+                        </h2>
+                        <div class="accordion-collapse collapse bg-white p-3" id="left-collapseOne{{$index}}"
+                             aria-labelledby="outlineaccordionone" data-bs-parent="#outlineaccordion">
+                            <div class="row">
+                                <h6 class="headings">General</h6>
+                                <div class="col-xxl-3 col-xl-3 col-md-3">
+                                    <label class="text-nowrap">Holiday Entitlement Plan <span class="txt-danger">*</span></label>
+                                    <input type="hidden"
+                                           name="HOLIDAY_ENTITLEMENT_ID_{{$index}}"
+                                           required
+                                           ng-model="_absence.HOLIDAY_ENTITLEMENT_ID" />
+
+                                    <ul class="nav nav-pills" ng-class="{'error':AbsenceSearchform.submitted && AbsenceSearchform.HOLIDAY_ENTITLEMENT_ID_{{$index}}.$error.required}">
+                                        <li class="dropdown w-100 show">
+                                            <a class="text-limitations cursor-pointer disabled" data-toggle="dropdown" aria-expanded="true">
+                                                <span class="select-label" id="select_label">
+                                                    {{_absence.CUSTOM_ENTITLEMENT_NAME}}
+                                                </span>
+                                            </a>
+                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                <li class=""
+                                                    ng-show="DD_DefaultText != _absence.CUSTOM_ENTITLEMENT_NAME"
+                                                    ng-click="SELECTED_ENTITLEMENT_Fn('',_absence)">{{_absence.ENTITLEMENT_DEFAULT_TEXT}}</li>
+                                                <li class=""
+                                                    ng-repeat="_entitlement in HOLIDAY_ENTITLEMENTS_LIST"
+                                                    ng-click="SELECTED_ENTITLEMENT_Fn(_entitlement,_absence,$parent.$index)">
+                                                    <span class="">{{_entitlement.ENTITLEMENT_NAME}}-{{_entitlement.ABSENCE_TYPE}}</span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3" ng-init="DATE_INPUT_LOAD(EDIT_STEP_NO<9?'OPEN_ALL':'',0)">
+
+                                    <label>Effective Date<span class="txt-danger">*</span></label>
+                                    <div class="date-column">
+                                        <input type="text"
+                                               name="ABSENCE_EFFECTIVE_DATE_{{$index}}"
+                                               placeholder="Add here"
+                                               required
+                                               readonly
+                                               autocomplete="off"
+                                               ng-model="_absence.ABSENCE_EFFECTIVE_DATE"
+                                               ng-value="_absence.ABSENCE_EFFECTIVE_DATE | date:DISPLAY_DATE_FORMAT"
+                                               disabled
+                                               ng-class="{'dateinputOpen':EDIT_STEP_NO<9, 'dateinput':EDIT_STEP_NO==9}"
+                                             
+                                               />
+                                        <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3">
+                                    <label>Annual Allowance</label>
+                                    <div class="placeholder"
+                                         data-type="{{_absence.UNIT_NAME}}">
+                                        <input type="text"
+                                               placeholder="0"
+                                               name="ANNUAL_ALLOWANCE_{{$index}}"
+                                               ng-model="_absence.ANNUAL_ALLOWANCE"
+                                               ng-value="_absence.ANNUAL_ALLOWANCE | number:2"
+                                               disabled />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="row">
+                                <h6 class="headings">Holiday</h6>
+                                <div class="col-xxl-2 col-xl-2 col-md-4">
+                                    <label>Accrued</label>
+                                    <div class="placeholder" data-type="{{_absence.UNIT_NAME}}">
+                                        <input class="pe-5"
+                                               type="text"
+                                               placeholder="0"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               name="ACCRUED_{{$index}}"
+                                               ng-model="_absence.CALCULATED_ACCRUED"
+                                               ng-value="_absence.CALCULATED_ACCRUED | number:2"
+                                               disabled />
+                                    </div>
+                                </div>
+                                <div class="col-xxl-2 col-xl-2 col-md-4">
+                                    <label>Adjustment </label>
+                                    <div class="placeholder" data-type="{{_absence.UNIT_NAME}}">
+                                        <input class="pe-5" type="text"
+                                               placeholder="0"
+                                               name="ADJUSTMENT_{{$index}}"
+                                               ng-model="_absence.ADJUSTMENT"
+                                               ng-value="_absence.ADJUSTMENT | number:2"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               disabled />
+                                    </div>
+                                </div>
+                                <div class="col-xxl-2 col-xl-2 col-md-4">
+                                    <label>Taken till date</label>
+                                    <div class="placeholder" data-type="{{_absence.UNIT_NAME}}">
+                                        <input class="pe-5" type="text" placeholder="0"
+                                               name="TAKEN_{{$index}}"
+                                               ng-model="_absence.TAKEN"
+                                               ng-value="_absence.TAKEN | number:2"
+                                               only-digits
+                                               maxlength="9"
+                                               autocomplete="off"
+                                               disabled />
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-2 col-xl-2 col-md-4">
+                                    <label>Available Till Date </label>
+                                    <div class="placeholder" data-type="{{_absence.UNIT_NAME}}">
+                                        <input class="pe-5" type="text"
+                                               placeholder="0"
+                                               name="AVAILABLE_TILL_DATE_{{$index}}"
+                                               ng-model="_absence.AVAILABLE_TILL_DATE"
+                                               ng-value="_absence.AVAILABLE_TILL_DATE | number:2"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               disabled
+                                               ng-disabled="true" />
+                                    </div>
+                                </div>
+                                <div class="col-xxl-2 col-xl-2 col-md-4">
+                                    <label>Future Approved</label>
+                                    <div class="placeholder" data-type="{{_absence.UNIT_NAME}}">
+                                        <input class="pe-5" type="text"
+                                               placeholder="0"
+                                               name="BOOKED_{{$index}}"
+                                               ng-model="_absence.BOOKED_APPROVED"
+                                               ng-value="_absence.BOOKED_APPROVED | number:2"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               disabled
+                                               ng-disabled="true" />
+                                    </div>
+                                </div>
+                                <div class="col-xxl-2 col-xl-2 col-md-4">
+                                    <label>Future Pending</label>
+                                    <div class="placeholder" data-type="{{_absence.UNIT_NAME}}">
+                                        <input class="pe-5" type="text"
+                                               placeholder="0"
+                                               name="BOOKED_{{$index}}"
+                                               ng-model="_absence.BOOKED_PENDING"
+                                               ng-value="_absence.BOOKED_PENDING | number:2"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               disabled
+                                               ng-disabled="true" />
+                                    </div>
+                                </div>
+                                <div class="col-xxl-2 col-xl-2 col-md-4">
+                                    <label class="text-nowrap">Remaining Annual Balance</label>
+                                    <div class="placeholder" data-type="{{_absence.UNIT_NAME}}">
+                                        <input class="pe-5" type="text"
+                                               placeholder="0"
+                                               name="REMAINING_ANNUAL_BALANCE_{{$index}}"
+                                               ng-model="_absence.REMAINING_BALANCE"
+                                               ng-value="_absence.REMAINING_BALANCE | number:2"
+                                               only-digits
+                                               autocomplete="off"
+                                               maxlength="9"
+                                               disabled
+                                               ng-disabled="true" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="col-md-12 balance_border b-r-5 balance_bg">
+                                <div class="row p-3 pb-0">
+                                    <h6 class="headings">Holiday Pay Details </h6>
+                                    <div class="col-xxl-3 col-xl-3 col-md-3">
+                                        <label>Total Days Worked </label>
+                                        <div class="placeholder" data-type="Days">
+                                            <input class="pe-5" type="text"
+                                                   placeholder="0"
+                                                   name="TOTAL_DAYS_WORKED_{{$index}}"
+                                                   ng-model="_absence.TOTAL_DAYS_WORKED"
+                                                   ng-value="_absence.TOTAL_DAYS_WORKED | number:2"
+                                                   only-digits
+                                                   autocomplete="off"
+                                                   maxlength="9"
+                                                   disabled />
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-3 col-xl-3 col-md-3">
+                                        <label>Avg. Hours Worked </label>
+                                        <div class="placeholder" data-type="Hours">
+                                            <input class="pe-5" type="text"
+                                                   placeholder="0"
+                                                   name="AVG_HOURS_WORKED_{{$index}}"
+                                                   ng-model="_absence.AVG_HOURS_WORKED"
+                                                   ng-value="_absence.AVG_HOURS_WORKED | number:2"
+                                                   only-digits
+                                                   autocomplete="off"
+                                                   maxlength="9"
+                                                   disabled />
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-3 col-xl-3 col-md-3">
+                                        <label>Avg. Pay </label>
+                                        <div class="placeholder" data-type="">
+                                            <input type="text"
+                                                   placeholder="0"
+                                                   name="AVG_PAY_{{$index}}"
+                                                   ng-model="_absence.AVG_PAY"
+                                                   ng-value="_absence.AVG_PAY | number:2"
+                                                   only-digits
+                                                   autocomplete="off"
+                                                   maxlength="9"
+                                                   disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="alert-workpattern" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+
+                    <h6 class="text-center pb-2 fw-500"><code>{{AlertMessage1}}</code></h6>
+                    <p class="text-center text-dark">{{AlertMessage2}}</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-12 col-md-12 col-xl-12"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Close</button></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="EffectiveDate" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered {{MODEL_FLAG}}">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">Effective On</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form name="EffectiveForm" novalidate>
+                    <div class="row">
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <label class="d-block">Effective Date <span class="txt-danger">*</span></label>
+                            <div class="date-column">
+                                <input type="text"
+                                       required
+                                       name="EFFECTIVE_DATE"
+                                       class="EFFECTIVE_DATE"
+                                       readonly
+                                       autocomplete="off"
+                                       ng-change="HRM_EMPLOYEE_GET_UPCOMING_HISTORY_UPDATES_POPUP(1)"
+                                       ng-model="AbsenceSearch.EFFECTIVE_DATE "
+                                       placeholder="Select Date "
+                                       ng-class="{'error':EffectiveForm.submitted && EffectiveForm.EFFECTIVE_DATE.$error.required}">
+                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <label class="d-block">Comments</label>
+                            <textarea class="mb-0"
+                                      rows="3"
+                                      name="EFFECTIVE_COMMENTS"
+                                      ng-model="AbsenceSearch.EFFECTIVE_COMMENTS">
+                                        </textarea>
+                        </div>
+                    </div>
+                </form>
+                <div class="row" ng-show="MODEL_FLAG!=''">
+                    <templateurl class="w-100" template-url="../AngularViews/HumanResource/Manage_Employees/Employee/HistoryPOPList.html?v={{AppVersion}}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        click-once
+                        class="btn btn-light"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    Cancel
+                </button>
+                <button type="button"
+                        click-once
+                        ng-click="HRM_CLICK_EFFICTIVE_DATE(AbsenceSearch)"
+                        class="btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="History_pop" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">
+                    <span ng-show="IS_HISTORY">History Details {{SELECTED_UPDATE.ARCHIVE_DATE | date:DISPLAY_DATE_FORMAT}}</span>
+                    <span ng-show="!IS_HISTORY">Updates Details
+                        Changes will be updated on {{SELECTED_UPDATE.EFFECTIVE_DATE | date:DISPLAY_DATE_FORMAT}}</span>
+                </h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div ng-class="{'':OLD_DATA.EntitlementArray.length == 0,'accordion-item border':OLD_DATA.EntitlementArray.length > 0}"
+                     ng-repeat="_absence in OLD_DATA.EntitlementArray"
+                     ng-init="nginitHistoryentitlement(_absence,$index)">
+                    <h2 class="accordion-header" id="outlineaccordionHistory">
+                        <button class="accordion-button  bg-white" type="button"
+                                ng-class="{'':OLD_DATA.EntitlementArray.length == $index+1, 'collapsed':OLD_DATA.EntitlementArray.length > 1}"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#left-collapseHistory{{$index}}" aria-expanded="true" aria-controls="left-collapseHistory">
+                            {{_absence.HOLIDAY_ENTITLEMENT_PLAN}} <span ng-show="_absence.HOLIDAY_ENTITLEMENT_PLAN!='New Entitlement'">-{{_absence.ABSENCE_TYPE}}</span>
+                            <div class="btn btn-light ms-auto"
+                                 ng-show="EDIT_STEP_NO<9 || _absence.EMPLOYEE_ABSENCE_ID==0"
+                                 ng-click="REMOVE_ENTITLEMENT_Fn($index)">
+                                <i class="fa-light fa-trash float-start me-2 mt-1"></i> Remove
+                            </div>
+                        </button>
+                    </h2>
+                    <div class="accordion-collapse collapse bg-white p-3" ng-class="{'show':OLD_DATA.EntitlementArray.length == $index+1}"
+                         id="left-collapseHistory{{$index}}"
+                         aria-labelledby="outlineaccordionHistory"
+                         data-bs-parent="#outlineaccordionHistory">
+                        <div class="row">
+                            <h6 class="headings">General</h6>
+                            <div class="col-xxl-4 col-xl-4 col-md-4">
+                                <label class="text-nowrap">Holiday Entitlement Plan <span class="txt-danger">*</span></label>
+                                <p class="mb-0" ng-style="_absence.NEW_DATA.HOLIDAY_ENTITLEMENT_PLAN!=null && {'text-decoration':'line-through'}">
+                                    {{_absence.HOLIDAY_ENTITLEMENT_PLAN==null || _absence.HOLIDAY_ENTITLEMENT_PLAN==''?'-':_absence.NEW_DATA.HOLIDAY_ENTITLEMENT_PLAN!=_absence.HOLIDAY_ENTITLEMENT_PLAN?(_absence.HOLIDAY_ENTITLEMENT_PLAN):'-' }}
+                                </p>
+                                <span class="txt-success mb-2">{{_absence.NEW_DATA.HOLIDAY_ENTITLEMENT_PLAN==null?'-':_absence.NEW_DATA.HOLIDAY_ENTITLEMENT_PLAN!=_absence.HOLIDAY_ENTITLEMENT_PLAN?(_absence.NEW_DATA.HOLIDAY_ENTITLEMENT_PLAN):'-' }}</span>
+
+                            </div>
+                            <div class="col-xxl-4 col-xl-4 col-md-4" ng-init="DATE_INPUT_LOAD((EDIT_STEP_NO<9?'OPEN_ALL':''),0)">
+                                <label>Effective Date  <span class="txt-danger">*</span></label>
+                                <p class="mb-0" ng-style="_absence.NEW_DATA.ABSENCE_EFFECTIVE_DATE!=null && {'text-decoration':'line-through'}">
+                                    {{_absence.ABSENCE_EFFECTIVE_DATE==null || _absence.ABSENCE_EFFECTIVE_DATE==''?'-':_absence.NEW_DATA.ABSENCE_EFFECTIVE_DATE!=_absence.ABSENCE_EFFECTIVE_DATE?(_absence.ABSENCE_EFFECTIVE_DATE | date:DISPLAY_DATE_FORMAT):'-' }}
+                                </p>
+                                <span class="txt-success mb-2">{{_absence.NEW_DATA.ABSENCE_EFFECTIVE_DATE==null?'-':_absence.NEW_DATA.ABSENCE_EFFECTIVE_DATE!=_absence.ABSENCE_EFFECTIVE_DATE?(_absence.NEW_DATA.ABSENCE_EFFECTIVE_DATE | date:DISPLAY_DATE_FORMAT):'-' }}</span>
+                            </div>
+                            <div class="col-xxl-4 col-xl-4 col-md-4">
+                                <label>Annual Allowance</label>
+                                <p class="mb-0" ng-style="_absence.NEW_DATA.ANNUAL_ALLOWANCE!=null && {'text-decoration':'line-through'}">
+                                    {{_absence.ANNUAL_ALLOWANCE==null || _absence.ANNUAL_ALLOWANCE==''?'-':_absence.NEW_DATA.ANNUAL_ALLOWANCE!=_absence.ANNUAL_ALLOWANCE?(_absence.ANNUAL_ALLOWANCE):'-' }}
+                                </p>
+                                <span class="txt-success mb-2">{{_absence.NEW_DATA.ANNUAL_ALLOWANCE==null?'-':_absence.NEW_DATA.ANNUAL_ALLOWANCE!=_absence.ANNUAL_ALLOWANCE?(_absence.NEW_DATA.ANNUAL_ALLOWANCE):'-' }}</span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <h6 class="headings">Holiday</h6>
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label>Adjustment </label>
+                                <p class="mb-0" ng-style="_absence.NEW_DATA.ADJUSTMENT!=null && {'text-decoration':'line-through'}">
+                                    {{_absence.ADJUSTMENT==null || _absence.ADJUSTMENT==''?'-':_absence.NEW_DATA.ADJUSTMENT!=_absence.ADJUSTMENT?(_absence.ADJUSTMENT):'-' }}
+                                </p>
+                                <span class="txt-success mb-2">{{_absence.NEW_DATA.ADJUSTMENT==null?'-':_absence.NEW_DATA.ADJUSTMENT!=_absence.ADJUSTMENT?(_absence.NEW_DATA.ADJUSTMENT):'-' }}</span>
+                            </div>
+                            <div class="col-xxl-2 col-xl-2 col-md-4">
+                                <label>Taken</label>
+                                <p class="mb-0" ng-style="_absence.NEW_DATA.TAKEN!=null && {'text-decoration':'line-through'}">
+                                    {{_absence.TAKEN==null || _absence.TAKEN==''?'-':_absence.NEW_DATA.TAKEN!=_absence.TAKEN?(_absence.TAKEN):'-' }}
+                                </p>
+                                <span class="txt-success mb-2">{{_absence.NEW_DATA.TAKEN==null?'-':_absence.NEW_DATA.TAKEN!=_absence.TAKEN?(_absence.NEW_DATA.TAKEN):'-' }}</span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-md-12 balance_border b-r-5 balance_bg">
+                            <div class="row p-3 pb-0">
+                                <h6 class="headings">Holiday Pay Details </h6>
+                                <div class="col-xxl-4 col-xl-4 col-md-4">
+                                    <label>Total Days Worked </label>
+                                    <p class="mb-0" ng-style="_absence.NEW_DATA.TOTAL_DAYS_WORKED!=null && {'text-decoration':'line-through'}">
+                                        {{_absence.TOTAL_DAYS_WORKED==null || _absence.TOTAL_DAYS_WORKED==''?'-':_absence.NEW_DATA.TOTAL_DAYS_WORKED!=_absence.TOTAL_DAYS_WORKED?(_absence.TOTAL_DAYS_WORKED):'-' }}
+                                    </p>
+                                    <span class="txt-success mb-2">{{_absence.NEW_DATA.TOTAL_DAYS_WORKED==null?'-':_absence.NEW_DATA.TOTAL_DAYS_WORKED!=_absence.TOTAL_DAYS_WORKED?(_absence.NEW_DATA.TOTAL_DAYS_WORKED):'-' }}</span>
+                                </div>
+                                <div class="col-xxl-4 col-xl-4 col-md-4">
+                                    <label>Avg. Hours Worked </label>
+                                    <p class="mb-0" ng-style="_absence.NEW_DATA.AVG_HOURS_WORKED!=null && {'text-decoration':'line-through'}">
+                                        {{_absence.AVG_HOURS_WORKED==null || OLD_absence_DATA.AVG_HOURS_WORKED==''?'-':_absence.NEW_DATA.AVG_HOURS_WORKED!=_absence.AVG_HOURS_WORKED?(_absence.AVG_HOURS_WORKED):'-' }}
+                                    </p>
+                                    <span class="txt-success mb-2">{{_absence.NEW_DATA.AVG_HOURS_WORKED==null?'-':_absence.NEW_DATA.AVG_HOURS_WORKED!=_absence.AVG_HOURS_WORKED?(_absence.NEW_DATA.AVG_HOURS_WORKED):'-' }}</span>
+                                </div>
+                                <div class="col-xxl-4 col-xl-4 col-md-4">
+                                    <label>Avg. Pay </label>
+                                    <p class="mb-0" ng-style="_absence.NEW_DATA.AVG_PAY!=null && {'text-decoration':'line-through'}">
+                                        {{_absence.AVG_PAY==null || _absence.AVG_PAY==''?'-':_absence.NEW_DATA.AVG_PAY!=_absence.AVG_PAY?(_absence.AVG_PAY):'-' }}
+                                    </p>
+                                    <span class="txt-success mb-2">{{_absence.NEW_DATA.AVG_PAY==null?'-':_absence.NEW_DATA.AVG_PAY!=_absence.AVG_PAY?(_absence.NEW_DATA.AVG_PAY):'-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close"> Close </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Approve_Leave" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <form name="ApproveLeaveForm" novalidate>
+                    <div class="modal-toggle-wrapper">
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon">
+                                    <span class="badge text-bg-success-modal">
+                                        <i class="fa-light fa-check fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="text-center pb-2 fw-500">Approve Leave Request</h6>
+                            <p class="text-center text-dark">You are about to approve  {{SELECTED_LEAVE_DETAILS.EMPLOYEE_NAME}} leave request applied for  {{SELECTED_LEAVE_DETAILS.START_DATE | date:DISPLAY_DATE_FORMAT}}  to  {{SELECTED_LEAVE_DETAILS.END_DATE | date:DISPLAY_DATE_FORMAT}} </p>
+                            <div class="col-xxl-12 col-xl-12 col-md-12">
+                                <label>Absence Type <span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       name="ABSENCE_TYPE_ID"
+                                       placeholder="Add Here"
+                                       required
+                                       ng-model="SELECTED_LEAVE_DETAILS.ABSENCE_TYPE_ID" />
+                                <ul class="nav nav-pills" ng-class="{'error':MyLeaveForm.submitted && MyLeaveForm.ABSENCE_TYPE_ID.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{SELECTED_LEAVE_DETAILS.CUSTOM_ABSENCE_TYPE}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper  w-100">
+                                            <li class=""
+                                                ng-click="SELECTED_ABSENCE_TYPE_APPROVE_REJECT_Fn(_absence)"
+                                                ng-repeat="_absence in EDIT_ABSENCE_TYPES_FOR_EMPLOYEE_LEAVE_LIST">
+                                                <span class="">{{_absence.ABSENCE_TYPE}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="border_box mb-3">
+                                <div class="table-responsive scrollbar-wrapper" style="max-height:210px;">
+                                    <table class="mb-0 leave_table">
+                                        <thead> </thead>
+                                        <tbody class="checkbox_group" ng-repeat="month in SELECTED_LEAVE_DETAILS.calendarMonths track by $index">
+                                            <tr>
+                                                <td colspan="7" class="txt-primary f-w-700">
+                                                    <span class="ps-2">{{ month.monthName }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="thead_fixed bg-white">
+                                                <td class="text-center f-w-600" ng-repeat="d in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']">{{d}}</td>
+                                            </tr>
+                                            <tr ng-repeat="week in month.weeks track by $index">
+                                                <td ng-repeat="day in week.days track by $index" ng-class="{'outside': day.DATE.getMonth() !== month.monthIndex}">
+                                                    <span ng-show="false"> {{day.Value = day.DATE < SELECTED_LEAVE_DETAILS.minDate || day.DATE > SELECTED_LEAVE_DETAILS.maxDate}}</span>
+                                                    <div ng-show="day.DATE.getMonth() === month.monthIndex && day.Value==false">
+
+                                                        <input type="checkbox"
+                                                               id="Approve{{month.monthIndex}}{{week.WEEK_INDEX}}{{day.DATE_INDEX}}"
+                                                               name="Approve{{month.monthIndex}}{{week.WEEK_INDEX}}{{day.DATE_INDEX}}"
+                                                               ng-model="day.SELECTED_DURATION"
+                                                               ng-disabled="day.ORIGINAL_DURATION==0 && day.DURATION==0"
+                                                               ng-change="DURATION_CHANGE_Fn(SELECTED_LEAVE_DETAILS,day)"
+                                                               checked>
+                                                        <label for="Approve{{month.monthIndex}}{{week.WEEK_INDEX}}{{day.DATE_INDEX}}">
+                                                            <span class="leave_date">{{ day.DATE | date:'d' }}</span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <input ng-model="SELECTED_LEAVE_DETAILS.SELECTED_DURATION" ng-disabled="true" placeholder="duration" class="form-control mb-0">
+                            </div>
+                            <div class="mt-2">
+                                <textarea ng-model="SELECTED_LEAVE_DETAILS.COMMENTS" rows="3" placeholder="Enter Comments" class="mb-0"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-primary w-100"
+                                ng-disabled="SELECTED_LEAVE_DETAILS.DISABLE_PRC_BTN"
+                                ng-click="HRM_LEAVE_APP_REJ_LEAVE_REQUESTS(87)" type="button" data-bs-dismiss="modal">
+                            Proceed
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Reject_Leave" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon_danger">
+                            <span class="badge text-bg-danger-modal">
+                                <i class="fa-light fa-exclamation fa-lg"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <h6 class="text-center pb-2 fw-500">Reject Leave Request</h6>
+                    <p class="text-center text-dark">You are about to reject {{SELECTED_LEAVE_DETAILS.EMPLOYEE_NAME}} leave request applied for {{SELECTED_LEAVE_DETAILS.START_DATE | date:DISPLAY_DATE_FORMAT}} to {{SELECTED_LEAVE_DETAILS.END_DATE | date:DISPLAY_DATE_FORMAT}}</p>
+                </div>
+                <div>
+                    <textarea ng-model="SELECTED_LEAVE_DETAILS.COMMENTS" rows="3" placeholder="Enter Comments"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" ng-click="HRM_LEAVE_APP_REJ_LEAVE_REQUESTS(88)" type="button" data-bs-dismiss="modal">Proceed</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left'
+        }, function (start, end, label) {
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    });
+</script>
+
+

@@ -1,0 +1,474 @@
+﻿<div class="card"  ng-show="THIS_APP_PAGE_COMPONENTS_LIST.length==0 && LOAD_APP_COMPONENTS==1">
+    <div class="card-body"><div empty-component></div></div>
+</div>
+<div id="PRINT" ng-show="THIS_APP_PAGE_COMPONENTS_LIST.length>0">
+    <div class="container-fluid">
+        <div class="row my-3" hidden>
+            <div class="col-md-6 border-bottom">
+                <img src="{{LOGO_PATH}}" class="Print_Logo_start" alt="" />
+            </div>
+            <div class="col-md-6 border-bottom text-end">
+                <img src="../E_Content/images/logo.png" class="Print_Logo_end" alt="" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row sticky_pi_header">
+        <div class="col d-flex text-nowrap">
+            <h4>Detailed Sales Analysis</h4>
+            <div class="mt-1 ms-2">
+                <blockquote class="blockquote bg-light-success py-0 mb-0 rounded">
+                    <p class="mb-0 txt-dark">{{Input_Model.SELECTED_PERIOD_TYPE}}: <span ng-show="Input_Model.PERIOD_TYPE_ID!=4">{{Input_Model.WEEK_NO}} |</span> {{Input_Model.START_DATE | date :'dd MMM yyyy'}} - {{Input_Model.END_DATE | date :'dd MMM yyyy'}}</p>
+                </blockquote>
+            </div>
+        </div>
+        <div class="col-2 ms-auto mobile-none print_pdf_doc">
+            <ul class="nav nav-pills" id="SITE_DDL">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{Input_Model.DISPLAY_TEXT_SITE}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu  scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li ng-click="SITE_All_Fn()" class="DontHideOnClick">
+                            <i class="fa-regular fa-lg"
+                               ng-class="{'fa-square-check txt-success':(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length,'fa-square':(SITE_LIST | filter:{IS_CHECK:true}).length!=SITE_LIST.length}"></i>
+                            <span class="ms-2">All</span>
+                            <span ng-show="false"> {{  IS_ALL_SITE_CHECK=(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length?true:false}}</span>
+                        </li>
+                        <li ng-repeat="site in SITE_LIST" class="DontHideOnClick d-flex"
+                            on-finish-render="ngRepeatFinishedequalizerRender" ng-click="SITE_Fn(site,2)">
+                            <i class="fa-regular fa-lg mt-2" ng-class="{'fa-square-check txt-success':site.IS_CHECK,'fa-square':!site.IS_CHECK}"></i>
+                            <span class="truncate ms-2">{{site.Value}}</span>
+                        </li>
+                        <li class="sticky-bottom bg-white">
+                            <button ng-click="Fn_BLUR_SITES()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-primary">Apply</button>
+                            <button ng-click="RESET_SITES_Fn()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-light DontHideOnClick">Reset</button>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc">
+            <ul class="nav nav-pills" id="CURRENCY_DDL">
+                <li class="dropdown w-100">
+                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <span class="truncate">{{Input_Model.DISPLAY_TEXT_CURRENCY}}</span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu w-100">
+                        <li ng-repeat="currency in CURRENCY_LIST" ng-click="CURRENCY_Fn(currency)">
+                            {{currency.Value}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-auto mobile-none print_pdf_doc">
+            <input class="btn-check radio-light" id="option1" type="radio" name="filter">
+            <label class="btn list-light-primary"
+                   for="option1"
+                   data-bs-toggle="tooltip"
+                   ng-click="FILTER_BY_PERIOD_TYPE_Fn(1)"
+                   ng-class="{'list-light-secondary':Input_Model.PERIOD_TYPE_ID==1}"
+                   data-bs-original-title="Select Week">W</label>
+
+            <input class="btn-check radio-light" id="option2" type="radio" name="filter">
+            <label class="btn list-light-primary"
+                   for="option2"
+                   data-bs-toggle="tooltip"
+                   ng-click="FILTER_BY_PERIOD_TYPE_Fn(2)"
+                   ng-class="{'list-light-secondary':Input_Model.PERIOD_TYPE_ID==2}"
+                   data-bs-original-title="Select Month">M</label>
+
+            <input class="btn-check radio-light" ng-show="false" id="option3" type="radio" name="filter">
+            <label class="btn list-light-primary"
+                   for="option3"
+                  
+                   data-bs-toggle="tooltip"
+                   ng-click="FILTER_BY_PERIOD_TYPE_Fn(4)"
+                   ng-class="{'list-light-secondary':Input_Model.PERIOD_TYPE_ID==4}"
+                   data-bs-original-title="Select Period">P</label>
+
+            <input class="btn-check radio-light" id="option4" type="radio" name="filter">
+            <label class="btn list-light-primary"
+                   for="option4"
+                   data-bs-toggle="tooltip"
+                   ng-click="FILTER_BY_PERIOD_TYPE_Fn(3)"
+                   ng-class="{'list-light-secondary':Input_Model.PERIOD_TYPE_ID==3}"
+                   data-bs-original-title="Select Quarter">Q</label>
+
+        </div>
+        <div class="col-2  mobile-none print_pdf_doc" id="DATEPICKER" ng-show="Input_Model.PERIOD_TYPE_ID==1">
+            <!--<label class="form-label mx-3 mt-2 text-nowrap">Week Ending</label>-->
+            <div class="input-group input-group-sm datepicker_margin" id="week-picker-wrapper">
+                <div class="input-group-prepend" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                    <button type="button" click-once class="btn btn-light week-prev px-3"><i class="fas fa-arrow-left"></i></button>
+                </div>
+                <input type="text" class="week-picker" ng-class="{'week-picker-disabled':BTN_HIDE_WEEK_PICKER==0}" readonly placeholder="Select a Week" />
+                <div class="input-group-append" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                    <button type="button" click-once class="btn btn-light week-next px-3">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc" id="MONTH_DATEPICKER1" ng-show="Input_Model.PERIOD_TYPE_ID==2">
+            <input class="form-control MonthView"
+                   name="START_DATE"
+                   autocomplete="off"
+                   placeholder="Select  month"
+                   ng-model="Input_Model.DISPLAY_START_DATE"
+                   type="text">
+        </div>
+
+        <div class="col-2 mobile-none print_pdf_doc" ng-show="Input_Model.PERIOD_TYPE_ID==3">
+            <span ng-show="false">{{Input_Model.DISPLAY_QUARTER_START_DATE=((Input_Model.START_DATE | date :'dd/MM/yyyy') + '-' + (Input_Model.END_DATE | date :'dd/MM/yyyy'))}}</span>
+            <input class="form-control QuarterView"
+                   name="START_DATE"
+                   autocomplete="off"
+                   placeholder="Select  month"
+                   ng-model="Input_Model.DISPLAY_QUARTER_START_DATE"
+                   type="text">
+
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc" id="RANGE_DATEPICKER1" ng-show="Input_Model.PERIOD_TYPE_ID==4">
+            <span ng-show="false">{{Input_Model.DISPLAY_RANGE_START_DATE=HIT_ALLOW==1?((Input_Model.START_DATE | date :'dd/MM/yyyy') + '-' + (Input_Model.END_DATE | date :'dd/MM/yyyy')):''}}</span>
+            <div class="form">
+                <div id="week-picker-range" class="date week_picker_range">
+                    <span class="input-group-addon d-block">
+                        <input type="text"
+                               ng-model="Input_Model.DISPLAY_RANGE_START_DATE"
+                               class="form-control DISPLAY_RANGE_START_DATE"
+                               placeholder="Select a week..." /><i class="glyphicon glyphicon-calendar"></i>
+                    </span>
+                    <input type="hidden">
+                </div>
+            </div>
+        </div>
+        <div class="col-auto mobile-none mt-2 print_pdf_doc" id="BUTTON_FILTER">
+            <a class="text-dark c-pointer" data-bs-toggle="tooltip" data-bs-placement="top" ng-click="PRINT_PDF_DSA(1,'PRINT','Detailed_Sales_Analysis')" title="Print"><i class="fa-light fa-print fa-lg"></i></a>
+            <a class="text-dark ms-2 c-pointer" data-bs-toggle="tooltip" ng-click="RESET_FILTER()" data-bs-placement="top" title="Reset Data"><i class="fa-light fa-arrows-rotate fa-lg"></i></a>
+        </div>
+        <div class="col-auto ms-auto desktop-none print_pdf_doc">
+            <!--desktop-none-->
+            <a class="text-dark c-pointer" data-bs-toggle="modal" data-bs-target="#filter_popup"
+               data-bs-original-title="Filter" title="Filter">
+                <i class="fa-light fa-filter fa-lg"></i>
+            </a>
+        </div>
+        <div class="col-sm-12 col-xl-12">
+            <h6 class="d-inline f-14">Selected Sites:</h6>
+            <span class="badge badge-light-primary sites-block" ng-repeat="site in SITE_LIST"
+                  ng-show="site.IS_APPLAY_CHECK">
+                {{site.Value}}
+                <span class="txt-primary"> {{site.DISPLAY_TEXT_CURRENCY}}</span>
+                <span ng-click="SITE_Fn(site,1)">
+                    <i class="fa-regular fa-times"></i>
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="cardFront" id="sales_front">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="header-top">
+                            <h5 class="txt-primary">Category </h5>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-repeat="CATEGORY in Display_Model.CATEGORY_LIST" on-finish-render="ngRepeatFinishedCategoryRender">
+                                <div class="card-body">
+                                    <div class="card-header">
+                                        <div class="header-top">
+                                            <h6 class="font-primary">{{CATEGORY.Title}} <i class="fa-regular fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-original-title="This shows the sales by each standard category. The % of sale shows the contribution of the category towards total sales"></i> </h6>
+                                            <div class="card-header-right-icon">
+                                                <span class="badge badge-light-primary">YTD: {{CATEGORY.YTD_VALUE}} | % of Sales: {{CATEGORY.SALES_PERCENT}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body"><div id="Category_chart_{{$index}}"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="header-top">
+                                    <h5 class="txt-primary">Session</h5>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="row">
+                                    <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-repeat="SESSION in Display_Model.SESSION_LIST" on-finish-render="ngRepeatFinishedSessionRender">
+                                        <div class="card-body">
+                                            <div class="card-header">
+                                                <div class="header-top">
+                                                    <h6 class="font-primary">{{SESSION.Title}} <i class="fa-regular fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-original-title="This shows the sales by each session. The session timings are maintained in the ePOS system suggesting which session each sales transaction falls under. The % of sale shows the contribution of the session towards total sales."></i> </h6>
+                                                    <div class="card-header-right-icon">
+                                                        <span class="badge badge-light-primary">YTD: {{SESSION.YTD_VALUE}} | % of Sales: {{SESSION.SALES_PERCENT}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body"><div id="Session_chart_{{$index}}"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="header-top">
+                                    <h5 class="txt-primary">Area</h5>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="row">
+                                    <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-repeat="AREA in Display_Model.AREA_LIST" on-finish-render="ngRepeatFinishedAreaRender">
+                                        <div class="card-body">
+                                            <div class="card-header">
+                                                <div class="header-top">
+                                                    <h6 class="font-primary">
+                                                        {{AREA.Title}}  <i class="fa-regular fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-original-title="This shows the sales by each revenue center maintained in ePOS. The % of sale shows the
+                                                        contribution of the revenue center towards total sales."></i>
+                                                    </h6>
+                                                    <div class="card-header-right-icon">
+                                                        <span class="badge badge-light-primary">YTD: {{AREA.YTD_VALUE}} | % of Sales: {{AREA.SALES_PERCENT}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body"><div id="Area_Chart_{{$index}}"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xxl-12 col-ed-12 col-xl-12 box-col-4">
+                <div class="card height-equal box-col-6">
+                    <div class="card-header card-no-border">
+                        <div class="header-top">
+                            <h5 class="txt-primary">{{Input_Model.SELECTED_PERIOD_TYPE_LABEL}} Sales by Payment Method</h5>
+                            <div class="card-header-right-icon">
+                                <button class="btn px-2" type="button"
+                                        ng-click="Fn_FLIP('comps_front','comps_back',0, HIDE_SHOW_FLAG_1,1)"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-trigger="hover"
+                                        title="Flip View">
+                                    <i class="fa-light fa-lg fa-right-left-large"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="cardFront" id="comps_front">
+                            <div id="Weekly_Sales" ng-show="!HIDE_SHOW_FLAG_1"></div>
+                        </div>
+                        <div class="cardBack" id="comps_back">
+                            <div class="table-responsive scrollbar-wrapper p-0"
+                                 ng-if="HIDE_SHOW_FLAG_1"
+                                 style="min-height: 240px;"
+                                 ng-show="Display_Model.WEEKLY_SALES_BY_PAYMENT_DATA_GRID.SERIESDATALIST.length>0">
+                                <table class="table table-hover consolidated-table">
+                                    <thead class="table-header-fixed">
+                                        <tr>
+                                            <th></th>
+                                            <th ng-repeat="LABEL in Display_Model.LABELS" class="text-end">{{LABEL}}</th>
+                                            <!--<th class="text-end">Wk-8</th>
+                                                <th class="text-end">Wk-7</th>
+                                                <th class="text-end">Wk-6</th>
+                                                <th class="text-end">Wk-5</th>
+                                                <th class="text-end">Wk-4</th>
+                                                <th class="text-end">Wk-3</th>
+                                                <th class="text-end">Wk-2</th>
+                                                <th class="text-end">Wk-1</th>
+                                                <th class="text-end">CW</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="DGV in Display_Model.WEEKLY_SALES_BY_PAYMENT_DATA_GRID.SERIESDATALIST" ng-class="{'t-footer':DGV.name=='Total'}">
+                                            <td>{{DGV.name}}</td>
+                                            <td class="text-end text-nowrap"
+                                                ng-repeat="x in [].constructor(7) track by $index">
+                                                {{ DGV.data[$index] | number:0 }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot class="t-footer">
+                                        <tr>
+                                            <td>Total</td>
+                                            <td class="text-end text-nowrap" ng-repeat="total in  Display_Model.WEEKLY_SALES_BY_PAYMENT_DATA_GRID.DATAGRID_VALUES">
+                                                {{total.Val1}}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-12 col-ed-12 col-xl-12 box-col-4" ng-if="false">
+                <div class="card height-equal box-col-6">
+                    <div class="card-header card-no-border">
+                        <div class="header-top">
+                            <h5 class="txt-primary">Monthly Sales by Payment Method</h5>
+                            <div class="card-header-right-icon">
+                                <button class="btn px-2" type="button"
+                                        data-bs-toggle="tooltip"
+                                        ng-click="Fn_FLIP('comps_front_1','comps_back_1',0,HIDE_SHOW_FLAG_2,2)"
+                                        data-bs-placement="top"
+                                        data-bs-trigger="hover"
+                                        title="Flip View">
+                                    <i class="fa-light fa-lg fa-right-left-large"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="cardFront" id="comps_front_1">
+                            <div id="Monthly_Sales"
+                                 ng-show="!HIDE_SHOW_FLAG_2"></div>
+                        </div>
+                        <div class="cardBack" id="comps_back_1">
+                            <div class="table-responsive scrollbar-wrapper"
+                                 style="min-height: 240px;"
+                                 ng-if="HIDE_SHOW_FLAG_2"
+                                 ng-show="Display_Model.MONTHLY_SALES_BY_PAYMENT_GRID.SERIESDATALIST.length>0">
+                                <table class="table table-hover consolidated-table">
+                                    <thead class="table-header-fixed">
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-end">M-2</th>
+                                            <th class="text-end">M-1</th>
+                                            <th class="text-end">CM</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="DGV in Display_Model.MONTHLY_SALES_BY_PAYMENT_GRID.SERIESDATALIST" ng-class="{'t-footer':DGV.name=='Total'}">
+                                            <td>{{DGV.name}}</td>
+                                            <td class="text-end text-nowrap" ng-repeat="x in [].constructor(3) track by $index">
+                                                {{DGV.data[$index] | number:0}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot class="t-footer">
+                                        <tr>
+                                            <td>Total</td>
+                                            <td class="text-end text-nowrap" ng-repeat="total in  Display_Model.MONTHLY_SALES_BY_PAYMENT_GRID.DATAGRID_VALUES">
+                                                {{total.Val1}}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<div class="modal fade" id="filter_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Filters</h5>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer"
+                                       data-toggle="dropdown">
+                                        <span class="select-label" id="select_label">
+                                            {{Input_Model.DISPLAY_TEXT_SITE}}
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications" class="dropdown-menu w-auto" style="min-width:100%">
+                                        <li ng-click="SITE_All_Fn()" class="DontHideOnClick">
+                                            <i class="fa-regular fa-lg"
+                                               ng-class="{'fa-square-check txt-success':(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length,'fa-square':(SITE_LIST | filter:{IS_CHECK:true}).length!=SITE_LIST.length}"></i>
+                                            <span class="fs-12">All</span>
+                                            <span ng-show="false"> {{  IS_ALL_SITE_CHECK=(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length?true:false}}</span>
+                                        </li>
+                                        <li ng-repeat="site in SITE_LIST" class="DontHideOnClick text-nowrap" ng-click="SITE_Fn(site,2)">
+                                            <i class="fa-regular fa-lg" ng-class="{'fa-square-check txt-success':site.IS_CHECK,'fa-square':!site.IS_CHECK}"></i>
+                                            <span class="fs-12">{{site.Value}}</span>
+                                        </li>
+                                        <li class="sticky-bottom bg-white float-end">
+                                            <button ng-click="Fn_BLUR_SITES()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-primary">Apply</button>
+                                            <button ng-click="RESET_SITES_Fn()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-light DontHideOnClick">Reset</button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                        <span class="select-label" id="select_label">
+                                            {{Input_Model.DISPLAY_TEXT_CURRENCY}}
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications" class="dropdown-menu w-100">
+                                        <li ng-repeat="currency in CURRENCY_LIST" ng-click="CURRENCY_Fn(currency)">
+                                            {{currency.Value}}
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <div class="input-group input-group-sm" id="week-picker-copy-wrapper">
+                                <div class="input-group-prepend" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                                    <button type="button" click-once class="btn btn-light week-prev px-2"><i class="fas fa-arrow-left"></i></button>
+                                </div>
+                                <input type="text" class="form-control week-picker-copy" readonly placeholder="Select a Week" />
+                                <div class="input-group-append" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                                    <button type="button" click-once class="btn btn-light week-next px-2">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

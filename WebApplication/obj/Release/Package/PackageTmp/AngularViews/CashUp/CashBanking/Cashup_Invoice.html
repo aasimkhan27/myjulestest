@@ -1,0 +1,291 @@
+﻿<div class="card shadow-none">
+    <div class="card-header">
+        <span class="text-bold">Invoice 200321564</span>
+        <span class="badge badge-success text-100 ml-2">Paid</span>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-sm btn-wenodo mt-1">Edit</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table compact-table">
+                <thead>
+                    <tr>
+                        <th class="bg-white app-text" width="20%">To</th>
+                        <th class="bg-white app-text" width="6%">Date</th>
+                        <th class="bg-white app-text" width="6%">Due Date</th>
+                        <th class="bg-white app-text" width="6%">Invoice #</th>
+                        <th class="bg-white app-text" width="6%">Reference</th>
+                        <th class="text-right bg-white app-text">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="semibold">HORIZON</span>
+                            <br />
+                            A-19, 4th Floor Ahmedabad Palace Road Koh-e-fiza, BHOPAL, MADHYA PRADESH 462001 India
+                        </td>
+                        <td class="text-nowrap">20 Jan 2022</td>
+                        <td class="text-nowrap">20 Jan 2022</td>
+                        <td>200321564</td>
+                        <td>321654484</td>
+                        <td class="text-bold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 3,154.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="text-right text-sm app-text">Amounts are <span class="text-bold">Tax Exclusive</span></p>
+            <div class="table-responsive">
+                <table class="table compact-table">
+                    <thead>
+                        <tr>
+                            <th>Item Code</th>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th class="text-right">Unit Price</th>
+                            <th>Account</th>
+                            <th>Tax Rate</th>
+                            <th class="text-right">Tax Amount</th>
+                            <th class="text-right">Net Amount</th>
+                            <th class="text-right">Gross Amount</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody on-finish-render="ngRepeatFinished">
+                        <tr>
+                            <td>364654654</td>
+                            <td>Food</td>
+                            <td>1.00</td>
+                            <td class="semibold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 1,800.00</td>
+                            <td>Sales - Food</td>
+                            <td>
+                                <div class="form-group mb-0">
+                                    <select class="custom-select custom-select-xs font-10">
+                                        <option>10% (VAT on Income)</option>
+                                        <option>20% (VAT on Income)</option>
+                                        <option>30% (VAT on Income)</option>
+                                        <option>No VAT</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 100.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 1,800.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 1,800.00</td>
+                            <td class="text-center">
+                                <a class="text-blue cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Add More..."><i class="far fa-plus"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Wine</td>
+                            <td>1.00</td>
+                            <td class="semibold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 115.00</td>
+                            <td>Sales - Wine</td>
+                            <td>
+                                <div class="form-group mb-0">
+                                    <select class="custom-select custom-select-xs font-10">
+                                        <option>10% (VAT on Income)</option>
+                                        <option>20% (VAT on Income)</option>
+                                        <option>30% (VAT on Income)</option>
+                                        <option>No VAT</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 100.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 115.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 115.00</td>
+                            <td class="text-center">
+                                <a class="text-blue cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Add More..."><i class="far fa-plus"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Beverages</td>
+                            <td>1.00</td>
+                            <td class="semibold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 798.75</td>
+                            <td>Sales - Drink</td>
+                            <td>
+                                <div class="form-group mb-0">
+                                    <select class="custom-select custom-select-xs font-10">
+                                        <option>10% (VAT on Income)</option>
+                                        <option>20% (VAT on Income)</option>
+                                        <option>30% (VAT on Income)</option>
+                                        <option>No VAT</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 100.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 798.75</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 798.75</td>
+                            <td class="text-center">
+                                <a class="text-blue cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Add More..."><i class="far fa-plus"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>No Show</td>
+                            <td>1.00</td>
+                            <td class="semibold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 225.00</td>
+                            <td>Sales - Others</td>
+                            <td>
+                                <div class="form-group mb-0">
+                                    <select class="custom-select custom-select-xs font-10">
+                                        <option>10% (VAT on Income)</option>
+                                        <option>20% (VAT on Income)</option>
+                                        <option>30% (VAT on Income)</option>
+                                        <option>No VAT</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 100.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 225.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 225.00</td>
+                            <td class="text-center">
+                                <a class="text-blue cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Add More..."><i class="far fa-plus"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Service Charge</td>
+                            <td>1.00</td>
+                            <td class="semibold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 440.00</td>
+                            <td>Service Charge Collection</td>
+                            <td>
+                                <div class="form-group mb-0">
+                                    <select class="custom-select custom-select-xs font-10">
+                                        <option>10% (VAT on Income)</option>
+                                        <option>20% (VAT on Income)</option>
+                                        <option>30% (VAT on Income)</option>
+                                        <option>No VAT</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 100.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 440.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 440.00</td>
+                            <td class="text-center">
+                                <a class="text-blue cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Add More..."><i class="far fa-plus"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Charity</td>
+                            <td>1.00</td>
+                            <td class="semibold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right"></td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td class="text-center">
+                                <a class="text-blue cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Add More..."><i class="far fa-plus"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Over / Under</td>
+                            <td>1.00</td>
+                            <td class="semibold text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right"></td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td class="text-right semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td class="text-center">
+                                <a class="text-blue cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Add More..."><i class="far fa-plus"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7"></td>
+                            <td class="text-right">Subtotal</td>
+                            <td class="text-right text-bold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 3,379.59</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"></td>
+                            <td class="text-right">Total No VAT</td>
+                            <td class="text-right text-bold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"></td>
+                            <td class="text-right">Total VAT 20%</td>
+                            <td class="text-right text-bold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 587.75</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"></td>
+                            <td class="text-right font-12 text-bold">Calculated Total</td>
+                            <td class="text-right font-12 text-bold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 3,967.37</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"></td>
+                            <td class="text-right font-12 semibold">EPOS Total</td>
+                            <td class="text-right font-12 semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 3,967.37</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"></td>
+                            <td class="text-right font-12 semibold">Variance</td>
+                            <td class="text-right font-12 semibold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"></td>
+                            <td class="text-right">Less Payment <br /> 20 Jan 2022</td>
+                            <td class="text-right text-bold text-blue"><span ng-bind-html="CURRENCY_SYMBOL"></span> 945.34</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7"></td>
+                            <td class="text-right font-18 text-bold">Amount Due</td>
+                            <td class="text-right font-18 text-bold"><span ng-bind-html="CURRENCY_SYMBOL"></span> 00.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-none">
+    <div class="card-header semibold">History & notes</div>
+    <div class="card-body">
+        <div class="col-md-12 border-bottom">
+            <span class="text-gray text-sm">Paid by System Generated on 30 Jan 2022</span>
+            <p class="semibold text-sm">Payment recieved from Test Wenodo Customer on 17 Jan 2023 for 345.56. This invoice is fully paid.</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Add_Address">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Add Address
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <textarea class="form-control text-sm" placeholder="Enter Address" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-wenodo">Save</button>
+                    <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+</div>

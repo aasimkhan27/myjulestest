@@ -1,0 +1,82 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="heading-text-2 mt-2">Knowledge Base</h5>
+        <div class="card-tools">
+            <a href="#!/Add_New_Resources" ng-if="CHECK_MODULE_ACCESS(41,2)" class="btn btn-wenodo">Add New</a>
+        </div>
+    </div>
+    <div class="card-body">
+      
+        <div class="col-md-12 bg-wenodo-dark-blue text-white p-5 text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control" ng-model="RESOURCE_SEARCH.SEARCH_TEXT" placeholder="Search" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <select class="custom-select"
+                                    name="TAG_ID"
+                                    ng-model="RESOURCE_SEARCH.SEARCH_TAG_ID"
+                                    ng-options="CL.TAG_ID as CL.TAG_NAME for CL in RESOURCE_TAGS_LIST "
+                                    required
+                                    ng-class="{'error':ResourceForm.submitted && ResourceForm.TAG_ID.$error.required}">
+                                <option value="">- All-</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-group mb-0">
+                            <button type="button" ng-click="GET_RESOURCE_TILES()" class="btn btn-wenodo"><i class="far fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-group mb-0">
+                            <button type="button" ng-click="RESET_TILES()" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Reset"><i class="far fa-undo"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center my-3">
+            <div class="col-auto">
+                <button type="button" ng-click="GET_FILTER_TAGS_ALL()" class="btn btn-wenodo">All</button>
+            </div>
+            <div class="col-auto" ng-repeat="TG in RESOURCE_TAGS_LIST" ng-click="GET_FILTER_TAGS(TG)">
+                <button type="button" class="btn btn-wenodo">{{TG.TAG_NAME}}</button>
+            </div>
+        </div>
+        <section class="home-blog bg-sand">
+            <div class="row ">
+                <div class="text-center col-md-12" ng-show="RESOURCE_LIST.length==0" empty-grid> </div>
+                <div class="col-md-4" ng-repeat="RL in RESOURCE_LIST">
+                    <div class="media blog-media shadow-sm">
+                        <a><img class="d-flex blog-image" src="/uploads/{{RL.IMAGE}}" alt="Generic placeholder image"></a>
+                        <div class="circle">
+                            <h5 class="day">{{RL.DISPLAY_DATE | date:'d'}}</h5>
+                            <span class="year">{{RL.DISPLAY_DATE | date:'MMM, y'}}</span>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="mt-0 employee-right-limit">
+                                {{RL.TITLE}}
+                                <span class="float-right z-index-top">
+                                    <a href="#!/Add_New_Resources?TITLE_ID={{RL.RESOURCE_TILE_ID}}" ng-show="CHECK_MODULE_ACCESS(41,3)"> <i class="fad fa-edit text-success"></i></a>
+                                    <a href="#!/Add_New_Resources?TITLE_ID={{RL.RESOURCE_TILE_ID}}" ng-show="CHECK_MODULE_ACCESS(41,4)"> <i class="fad fa-trash text-danger"></i></a>
+                                </span>
+                            </h5>
+                            <span class="blog-content-limit">{{RL.DESCRIPTION}}</span>
+                            <ul class="mt-2" ng-click="RedirectToHtml_FY(RL.PAGE)">
+                                <li><a class="cursor-pointer text-blue">Read More... </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+

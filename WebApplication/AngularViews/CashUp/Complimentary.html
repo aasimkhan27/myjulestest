@@ -1,0 +1,328 @@
+﻿<style>
+    h5 {
+        font-size: 12px;
+    }
+</style>
+<!--<div class="animated fadeInLeft" id="complimentary" role="tabpanel" ng-show="CASHUP.STEP_NO==9" aria-labelledby="custom-content-below-settings-tab">-->
+<div class="overlay_loadingNew" style="display:{{overlay_loadingNew}}!important"></div>
+<div id="LOADER_ID">
+    <div class="card-header">
+
+        <ul class="nav nav-pills float-left">
+            <li class="nav-item border radius-50">
+                <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Area: <span class="cash-up-header">{{CASHUP.AreaList[0].NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">CashUp Date: <span class="cash-up-header">{{CASHUP.CASHUP_DATE|date}}</span></span>
+            </li>
+        </ul>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item border radius-50 ml-2">
+                    <!--<span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{CASHUP.EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT | number:2}}</span></span>-->
+                    <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{CASHUP.EPOS_HEADER_DATA[0].VOID | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.VOID_TOTAL | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <!--<span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_VOID!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_VOID=(CASHUP.VOID_TOTAL - CASHUP.EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT) |number:2}}</span></span>-->
+                    <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_VOID!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_VOID=(CASHUP.VOID_TOTAL - CASHUP.EPOS_HEADER_DATA[0].VOID) |number:2}}</span></span>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--<div class="row">
+        <div class="col-md-12">
+            <button style="float:right;" class="btn btn-w-default btn-lg" ng-click="GET_EPOS_VOID_COMP();"> Auto Fill From EPOS</button>
+        </div>
+    </div>-->
+    <div class="card-header">
+        <h5 class="card-title">Void</h5>
+        <div class="card-tools d-flex ml-auto">
+                <div class="col-auto">
+                    <button class="btn btn-wenodo btn-sm" ng-click="GET_EPOS_VOID_COMP();"> Auto Fill From EPOS</button>
+                </div>
+                <div class="col-auto" ng-show="CASHUP.BackValid==true">
+                    <button class="btn btn-wenodo btn-sm ml-2" ng-click="RESET_ACTUALDATA();"> Back to Actual Fill Void/Comp</button>
+                </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <label>Void Type <span class="text-danger">*</span></label>
+            </div>
+
+            <div class="col-md-2">
+                <label for="check">Number</label>
+            </div>
+
+            <div class="col-md-2">
+                <label for="check">Amount <span class="text-danger">*</span></label>
+            </div>
+
+            <div class="col-md-6">
+                <label>&nbsp;</label>
+            </div>
+            
+        </div>
+
+        <!--<div class="row" ng-repeat="Void in VoidList" ng-init="Void.VALUE=null">-->
+        <!-- ng-hide="CASHUP.INTEGRATION_SYSTEM_ID==1 || CASHUP.INTEGRATION_SYSTEM_ID==14" -->
+        <div class="row" ng-repeat="Void in VoidList| filter:{IS_DELETED:0}" ng-init="ValidControls_CODE(Void)" on-finish-render="ngRepeatFinished">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <select class="custom-select text-xs" ng-model="Void.CODE" ng-options="VL.CODE as VL.CODE for VL in CodeList" ng-class="{'error':!Void.CODE_VALID}">
+                            <option value="" selected="selected">Select</option>
+                        </select>
+                        <!--<label class="font-12 text-normal">{{Void.CODE}}</label>-->
+                    </div>
+                </div>
+                <div class="col-md-2">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="Void.CHECK_NO">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <input type="text" class="form-control" only-digits ng-model="Void.VALUE" ng-class="{'error':!Void.VALUE_VALID}">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="d-flex">
+                        <a class="add_dreceived_button mt-2 cursor-pointer" ng-click="VoidLine()" click-once ng-show="$last" data-toggle="tooltip" data-html="true" data-original-title="Add More">
+                            <i class="fas fa-plus-circle ml-2"></i>
+                        </a>
+                        <!-- <a class="add_dreceived_button" ng-click="DeleteLine(VoidList, $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>-->
+                        <a class="add_dreceived_button mt-2 cursor-pointer" ng-click="DeleteVoidLine(VoidList, $index,Void)" data-toggle="tooltip" data-html="true" data-original-title="Remove">
+                            <i class="fas fa-minus-circle ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+        </div>
+        <div class="card-footer text-right">
+            <h6 class="app-text text-bold">Total: {{ CASHUP.VOID_TOTAL=((VoidList| filter:{IS_DELETED:0} )| total:'VALUE')| number:2 }}</h6>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="card-header">
+        <h5 class="card-title">Complimentary</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item border radius-50">
+                    <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{CASHUP.EPOS_HEADER_DATA[0].DISCOUNT | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.COMP_TOTAL | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_COMP!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_COMP=(CASHUP.COMP_TOTAL - CASHUP.EPOS_HEADER_DATA[0].DISCOUNT) |number:2}}</span></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-1">
+                <label>Authorised By <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-md-1">
+                <label for="amount">Check #</label>
+            </div>
+            <div class="col-md-1">
+                <label for="namehost">Table #</label>
+            </div>
+
+            <div class="col-md-1">
+                <label>Reason of Comp. <span class="text-danger">*</span></label>
+            </div>
+
+            <div class="col-md-1">
+                <label for="amount">No. of Covers</label>
+            </div>
+
+            <div class="col-md-1">
+                <label for="amount">Time</label>
+            </div>
+
+            <div class="col-md-1">
+                <label for="amount">Amount <span class="text-danger">*</span></label>
+            </div>
+
+            <div class="col-md-1">
+                <label for="deposit">Total</label>
+            </div>
+
+            <div class="col-md-4">
+                <label for="note">Note</label>
+            </div>
+        </div>
+        <div class="row" ng-repeat="COMP in ComplimentaryList| filter:{IS_DELETED:0} " ng-init="ValidControls(COMP)">
+            <div class="col-md-1">
+                <div class="form-group">
+                    <select class="custom-select text-xs" ng-class="{'error':!COMP.AUTHORIZED_BY_VALID}"
+                            ng-options="CL.ID as CL.NAME for CL in StaffList"
+                            ng-model="COMP.AUTHORIZED_BY">
+                        <option value="">- Please Select-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="COMP.CHECK_NO">
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="COMP.VOUCHER_TYPE">
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group">
+                    <select class="custom-select text-xs" ng-model="COMP.CUSTOMER_NAME" ng-options="CL.DISPLAY_TEXT as CL.REASON for CL in CASHUP.COMP_REASONS" ng-class="{'error':!COMP.REASON_VALID}">
+                        <option value="">Select</option>
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group">
+                    <input type="text" class="form-control" only-digits ng-model="COMP.CODE">
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group">
+                    <!--<input type="text" class="form-control" ng-model="COMP.MODE">-->
+                    <input class="form-control"
+                           moment-picker="COMP.MODE"
+                           onkeypress="return event.charCode >= 48 && event.charCode <= 58"
+                           maxlength="5"
+                           name="MODE"
+                           autocomplete="off"
+                           placeholder="Select a time"
+                           ng-model="Section_Week_Search.AREA_WEEK_START_TIME"
+                           format="HH:mm"
+                           locale="de"
+                           show-header="0"
+                           required
+                           ng-model-options="{ updateOn: 'blur' }"
+                          >
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group">
+                    <input type="text" class="form-control" only-digits ng-model="COMP.DISCOUNT" ng-class="{'error':!COMP.DISCOUNT_VALID}">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <p>{{COMP.VALUE=COMP.DISCOUNT*1 |number:2}}</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="d-flex">
+                    <input type="text" id="note" class="form-control" ng-model="COMP.NOTE">
+                    <a class="add_dreceived_button mt-2 cursor-pointer" ng-click="ComplimentaryLine()" click-once ng-show="$last" data-toggle="tooltip" data-html="true" data-original-title="Add More">
+                        <i class="fas fa-plus-circle ml-2"></i>
+                    </a>
+                    <!--<a class="add_dreceived_button" ng-click="DeleteLine(ComplimentaryList, $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>-->
+                    <a class="add_dreceived_button mt-2 cursor-pointer" ng-click="DeleteLine(ComplimentaryList, $index,COMP)" data-toggle="tooltip" data-html="true" data-original-title="Remove">
+                        <i class="fas fa-minus-circle ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-right">
+            <h6 class="app-text text-bold">Total: {{ CASHUP.COMP_TOTAL=((ComplimentaryList | filter:{IS_DELETED:0})| total:'VALUE')| number:2 }}</h6>
+        </div>
+        <hr ng-show="!CASHUP.COMPLEMENTARYVALID" />
+        <div class="form-group text-red p-3" ng-show="!CASHUP.COMPLEMENTARYVALID">
+            Please fill the mandatory fields marked in red (*) symbol.
+        </div>
+        <hr />
+        <div class="col-md-12">
+            <div class="form-group mt-3">
+                <label for="noteLayout" class="m-0 pl-1">Comments:</label>
+                <textarea class="form-control d-block"
+                          rows="4"
+                          id="noteLayout"
+                          placeholder="{{WRITE_A_COMMENT}}"
+                          name="text"
+                          ng-model="CASHUP.COMP_NOTES"
+                          ng-blur="INS_UPD_CASHUP_HEADER_NOTES();"></textarea>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label for="noteLayout" class="border-bottom m-0 pl-1">Comments</label>
+            <div class="text-center ng-isolate-scope" ng-show="COMP_NOTE_LIST.length==0"><div class="alert bg-custom-blue">{{NO_COMMENTS}}</div></div>
+            <blockquote class="blockquote text-success text-sm" ng-repeat="FNL in COMP_NOTE_LIST" ng-init="NOTE_INIT(FNL)">
+                <span class="float-right mb-2">
+                    <a class="btn btn-w-default" ng-show="!FNL.IS_EDIT && FNL.IS_TIME_EDIT_FLAG" ng-click="EDIT_COMMENTS(FNL)"><i class="far fa-edit text-success"></i></a>
+                    <a class="btn btn-w-default" ng-show="FNL.IS_EDIT" ng-click="SAVE_COMMENTS(FNL)"><i class="far fa-save text-success"></i></a>
+                    <a class="btn btn-w-default" ng-show="FNL.IS_EDIT" ng-click="EDIT_CANCEL(FNL)"><i class="far fa-times text-danger"></i></a>
+                    <!--<a class="btn btn-w-default"><i class="far fa-trash text-danger"></i></a>-->
+                </span>
+                <p class="text-success" ng-show="!FNL.IS_EDIT">{{FNL.NOTE}}</p>
+                <textarea class="form-control d-block"
+                          ng-show="FNL.IS_EDIT"
+                          rows="2"
+                          id="noteLayout"
+                          placeholder="{{WRITE_A_COMMENT}}"
+                          name="text"
+                          ng-keyup="CHECK_EVENTS($event,FNL)"
+                          ng-model="FNL.NOTE"></textarea>
+                <div ng-show="FNL.IS_EDIT">
+                    <span>Press Esc to Cancel</span>
+                    <a ng-click="EDIT_CANCEL(FNL)" class="text-blue cursor-pointer">
+                        Cancel
+                    </a>
+                </div>
+                <footer class="blockquote-footer" ng-show="!FNL.IS_EDIT">
+                    {{FNL.USER_NAME}},
+                    <cite title="">{{FNL.USER_EMAIL}}</cite>
+                    <br />
+                    <cite class="ml-3">{{FNL.CREATED_DATE | date:'dd-MMM-yyyy HH:mm' }}</cite>
+                    <div class="border-bottom"></div>
+
+                </footer>
+                <span class="semibold ml-3"
+                      ng-show="FNL.IS_TIME_EDIT_FLAG">
+                    Remaining time to edit this comment -
+                    {{FNL.START_COUNTDOWN }}
+                </span>
+            </blockquote>
+        </div>
+    </div>
+</div>
+    <div class="event-footer animated fadeInUp">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 d-inline m-2 text-right">
+                    <!--<button class="btn btn-w-default btn-sm" ng-click="ShowDiv(GetPreviousStep())" ng-show="CASHUP.STEP_NO!=0"><i class="fa fa-angle-double-left"></i> Previous</button>-->
+                    <button class="btn btn-w-default btn-sm" ng-click="PreviousLink()"><i class="fa fa-angle-double-left"></i> Previous</button>
+                    <button class="btn btn-wenodo btn-sm" ng-click="NextLink('Reviews')"><i class="fa fa-angle-double-right"></i> Continue</button>
+                    <!--<button class="btn btn-wenodo btn-sm" ng-click="UPD_CASHUP_HEADER_SUBMIT()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==0 || CashUp_Main_STATUS_ID==1 || CashUp_Main_STATUS_ID==5)"><i class="fa fa-angle-double-right"></i> Submit</button>
+                    <button class="btn btn-wenodo btn-sm" ng-click="APP_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Approve</button>
+                    <button class="btn btn-danger btn-sm" ng-click="REJ_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Return</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--</div>-->

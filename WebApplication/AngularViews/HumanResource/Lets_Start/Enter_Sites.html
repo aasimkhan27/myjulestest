@@ -1,0 +1,545 @@
+﻿<div class="row align-items-center" style="height:80vh" ng-show="!LINK_EXPIRE_FLAG && PAGE_LOAD == 1">
+    <div class="col-xxl-6 col-md-6 col-xl-6 text-center">
+        <h4 class="heading-text d-block mb-2">Link is not valid any more!</h4>
+        <p>Oops this invite URL is not valid anymore.</p>
+        <a href="../Login/Index" type="button" class="btn btn-primary">Take me home</a>
+    </div>
+    <div class="col-xxl-6 col-md-6 col-xl-6 text-center">
+        <a href="../Login/Index">
+            <img src="../../../E_Content/images/rota-login.png" class="img-fluid" style="max-height:500px" />
+        </a>
+    </div>
+</div>
+
+<div class="row basic_details" ng-show="LINK_EXPIRE_FLAG && PAGE_LOAD == 1">
+    <div class="col-xxl-2 col-md-2 col-xl-2">
+            <div id="sidenav" class="bg-grey">
+                <div class="wrapper">
+                    <div class="menu scrollbar-wrapper mx-height-100">
+                        <ul class="bg-grey">
+                            <li ng-class="{'':TAB_ID==1}" ng-click="LET_GET_START_Fn(1)"><a class="txt-success"><span class="badge badge-success me-2"><i class="fa-regular fa-check fa-sm"></i></span>Basic Details</a></li>
+                            <li class="active" ng-click="LET_GET_START_Fn(2)" ng-class="{'active':TAB_ID==2}"><a><span class="badge badge-primary me-2">2</span> Enter Sites</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="col-xxl-10 col-md-10 col-xl-10">
+        <div class="card shadow-none border-0">
+            <div class="card-body">
+                <div class="right-panel container-sm">
+                    <div class="row">
+                        <div class="col-xxl col-md col-xl">
+                            <h4 class="heading-text text-start">Add Site/Location</h4>
+                            <div class="alert-sm alert-light-warning d-inline me-2" ng-show="HR_BRANCH_LIST.length!=HR_ENTITY_DTLS.NO_OF_SITES">
+                                <i class="fa-light fa-triangle-exclamation txt-orange"></i>
+                                <span class="txt-orange">
+                                    You have added
+                                    <span class="alert-link">{{HR_BRANCH_LIST.length}}/{{HR_ENTITY_DTLS.NO_OF_SITES}}</span> sites
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xxl-auto col-md-auto col-xl-auto">
+                            <a data-bs-toggle="modal" ng-click="POP_ADD_ENTITY_Fn()" class="btn btn-primary legalBtn">
+                                Add New Legal Entity
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                            <div class="alert alert-light-warning mt-2 mb-0" ng-show="HR_BRANCH_LIST.length==HR_ENTITY_DTLS.NO_OF_SITES">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fa-light fa-triangle-exclamation txt-orange fa-2xl"></i>
+                                    </div>
+                                    <div class="col">
+                                        <span class="alert-link txt-orange" href="#">{{HR_BRANCH_LIST.length}} out of {{HR_ENTITY_DTLS.NO_OF_SITES}} sites created </span>
+                                        <p class="txt-orange">You need to subscribe for more. <a class="text-underline txt-orange c-pointer" href="#!/UserJR">Click here</a> to see our subscription</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- First----------- -->
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                            <div class="myContainer">
+                                <div class="accordion" id="outerAccordion">
+                                    <div class="accordion-item" ng-repeat="_entity in HR_ENTITY_LIST" ng-init="nginit_entity(_entity)">
+                                        <span ng-show="false"> {{_entity.EN_INDEX=$index}}</span>
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-white py-3"
+                                                    type="button"
+                                                    ng-class="{'collapsed':!_entity.SHOW_ENTITY_DTLS}"
+                                                    data-bs-toggle="collapse"
+                                                    ng-click="ENTITY_HEADER_CLICK_Fn(_entity)"
+                                                    aria-expanded="true" aria-controls="entityOne{{$index}}">
+                                                {{_entity.ENTITY_NAME}} ({{(HR_BRANCH_LIST | filter:{ENTITY_ID:_entity.ENTITY_ID}:true).length}} Sites)
+                                            </button>
+                                            <i class="fa-light fa-pen penIcon my-3"
+                                               ng-click="EDIT_ENTITY_Fn(_entity,index)"></i>
+                                            <a class="btn btn-light text-primary anchorTag" ng-click="ADD_SITE_Fn(_entity)">
+                                                Add Sites/Location
+                                            </a>
+                                        </h2>
+                                        <div class="accordion-collapse collapse" ng-class="{'show':_entity.SHOW_ENTITY_DTLS}">
+                                            <div class="accordion-body">
+                                                <form name="_entity.branchform" novalidate>
+                                                    <div class="row" ng-show="_entity.SHOW_SITE_DTLS">
+                                                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                            <label>Site Name <span class="txt-danger">*</span></label>
+                                                            <input type="text"
+                                                                   name="BRANCH_NAME"
+                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                   ng-model="_entity.BRANCH_NAME"
+                                                                   required
+                                                                   ng-class="{'error':_entity.branchform.submitted && _entity.branchform.BRANCH_NAME.$error.required}">
+                                                        </div>
+
+                                                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                            <label>Address 1 <span class="txt-danger">*</span></label>
+                                                            <input type="text"
+                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                   ng-model="_entity.ADDRESS_1"
+                                                                   name="ADDRESS_1"
+                                                                   required
+                                                                   ng-class="{'error':_entity.branchform.submitted && _entity.branchform.ADDRESS_1.$error.required}">
+                                                        </div>
+
+                                                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                            <label>Address 2</label>
+                                                            <input type="text"
+                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                   ng-model="_entity.ADDRESS_2"
+                                                                   name="ADDRESS_2"
+                                                                   ng-class="{'error':_entity.branchform.submitted && _entity.branchform.ADDRESS_2.$error.required}">
+                                                        </div>
+
+                                                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                            <label>Country  <span class="txt-danger">*</span></label>
+                                                            <select ng-options="_Country.COUNTRY_ID as _Country.DISPLAY_TEXT for _Country in COUNTRY_LIST"
+                                                                    id="my-single{{$index}}"
+                                                                    class="single-select-tagging_search"
+                                                                    style="width: 100%"
+                                                                    name="COUNTRY"
+                                                                    data-placeholder="Select Item"
+                                                                    data-minimum-results-for-search="0"
+                                                                    ng-model="_entity.COUNTRY_ID"
+                                                                    ng-change="GET_STATES(_entity,$index,'SITE')"
+                                                                    data-value="id"
+                                                                    sc-single-select
+                                                                    required
+                                                                    ng-class="{'error':_entity.branchform.submitted && _entity.branchform.COUNTRY.$error.required}">
+                                                                <option value="">{{DD_DEFAULT_TEXT}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="_entity.SHOW_HIDE_COUNTY">
+                                                            <label>{{_entity.STATE_LABEL_NAME}} <span class="txt-danger">*</span></label>
+                                                            <select ng-options="_state.STATE_ID as (_state.STATE_NAME | uppercase) for _state in _entity.STATES"
+                                                                    id="branch_single_select_tagging{{$index}}"
+                                                                    class="single-select-tagging"
+                                                                    style="width: 100%"
+                                                                    name="STATE"
+                                                                    data-placeholder="Select Item"
+                                                                    data-minimum-results-for-search="0"
+                                                                    ng-model="_entity.STATE_ID"
+                                                                    data-value="id"
+                                                                    sc-single-select
+                                                                    ng-required="_entity.SHOW_HIDE_COUNTY"
+                                                                    ng-class="{'error':_entity.branchform.submitted && _entity.branchform.STATE.$error.required}">
+                                                                <option value="">{{DD_DEFAULT_TEXT}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                            <label>City <span class="txt-danger">*</span></label>
+                                                            <input type="text"
+                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                   name="CITY_NAME"
+                                                                   ng-model="_entity.CITY_NAME"
+                                                                   required
+                                                                   ng-class="{'error':_entity.branchform.submitted && _entity.branchform.CITY_NAME.$error.required}">
+                                                        </div>
+                                                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                            <label>{{_entity.POST_CODE_LABEL}}  <span class="txt-danger">*</span></label>
+                                                            <input type="text"
+                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                   ng-model="_entity.ZIPCODE"
+                                                                   required
+                                                                   name="ZIPCODE"
+                                                                   ng-pattern="_entity.COUNTRY_ID==225? UK_PINCODE_REG_X:(_entity.COUNTRY_ID==224? GCC_PINCODE_REG_X:(_entity.COUNTRY_ID==226? US_PINCODE_REG_X:''))"
+                                                                   ng-class="{'error':_entity.branchform.submitted && _entity.branchform.ZIPCODE.$error.required || _entity.branchform.ZIPCODE.$error.pattern}">
+                                                            <small class="text-danger" ng-show="_entity.branchform.ZIPCODE.$error.pattern && _entity.COUNTRY_ID==225">Post code not valid.</small>
+                                                            <small class="text-danger" ng-show="_entity.branchform.ZIPCODE.$error.pattern && _entity.COUNTRY_ID==224">Po.Box not valid.</small>
+                                                            <small class="text-danger" ng-show="_entity.branchform.ZIPCODE.$error.pattern && _entity.COUNTRY_ID==226">ZIP code not valid.</small>
+
+                                                        </div>
+
+                                                        <div class="col-xxl-12 col-md-12 col-xl-12 text-end">
+                                                            <button class="btn btn-light" ng-click="RESET_BRANCH_Fn(_entity,_entity,$index,1)">
+                                                                Reset
+                                                            </button>
+                                                            <button class="btn btn-primary" ng-click="ADMIN_INS_UPD_BRANCH(_entity,_entity,$index,1)">
+                                                                Save
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <!-- Inner Accordion -->
+                                                <div class="accordion my-3" id="innerAccordion">
+                                                    <div class="accordion-item" ng-repeat="_branch in _entity.HR_BRANCH_LIST | filter:{ENTITY_ID:_entity.ENTITY_ID}:true">
+                                                        <form name="_branch.branchform" novalidate>
+                                                            <h2 class="accordion-header">
+                                                                <span class="accordion-button border border-grey bg-white" ng-class="{'collapsed':!_branch.SHOW_HIDE}">
+                                                                    {{_branch.BRANCH_NAME}}
+                                                                    <span ng-show="false">{{_branch.COMM_INDEX=$index +'' + _entity.EN_INDEX }}</span>
+                                                                </span>
+                                                                <span class="ms-auto">
+                                                                    <i class="fa-light fa-pen"
+                                                                       ng-click="EDIT_SITE_Fn(_branch,_branch.COMM_INDEX)">
+                                                                    </i>
+                                                                    <i class="fa-regular fa-trash-can"
+                                                                       ng-click="DELETE_BRANCH_DTLS_Fn(_branch,_entity,$index)">
+                                                                    </i>
+                                                                </span>
+                                                            </h2>
+                                                            <div class="accordion-collapse collapse"
+                                                                 ng-class="{'show':_branch.SHOW_HIDE}">
+                                                                <div class="accordion-body">
+                                                                    <div class="row">
+                                                                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                                            <label>Site Name<span class="txt-danger">*</span> </label>
+                                                                            <input type="text"
+                                                                                   name="IN_BRANCH_NAME"
+                                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                                   ng-model="_branch.HR_BRANCH_BY_ID.BRANCH_NAME"
+                                                                                   required
+                                                                                   ng-class="{'error':_branch.branchform.submitted && _branch.branchform.IN_BRANCH_NAME.$error.required}">
+                                                                        </div>
+
+                                                                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                                            <label>Address 1 <span class="txt-danger">*</span></label>
+                                                                            <input type="text"
+                                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                                   ng-model="_branch.HR_BRANCH_BY_ID.ADDRESS_1"
+                                                                                   name="IN_ADDRESS_1"
+                                                                                   required
+                                                                                   ng-class="{'error':_branch.branchform.submitted && _branch.branchform.IN_ADDRESS_1.$error.required}">
+                                                                        </div>
+
+                                                                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                                            <label>Address 2</label>
+                                                                            <input type="text"
+                                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                                   ng-model="_branch.HR_BRANCH_BY_ID.ADDRESS_2"
+                                                                                   name="ADDRESS_2"
+                                                                                   ng-class="{'error':_branch.branchform.submitted && _branch.branchform.ADDRESS_2.$error.required}">
+                                                                        </div>
+
+                                                                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                                            <label>Country <span class="txt-danger">*</span> </label>
+                                                                            <input type="hidden"
+                                                                                   ng-model="_branch.HR_BRANCH_BY_ID.COUNTRY_ID"
+                                                                                   name="COUNTRY_ID"
+                                                                                   required
+                                                                                   ng-class="{'error':_branch.branchform.submitted && _branch.branchform.COUNTRY_ID.$error.required}" />
+
+                                                                            <ul class="nav nav-pills" ng-class="{'error':_branch.branchform.submitted && _branch.branchform.COUNTRY_ID.$error.required}">
+                                                                                <li class="dropdown w-100 show">
+                                                                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                                                        <span class="select-label" id="select_label">
+                                                                                            <span class="truncate">{{_branch.HR_BRANCH_BY_ID.CUSTOM_COUNTRY_NAME}}</span>
+                                                                                        </span>
+                                                                                    </a>
+                                                                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                                        <li class="DontHideOnClick sticky-top bg-white">
+                                                                                            <input type="text"
+                                                                                                   placeholder="Search"
+                                                                                                   ng-model="_branch.DISPLAY_TEXT_SEARCH" class="mb-1" />
+                                                                                        </li>
+                                                                                        <li class=""
+                                                                                            ng-show="_branch.HR_BRANCH_BY_ID.CUSTOM_COUNTRY_NAME!=DD_DEFAULT_TEXT"
+                                                                                            ng-click="SELECTED_COUNTRY_Fn('',_branch,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                                        <li class=""
+                                                                                            ng-repeat="_Country in COUNTRY_LIST | filter:{DISPLAY_TEXT :_branch.DISPLAY_TEXT_SEARCH}"
+                                                                                            ng-click="SELECTED_COUNTRY_Fn(_Country,_branch)">
+                                                                                            <span class="">{{_Country.DISPLAY_TEXT}}</span>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="_branch.HR_BRANCH_BY_ID.SHOW_HIDE_COUNTY">
+                                                                            <label>{{_branch.HR_BRANCH_BY_ID.STATE_LABEL_NAME}} <span class="txt-danger">*</span></label>
+                                                                            <input type="hidden"
+                                                                                   ng-model="_branch.HR_BRANCH_BY_ID.STATE_ID"
+                                                                                   name="STATE"
+                                                                                   ng-required="_branch.HR_BRANCH_BY_ID.SHOW_HIDE_COUNTY"
+                                                                                   ng-class="{'error':_branch.branchform.submitted && _branch.branchform.STATE.$error.required}" />
+
+                                                                            <ul class="nav nav-pills" ng-class="{'error':_branch.branchform.submitted && _branch.branchform.STATE.$error.required}">
+                                                                                <li class="dropdown w-100">
+                                                                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                                                        <span class="select-label" id="select_label">
+                                                                                            <span class="truncate">{{_branch.HR_BRANCH_BY_ID.CUSTOM_STATE_NAME}}</span>
+                                                                                        </span>
+                                                                                    </a>
+                                                                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                                        <li class="DontHideOnClick sticky-top bg-white">
+                                                                                            <input type="text"
+                                                                                                   placeholder="Search"
+                                                                                                   ng-model="_branch.DISPLAY_BRANCH_TEXT_SEARCH" class="mb-1" />
+                                                                                        </li>
+                                                                                        <li class=""
+                                                                                            ng-show="_branch.HR_BRANCH_BY_ID.CUSTOM_STATE_NAME!=DD_DEFAULT_TEXT"
+                                                                                            ng-click="SELECTED_STATE_Fn('',_branch,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                                        <li class=""
+                                                                                            ng-click="SELECTED_STATE_Fn(_state,_branch)"
+                                                                                            ng-repeat="_state in _branch.STATES | filter:{STATE_NAME :_branch.DISPLAY_BRANCH_TEXT_SEARCH}">
+                                                                                            <span class="">{{_state.STATE_NAME}}</span>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                                            <label>City <span class="txt-danger">*</span></label>
+                                                                            <input type="text"
+                                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                                   name="CITY_NAME"
+                                                                                   ng-model="_branch.HR_BRANCH_BY_ID.CITY_NAME"
+                                                                                   required
+                                                                                   ng-class="{'error':_branch.branchform.submitted && _branch.branchform.CITY_NAME.$error.required}">
+                                                                        </div>
+                                                                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                                            <label>{{_branch.HR_BRANCH_BY_ID.POST_CODE_LABEL}} <span class="txt-danger">*</span></label>
+                                                                            <input type="text"
+                                                                                   placeholder="{{PLACE_HOLDER}}"
+                                                                                   ng-model="_branch.HR_BRANCH_BY_ID.ZIPCODE"
+                                                                                   required
+                                                                                   name="ZIPCODE"
+                                                                                   ng-pattern="_branch.HR_BRANCH_BY_ID.COUNTRY_ID==225? UK_PINCODE_REG_X:(_branch.HR_BRANCH_BY_ID.COUNTRY_ID==224? GCC_PINCODE_REG_X:(_branch.HR_BRANCH_BY_ID.COUNTRY_ID==226? US_PINCODE_REG_X:''))"
+                                                                                   ng-class="{'error':_branch.branchform.submitted && _branch.branchform.ZIPCODE.$error.required || _branch.branchform.ZIPCODE.$error.pattern }">
+                                                                            <small class="text-danger" ng-show="_branch.branchform.ZIPCODE.$error.pattern && _branch.HR_BRANCH_BY_ID.COUNTRY_ID==225">Post code not valid.</small>
+                                                                            <small class="text-danger" ng-show="_branch.branchform.ZIPCODE.$error.pattern && _branch.HR_BRANCH_BY_ID.COUNTRY_ID==224">Po.Box not valid.</small>
+                                                                            <small class="text-danger" ng-show="_branch.branchform.ZIPCODE.$error.pattern && _branch.HR_BRANCH_BY_ID.COUNTRY_ID==226">ZIP code not valid.</small>
+                                                                        </div>
+                                                                        <div class="col-xxl-12 col-md-12 col-xl-12 text-end">
+
+                                                                            <button class="btn btn-light" ng-click="_branch.SHOW_HIDE=false">
+                                                                                Cancel
+                                                                            </button>
+                                                                            &nbsp;
+                                                                            <button class="btn btn-primary" ng-click="ADMIN_INS_UPD_BRANCH(_branch,_branch.HR_BRANCH_BY_ID,$index)">
+                                                                                Save
+                                                                            </button>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <!-- End of Inner Accordion -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-end">
+                        <a class="btn btn-light" ng-click="PREVIOUS_Fn()">Previous</a>
+                        <a class="btn btn-primary" ng-click="UPD_PENDING_SETUP()">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="AddEntity" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"> {{EntitySiteSearch.ENTITY_ID>0?'Edit':'Add New'}}  Entity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form name="entityform" novalidate>
+                    <div class="row">
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label>Company Registration Number <span class="text-danger">*</span></label>
+                            <input type="text"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   name="COMPANY_REGISTRATION_NO"
+                                   ng-blur="GET_COMPANY_INFO()" only-Alfa
+                                   ng-model="EntitySiteSearch.COMPANY_REGISTRATION_NO"
+                                   required
+                                   ng-class="{'error':entityform.submitted && entityform.COMPANY_REGISTRATION_NO.$error.required}">
+                        </div>
+
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label>Company Name <span class="text-danger">*</span></label>
+                            <input type="text"
+                                   name="ENTITY_NAME"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   ng-disabled="EntitySiteSearch.AUTO_SEARCH==1"
+                                   ng-model="EntitySiteSearch.ENTITY_NAME"
+                                   required
+                                   ng-class="{'error':entityform.submitted && entityform.ENTITY_NAME.$error.required}">
+                        </div>
+                        <!-- Address -->
+                        <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="false">
+                            <label class="d-block">Address <span class="text-danger">*</span></label>
+                            <div class="form-check form-control py-2">
+                                <input class="radio_animated ms-2"
+                                       id="Auto01"
+                                       type="radio"
+                                       ng-click="ADD_ADDRESS_fn()"
+                                       ng-model="EntitySiteSearch.AUTO_SEARCH"
+                                       ng-checked="EntitySiteSearch.AUTO_SEARCH==1"
+                                       value="1"
+                                       name="ENTITY01">
+                                <label class="form-check-label mb-0" for="Auto01" checked="">Auto-Search </label>
+                            </div>
+                        </div>
+                        <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="false">
+                            <label class="d-block">&nbsp;</label>
+                            <div class="form-check form-control py-2">
+                                <input class="radio_animated ms-2"
+                                       id="Manually01"
+                                       type="radio"
+                                       ng-click="ADD_ADDRESS_fn()"
+                                       ng-model="EntitySiteSearch.AUTO_SEARCH"
+                                       ng-checked="EntitySiteSearch.AUTO_SEARCH==2"
+                                       value="2"
+                                       name="ENTITY01">
+                                <label class="form-check-label mb-0" for="Manually01">Add Manually </label>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label>Address Name 1 <span class="text-danger">*</span></label>
+                            <input type="text"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   name="ADDRESS_1"
+                                   ng-model="EntitySiteSearch.ADDRESS_1"
+                                   ng-disabled="EntitySiteSearch.AUTO_SEARCH==1"
+                                   required
+                                   ng-class="{'error':entityform.submitted && entityform.ADDRESS_1.$error.required}">
+                        </div>
+
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label>Address Name 2</label>
+                            <input type="text"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   ng-model="EntitySiteSearch.ADDRESS_2"
+                                   ng-disabled="EntitySiteSearch.AUTO_SEARCH==1"
+                                   name="ADDRESS_2"
+                                   ng-class="{'error':entityform.submitted && entityform.ADDRESS_2.$error.required}">
+                        </div>
+
+                        <!-- city    -->
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label class="d-block">Country <span class="text-danger">*</span></label>
+                            <input type="hidden"
+                                   name="COUNTRY"
+                                   required
+                                   ng-model="EntitySiteSearch.COUNTRY_ID"
+                                   ng-class="{'error':entityform.submitted && entityform.COUNTRY.$error.required}" />
+
+                            <ul class="nav nav-pills" ng-class="{'error':entityform.submitted && entityform.COUNTRY.$error.required}">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                        <span class="select-label" id="select_label">
+                                            <span class="truncate">{{EntitySiteSearch.CUSTOM_COUNTRY_NAME}}</span>
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                        <li class="DontHideOnClick sticky-top bg-white">
+                                            <input type="text"
+                                                   placeholder="Search"
+                                                   ng-model="EntitySiteSearch.DISPLAY_ENTITY_TEXT_SEARCH" class="mb-1" />
+                                        </li>
+                                        <li class=""
+                                            ng-show="EntitySiteSearch.CUSTOM_COUNTRY_NAME!=DD_DEFAULT_TEXT"
+                                            ng-click="SELECTED_ENTITY_COUNTRY_Fn('',EntitySiteSearch,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                        <li class=""
+                                            ng-repeat="_Country in COUNTRY_LIST | filter:{DISPLAY_TEXT :EntitySiteSearch.DISPLAY_ENTITY_TEXT_SEARCH}"
+                                            ng-click="SELECTED_ENTITY_COUNTRY_Fn(_Country,EntitySiteSearch)">
+                                            <span class="">{{_Country.DISPLAY_TEXT}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+
+                        </div>
+                        <!-- country -->
+                        <div class="col-xxl-4 col-xl-4 col-md-4" ng-show="EntitySiteSearch.SHOW_HIDE_COUNTY">
+                            <label class="d-block">{{EntitySiteSearch.COUNTY_NAME}} <span class="text-danger">*</span></label>
+                            <input type="hidden"
+                                   name="STATE"
+                                   ng-required="EntitySiteSearch.SHOW_HIDE_COUNTY"
+                                   ng-model="EntitySiteSearch.STATE_ID"
+                                   ng-class="{'error':entityform.submitted && entityform.STATE.$error.required}" />
+                            <ul class="nav nav-pills" ng-class="{'error':entityform.submitted && entityform.STATE.$error.required}">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                        <span class="select-label" id="select_label">
+                                            <span class="truncate">{{EntitySiteSearch.CUSTOM_STATE_NAME}}</span>
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                        <li class="DontHideOnClick sticky-top bg-white">
+                                            <input type="text"
+                                                   placeholder="Search"
+                                                   ng-model="EntitySiteSearch.DISPLAY_BRANCH_TEXT_SEARCH" class="mb-1" />
+                                        </li>
+                                        <li class=""
+                                            ng-show="EntitySiteSearch.CUSTOM_STATE_NAME!=DD_DEFAULT_TEXT"
+                                            ng-click="SELECTED_ENTITY_STATE_Fn('',EntitySiteSearch,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                        <li class=""
+                                            ng-click="SELECTED_ENTITY_STATE_Fn(_state,EntitySiteSearch)"
+                                            ng-repeat="_state in EntitySiteSearch.STATES | filter:{STATE_NAME :EntitySiteSearch.DISPLAY_BRANCH_TEXT_SEARCH}">
+                                            <span class="">{{_state.STATE_NAME}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <label>City <span class="txt-danger">*</span></label>
+                            <input type="text"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   name="CITY_NAME"
+                                   ng-model="EntitySiteSearch.CITY_NAME"
+                                   required
+                                   ng-class="{'error':entityform.submitted && entityform.CITY_NAME.$error.required}">
+                        </div>
+                        <!-- postcode -->
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label class="d-block">{{EntitySiteSearch.POST_CODE}}<span class="text-danger">*</span></label>
+                            <input type="text"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   ng-model="EntitySiteSearch.ZIPCODE"
+                                   required
+                                   name="ZIPCODE"
+                                   ng-pattern="EntitySiteSearch.COUNTRY_ID==225?UK_PINCODE_REG_X:(EntitySiteSearch.COUNTRY_ID==224? GCC_PINCODE_REG_X:(EntitySiteSearch.COUNTRY_ID==226? US_PINCODE_REG_X:''))"
+                                   ng-class="{'error':entityform.submitted && entityform.ZIPCODE.$error.required || entityform.ZIPCODE.$error.pattern}">
+                            <small class="text-danger" ng-show="entityform.ZIPCODE.$error.pattern && EntitySiteSearch.COUNTRY_ID==225">Post code not valid.</small>
+                            <small class="text-danger" ng-show="entityform.ZIPCODE.$error.pattern && EntitySiteSearch.COUNTRY_ID==224">Po.Box not valid.</small>
+                            <small class="text-danger" ng-show="entityform.ZIPCODE.$error.pattern && EntitySiteSearch.COUNTRY_ID==226">ZIP code not valid.</small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer ">
+                <button class="btn btn-light" ng-show="EntitySiteSearch.ENTITY_ID==null || EntitySiteSearch.ENTITY_ID==''" ng-click="RESET_ENTITY_Fn()"> Reset </button>
+                <button class="btn btn-primary" ng-click="ADMIN_INS_UPD_ENTITIES_AND_LOCATION(EntitySiteSearch,$index)"> Save </button>
+            </div>
+        </div>
+    </div>
+</div>

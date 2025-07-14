@@ -1,0 +1,120 @@
+﻿<form id="PettycashForm" name="PettycashForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Petty Cash Name:*</label>
+                    <input type="text"
+                           class="form-control"
+                           name="PETTY_CASH_CAT_NAME"
+                           placeholder="Enter ..."
+                           maxlength="250"
+                           required
+                           ng-model="PettycashSearch.PETTY_CASH_CAT_NAME"
+                           ng-class="{'error':PettycashForm.submitted && PettycashForm.PETTY_CASH_CAT_NAME.$error.required}" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Comment:</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="COMMENTS"
+                              placeholder="Enter ..."
+                              rows="3"
+                              maxlength="500"
+                              ng-model="PettycashSearch.COMMENTS"
+                              ng-class="{'error':PettycashForm.submitted && PettycashForm.COMMENTS.$error.required}" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>&nbsp;</label>
+                <div class="form-inline">
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PettycashSearch.All" name="Active"
+                                   ng-value="-1"
+                                   ng-model="PettycashSearch.ACTIVE" />
+                            <label for="PettycashSearch.All" class="custom-control-label justify-content-left">ALL</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PettycashSearch.ACTIVE" name="Active"
+                                   ng-model="PettycashSearch.ACTIVE"
+                                   ng-value="1">
+                            <label for="PettycashSearch.ACTIVE" class="custom-control-label justify-content-left">Active</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PettycashSearch.InActive" name="Active"
+                                   ng-model="PettycashSearch.ACTIVE"
+                                   ng-value="0">
+                            <label for="PettycashSearch.InActive" class="custom-control-label justify-content-left">In-Active</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--<div class="col-md-4">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" id="Active"
+                               ng-model="PettycashSearch.ACTIVE"
+                               ng-checked="PettycashSearch.ACTIVE">
+                        <label for="Active" class="custom-control-label">Active</label>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-md-12">
+                <div data-ng-show="PettycashForm.submitted && PettycashForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button click-once ng-click="ADMIN_INS_UPD_PETTY_CASH_CAT();" class="btn btn-wenodo">Save</button>
+                    <button ng-click="ADMIN_GET_PETTY_CASH_CAT(1)" class="btn btn-w-default">Search</button>
+                    <button ng-click="ResetPETTYCASH();" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        <div class="text-center" ng-show="PETTY_CASH.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="PETTY_CASH.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Petty Cash Name</th>
+                        <th>Status</th>
+                        <th width="5%"></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="10" align="center" ng-show="GetData">
+                            <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_PETTY_CASH_CAT();">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="PK in PETTY_CASH" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{PK.PETTY_CASH_CAT_NAME}}</td>
+                        <!--<td>{{BL.CREATED_DATE | date}}</td>-->
+                        <td>{{PK.ACTIVE?'Active':'Inactive'}}</td>
+                        <td>
+                            <a ng-click="EDIT_ADMIN_GET_PETTY_CASH_CAT(PK)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                            <!--<a  ng-click="DELETE_INS_UPD_BRANCH(BL)" ><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</form>

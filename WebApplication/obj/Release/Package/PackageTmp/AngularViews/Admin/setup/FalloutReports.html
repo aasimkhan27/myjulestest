@@ -1,0 +1,66 @@
+﻿<form id="FalloutReportForm" name="FalloutReportForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="FalloutReportSearch.CUSTOMER_ID"
+                            ng-options="CL.CUSTOMER_ID as CL.CUSTOMER_NAME for CL in CUSTOMER_LIST "
+                            required
+                            ng-change="GET_ENTITY_LIST()"
+                            ng-class="{'error':FalloutReportForm.submitted && FalloutReportForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="FalloutReportSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            required
+                            ng-class="{'error':FalloutReportForm.submitted && FalloutReportForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+                    <button ng-click="SEARCH_FALLOUT_REPORTS();" class="btn btn-wenodo">Search</button>
+                    <button ng-click="RESET_FALLOUT_REPORTS();" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="text-center" ng-show="FALLOUT_REPORTS.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="FALLOUT_REPORTS.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th></th>
+                        <th class="text-nowrap">SOURCE</th>
+                        <th class="text-nowrap">MESSAGE</th>
+                        <th class="text-nowrap">COUNT</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="FR in FALLOUT_REPORTS" >
+                    <tr>
+                        <td>{{$index+1}}. </td>
+                        <td> {{FR.SOURCE}}</td>
+                        <td>{{FR.DISPLAY_MESSAGE}}</td>
+                        <td>{{FR.COUNT}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,722 @@
+﻿<div id="PRINT_REPORT" ng-show="ReportSearch.REPORT_OBJECT!=null">
+    <div class="row g-1">
+        <div class="col-xxl-1 col-xl-1 col-md-1">
+            <input type="text" name="search" class="mb-2" placeholder="Search" autocomplete="off" ng-model="ReportSearch.SEARCH" ng-change="FILTER_DATA()" />
+        </div>
+        <!--SET FIELDS-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto width_first" ng-show="ReportSearch.REPORT_ID!=40">
+            <ul class="nav nav-pills mb-2">
+
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <i class="fa-thin fa-columns-3"></i>
+                            {{(SET_FIELDS_LIST | filter:{SHOW_FLAG:true}).length==SET_FIELDS_LIST.length?'All':'Selected-'+(SET_FIELDS_LIST | filter:{SHOW_FLAG:true}).length}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li>
+                            <div class="form-check">
+                                <input class="form-check-input" prevent-double-click="2000"
+                                       id="Field_All"
+                                       type="checkbox"
+                                       ng-model="SET_FIELDS_ALL"
+                                       ng-checked="(SET_FIELDS_LIST | filter:{SHOW_FLAG:true}).length==SET_FIELDS_LIST.length?true:false"
+                                       ng-change="NG_CHANGE_SET_FIELDS_ALL_Fn(SET_FIELDS_ALL);ShowHideColumns_All(SET_FIELDS_LIST);NG_CHANGE_REPORT_USER_COLUMN_MAPPING();">
+                                <label class="form-check-label text-nowrap w-100" for="Field_All">All</label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in SET_FIELDS_LIST">
+                            <div class="form-check">
+                                <input class="form-check-input" prevent-double-click="2000"
+                                       id="Field-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.SHOW_FLAG"
+                                       ng-disabled="_field.UNEDITABLE"
+                                       ng-change="NG_CHANGE_REPORT_USER_COLUMN_MAPPING();ShowHideColumns(_field);">
+                                <label class="form-check-label text-nowrap w-100" for="Field-{{$index}}">{{_field.FE_COLUMN}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--sites-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto site_width" ng-show="ReportSearch.SITE_FLAG">
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label" ng-init="IS_SELECTED=true">
+                            {{(HR_BRANCH_LIST | filter:{IS_SELECTED:true}).length==HR_BRANCH_LIST.length?'Site':'Selected-'+(HR_BRANCH_LIST | filter:{IS_SELECTED:true}).length}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-click="BRANCH_APPLY_ALL_Fn((HR_BRANCH_LIST | filter:{IS_SELECTED:true}).length)">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       id="SiteAll"
+                                       ng-model="ReportSearch.BranchALL" />
+                                <label class="form-check-label">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in HR_BRANCH_LIST">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="Site-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.IS_SELECTED"
+                                       ng-change="NG_CHANGE_BRANCH(_field);"
+                                       checked="">
+                                <label class="form-check-label d-block text-nowrap w-100" for="Site-{{$index}}">{{_field.BRANCH_NAME}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Department-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto department_filter" ng-show="ReportSearch.DEPARTMENT_FLAG == true">
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <i class=""></i>
+                            {{(DEPARTMENTS_LIST | filter:{IS_SELECTED:true}).length==DEPARTMENTS_LIST.length?'Department':'Selected-'+(DEPARTMENTS_LIST | filter:{IS_SELECTED:true}).length}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-click="DEPARTMENT_APPLY_ALL_Fn((DEPARTMENTS_LIST | filter:{IS_SELECTED:true}).length)">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       ng-model="ReportSearch.DepartmentALL" />
+                                <label class="form-check-label text_truncate text-nowrap">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in DEPARTMENTS_LIST">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="DEPARTMENT_NAME-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.IS_SELECTED"
+                                       ng-change="NG_CHANGE_DEPARTMENT(_field);"
+                                       checked="">
+                                <label class="form-check-label d-block text-nowrap w-100" for="DEPARTMENT_NAME-{{$index}}">{{_field.DEPARTMENT_NAME}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Position-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto position_filter" ng-show="ReportSearch.POSITION_FLAG == true">
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <i class=""></i>
+                            {{(POSITIONS_LIST | filter:{IS_SELECTED:true}).length==POSITIONS_LIST.length?'Position':'Selected-'+(POSITIONS_LIST | filter:{IS_SELECTED:true}).length}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-click="POSITION_APPLY_ALL_Fn((POSITIONS_LIST | filter:{IS_SELECTED:true}).length)">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       ng-model="ReportSearch.PositionALL" />
+                                <label class="form-check-label text_truncate text-nowrap">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in POSITIONS_LIST"
+                            ng-init="_field.IS_SELECTED=true">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="POSITION_NAME-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.IS_SELECTED"
+                                       ng-change="NG_CHANGE_POSITION(_field);"
+                                       checked="">
+                                <label class="form-check-label text-nowrap d-block w-100" for="POSITION_NAME-{{$index}}">{{_field.POSITION_NAME}}{{_fieldPOSITION_ID}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Pay Type-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto pay_type" ng-show="ReportSearch.PAYTYPE_FLAG == true">
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <i class=""></i>
+                            {{(PAYTYPES_LIST | filter:{IS_SELECTED:true}).length==PAYTYPES_LIST.length?'Pay Type':'Selected-'+(PAYTYPES_LIST | filter:{IS_SELECTED:true}).length}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-click="PAYTYPE_APPLY_ALL_Fn((PAYTYPES_LIST | filter:{IS_SELECTED:true}).length)">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       ng-model="ReportSearch.PaytypeALL" />
+                                <label class="form-check-label text_truncate text-nowrap">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in PAYTYPES_LIST">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="PAY_TYPE-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.IS_SELECTED"
+                                       ng-change="NG_CHANGE_PAY_TYPE(_field);"
+                                       checked="">
+                                <label class="form-check-label text-nowrap d-block w-100" for="PAY_TYPE-{{$index}}">{{_field.PAY_TYPE}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- Holiday Plan -->
+        <div class="col-xxl-auto col-xl-auto col-md-auto holiday_plan" ng-show="false">
+            <input type="hidden"
+                   name="STARTER_DECLARATION_ID"
+                   required
+                   ng-model="ReportSearch.HOLIDAY_ENTITLEMENT_ID"
+                   ng-class="" />
+            <ul class="nav nav-pills min-w-220">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{ReportSearch.ENTITLEMENT_NAME}}
+                        </span>
+                    </a>
+                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class=""
+                            ng-show="ReportSearch.HOLIDAY_PLAN_DEFAULT_TEXT!=ReportSearch.ENTITLEMENT_NAME"
+                            ng-click="CLICK_ENTITLEMENT_VIEW_Fn('')">
+                            {{ReportSearch.BRANCH_DEFAULT_TEXT}}
+                        </li>
+                        <li class="" ng-repeat="_table in HOLIDAY_ENTITLEMENTS_LIST"
+                            ng-click="CLICK_ENTITLEMENT_VIEW_Fn(_table)">
+                            {{_table.ENTITLEMENT_NAME}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Absance Type-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto absence_type" ng-show="ReportSearch.REPORT_ID==42 || ReportSearch.REPORT_ID==43">
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <i class=""></i>
+                            <span class="truncate_absence">
+                                {{(ABSENCE_TYPE_LIST | filter:{IS_SELECTED:true}).length==ABSENCE_TYPE_LIST.length?'Absence Type':'Selected-'+(ABSENCE_TYPE_LIST | filter:{IS_SELECTED:true}).length}}
+                            </span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-click="ABSENCE_APPLY_ALL_Fn((ABSENCE_TYPE_LIST | filter:{IS_SELECTED:true}).length)">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       ng-model="ReportSearch.AbsenceALL" />
+                                <label class="form-check-label w-100">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in ABSENCE_TYPE_LIST">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="ABSENCE_TYPE-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.IS_SELECTED"
+                                       ng-change="NG_CHANGE_ABSENCE_TYPE(_field);"
+                                       checked="">
+                                <label class="form-check-label text-nowrap d-block w-100" for="ABSENCE_TYPE-{{$index}}">{{_field.ABSENCE_TYPE}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Termination Reason-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto termination_filter" ng-show="ReportSearch.TERMINATION_REASON_FLAG==true">
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <i class=""></i>
+                            <span class="truncate_absence">{{(TERMINATION_REASONS_LIST | filter:{IS_SELECTED:true}).length==TERMINATION_REASONS_LIST.length?'Termination Reason':'Selected-'+(TERMINATION_REASONS_LIST | filter:{IS_SELECTED:true}).length}}</span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-click="TERMINATION_RESONS_APPLY_ALL_Fn((TERMINATION_REASONS_LIST | filter:{IS_SELECTED:true}).length)">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       ng-model="ReportSearch.TerminationReasonALL" />
+                                <label class="form-check-label w-100">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in TERMINATION_REASONS_LIST">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="TERMINATION_TYPE-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.IS_SELECTED"
+                                       ng-change="NG_CHANGE_TERMINATION_REASONS_TYPE(_field);"
+                                       checked="">
+                                <label class="form-check-label text-nowrap d-block w-100" for="TERMINATION_TYPE-{{$index}}">{{_field.TERMINATION_REASONS_NAME}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Standard Role-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto standard_role" ng-show="ReportSearch.STANDARD_ROLE_FLAG==true">
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <i class=""></i>
+                            {{(ACCESS_ROLES_ASSIGNMENT_LIST | filter:{IS_SELECTED:true}).length==ACCESS_ROLES_ASSIGNMENT_LIST.length?'Standard Role':'Selected-'+(ACCESS_ROLES_ASSIGNMENT_LIST | filter:{IS_SELECTED:true}).length}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-click="STANDARD_ROLE_APPLY_ALL_Fn((ACCESS_ROLES_ASSIGNMENT_LIST | filter:{IS_SELECTED:true}).length)">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       ng-model="ReportSearch.StandardRoleALL" />
+                                <label class="form-check-label w-100">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in ACCESS_ROLES_ASSIGNMENT_LIST">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="ROLE_TYPE-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.IS_SELECTED"
+                                       ng-change="NG_CHANGE_ACCESS_ROLES_ASSIGNMENT_TYPE(_field);"
+                                       checked="">
+                                <label class="form-check-label text-nowrap d-block w-100" for="ROLE_TYPE-{{$index}}">{{_field.ROLE_NAME}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Pay Schedule-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto pay_schedule" ng-show="ReportSearch.PAYSCHEDULE_FLAG">
+            <input type="hidden"
+                   name="STARTER_DECLARATION_ID"
+                   required
+                   ng-model="ReportSearch.PAY_SCHEDULE_ID"
+                   ng-class="" />
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                        <span class="select-label" id="select_label">
+                            <span class="truncate">{{ReportSearch.PAYSCHEDULE_NAME}}</span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                        <!--<li class=""
+                            ng-show="ReportSearch.VIEW_BY_DEFAULT_TEXT!=ReportSearch.VIEW_BY_NAME"
+                            ng-click="CLICK_VIEWBY_VIEW_Fn('')">
+                            {{ReportSearch.VIEW_BY_DEFAULT_TEXT}}
+                        </li>-->
+                        <li class="" ng-repeat="_table in ReportSearch.PAY_SCHEDULE_LIST"
+                            ng-click="NG_CHANGE_PAY_SCHEDULE(_table)">
+                            {{_table.PAYSCHEDULE_NAME}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Sections-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto section_type" ng-show="ReportSearch.SECTION_FLAG == true">
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <i class=""></i>
+                            <span class="truncate_absence">
+                                {{(SECTION_LIST | filter:{IS_SELECTED:true}).length==SECTION_LIST.length?'Section':'Selected-'+(SECTION_LIST | filter:{IS_SELECTED:true}).length}}
+                            </span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-click="SECTION_APPLY_ALL_Fn((SECTION_LIST | filter:{IS_SELECTED:true}).length)">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       ng-model="ReportSearch.SectionALL" />
+                                <label class="form-check-label w-100">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="_field in SECTION_LIST">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="SECTION_TYPE-{{$index}}"
+                                       type="checkbox"
+                                       ng-model="_field.IS_SELECTED"
+                                       ng-change="NG_CHANGE_SECTION(_field);"
+                                       checked="">
+                                <label class="form-check-label text-nowrap d-block w-100" for="SECTION_TYPE-{{$index}}">{{_field.SECTION_NAME}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--View by-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto date_filter" ng-show="ReportSearch.DATERANGE_FLAG">
+            <input type="hidden"
+                   name="STARTER_DECLARATION_ID"
+                   required
+                   ng-model="ReportSearch.VIEW_BY_ID"
+                   ng-class="" />
+            <ul class="nav nav-pills mb-2">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                        <span class="select-label" id="select_label">
+                            {{ReportSearch.VIEW_BY_NAME}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                        <!--<li class=""
+                            ng-show="ReportSearch.VIEW_BY_DEFAULT_TEXT!=ReportSearch.VIEW_BY_NAME"
+                            ng-click="CLICK_VIEWBY_VIEW_Fn('')">
+                            {{ReportSearch.VIEW_BY_DEFAULT_TEXT}}
+                        </li>-->
+                        <li class="" ng-repeat="_table in ReportSearch.VIEW_BY_LIST"
+                            ng-click="CLICK_VIEWBY_VIEW_Fn(_table)">
+                            {{_table.VIEW_BY_NAME}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--Pay Shcedule Date Selected-->
+        <div class="col-xxl-2 col-xl-2 col-md-2 pdf_date_filter" ng-show="ReportSearch.PAYSCHEDULE_FLAG" ng-click="NG_CLICK_PAY_SCHEDULE_TEXTBOX();">
+            <div class="date_range mb-2" id="Pay_Shcedule_Date_Selected">
+                <span class="text-nowrap"></span>
+                <i class="fa-light fa-calendar float-end mt-1"></i>
+            </div>
+        </div>
+        <!--calendar-->
+        <div class="col-xxl-2 col-xl-2 col-md-2 date_ranger_filter" 
+             ng-show="ReportSearch.CALENDAR_DATE_CONTROL_DISPLAY==true" 
+             id="Report_Calendar">
+            <div id="reportrange" class="date_range mb-2">
+                <span></span>
+                <i class="fa-light fa-calendar float-end mt-1"></i>
+            </div>
+        </div>
+        <!--week-->
+        <div class="col-xxl-2 col-xl-2 col-md-2 week_rng" ng-show="ReportSearch.WEEK_DATE_CONTROL_DISPLAY==true" id="Report_Week">
+            <div class="input-group week_range_container mb-2" id="week-picker-wrapper">
+                <div class="input-group-prepend">
+                    <button type="button" class="btn  week-prev" click-once>
+                        <i class="fa-light fa-chevron-left text-grey"></i>
+                    </button>
+                </div>
+                <input type="text" class="form-control week-picker week_range" readonly placeholder="Select Week" />
+                <div class="input-group-append">
+                    <button type="button" class="btn week-next" click-once>
+                        <i class="fa-light fa-chevron-right text-grey"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!--date input dd/mm/yy-->
+        <div class="col-xxl-2 col-xl-2 col-md-2 single_date_filter" ng-init="dateinputddmmyy(1)" ng-show="ReportSearch.SINGLE_DATE_CONTROL_DISPLAY==true" id="Report_DateDDMMYY">
+            <div class="date-column">
+                <input type="text" class="dateinputddmmyy mb-2" name="" ng-model="ReportSearch.DATE_FILTER" ng-value="" required="" ng-change="NG_CHANGE();" readonly>
+                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+            </div>
+        </div>
+        <!--Order by-->
+        <div class="col-xxl-2 col-xl-2 col-md-2 order_by" ng-show="ReportSearch.GROUPBY_FLAG == true">
+            <input type="hidden"
+                   name="STARTER_DECLARATION_ID"
+                   required
+                   ng-model="ReportSearch.ORDER_BY_ID"
+                   ng-class="" />
+            <ul class="nav nav-pills mb-2" ng-show="ReportSearch.REPORT_ID!=40">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                        <span class="select-label d-flex" id="select_label">
+                            <span class="font-secondary text-nowrap">Order by </span>
+                            <span class="truncate_dropdown">
+                                {{ReportSearch.ORDER_BY_NAME}}
+                            </span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="text-nowrap"
+                            ng-show="ReportSearch.ORDER_BY_DEFAULT_TEXT!=ReportSearch.GROUP_BY_NAME"
+                            ng-click="CLICK_ORDER_BY_ID_VIEW_Fn('')">
+                            {{ReportSearch.ORDER_BY_DEFAULT_TEXT}}
+                        </li>
+                        <li class="text-nowrap" ng-repeat="_table in ReportSearch.ORDER_BY_LIST"
+                            ng-click="CLICK_ORDER_BY_ID_VIEW_Fn(_table)">
+                            {{_table.ORDER_BY_NAME}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav nav-pills mb-2" ng-show="ReportSearch.REPORT_ID==40">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                        <span class="select-label d-flex" id="select_label">
+                            <span class="font-secondary text-nowrap">Order by </span>
+                            <span class="truncate_dropdown">
+                                {{ReportSearch.ORDER_BY_NAME}}
+                            </span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="text-nowrap"
+                            ng-show="ReportSearch.ORDER_BY_DEFAULT_TEXT!=ReportSearch.GROUP_BY_NAME"
+                            ng-click="NG_CHANGE_VIEW_Fn('')">
+                            {{ReportSearch.ORDER_BY_DEFAULT_TEXT}}
+                        </li>
+                        <li class="text-nowrap" ng-repeat="_table in ReportSearch.ORDER_BY_LIST_40"
+                            ng-click="NG_CHANGE_VIEW_Fn(_table)">
+                            {{_table.ORDER_BY_NAME}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+        <!--Print-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto" ng-show="FETCHED_DATA_FROM_DB.length>0" id="PRINT_PDF_PAGE">
+            <button type="button" class="btn btn-outline ipad_btn" ng-click="PRINT_PDF_PAGE('PRINT_REPORT');">
+                <i class="fa-thin fa-print" ng-click="PRINT_PDF_PAGE('PRINT_REPORT');"></i>
+                Print
+            </button>
+        </div>
+        <!--Export-->
+        <div class="col-xxl-auto col-xl-auto col-md-auto" ng-show="FETCHED_DATA_FROM_DB.length>0" id="EXPORT_XL_CSV">
+            <button class="btn btn-primary ipad_btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" ng-click="CONVERT_TO_EXCEL_CSV(1);">Export</button>
+            <!--<ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                <li><a class="dropdown-item d-block" ng-click="CONVERT_TO_EXCEL_CSV(1);">XLS</a></li>
+                <li><a class="dropdown-item" ng-click="CONVERT_TO_EXCEL_CSV(2);">CSV</a></li>
+                <li><a class="dropdown-item">PDF</a></li>
+            </ul>-->
+        </div>
+    </div>
+    <div class="col-xxl-auto col-md-auto col-xl-auto PDF_HIDE" ng-show="ReportSearch.REPORT_ID==43">
+        <div class="alert alert-light-primary">
+            <div class="row align-items-center">
+                <div class="col-auto"><i class="fa-light fa-circle-exclamation alert-primary-text f-24"></i></div>
+                <div class="col">
+                    <span class="alert-primary-text">The accrued, taken, approved and balance leave values displayed are as on the chosen date: {{ReportSearch.DATE_FILTER}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-0 mt-2">
+        <div class="table-responsive scrollbar-wrapper mx-height-reports" ng-class="{'mx-height-alert':ReportSearch.REPORT_ID==43}" ng-if="ReportSearch.REPORT_ID!=40">
+            <table class="mb-0" id="demoTable" ng-show="FETCHED_DATA_FROM_DB.length>0">
+                <thead class="thead_fixed">
+                    <tr>
+                        <th class="text-nowrap" ng-class="{'table-th-l-fixed':col.FE_COLUMN=='Name'
+                            || col.FE_COLUMN=='Employee Name'
+                            || col.FE_COLUMN=='Employee'}"
+                            ng-repeat="col in COLUMNS_LIST"
+                            name="{{col.REPORT_COLUMN_MAPPING_MASTER_ID}}"
+                            ng-show="col.SHOW_FLAG"
+                            ng-init="ShowHideColumns(col)">{{col.FE_COLUMN}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in FETCHED_DATA_FROM_DB  | orderBy : ReportSearch.ORDER_BY_FROM_OBJECT" 
+                        ng-init="row.SHOW_FLAG=false" on-finish-render="ngReportBindFinish"
+                        name="row{{row.PARENT_ID}}" ng-show="row.PARENT_ID==0 || (row.PARENT_ID !=0 && !row.SHOW_FLAG)">
+                        <td ng-class="{'text-nowrap':row['COLUMN'+($index)].VALUE.length<=15,'table-td-l-fixed':($index)==0,
+                            'bg_reports_dd ps-4':row['COLUMN'+($index)].COLOR_CODE==true && row['COLUMN'+($index)].PADDING==true,
+                            'bg_reports_dd':row['COLUMN'+($index)].COLOR_CODE==true && row['COLUMN'+($index)].PADDING==false,
+                            '':row['COLUMN'+($index)].COLOR_CODE==false && row['COLUMN'+($index)].PADDING==false,
+                            }"
+                            ng-repeat="x in [].constructor(SET_FIELDS_LIST.length) track by $index"
+                            name="{{row['COLUMN'+($index)].ID}}">
+                            <div class="d-flex align-items-center" ng-click="ShowHideRows(row)">
+                                <span class="me-3" ng-if="row['COLUMN'+($index)].FIELD_TYPE_ID==1">
+                                    {{row['COLUMN'+($index)].SHOW_DATA ? (row['COLUMN'+($index)].VALUE |limitTo:row['COLUMN'+($index)].CHARACTER_COUNT) : ''}}
+                                    <i class="fa-solid fa-ellipsis"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#show_reason"
+                                       ng-show="row['COLUMN'+($index)].VALUE.length>row['COLUMN'+($index)].CHARACTER_COUNT"
+                                       ng-click="SHOW_COMMENTS_POPUP_ON_CLICK_Fn(row['COLUMN'+($index)].VALUE);"></i>
+
+                                </span>
+                                <span class="me-3" ng-if="row['COLUMN'+($index)].FIELD_TYPE_ID==2">{{row['COLUMN'+($index)].SHOW_DATA ? row['COLUMN'+($index)].VALUE : ''}}</span>
+                                <span class="me-3 {{row['COLUMN'+($index)].VARIANCE_COLOR_CODE}}" ng-if="row['COLUMN'+($index)].FIELD_TYPE_ID==10">{{row['COLUMN'+($index)].SHOW_DATA ? (row['COLUMN'+($index)].VALUE) : ''}}</span>
+                                <span class="me-3 text-nowrap" ng-if="row['COLUMN'+($index)].FIELD_TYPE_ID==9">{{row['COLUMN'+($index)].SHOW_DATA ? (row['COLUMN'+($index)].VALUE | date:"dd/MMM/yyyy") : ''}}</span>
+                                <span class="me-3 text-nowrap" ng-if="row['COLUMN'+($index)].FIELD_TYPE_ID==15">{{row['COLUMN'+($index)].SHOW_DATA ? (row['COLUMN'+($index)].VALUE | date:"dd/MMM/yyyy h:mm a") : ''}}</span>
+                                <i class="fa-solid txt-primary ms-auto c-pointer"
+                                   ng-class="{'fa-chevron-down':row.SHOW_FLAG, 'fa-chevron-up':!row.SHOW_FLAG}"
+                                   ng-show="$index==0 && row.PARENT_ID==0"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="t_foot_fixed" ng-show="GetData">
+                    <!--<tr>
+                        <td colspan="{{SET_FIELDS_LIST.length}}">
+                            <a class="btn btn-light btn-sm btn_fixed" ng-click="LAZY_LOAD_GET_REPORT_DATA()">Load More</a>
+                        </td>
+                    </tr>-->
+                </tfoot>
+            </table>
+        </div>
+        <div class="table-responsive scrollbar-wrapper mx-height-reports" ng-if="ReportSearch.REPORT_ID==40">
+            <table class="mb-0" ng-show="FETCHED_DATA_FROM_DB.length>0">
+                <thead class="thead_fixed">
+                    <tr>
+                        <th ng-repeat="(key, value) in FETCHED_DATA_FROM_DB[0]"
+                            class="text-nowrap" ng-class="{'reports_sticky_left employee':key=='Employee Code' && $index==0, 'reports_sticky_left e_code':key=='Employee' && $index==1}">
+                            {{key}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(key, value) in FETCHED_DATA_FROM_DB">                        
+                        <td class="text-nowrap" ng-repeat="(key1, value1) in value" ng-class="{'reports_sticky_left employee bg-white':key1=='Employee Code' && $index==0, 'reports_sticky_left e_code bg-white':key1=='Employee' && $index==1}" >
+                            <div class="text-nowrap d-flex align-items-center">
+                                <span class="me-3">{{value1}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="col-xxl-12 col-md-12 col-xl-12" ng-show="FETCHED_DATA_FROM_DB.length==0">
+    <div class="no-record" ng-show="ReportSearch.REPORT_ID==40">
+        Info: Select a Pay Schedule to continue.
+    </div>
+    <div class="no-record" ng-show="ReportSearch.REPORT_ID!=40">No records yet</div>
+</div>
+<div class="modal fade" id="pay_schedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true" ng-show="ReportSearch.PAYSCHEDULE_BY_ID_LIST.length>0">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">{{ReportSearch.PAYSCHEDULE_NAME}}</h6>
+                <button type="button" class="btn-close" ng-click="ON_SCHEDULE_POPUP_CLOSE_BUTTON_CLICK_Fn();" aria-label="Close"></button>
+            </div>
+            <div class="modal-body scrollbar-wrapper">
+                <div class="row gx-2">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><span class="span-head txt-primary border-bottom w-100">Start Date</span></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><span class="span-head txt-primary border-bottom w-100">End Date</span></div>
+                </div>
+                <div class="row gx-2" ng-repeat="_table in ReportSearch.PAYSCHEDULE_BY_ID_LIST">
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <ul class="lessons-lists mt-2">
+                            <li class="border-bottom lh-32">
+                                <div class="form-check ps-2 w-100 mb-0">
+                                    <input class="radio_animated" type="radio" ng-click="SELECT_PAY_SCHEDULE_OPTIOS_Fn(_table)" required="" id="PAY_SHEDULE_NAME{{$index}}" name="PAY_SHEDULE" value="{{$index}}">
+                                    <label class="form-check-label w-80 mb-0" for="PAY_SHEDULE_NAME{{$index}}">
+                                        <span>
+                                            <i class="fa-light fa-calendar text-grey"></i> {{_table.START_DATE | date:ReportSearch.HTML_PAGE_DATE_FORMAT}}
+                                        </span>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <ul class="lessons-lists mt-2">
+                            <li class="border-bottom lh-32">
+                                <label class="form-check-label w-100 ps-2 mb-0">
+                                    <span><i class="fa-light fa-calendar text-grey me-1"></i>{{_table.END_DATE | date:ReportSearch.HTML_PAGE_DATE_FORMAT}} </span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button type="button" class="btn btn-primary w-100" ng-click="ON_PAY_SCHEDULE_DATE_SELECTION_SUBMIT_Fn();">Submit</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button type="button" class="btn btn-light w-100" ng-click="ON_SCHEDULE_POPUP_CLOSE_BUTTON_CLICK_Fn();" aria-label="Close">Close</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="show_reason" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Comment</h6>
+                <button type="button" class="btn-close" ng-click="ON_COMMENT_POPUP_CLOSE_BUTTON_CLICK_Fn();" aria-label="Close"></button>
+            </div>
+            <div class="modal-body scrollbar-wrapper">
+                <p>{{ReportSearch.COMMENTS}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('input[name="daterange"]').daterangepicker({}, function (start, end, label) {
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    });
+    document.querySelectorAll('.btn-toggle-dropdown').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const targetClass = btn.getAttribute('data-target');
+            document.querySelectorAll(`.${targetClass}`).forEach((dropdownContent) => {
+                dropdownContent.classList.toggle('d-none');
+            });
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        });
+    });
+    $(".drp-buttons").on('click', function (event) {
+        alert();
+        //event.stopPropagation();
+        //event.stopImmediatePropagation();
+        //(... rest of your JS code)
+    });
+</script>
+<div class="overlay_loadingNew" style="display:none" id="loader"><div class="loader-index"> <span></span></div></div>

@@ -1,0 +1,326 @@
+﻿<div class="box-shadow">
+    <div class="card-header">
+        <h5 class="card-title mt-1">Upload</h5>
+        <div class="card-tools ml-auto">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-sm btn-w-default mr-2" ng-click="DOWNLOAD_TEMPLATE_PNL()">Download Template</button>
+                    <button type="button" class="btn btn-sm btn-wenodo mr-2" ng-click="PNL_UPLOAD_POP_FY()">Upload</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col">
+                <label class="d-block">Branch Name</label>
+                <select class="custom-select custom-select-sm mw-150"
+                        name="START_TIME"
+                        ng-change="LAND_BRANCH_CHANGE()"
+                        ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST"
+                        ng-model="PNL_Upload_Search.FILTER_BRANCH_ID">
+                    <option value="">--Select Branch--</option>
+                </select>
+            </div>
+            <div class="col">
+                <label class="d-block">Title </label>
+                <input type="text" ng-model="PNL_Upload_Search.FILTER_PNL_TITLE" class="form-control" placeholder="Filter by Title" />
+            </div>
+
+            <div class="col">
+                <label class="d-block">File Name </label>
+                <input type="text" ng-model="PNL_Upload_Search.FILTER_FILE_NAME" class="form-control" placeholder="Filter by File Name" />
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label class="d-block">Week <span class="mandatory"></span></label>
+                    <div class="input-group input-group-sm my-0" id="week-filter-picker-wrapper">
+                        <div class="input-group-prepend">
+                            <button type="button" class="btn input-group-text week-filter-prev">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                        <input type="text"
+                               class="form-control week-filter-picker font-11 bg-white"
+                               ng-class="{'c-form-control':SHOW_BTN}"
+                               value=""
+                               readonly
+                               format="yy-mm-dd"
+                               placeholder="Select a Week" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn input-group-text week-filter-next">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-auto">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+
+                    <button type="button" ng-click="GET_PNL_NOMINAL_AMOUNT_BUDGET_HEADER(1,1,1)" class="btn btn-sm btn-wenodo">Search</button>
+                    <button type="button" ng-click="RESET_FILTER()" class="btn btn-sm btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center" ng-show="PNL_NOMINAL_AMOUNT_BUDGET_HEADER_LIST.length==0" empty-grid></div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="PNL_NOMINAL_AMOUNT_BUDGET_HEADER_LIST.length>0">
+            <table class="table table-head-fixed table-hover compact_table">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th>Title</th>
+                        <th>Week</th>
+                        <th>File</th>
+                        <th>Basis of PNL</th>
+                        <th>Basis of Cogs</th>
+                        <th>Basis of Wage</th>
+                        <th>Basis of Cost</th>
+                        <th class="text-center">Actions</th>
+
+
+
+                    </tr>
+                </thead>
+                <tbody ng-repeat="PNL in PNL_NOMINAL_AMOUNT_BUDGET_HEADER_LIST">
+                    <tr>
+                        <td>{{PNL.PNL_TITLE}}</td>
+                        <td>{{PNL.PNL_WEEK_START | date}} - {{PNL.PNL_WEEK_END | date}}</td>
+                        <td>{{PNL.PNL_TITLE}}</td>
+                        <td>{{PNL.PNL_BASIS}}</td>
+                        <td>{{PNL.PNL_COGS}}</td>
+                        <td>{{PNL.PNL_WAGE}}</td>
+                        <td>{{PNL.PNL_COST}}</td>
+                        <td class="text-center">
+                            <button type="button" ng-click="DELETE_PNL_NOMINAL_AMOUNT_BUDGET_HEADER(PNL)" class="btn btn-transparent-danger"><i class="far fa-times"></i></button>
+                            <button type="button" class="btn btn-transparent" ng-click="GET_PNL_NOMINAL_AMOUNT_BUDGET_LINE(PNL,1)"><i class="far fa-eye"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot ng-show="GetData">
+                    <tr>
+                        <td colspan="8" align="center">
+                            <a class="btn btn-secondary text-white" click-once ng-click="GET_PNL_NOMINAL_AMOUNT_BUDGET_HEADER_LAZY_LOAD()">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade show" id="PNLUpload">
+    <form id="PNLForm" name="PNLForm" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Title <span class="mandatory">*</span></label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="PNL_TITLE"
+                                       required
+                                       placeholder="Enter Title"
+                                       ng-model="PNL_Upload_Search.PNL_TITLE"
+                                       ng-class="{'error':PNLForm.submitted && PNLForm.PNL_TITLE.$error.required}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Week <span class="mandatory">*</span></label>
+                                <div class="input-group input-group-sm my-0" id="week-picker-wrapper">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn input-group-text week-prev">
+                                            <i class="fas fa-arrow-left"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control week-picker font-11 bg-white" ng-class="{'c-form-control':SHOW_BTN}" value="" readonly format="yy-mm-dd" placeholder="Select a Week" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn input-group-text week-next">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="col-md-6">
+                            <div class="form-group">
+                                <label>Entity <span class="mandatory">*</span></label>
+                                <select class="custom-select">
+                                    <option>option 1</option>
+                                    <option>option 2</option>
+                                    <option>option 3</option>
+                                    <option>option 4</option>
+                                </select>
+                            </div>
+                        </div>-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Branch <span class="mandatory">*</span></label>
+                                <select class="custom-select custom-select-sm mw-150"
+                                        name="START_TIME"
+                                        ng-change="LAND_BRANCH_CHANGE()"
+                                        ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST"
+                                        ng-model="PNL_Upload_Search.BRANCH_ID"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label class="text-center w-100">Attachments <span class="mandatory">*</span></label>
+                            <div class="upload-files-container" ng-class="{'error':PNL_Upload_Search.UploadedFiles.length==0 && PNLForm.submitted}">
+                                <div class="drag-file-area">
+                                    <label class="label">
+                                        <span class="browse-files">
+                                            <input type="file"
+                                                   id="PNL_recorduploadExcel1"
+                                                   class="default-file-input"
+                                                   ng-model="PNL_Upload_Search.UploadedFiles"
+                                                   name="file"
+                                                   ng-files="getTheFilesToUploadall($files,5,PNL_Upload_Search,1, 'PNL_recorduploadExcel','PNL_DASHBOARD',PNL_Upload_Search.UPLOADE_TYPE_ID)" />
+                                            <span class="browse-files-text"><i class="far fa-upload"></i> Add an Attachement</span>
+                                        </span>
+                                    </label>
+                                    <div class="file-block" ng-show="PNL_Upload_Search.UploadedFiles[0].ORIGINAL_FILE_NAME!=null">
+                                        <div class="file-info">
+                                            <i class="far fa-file-alt file-icon"></i>
+                                            <span class="file-name">{{PNL_Upload_Search.UploadedFiles[0].ORIGINAL_FILE_NAME}} </span>
+                                        </div>
+                                        <span class="remove-file-icon" ng-click="RESET_FILE()"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Basis of PNL <span class="mandatory">*</span></label>
+                                <textarea class="form-control" rows="3"
+                                          name="PNL_BASIS"
+                                          required
+                                          placeholder="Give your valuable comments"
+                                          ng-model="PNL_Upload_Search.PNL_BASIS"
+                                          ng-class="{'error':PNLForm.submitted && PNLForm.PNL_BASIS.$error.required}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Basis of Cogs <span class="mandatory">*</span></label>
+                                <textarea class="form-control" rows="3"
+                                          name="PNL_COGS"
+                                          required
+                                          placeholder="Give your valuable comments"
+                                          ng-model="PNL_Upload_Search.PNL_COGS"
+                                          ng-class="{'error':PNLForm.submitted && PNLForm.PNL_COGS.$error.required}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Basis of Wage <span class="mandatory">*</span></label>
+                                <textarea class="form-control" rows="3"
+                                          name="PNL_WAGE"
+                                          required
+                                          placeholder="Give your valuable comments"
+                                          ng-model="PNL_Upload_Search.PNL_WAGE"
+                                          ng-class="{'error':PNLForm.submitted && PNLForm.PNL_WAGE.$error.required}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Basis of Cost <span class="mandatory">*</span></label>
+                                <textarea class="form-control" rows="3"
+                                          name="PNL_COST"
+                                          required
+                                          placeholder="Give your valuable comments"
+                                          ng-model="PNL_Upload_Search.PNL_COST"
+                                          ng-class="{'error':PNLForm.submitted && PNLForm.PNL_COST.$error.required}" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div data-ng-show="PNLForm.submitted && PNLForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                        <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                    </div>
+                    <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PNLForm.$valid">
+                        <span class="help-block">{{InvalidUser}}</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="INS_PNL_NOMINAL_AMOUNT_BUDGET_HEADER()" class="btn btn-wenodo">Submit</button>
+                    <button type="button" ng-click="RESET_INS()" class="btn btn-w-default">Reset</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade show" id="VIEW_LINE">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">PNL Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar">
+                    <div class="text-center" ng-show="PNL_NOMINAL_AMOUNT_BUDGET_LINE.length==0" empty-grid></div>
+                    <div class="table-responsive custom-scrollbar height-auto" ng-show="PNL_NOMINAL_AMOUNT_BUDGET_LINE.length>0">
+                        <table class="table table-head-fixed table-hover compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>
+                                        Nominal Code
+                                    </th>
+                                    <th>
+                                        Week Amount
+                                    </th>
+                                    <th>
+                                        Budget
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="PNL in PNL_NOMINAL_AMOUNT_BUDGET_LINE">
+                                <tr>
+                                    <td>{{PNL.XERO_ACCOUNT_CODE}}</td>
+                                    <td><span ng-bind-html="CURRENCY_SYMBOL" ng-show="PNL.PNL_BUDGET_AMOUNT>0 || PNL.PNL_BUDGET_AMOUNT<0"></span>  {{PNL.PNL_BUDGET_AMOUNT}}</td>
+                                    <td><span ng-bind-html="CURRENCY_SYMBOL" ng-show="PNL.PNL_WEEK_AMOUNT>0 || PNL.PNL_WEEK_AMOUNT<0"></span>  {{PNL.PNL_WEEK_AMOUNT}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot ng-show="GetLineData">
+                                <tr>
+                                    <td colspan="3" align="center">
+                                        <a class="btn btn-secondary text-white" click-once ng-click="GET_PNL_NOMINAL_AMOUNT_BUDGET_LINE_LAZY_LOAD(SELECTED_LINE,2)">{{VIEWMORERECORD}}</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+</div>

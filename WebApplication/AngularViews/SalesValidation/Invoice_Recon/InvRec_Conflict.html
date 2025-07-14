@@ -1,0 +1,131 @@
+﻿<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="row">
+                <templateurl class="w-100" template-url="../AngularViews/SalesValidation/Invoice_Recon/InvRec_Header.html?v=2{{AppVersion}}">
+            </div>
+            <div class="process-wrapper">
+                <div id="progress-content-section active">
+                    <div class="section-content Conflict_Section">
+                        <table class="table table-hover table-striped table-head-fixed compact_table" ng-show="ERROR_LIST.length>0">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th width="20%" class="text-center">Error</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="DINC in ERROR_LIST">
+                                <tr>
+                                    <td class="text-center text-danger">{{DINC.Message}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <div class="card-header" ng-show="INV_RECO_UPLOAD_HEADER_BY_ID_LIST.length==0">
+                                    <div class="card-title">Duplicated Records</div>
+                                </div>
+                                <table class="table table-hover table-striped table-head-fixed compact_table" ng-show="INV_RECO_UPLOAD_HEADER_BY_ID_LIST.length==0">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th width="20%" class="text-center">Actions</th>
+                                            <th>Account</th>
+                                            <th>Contact Name</th>
+                                            <th>Date</th>
+                                            <th>Invoice Number</th>
+                                            <th class="text-right">Net</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="DINC in INV_RECO_UPLOAD_DETAILS_LIST | filter :{'IS_DUPLICATE':'!0'} | filter :{'DELETED':'!1'} | orderBy:'INVOICE_NUMBER'">
+                                        <tr>
+                                            <td class="text-center">
+                                                <div class="form-group" ng-show="!DINC.IS_MERGE">
+                                                    <span class="bigcheck">
+                                                        <label class="bigcheck mb-0">
+                                                            <input type="checkbox"
+                                                                   class="bigcheck"
+                                                                   name="DUPitem{{$index}}"
+                                                                   ng-model="DINC.IS_REMOVE_DUP_CHECK"
+                                                                   id="DUPitem" />
+                                                            <span class="bigcheck-target"></span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>{{DINC.ACCOUNT}}</td>
+                                            <td class="font-11">{{DINC.CONTACT}}</td>
+                                            <td class="font-14"><span class="text-nowrap">{{DINC.DATE | date}}</span></td>
+                                            <td class="font-14">{{DINC.INVOICE_NUMBER}}</td>
+                                            <td class="text-right font-14">
+                                                <span class="text-nowrap">
+                                                    <span ng-show="DINC.NET_AMOUNT!=null" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    {{DINC.NET_AMOUNT  | number:2}}
+                                                    <span ng-show="DINC.NET_AMOUNT==null">-</span>
+                                                </span>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr class="text-right">
+                                            <td colspan="5"></td>
+                                            <td>
+                                                <div ng-show="INV_RECO_UPLOAD_DETAILS_LIST.length>0">
+                                                    <button ng-show="SubmiteUpload" ng-click="MARG_INV_RECO_CONTACT_MAPPING(DINC)"
+                                                            type="button"
+                                                            class="btn btn-sm btn-wenodo text-nowrap">
+                                                        Merge
+                                                    </button>
+                                                    <button ng-show="SubmiteUpload" ng-click="REMOVE_INV_RECO_CONTACT_MAPPING(DINC)"
+                                                            type="button"
+                                                            class="btn btn-sm btn-danger text-nowrap">
+                                                        Remove
+                                                    </button>
+                                                    <button title="Remove all duplicate rows" ng-click="INS_INV_RECO_UPLOAD()"
+                                                            type="button"
+                                                            class="btn btn-sm btn-wenodo text-nowrap">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-hover table-striped table-head-fixed compact_table" ng-show="INV_RECO_UPLOAD_HEADER_BY_ID_LIST.length>0">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>Uploaded by</th>
+                                            <th>Uploaded Date</th>
+                                            <th>Entity</th>
+                                            <th>Branch</th>
+                                            <th width="8%" class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="INC in INV_RECO_UPLOAD_HEADER_BY_ID_LIST">
+                                        <tr>
+                                            <td>{{INC.EMAIL}}</td>
+                                            <td><i class="far fa-calendar-alt text-blue"></i> {{INC.CREATED_DATE | date}}</td>
+                                            <td>{{INC.ENTITY_NAME}}</td>
+                                            <td>{{INC.BRANCH_NAME}}</td>
+                                            <td class="text-center">
+                                                <button ng-show="Inv_recon_Search.STEP_NO==1"
+                                                        ng-click="PROCESS_INV_RECO_CONTACT_MAPPING(INC)"
+                                                        type="button"
+                                                        class="btn btn-sm btn-wenodo text-nowrap">
+                                                    Process Data
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-w-default">Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

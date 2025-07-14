@@ -1,0 +1,279 @@
+﻿@{
+    ViewBag.Title = "POIndex";
+    Layout = "~/Views/Shared/_Layout_PO.cshtml";
+}
+<div id="myDiv">
+    <ng-view></ng-view>
+</div>
+<div class="modal fade show" id="Budget_Check">
+    <div class="modal-dialog modal-fullscreen ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Budget details for "{{SELECTED_BUDGET_HEADER.BUDGET_NAME==null || SELECTED_BUDGET_HEADER.BUDGET_NAME==""?'-':SELECTED_BUDGET_HEADER.BUDGET_NAME}}"</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <h5 class="text-muted font-12" ng-if="false">
+                    Please find budget details of the selected GL Account for current period below:
+                </h5>
+                <div class="table-responsive custom-scrollbar" ng-if="false">
+                    <table class="table table-head-fixed table-hover">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Account </th>
+                                <th>Period</th>
+                                <th class="text-right">Total</th>
+                                <th class="text-right">Remaining</th>
+                                <th class="text-right">Consumed</th>
+                                <th class="text-right">Booked</th>
+                                <th class="text-right">Current</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="3">{{SELECTED_BUDGET_LINE.GLACCOUNT_NAME}}</td>
+                                <td colspan="6" ng-if="BD.DB_ACCOUNT_ID==0" class="text-align-center text-bold">There is no budget allocated in this GL Account</td>
+
+                            </tr>
+                            <tr ng-if="BD.DB_ACCOUNT_ID!=0" ng-repeat="BL in SELECTED_BUDGET_LINE.BUDGET_DETAILS_LIST">
+                                <td>{{BL.PERIOD}}</td>
+                                <td class="text-right">{{BL.TOTAL | number:2}}</td>
+                                <td class="text-right" ng-class="{'text-red text-bold':BL.REMAINING_AMOUNT<0}">
+                                    {{BL.REMAINING_AMOUNT | number:2}}
+                                </td>
+                                <td class="text-right">{{BL.CONSUMED | number :2}}</td>
+                                <td class="text-right">{{BL.BOOKED  | number :2}}</td>
+                                <td class="text-right">{{BL.CURRENT_PO_CUSTOM | number :2}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <div class="nav nav-tabs nav-tabs-scroll custom-scrollbar">
+                        <div class="nav-item w-100 text-center"
+                             ng-click="CLICK_BUDGET_MONTH(BL,SELECTED_PROJECT_ID)"
+                             ng-repeat="BL in BUDGET_LIST">
+                            <a class="nav-link mb-1"
+                               ng-class="{'active bg-blue':BL.MONTH_NO==(ACTIVE_MONTH_SELECTED)}"
+                               data-toggle="pill"
+                               role="tab"
+                               aria-controls="custom-content-below-home"
+                               aria-selected="true">
+                                {{ BL.MONTH_NO==0?'Full Period': BL.NAME}}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-2 bg-light-grey">
+                        <div class="row w-100">
+                            <div class="col-md-4 border-right">
+                                <div class="description-block">
+                                    <span class="po-details">
+
+                                        <span ng-show="ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_LINE.START_DATE!=null && SELECTED_BUDGET_LINE.END_DATE!=null">{{SELECTED_BUDGET_LINE.START_DATE | date}} - {{SELECTED_BUDGET_LINE.END_DATE | date}}</span>
+                                        <span ng-show="ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_LINE.START_DATE==null && SELECTED_BUDGET_LINE.END_DATE==null">{{SELECTED_BUDGET_HEADER.BUDGET_NAME}}</span>
+                                        <span ng-show="ACTIVE_MONTH_SELECTED>0">{{SELECTED_MONTH_WISE_LINE.START_DATE | date :'MMM yyyy'}}</span>
+                                        <span ng-show="false">
+                                            {{PR_CUSTOM_AMOUNT=(SELECTED_BUDGET_HEADER.STATUS_ID==68 && SELECTED_BUDGET_LINE.MONTH==(ACTIVE_MONTH_SELECTED) || (ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_HEADER.STATUS_ID==68) ?SELECTED_BUDGET_HEADER.CUSTOM_EXPECTED_PRICE*1:0)}}
+                                            {{PR_CUSTOM_AMOUNT_STATUS_66=(SELECTED_BUDGET_HEADER.STATUS_ID==66 && SELECTED_BUDGET_LINE.MONTH==(ACTIVE_MONTH_SELECTED) || (ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_HEADER.STATUS_ID==66) ?SELECTED_BUDGET_HEADER.CUSTOM_PO_AMOUNT*1:0)}}
+                                            {{REQ_CUSTOM_AMOUNT=(SELECTED_BUDGET_HEADER.STATUS_ID==69 && SELECTED_BUDGET_LINE.MONTH==(ACTIVE_MONTH_SELECTED) || (ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_HEADER.STATUS_ID==69) ?SELECTED_BUDGET_HEADER.CUSTOM_PO_AMOUNT*1:0)}}
+                                            {{REQ_PROC_CUSTOM_AMOUNT=(SELECTED_BUDGET_HEADER.STATUS_ID==70 && SELECTED_BUDGET_LINE.MONTH==(ACTIVE_MONTH_SELECTED) || (ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_HEADER.STATUS_ID==70) ?SELECTED_BUDGET_HEADER.CUSTOM_PO_AMOUNT*1:0)}}
+                                            {{PO_CUSTOM_AMOUNT=(SELECTED_BUDGET_HEADER.STATUS_ID==72 && SELECTED_BUDGET_LINE.MONTH==(ACTIVE_MONTH_SELECTED) || (ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_HEADER.STATUS_ID==72) ?SELECTED_BUDGET_HEADER.CUSTOM_PO_AMOUNT*1:0)}}
+                                            {{BILL_CUSTOM_AMOUNT=((SELECTED_BUDGET_HEADER.STATUS_ID==79 || SELECTED_BUDGET_HEADER.STATUS_ID==81 || SELECTED_BUDGET_HEADER.STATUS_ID==90) && SELECTED_BUDGET_LINE.MONTH==(ACTIVE_MONTH_SELECTED) || (ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_HEADER.STATUS_ID==79) ?SELECTED_BUDGET_HEADER.CUSTOM_PO_AMOUNT*1:0)}}
+                                            {{BILL_CUSTOM_AMOUNT_CONSUMED=(SELECTED_BUDGET_HEADER.STATUS_ID==80 && SELECTED_BUDGET_LINE.MONTH==(ACTIVE_MONTH_SELECTED) || (ACTIVE_MONTH_SELECTED==0 && SELECTED_BUDGET_HEADER.STATUS_ID==80) ?SELECTED_BUDGET_HEADER.CUSTOM_PO_AMOUNT*1:0)}}
+                                        </span>
+                                    </span>
+                                    <div class="row">
+                                        <div class="col-md-6 text-center lh-30">
+                                            <span class="po-amount">Budget</span>
+                                            <span class="po-details text-nowrap">
+                                                {{ALLOCATED_BUDGET | number :2}} <span ng-bind-html="CURRENCY_CODE"></span>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 text-center lh-30">
+                                            <span class="po-amount">Remaining</span>
+                                            <span class="po-details text-nowrap">
+                                                {{((ALLOCATED_BUDGET) - (PR_CUSTOM_AMOUNT_STATUS_66 + PR_CUSTOM_AMOUNT+REQ_CUSTOM_AMOUNT+PR_PENDING*1 + REQ_PROC_CUSTOM_AMOUNT+ PR_APPROVED*1 + PO_CUSTOM_AMOUNT+ ON_APPROVAL*1 + APPROVED*1+INVOICE_IN_APPROVAL*1+INVOICE_APPROVED*1+MEMO_DATA*1)) | number:2 }} <span ng-bind-html="CURRENCY_CODE"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="description-block">
+                                    <span class="po-details">Booked</span>
+                                    <div class="row">
+                                        <div class="col-md-3 text-center lh-30">
+                                            <span class="po-amount">In Purchasing</span>
+                                            <span class="po-details text-nowrap">
+                                                {{(PR_CUSTOM_AMOUNT_STATUS_66+PR_CUSTOM_AMOUNT+REQ_CUSTOM_AMOUNT+ PR_PENDING + PR_APPROVED) | number:2}}
+                                                <span ng-bind-html="CURRENCY_CODE"></span>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-3 text-center lh-30">
+                                            <span class="po-amount">Reqs in Approvals</span>
+                                            <span class="po-details text-nowrap">{{(ON_APPROVAL +REQ_PROC_CUSTOM_AMOUNT) | number:2}} <span ng-bind-html="CURRENCY_CODE"></span></span>
+                                        </div>
+                                        <div class="col-md-3 text-center lh-30">
+                                            <span class="po-amount">Purchase Orders</span>
+                                            <span class="po-details text-nowrap">{{(APPROVED + PO_CUSTOM_AMOUNT) | number:2}} <span ng-bind-html="CURRENCY_CODE"></span></span>
+                                        </div>
+                                        <div class="col-md-3 border-right lh-30 text-center">
+                                            <span class="po-amount">Bills in Approval</span>
+                                            <span class="po-details text-nowrap"> {{INVOICE_IN_APPROVAL + BILL_CUSTOM_AMOUNT | number:2}} <span ng-bind-html="CURRENCY_CODE"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto  border-right">
+                                <div class="description-block">
+                                    <span class="po-details">Consumed</span>
+                                    <div class="col-md-12 text-center lh-30">
+                                        <span class="po-amount">Bills Approved</span>
+                                        <span class="po-details text-nowrap"> {{(INVOICE_APPROVED +BILL_CUSTOM_AMOUNT_CONSUMED) | number:2}} <span ng-bind-html="CURRENCY_CODE"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-auto">
+                                <div class="description-block">
+                                    <span class="po-details">Credit Notes</span>
+                                    <div class="col-md-12 text-center lh-30">
+                                        <span class="po-amount">&nbsp;</span>
+                                        <span class="po-details text-nowrap">
+                                            <span ng-show="MEMO_DATA==0">{{MEMO_DATA*-1 | number :2}}</span><span ng-show="MEMO_DATA!=0">({{MEMO_DATA*-1 | number :2}})</span>
+                                            <span ng-bind-html="CURRENCY_CODE"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mt-3"><span class="po-amount">This includes current amount to be processed.</span></div>
+                    </div>
+                </div>
+                <hr />
+                <div class="modal-header p-0"><h4 class="modal-title">Statement</h4>
+                 <i class="fad fa-download cursor-pointer"  data-toggle="tooltip" data-html="true" data-original-title="Download" ng-click="DOWN_LOAD_EXCEL_Fn(TAB_FLAG,SELECTED_MONTH_WISE_LINE.START_DATE)"></i>
+                
+                </div>
+                <ul class="nav nav-tabs mt-0" id="custom-content-below-tab" role="tablist">
+                    <li class="nav-item" ng-click="Fn_TAB_CLICK(1)" ng-show="BUDGET_BIFURCATION_BY_ACCOUNTS_LIST.length>0">
+                        <a class="nav-link " ng-class="{'active':TAB_FLAG==1}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home"
+                           aria-selected="true">YTD</a>
+                    </li>
+                    <li class="nav-item" ng-click="Fn_TAB_CLICK(2)" ng-show="ACTIVE_MONTH_SELECTED!=0">
+                        <a class="nav-link " ng-class="{'active':TAB_FLAG==2}" data-toggle="pill" role="tab"
+                           aria-controls="custom-content-below-home" aria-selected="true">
+                            {{ACTIVE_MONTH_SELECTED==0?'Full Period':SELECTED_MONTH_WISE_LINE.START_DATE | date:'MMM yy'}}
+                        </a>
+                    </li>
+                    <li class="text-end ml-auto mt-3 font-12" ng-bind-html="DISPLAY_MESSAGE"></li>
+                </ul>
+                <div class="tab-content" id="custom-content-below-tabContent">
+                    <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==1}"
+                         id="custom-content-below-home"
+                         role="tabpanel"
+                         aria-labelledby="custom-content-below-home-tab">
+                        <div class="text-center" ng-show="BUDGET_BIFURCATION_BY_ACCOUNTS_LIST.length==0 || BUDGET_BIFURCATION_BY_ACCOUNTS_LIST[0].TRANSACTION_REFERENCE_NO==null" empty-grid> </div>
+
+                        <table class="table table-head-fixed table-hover" ng-show="BUDGET_BIFURCATION_BY_ACCOUNTS_LIST[0].TRANSACTION_REFERENCE_NO!=null">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th class="top-17">Year</th>
+                                    <th class="top-17">Transaction Date</th>
+                                    <th class="top-17">Type</th>
+                                    <th class="top-17">Reference Number</th>
+                                    <th class="top-17">Status</th>
+                                    <th class="text-right top-17">Amount</th>
+
+                                    <th class="text-right top-17">Remaining Budget</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="BL in BUDGET_BIFURCATION_BY_ACCOUNTS_LIST">
+                                <tr>
+                                    <td>{{BL.TRANSACTION_DATE==null?'-':BL.YEAR = BL.TRANSACTION_DATE | date:'yyyy'}}</td>
+                                    <td>{{BL.TRANSACTION_DATE==null?'-':BL.TRANSACTION_DATE=BL.TRANSACTION_DATE | date}}</td>
+                                    <td class="text-bold">
+                                        <span ng-show="BL.TRANSACTION_TYPE==null">-</span>
+                                        <span ng-show="BL.TRANSACTION_TYPE!=null">{{BL.TRANSACTION_TYPE}}</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="BL.TRANSACTION_REFERENCE_NO==null">-</span>
+                                        <span ng-click="Fn_CLICK_REFERENCE_NO(BL,2)" ng-show="BL.TRANSACTION_REFERENCE_NO!=null">
+                                            {{BL.TRANSACTION_REFERENCE_NO}}
+                                        </span>
+                                    </td>
+                                    <td>{{BL.STATUS==null?'-': BL.STATUS}}</td>
+
+                                    <td class="text-right">{{BL.TRANSACTION_AMOUNT==null || BL.TRANSACTION_AMOUNT==''?'-':(BL.TRANSACTION_AMOUNT | number:2)}}</td>
+                                    <td class="text-right" ng-class="{'text-red text-bold':BL.REMAINING_BUDGET<0}">{{BL.REMAINING_BUDGET==null?'-':(BL.REMAINING_BUDGET | number:2)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==2}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+
+
+                        <div class="text-center" ng-show="BUDGET_BIFURCATION_BY_ACCOUNTS_MONTH_LIST.length==0 || BUDGET_BIFURCATION_BY_ACCOUNTS_MONTH_LIST[0].TRANSACTION_REFERENCE_NO==null" empty-grid> </div>
+                        <table class="table table-head-fixed table-hover" ng-show="BUDGET_BIFURCATION_BY_ACCOUNTS_MONTH_LIST.length>0 && BUDGET_BIFURCATION_BY_ACCOUNTS_MONTH_LIST[0].TRANSACTION_REFERENCE_NO!=null">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th class="">Year</th>
+                                    <th class="">Transaction Date   </th>
+                                    <th class="">Type</th>
+                                    <th class="">Reference Number</th>
+                                    <th class="">Status</th>
+                                    <th class="text-right">Amount</th>
+                                    <th class="text-right">Remaining Budget</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="BL in BUDGET_BIFURCATION_BY_ACCOUNTS_MONTH_LIST">
+                                <tr>
+                                    <td>{{BL.TRANSACTION_DATE==null?'-':BL.TRANSACTION_DATE | date:'yyyy'}}</td>
+                                    <td>{{BL.TRANSACTION_DATE==null?'-':BL.TRANSACTION_DATE | date}}</td>
+                                    <td class="text-bold">
+                                        <span ng-show="BL.TRANSACTION_TYPE==null">-</span>
+                                        <span ng-show="BL.TRANSACTION_TYPE!=null">{{BL.TRANSACTION_TYPE}}</span>
+                                    </td>
+                                    <td>
+                                        <span ng-show="BL.TRANSACTION_REFERENCE_NO==null">-</span>
+                                        <span ng-show="BL.TRANSACTION_REFERENCE_NO!=null">
+                                            {{BL.TRANSACTION_REFERENCE_NO}}
+                                            @*<a class="cursor-pointer text-blue" ng-click="Fn_CLICK_REFERENCE_NO(BL,1)"></a>*@
+                                        </span>
+                                    </td>
+                                    <td>{{BL.STATUS==null?'-': BL.STATUS}}</td>
+                                    <td class="text-right">{{BL.TRANSACTION_AMOUNT==null?'-':(BL.TRANSACTION_AMOUNT | number:2)}}</td>
+                                    <td class="text-right" ng-class="{'text-red text-bold':BL.REMAINING_BUDGET<0}">{{BL.REMAINING_BUDGET==null?'-':(BL.REMAINING_BUDGET | number:2)}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/AngularControllers/P2P/PO/PO.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/P2P/AP/APController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/P2P/Memo/CreditNotesController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/P2P/Approve/ApproveController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/P2P/Invoice/InvoiceController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/P2P/REQ/REQ_Controller.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/P2P/Request/PR_RequestController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+
+@*--Report JS--*@
+<script src="~/AngularControllers/ReportsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+@*--Report JS--*@
+
+
+
+
+<script src="~/E_Scripts/angular-pdf-viewer/pdf.combined.js"></script>
+<script src="~/E_Scripts/angular-pdf-viewer/angular-pdf-viewer.min.js"></script>
+<script src="~/E_Scripts/OrgChart/OrgChart.js"></script>
+<script src="~/E_Scripts/Colorpicker/tinycolor-0.9.15.min.js"></script>

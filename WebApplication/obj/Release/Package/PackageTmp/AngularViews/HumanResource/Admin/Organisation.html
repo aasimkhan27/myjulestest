@@ -1,0 +1,1377 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Organization</h6>
+                </div>
+                <div class="card-body">
+                    <div class="col-xxl-8 col-md-12 col-xl-8">
+                        <h6 class="headings">Entity</h6>
+                        <div class="accordion" id="outlineaccordion">
+                            <div class="accordion-item"
+                                 ng-repeat="_entity in HR_ENTITY_LIST"
+                                 on-finish-render="ngRepeatFinishedEntityRender">
+                                <form name="_entity.entityform" novalidate>
+                                    <h2 class="accordion-header">
+                                        <span class="accordion-button"
+                                              ng-class="{'collapsed':_entity.SHOW_HIDE}">
+                                            {{_entity.ENTITY_NAME}}
+                                        </span>
+                                        <i class="fa-light fa-pen"
+                                           ng-click="ADMIN_GET_ENTITY_BY_ID(_entity)"
+                                           data-bs-title="Edit"></i>
+                                        <i class="fa-light fa-trash-can"
+                                           ng-if="_entity.ENTITY_ID==0"
+                                           ng-click="DELETE_ENTITY_DTLS_Fn(_entity,_entity.HR_ENTITY_BY_ID,$index)"
+                                           data-bs-toggle="tooltip"
+                                           data-bs-title="Delete"></i>
+                                    </h2>
+                                    <div class="accordion-collapse collapse"
+                                         ng-class="{'show':_entity.SHOW_HIDE}">
+                                        <div class="accordion-body">
+                                            <div class="row mt-3">
+                                                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                                                    <div class="confirm-identity">
+                                                        <div class="ci-user-picture" id="REFRESH_IMAGE">
+                                                            <img src="../E_Content/images/HR/blank.png"
+                                                                 ng-show="_entity.HR_ENTITY_BY_ID.LOGO_PATH==null || _entity.HR_ENTITY_BY_ID.LOGO_PATH==''"
+                                                                 class="image-preview-entity" alt="">
+                                                            <img src="..{{_entity.HR_ENTITY_BY_ID.LOGO_PATH}}"
+                                                                 id="item-img-output"
+                                                                 ng-show="_entity.HR_ENTITY_BY_ID.LOGO_PATH!=null && _entity.HR_ENTITY_BY_ID.LOGO_PATH!=''"
+                                                                 class="image-preview-entity"
+                                                                 alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xxl col-md col-xl">
+                                                    <p class="logo-font">Logo <span class="txt-danger">*</span></p>
+                                                    <div class="row g-1">
+                                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                                            <a href="javascript:;" class="btn btn-primary">
+                                                                        <!--<input type="file"
+                   id="item-img_entity_{{$index}}"
+                   ng-click="CROPPIE_LOAD_Fn('',$index,'ENTITY')"
+                   class="item-img filepreviewprofile c-pointer">
+            <i class="fa-light fa-plus me-2"></i> Choose Logo-->
+
+                                                                <input type="file" id="imageInput_{{$index}}"
+                                                                       class="item-img filepreviewprofile c-pointer"
+                                                                       ng-click="UPLOAD_IMAGE_Fn($index,'ENTITY')"
+                                                                       accept="image/*"
+                                                                       onchange="angular.element(this).scope().uploadImage(event)" />
+                                                                <span class="c-pointer"><i class="fa-light fa-plus me-2"></i> Choose Image</span>
+
+
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                                            <button type="button"
+                                                                    ng-click="REMOVE_PROFILE_IMG(_entity.HR_ENTITY_BY_ID)"
+                                                                    ng-disabled="_entity.HR_ENTITY_BY_ID.LOGO_PATH==null || _entity.HR_ENTITY_BY_ID.LOGO_PATH==''"
+                                                                    class="btn btn-light ms-2">
+                                                                <i class="fa-light fa-trash"></i> Remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <p class="mt-2" ng-show="false">*.png, .jpeg files only (limit 1MB)</p>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                    <label class="d-block">Company Registration Number <span class="txt-danger">*</span></label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           name="COMPANY_REGISTRATION_NO{{$index}}" only-Alfa
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.COMPANY_REGISTRATION_NO"
+                                                           required
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.COMPANY_REGISTRATION_NO{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                    <label class="d-block">Company Name <span class="txt-danger">*</span></label>
+                                                    <input type="text"
+                                                           name="ENTITY_NAME{{$index}}"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.ENTITY_NAME"
+                                                           required
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.ENTITY_NAME{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="HIDE_FILED">
+                                                    <label class="d-block">Address</label>
+                                                    <div class="form-check form-control py-2">
+                                                        <input class="radio_animated ms-2"
+                                                               id="Auto01"
+                                                               type="radio"
+                                                               ng-model="_entity.HR_ENTITY_BY_ID.AUTO_SEARCH"
+                                                               name="E-01{{$index}}">
+                                                        <label class="form-check-label mb-0" for="Auto01" checked="">Auto-Search </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="HIDE_FILED">
+                                                    <label class="d-block">&nbsp;</label>
+                                                    <div class="form-check form-control py-2">
+                                                        <input class="radio_animated ms-2"
+                                                               id="Manually01"
+                                                               type="radio"
+                                                               ng-model="_entity.HR_ENTITY_BY_ID.ADD_MANUALLY"
+                                                               name="E-01{{$index}}">
+                                                        <label class="form-check-label mb-0" for="Manually01">Add Manually </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                    <label class="d-block">Address Name 1 <span class="txt-danger">*</span></label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           name="ADDRESS_1{{$index}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.ADDRESS_1"
+                                                           required
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.ADDRESS_1{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                    <label class="d-block">Address Name 2</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.ADDRESS_2"
+                                                           name="ADDRESS_2{{$index}}"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.ADDRESS_2{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                    <label>Country <span class="txt-danger">*</span></label>
+                                                    <input type="hidden"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.COUNTRY_ID"
+                                                           name="COUNTRY_ID{{$index}}"
+                                                           required
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.COUNTRY_ID{{$index}}.$error.required}" />
+                                                    <ul class="nav nav-pills" ng-class="{'error':_entity.entityform.submitted && _entity.entityform.COUNTRY_ID{{$index}}.$error.required}">
+                                                        <li class="dropdown w-100 show">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                                <span class="select-label" id="select_label">
+                                                                    {{_entity.HR_ENTITY_BY_ID.CUSTOM_COUNTRY_NAME}}
+                                                                </span>
+                                                            </a>
+                                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                <li class="DontHideOnClick sticky-top bg-white">
+                                                                    <input type="text"
+                                                                           placeholder="Search"
+                                                                           ng-model="_entity.DISPLAY_TEXT_SEARCH"
+                                                                           class="mb-1" />
+                                                                </li>
+                                                                <li class=""
+                                                                    ng-show="_entity.HR_ENTITY_BY_ID.CUSTOM_COUNTRY_NAME!=DD_DEFAULT_TEXT"
+                                                                    ng-click="SELECTED_ENTITY_COUNTRY_Fn('',_entity,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                <li class=""
+                                                                    ng-repeat="_Country in COUNTRY_LIST | filter:{DISPLAY_TEXT :_entity.DISPLAY_TEXT_SEARCH}"
+                                                                    ng-click="SELECTED_ENTITY_COUNTRY_Fn(_Country,_entity)">
+                                                                    <span class="">{{_Country.DISPLAY_TEXT}}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="_entity.HR_ENTITY_BY_ID.SHOW_HIDE_COUNTY">
+                                                    <label>{{_entity.HR_ENTITY_BY_ID.STATE_LABEL_NAME=='' || _entity.HR_ENTITY_BY_ID.STATE_LABEL_NAME==null?'State':_entity.HR_ENTITY_BY_ID.STATE_LABEL_NAME}} <span class="txt-danger">*</span></label>
+                                                    <input type="hidden"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.STATE_ID"
+                                                           name="STATE{{$index}}"
+                                                           ng-required="_entity.HR_ENTITY_BY_ID.SHOW_HIDE_COUNTY"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.STATE{{$index}}.$error.required}" />
+
+                                                    <ul class="nav nav-pills" ng-class="{'error':_entity.entityform.submitted && _entity.entityform.STATE{{$index}}.$error.required}">
+                                                        <li class="dropdown w-100">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                                <span class="select-label" id="select_label">
+                                                                    {{_entity.HR_ENTITY_BY_ID.CUSTOM_STATE_NAME}}
+                                                                </span>
+                                                            </a>
+                                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                <li class="DontHideOnClick sticky-top bg-white">
+                                                                    <input type="text"
+                                                                           placeholder="Search"
+                                                                           ng-model="_entity.DISPLAY_BRANCH_TEXT_SEARCH" class="mb-1" />
+                                                                </li>
+                                                                <li class=""
+                                                                    ng-show="_entity.HR_ENTITY_BY_ID.CUSTOM_STATE_NAME!=DD_DEFAULT_TEXT"
+                                                                    ng-click="SELECTED_ENTITY_STATE_Fn('',_entity,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                <li class=""
+                                                                    ng-click="SELECTED_ENTITY_STATE_Fn(_state,_entity)"
+                                                                    ng-repeat="_state in _entity.STATES | filter:{STATE_NAME :_entity.DISPLAY_BRANCH_TEXT_SEARCH}">
+                                                                    <span class="">{{_state.STATE_NAME}}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                    <label>City <span class="txt-danger">*</span></label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           name="CITY_NAME{{$index}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.CITY_NAME"
+                                                           required
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.CITY_NAME{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                    <!--For GCC Countries-->
+                                                    <label>{{_entity.HR_ENTITY_BY_ID.POST_BOX_LABEL_NAME=='' || _entity.HR_ENTITY_BY_ID.POST_BOX_LABEL_NAME==null?'Post Code':_entity.HR_ENTITY_BY_ID.POST_BOX_LABEL_NAME}} <span class="txt-danger">*</span></label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.ZIPCODE"
+                                                           required
+                                                           name="ZIPCODE{{$index}}"
+                                                           ng-pattern="_entity.HR_ENTITY_BY_ID.COUNTRY_ID==225?OrganisationSearch.UK_PINCODE_REG_X:(_entity.HR_ENTITY_BY_ID.COUNTRY_ID==224?OrganisationSearch.GCC_PINCODE_REG_X:(_entity.HR_ENTITY_BY_ID.COUNTRY_ID==226?OrganisationSearch.US_PINCODE_REG_X:''))"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.ZIPCODE{{$index}}.$error.required || _entity.entityform.ZIPCODE{{$index}}.$error.pattern} ">
+                                                    <small class="text-danger" ng-show="_entity.entityform.ZIPCODE{{$index}}.$error.pattern && _entity.HR_ENTITY_BY_ID.COUNTRY_ID==225">Post code not valid.</small>
+                                                    <small class="text-danger" ng-show="_entity.entityform.ZIPCODE{{$index}}.$error.pattern && _entity.HR_ENTITY_BY_ID.COUNTRY_ID==224">Po.Box not valid.</small>
+                                                    <small class="text-danger" ng-show="_entity.entityform.ZIPCODE{{$index}}.$error.pattern && _entity.HR_ENTITY_BY_ID.COUNTRY_ID==226">ZIP code not valid.</small>
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 ">
+                                                    <label>Currency <span class="txt-danger">*</span></label>
+                                                    <input type="hidden"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.CURRENCY_ID"
+                                                           name="CURRENCY_ID{{$index}}"
+                                                           required
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.CURRENCY_ID{{$index}}.$error.required}" />
+                                                    <ul class="nav nav-pills" ng-class="{'error':_entity.entityform.submitted && _entity.entityform.CURRENCY_ID{{$index}}.$error.required}">
+                                                        <li class="dropdown w-100">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                                <span class="select-label" id="select_label">
+                                                                    {{_entity.HR_ENTITY_BY_ID.CUSTOM_CURRENCY_NAME}}
+                                                                </span>
+                                                            </a>
+                                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                <li class="DontHideOnClick sticky-top bg-white">
+                                                                    <input type="text"
+                                                                           placeholder="Search"
+                                                                           ng-model="_entity.DISPLAY_CURRENCY_TEXT_SEARCH" class="mb-1" />
+                                                                </li>
+                                                                <li class=""
+                                                                    ng-show="_entity.HR_ENTITY_BY_ID.CUSTOM_STATE_NAME!=DD_DEFAULT_TEXT"
+                                                                    ng-click="SELECTED_ENTITY_CURRENCY_Fn('',_entity,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                <li class=""
+                                                                    ng-click="SELECTED_ENTITY_CURRENCY_Fn(_currency,_entity)"
+                                                                    ng-repeat="_currency in CURRENCY | filter:{CURRENCY_NAME :_entity.DISPLAY_CURRENCY_TEXT_SEARCH}">
+                                                                    <span class="">{{_currency.CURRENCY_CODE + '-'+  _currency.CURRENCY_NAME}}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4" ng-show="HIDE_FILED">
+                                                    <label>Financial Year Start Month <span class="txt-danger">*</span></label>
+                                                    <select ng-options="_month.ID as _month.Text for _month in FINANCIAL_YEAR_START_MONTH_LIST"
+                                                            id="single-select-taggingF{{$index}}"
+                                                            style="width: 100%"
+                                                            name="FINANCIAL_YEAR_START_MONTH{{$index}}"
+                                                            data-placeholder="Select Item"
+                                                            data-minimum-results-for-search="0"
+                                                            ng-model="_entity.HR_ENTITY_BY_ID.FINANCIAL_YEAR_START_MONTH"
+                                                            data-value="id"
+                                                            sc-single-select
+                                                            ng-class="{'error':_entity.entityform.submitted && _entity.entityform.FINANCIAL_YEAR_START_MONTH{{$index}}.$error.required}">
+                                                        <option value=""> {{OrganisationSearch.DD_DEFAULT_TEXT}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>Time Zone <span class="txt-danger">*</span></label>
+                                                    <select ng-options="_trn.name as _trn.name for _trn in TIME_ZONE_NAME_LIST"
+                                                            id="single-select-taggingT{{$index}}"
+                                                            style="width: 100%"
+                                                            name="TIME_ZONE_NAME{{$index}}"
+                                                            data-placeholder="Select Item"
+                                                            data-minimum-results-for-search="0"
+                                                            ng-model="_entity.HR_ENTITY_BY_ID.TIME_ZONE_NAME"
+                                                            data-value="id"
+                                                            sc-single-select
+                                                            ng-class="{'error':_entity.entityform.submitted && _entity.entityform.TIME_ZONE_NAME{{$index}}.$error.required}">
+                                                        <option value=""> {{OrganisationSearch.DD_DEFAULT_TEXT}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>Contact Name<span class="txt-danger">*</span></label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.CONTACT_NAME"
+                                                           name="CONTACT_NAME{{$index}}"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.CONTACT_NAME{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>Contact Number</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.CONTACT_NUMBER"
+                                                           name="CONTACT_NUMBER{{$index}}"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.CONTACT_NUMBER{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>Contact Email<span class="txt-danger">*</span></label>
+                                                    <input type="email"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.CONTACT_EMAIL"
+                                                           name="CONTACT_EMAIL{{$index}}"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.CONTACT_EMAIL{{$index}}.$error.required}">
+                                                    <small class="text-danger" ng-show="_entity.entityform.CONTACT_EMAIL.$dirty && _entity.entityform.CONTACT_EMAIL{{$index}}.$error.pattern">Please Enter Valid Email</small>
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>PR Number Prefix</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           only-numbers
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.PR_NO_PREFIX"
+                                                           name="PR_NO_PREFIX{{$index}}"
+                                                           maxlength="4"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.PR_NO_PREFIX{{$index}}.$error.required}">
+
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>PR Number Suffix</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.PR_NO_SUFFIX"
+                                                           name="PR_NO_SUFFIX{{$index}}"
+                                                           only-numbers
+                                                           maxlength="4"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.PR_NO_SUFFIX{{$index}}.$error.required}">
+                                                </div>
+
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>PR Number Min Length</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.PR_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                                                           name="PR_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX{{$index}}"
+                                                           only-numbers
+                                                           maxlength="2"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.PR_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>REQ  Number Prefix (Default Prefix REQ-)</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.REQ_NO_PREFIX"
+                                                           name="REQ_NO_PREFIX{{$index}}"
+                                                           maxlength="4"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.REQ_NO_PREFIX{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>REQ Number Suffix</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.REQ_NO_SUFFIX"
+                                                           name="REQ_NO_SUFFIX{{$index}}"
+                                                           only-numbers
+                                                           maxlength="4"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.REQ_NO_SUFFIX{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>REQ Number Min Length</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.REQ_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                                                           name="REQ_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX{{$index}}"
+                                                           only-numbers
+                                                           maxlength="2"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.REQ_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX{{$index}}.$error.required}">
+                                                </div>
+
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>PO Number Prefix (Default Prefix PO-)</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.PO_NO_PREFIX"
+                                                           name="PO_NO_PREFIX{{$index}}"
+                                                           maxlength="4"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.PO_NO_PREFIX{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>PO Number Suffix</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.PO_NO_SUFFIX"
+                                                           name="PO_NO_SUFFIX{{$index}}"
+                                                           only-numbers
+                                                           maxlength="4"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.PO_NO_SUFFIX{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>PO Number Min Length</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.PO_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX"
+                                                           name="PO_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX{{$index}}"
+                                                           only-numbers
+                                                           maxlength="2"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.PO_NO_MIN_LENGTH_EXCLUDING_PREFIX_AND_SUFFIX{{$index}}.$error.required}">
+                                                </div>
+                                                <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                    <label>Comments</label>
+                                                    <input type="text"
+                                                           placeholder="{{PLACE_HOLDER}}"
+                                                           ng-model="_entity.HR_ENTITY_BY_ID.COMMENTS"
+                                                           name="COMMENTS{{$index}}"
+                                                           maxlength="250"
+                                                           ng-class="{'error':_entity.entityform.submitted && _entity.entityform.COMMENTS{{$index}}.$error.required}">
+                                                </div>
+
+                                                <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                    <button type="button"
+                                                            class="btn btn-primary"
+                                                            ng-click="ADMIN_INS_UPD_ENTITIES_AND_LOCATION(_entity,_entity.HR_ENTITY_BY_ID,1)">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-12 col-md-12 col-xl-12 mt-3">
+                            <button type="button" class="btn btn-light" ng-click="ADD_MORE_ENTITY_Fn()"><i class="fa-light fa-plus me-2"></i> Add more entity</button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-xxl-8 col-md-12 col-xl-8">
+                        <h6 class="headings">Sites</h6>
+                        <div class="alert alert-light-warning fade show">
+                            <div class="row align-items-center">
+                                <div class="col-auto"><i class="fa-light fa-triangle-exclamation txt-orange fa-2xl"></i></div>
+                                <div class="col">
+                                    <span class="alert-link txt-orange" href="#">{{HR_BRANCH_LIST.length}} out of {{HR_ENTITY_DTLS.NO_OF_SITES}} sites created </span>
+                                    <p class="txt-orange">You need to subscribe for more. <a class="text-underline txt-orange c-pointer">Click here</a> to see our subscription</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-8 col-md-12 col-xl-8 mt-3">
+                        <div class="accordion" id="outlineaccordionfour">
+                            <div class="accordion-item" ng-repeat="_branch in HR_BRANCH_LIST"
+                                 on-finish-render="ngRepeatFinishedBranchRender">
+                                <form name="_branch.branchform" novalidate>
+                                    <h2 class="accordion-header">
+                                        <span class="accordion-button"
+                                              ng-class="{'collapsed':_branch.SHOW_HIDE}">
+                                            <span ng-show="_branch.BRANCH_ID>0 && !_branch.SHOW_HIDE">
+                                                {{_branch.HR_BRANCH_BY_ID=='' || _branch.HR_BRANCH_BY_ID==null?_branch.BRANCH_NAME:_branch.HR_BRANCH_BY_ID.BRANCH_NAME}}
+                                            </span>
+                                            <span ng-show="_branch.BRANCH_ID==0 || _branch.SHOW_HIDE">
+                                                <input type="text"
+                                                       class="entity_field"
+                                                       placeholder="{{PLACE_HOLDER}}"
+                                                       name="BRANCH_NAME"
+                                                       ng-model="_branch.HR_BRANCH_BY_ID.BRANCH_NAME"
+                                                       required
+                                                       ng-class="{'error':_branch.branchform.submitted && _branch.branchform.BRANCH_NAME{{$index}}.$error.required}">
+                                            </span>
+                                        </span>
+
+                                        <i class="fa-light fa-pen"
+                                           data-bs-title="Edit" ng-click="ADMIN_GET_BRANCH_BY_ID(_branch)"></i>
+                                        <i class="fa-light fa-trash-can"
+                                           data-bs-toggle="tooltip"
+                                           ng-if="_branch.BRANCH_ID==0"
+                                           data-bs-title="Delete"
+                                           ng-click="DELETE_BRANCH_DTLS_Fn(_branch,$index)"></i>
+                                    </h2>
+                                    <div class="accordion-collapse collapse" ng-class="{'show':_branch.SHOW_HIDE}">
+                                        <div class="accordion-body">
+                                            <div class="row mt-3">
+                                                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                                                    <div class="confirm-identity">
+                                                        <div class="ci-user-picture">
+                                                            <img src="../E_Content/images/HR/blank.png"
+                                                                 ng-show="_branch.HR_BRANCH_BY_ID.LOGO_PATH==null || _branch.HR_BRANCH_BY_ID.LOGO_PATH==''"
+                                                                 class="image-preview-entity" alt="">
+                                                            <img src="..{{_branch.HR_BRANCH_BY_ID.LOGO_PATH}}"
+                                                                 id="item-img-output"
+                                                                 ng-show="_branch.HR_BRANCH_BY_ID.LOGO_PATH!=null && _branch.HR_BRANCH_BY_ID.LOGO_PATH!=''"
+                                                                 class="image-preview-entity" alt="">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xxl col-md col-xl">
+                                                    <p class="logo-font">Logo <span class="txt-danger">*</span></p>
+                                                    <div class="row g-1">
+                                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                                            <a href="javascript:;" class="btn btn-primary">
+                                                                <!--<input type="file"
+           id="item-img_site_{{$index}}"
+           ng-click="CROPPIE_LOAD_Fn('',$index,'SITE')"
+           class="item-img filepreviewprofile c-pointer">
+    <i class="fa-light fa-plus me-2"></i> Choose Logo-->
+
+                                                                <input type="file" id="item-img_site_{{$index}}"
+                                                                       class="item-img filepreviewprofile c-pointer"
+                                                                       ng-click="UPLOAD_IMAGE_Fn($index,'SITE')"
+                                                                       accept="image/*"
+                                                                       onchange="angular.element(this).scope().uploadImage(event)" />
+                                                                <span class="c-pointer"><i class="fa-light fa-plus me-2"></i> Choose Image</span>
+
+
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                                            <button type="button"
+                                                                    ng-click="REMOVE_PROFILE_IMG(_branch.HR_BRANCH_BY_ID)"
+                                                                    ng-disabled="_branch.HR_BRANCH_BY_ID.LOGO_PATH==null || _branch.HR_BRANCH_BY_ID.LOGO_PATH==''"
+                                                                    class="btn btn-light ms-2">
+                                                                <i class="fa-light fa-trash"></i> Remove
+                                                            </button>
+                                                        </div>
+
+                                                        <p class="mt-2" ng-show="false">*.png, .jpeg files only (limit 1MB)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                        <label>Legal Entity <span class="txt-danger">*</span></label>
+                                                        <input type="hidden"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.ENTITY_ID"
+                                                               name="ENTITY_ID{{$index}}"
+                                                               required>
+                                                        <ul class="nav nav-pills" ng-class="{'error':_branch.branchform.submitted && _branch.branchform.ENTITY_ID{{$index}}.$error.required}">
+                                                            <li class="dropdown w-100 show">
+                                                                <a class="text-limitations cursor-pointer " ng-class="{'disabled':_branch.HR_BRANCH_BY_ID.ENTITY_ID>0 && _branch.HR_BRANCH_BY_ID.BRANCH_ID>0}" data-toggle="dropdown" aria-expanded="true">
+                                                                    <span class="select-label" id="select_label">
+                                                                        {{_branch.HR_BRANCH_BY_ID.CUSTOM_ENTITY_NAME}}
+                                                                    </span>
+                                                                </a>
+                                                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                    <li class=""
+                                                                        ng-show="_branch.HR_BRANCH_BY_ID.CUSTOM_ENTITY_NAME!=DD_DEFAULT_TEXT"
+                                                                        ng-click="SELECTED_BRANCH_ENTITY_Fn('',_branch,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                    <li class=""
+                                                                        ng-repeat="_entity in HR_ENTITY_LIST | filter:{ENTITY_NAME :_entity.DISPLAY_TEXT_ENTITY_SEARCH}"
+                                                                        ng-click="SELECTED_BRANCH_ENTITY_Fn(_entity,_branch)">
+                                                                        <span class="">{{_entity.ENTITY_NAME}}</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+
+
+
+                                                    </div>
+                                                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                        <label>Address  1 <span class="txt-danger">*</span></label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               name="ADDRESS_1{{$index}}"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.ADDRESS_1"
+                                                               required
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.ADDRESS_1{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                        <label class="d-block">Address  2</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.ADDRESS_2"
+                                                               name="ADDRESS_2{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.ADDRESS_2{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                        <label>Country <span class="txt-danger">*</span></label>
+                                                        <input type="hidden"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.COUNTRY_ID"
+                                                               name="COUNTRY_ID{{$index}}"
+                                                               required
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.COUNTRY_ID{{$index}}.$error.required}" />
+                                                        <ul class="nav nav-pills" ng-class="{'error':_branch.branchform.submitted && _branch.branchform.COUNTRY_ID{{$index}}.$error.required}">
+                                                            <li class="dropdown w-100 show">
+                                                                <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                                    <span class="select-label" id="select_label">
+                                                                        {{_branch.HR_BRANCH_BY_ID.CUSTOM_COUNTRY_NAME}}
+                                                                    </span>
+                                                                </a>
+                                                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                    <li class="DontHideOnClick sticky-top bg-white">
+                                                                        <input type="text"
+                                                                               placeholder="Search"
+                                                                               ng-model="_branch.DISPLAY_TEXT_SEARCH" class="mb-1" />
+                                                                    </li>
+                                                                    <li class=""
+                                                                        ng-show="_branch.HR_BRANCH_BY_ID.CUSTOM_COUNTRY_NAME!=DD_DEFAULT_TEXT"
+                                                                        ng-click="SELECTED_BRANCH_COUNTRY_Fn('',_branch,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                    <li class=""
+                                                                        ng-repeat="_Country in COUNTRY_LIST | filter:{DISPLAY_TEXT :_branch.DISPLAY_TEXT_SEARCH}"
+                                                                        ng-click="SELECTED_BRANCH_COUNTRY_Fn(_Country,_branch)">
+                                                                        <span class="">{{_Country.DISPLAY_TEXT}}</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="_branch.HR_BRANCH_BY_ID.SHOW_HIDE_COUNTY">
+                                                        <label>{{_branch.HR_BRANCH_BY_ID.STATE_LABEL_NAME=='' || _branch.HR_BRANCH_BY_ID.STATE_LABEL_NAME==null?'State':_branch.HR_BRANCH_BY_ID.STATE_LABEL_NAME}} <span class="txt-danger">*</span></label>
+                                                        <input type="hidden"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.STATE_ID"
+                                                               name="STATE{{$index}}"
+                                                               ng-required="_branch.HR_BRANCH_BY_ID.SHOW_HIDE_COUNTY"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.STATE{{$index}}.$error.required}" />
+
+                                                        <ul class="nav nav-pills" ng-class="{'error':_branch.branchform.submitted && _branch.branchform.STATE{{$index}}.$error.required}">
+                                                            <li class="dropdown w-100">
+                                                                <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                                    <span class="select-label" id="select_label">
+                                                                        {{_branch.HR_BRANCH_BY_ID.CUSTOM_STATE_NAME}}
+                                                                    </span>
+                                                                </a>
+                                                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                    <li class="DontHideOnClick sticky-top bg-white">
+                                                                        <input type="text"
+                                                                               placeholder="Search"
+                                                                               ng-model="_branch.DISPLAY_BRANCH_TEXT_SEARCH" class="mb-1" />
+                                                                    </li>
+                                                                    <li class=""
+                                                                        ng-show="_branch.HR_BRANCH_BY_ID.CUSTOM_STATE_NAME!=DD_DEFAULT_TEXT"
+                                                                        ng-click="SELECTED_BRANCH_STATE_Fn('',_branch,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                    <li class=""
+                                                                        ng-click="SELECTED_BRANCH_STATE_Fn(_state,_branch)"
+                                                                        ng-repeat="_state in _branch.STATES | filter:{STATE_NAME :_branch.DISPLAY_BRANCH_TEXT_SEARCH}">
+                                                                        <span class="">{{_state.STATE_NAME}}</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+
+
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                        <label>City <span class="txt-danger">*</span></label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               name="CITY_NAME{{$index}}"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.CITY_NAME"
+                                                               required
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.CITY_NAME{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                                                        <!--For GCC Countries-->
+                                                        <label>{{_branch.HR_BRANCH_BY_ID.POST_BOX_LABEL_NAME=='' || _branch.HR_BRANCH_BY_ID.POST_BOX_LABEL_NAME==null?'Post Code':_branch.HR_BRANCH_BY_ID.POST_BOX_LABEL_NAME}}  <span class="txt-danger">*</span></label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.ZIPCODE"
+                                                               required
+                                                               name="ZIPCODE{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.ZIPCODE{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 ">
+                                                        <label>Currency <span class="txt-danger">*</span></label>
+                                                        <input type="hidden"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.CURRENCY_ID"
+                                                               name="BRANCHCURRENCY_ID{{$index}}"
+                                                               required
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.BRANCHCURRENCY_ID{{$index}}.$error.required}" />
+                                                        <ul class="nav nav-pills" ng-class="{'error':_branch.branchform.submitted && _branch.branchform.BRANCHCURRENCY_ID{{$index}}.$error.required}">
+                                                            <li class="dropdown w-100">
+                                                                <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                                    <span class="select-label" id="select_label">
+                                                                        {{_branch.HR_BRANCH_BY_ID.CUSTOM_CURRENCY_NAME}}
+                                                                    </span>
+                                                                </a>
+                                                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                                    <li class="DontHideOnClick sticky-top bg-white">
+                                                                        <input type="text"
+                                                                               placeholder="Search"
+                                                                               ng-model="_branch.DISPLAY_CURRENCY_TEXT_SEARCH" class="mb-1" />
+                                                                    </li>
+                                                                    <li class=""
+                                                                        ng-show="_branch.HR_BRANCH_BY_ID.CUSTOM_CURRENCY_NAME!=DD_DEFAULT_TEXT"
+                                                                        ng-click="SELECTED_BRANCH_CURRENCY_Fn('',_branch,$index)">{{DD_DEFAULT_TEXT}}</li>
+                                                                    <li class=""
+                                                                        ng-click="SELECTED_BRANCH_CURRENCY_Fn(_currency,_branch)"
+                                                                        ng-repeat="_currency in CURRENCY | filter:{CURRENCY_NAME :_branch.DISPLAY_CURRENCY_TEXT_SEARCH}">
+                                                                        <span class="">{{_currency.CURRENCY_CODE + '-'+  _currency.CURRENCY_NAME}}</span>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Time Zone <span class="txt-danger">*</span></label>
+                                                        <select ng-options="_trn.name as _trn.name for _trn in TIME_ZONE_NAME_LIST"
+                                                                id="Branch_single-select-taggingT{{$index}}"
+                                                                style="width: 100%"
+                                                                name="TIME_ZONE_NAME{{$index}}"
+                                                                data-placeholder="Select Item"
+                                                                data-minimum-results-for-search="0"
+                                                                ng-model="_branch.HR_BRANCH_BY_ID.TIME_ZONE_NAME"
+                                                                data-value="id"
+                                                                sc-single-select
+                                                                ng-class="{'error':_branch.branchform.submitted && _branch.branchform.TIME_ZONE_NAME{{$index}}.$error.required}">
+                                                            <option value=""> {{OrganisationSearch.DD_DEFAULT_TEXT}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Contact Name<span class="txt-danger">*</span></label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.CONTACT_NAME"
+                                                               name="CONTACT_NAME{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.CONTACT_NAME{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Contact Number</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.CONTACT_NUMBER"
+                                                               name="CONTACT_NUMBER{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.CONTACT_NUMBER{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Contact Email<span class="txt-danger">*</span></label>
+                                                        <input type="email"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.CONTACT_EMAIL"
+                                                               name="CONTACT_EMAIL{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.CONTACT_EMAIL{{$index}}.$error.required}">
+                                                        <small class="text-danger" ng-show="_branch.branchform.CONTACT_EMAIL.$dirty && _branch.branchform.CONTACT_EMAIL{{$index}}.$error.pattern">Please Enter Valid Email</small>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Fax</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               maxlength="50"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.FAX"
+                                                               name="FAX{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.FAX{{$index}}.$error.required}">
+                                                    </div>
+
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Latitude</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               maxlength="50"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.LATITUDE"
+                                                               name="LATITUDE{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.LATITUDE{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Longitude</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               maxlength="50"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.LONGITUDE"
+                                                               name="LONGITUDE{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.LONGITUDE{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Original Latitude</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               maxlength="50"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.ORIGINAL_LATITUDE"
+                                                               name="ORIGINAL_LATITUDE{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.ORIGINAL_LATITUDE{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Original Logitude</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               maxlength="50"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.ORIGINAL_LONGITUDE"
+                                                               name="ORIGINAL_LONGITUDE{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.ORIGINAL_LONGITUDE{{$index}}.$error.required}">
+                                                    </div>
+
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label>Variance</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               maxlength="50"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.VARIANCE"
+                                                               name="VARIANCE{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.VARIANCE{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4 " ng-show="HIDE_FILED">
+                                                        <label class="d-block">Geofence Radius</label>
+                                                        <input type="text"
+                                                               placeholder="{{PLACE_HOLDER}}"
+                                                               maxlength="50"
+                                                               ng-model="_branch.HR_BRANCH_BY_ID.GEOFENCE_RADIUS"
+                                                               name="GEOFENCE_RADIUS{{$index}}"
+                                                               ng-class="{'error':_branch.branchform.submitted && _branch.branchform.GEOFENCE_RADIUS{{$index}}.$error.required}">
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4" ng-show="HIDE_FILED">
+                                                        <label class="d-block">&nbsp;</label>
+                                                        <div class="form-check form-control py-2">
+                                                            <input class="form-check-input ms-2"
+                                                                   type="checkbox"
+                                                                   value=""
+                                                                   name="IS_REVENUE_BRANCH{{$index}}"
+                                                                   ng-model="_branch.HR_BRANCH_BY_ID.IS_REVENUE_BRANCH">
+                                                            <label class="form-check-label ms-2" for="IS_REVENUE_BRANCH{{$index}}">Is Revenue Branch</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4" ng-show="HIDE_FILED">
+                                                        <label class="d-block">&nbsp;</label>
+                                                        <div class="form-check form-control py-2">
+                                                            <input class="form-check-input ms-2"
+                                                                   name="USE_EPOS_COVERS_IN_DASHBOARDS{{$index}}"
+                                                                   type="checkbox"
+                                                                   value=""
+                                                                   ng-model="_branch.HR_BRANCH_BY_ID.USE_EPOS_COVERS_IN_DASHBOARDS">
+                                                            <label class="form-check-label ms-2" for="NI">Use Epos Covers</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-4 col-md-4 col-xl-4" ng-show="HIDE_FILED">
+                                                        <label class="d-block">&nbsp;</label>
+                                                        <div class="form-check form-control py-2">
+                                                            <input class="form-check-input ms-2"
+                                                                   id="Manually01"
+                                                                   type="checkbox"
+                                                                   ng-model="_branch.HR_BRANCH_BY_ID.SHOW_IN_DASHBOARD"
+                                                                   name="SHOW_IN_DASHBOARD{{$index}}">
+                                                            <label class="form-check-label ms-2" for="SHOW_IN_DASHBOARD{{$index}}"> Show In Dashboard</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                        <button type="button" class="btn btn-primary" ng-click="ADMIN_INS_UPD_BRANCH(_branch,_branch.HR_BRANCH_BY_ID,$index)">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-12 col-md-12 col-xl-12 mt-3">
+                        <button type="button" class="btn btn-light" ng-click="ADD_MORE_SITES_Fn()"><i class="fa-light fa-plus me-2"></i> Add more sites</button>
+                    </div>
+
+                </div>
+                <div class="card-body" ng-show="TAB_ID==2">
+                    <h6 class="headings">Departments</h6>
+                    <div class="row">
+                        <div class="col-xxl-auto col-md-auto col-xl-auto">
+                            <div class="alert alert-light-warning mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-auto"><i class="fa-light fa-circle-exclamation txt-orange fa-lg"></i></div>
+                                    <div class="col">
+                                        <p class="txt-orange">You are about to edit a work pattern that is <span class="txt-orange f-w-700">assigned to “X” employees</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form name="DEPARTMENT_FORM" novalidate>
+                        <div class="row gy-2">
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-repeat="_department in DEPARTMENTS_LIST">
+                                <div class="tags-editable" ng-show="_department.DEPARTMENT_ID>0">
+                                    <i class="fa-light fa-pen"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-title="Edit"></i> {{_department.DISPLAY_TEXT}}
+                                    <i class="fa-light fa-trash-can"
+                                       data-bs-toggle="modal"
+                                       ng-click="DELETE_DEPARTMENT_Fn(_department,$index)"
+                                       data-bs-target="#Delete_Department"></i>
+                                </div>
+                                <div ng-show="_department.DEPARTMENT_ID==0">
+                                    <input type="text"
+                                           placeholder="Add New"
+                                           maxlength="500"
+                                           name="DEPARTMENT{{$index}}"
+                                           ng-model="_department.DISPLAY_TEXT"
+                                           ng-class="{'error':DEPARTMENT_FORM.submitted && DEPARTMENT_FORM.DEPARTMENT{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <button type="button"
+                                        ng-click="ADD_MORE_DEPARTMENT_Fn()"
+                                        class="btn btn-light w-100">
+                                    <i class="fa-light fa-plus me-3"></i> Add more department
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr />
+
+                    <h6 class="headings">Positions</h6>
+                    <form name="POSITION_FORM" novalidate>
+                        <div class="row gy-2">
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-repeat="_position in POSITIONS_LIST track by $index">
+                                <div class="tags-editable" ng-show="_position.POSITION_ID>0">
+                                    <i class="fa-light fa-pen" data-bs-toggle="tooltip" data-bs-title="Edit"></i> {{_position.DISPLAY_TEXT}}
+                                    <i class="fa-light fa-trash-can"
+                                       ng-click="DELETE_POSITION_Fn(_position,$index)"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#Delete_Position"></i>
+                                </div>
+                                <div ng-show="_position.POSITION_ID==0">
+                                    <input type="text"
+                                           ng-model="_position.DISPLAY_TEXT"
+                                           required
+                                           maxlength="500"
+                                           ng-class="{'error':POSITION_FORM.submitted && POSITION_FORM.ASSET{{$index}}.$error.required}"
+                                           placeholder="Add New" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <button type="button"
+                                        ng-click="ADD_MORE_POSITION_Fn()"
+                                        class="btn btn-light w-100">
+                                    <i class="fa-light fa-plus me-3"></i> Add more position
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <h6 class="headings">Sections</h6>
+                    <form name="SECTION_FORM" novalidate>
+                        <div class="row gy-2">
+
+                            <div class="col-xxl-6 col-md-6 col-xl-6" ng-repeat="_section in SECTIONS_LIST track by $index">
+                                <div class="tags-editable" ng-show="_section.SECTION_ID>0">
+                                    <i class="fa-light fa-pen"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-title="Edit"></i>{{_section.DISPLAY_TEXT}}
+                                    <i class="fa-light fa-trash-can"
+                                       data-bs-toggle="modal"
+                                       ng-click="DELETE_SECTION_Fn(_section,$index)"
+                                       data-bs-target="#Delete_Section"></i>
+                                </div>
+                                <div ng-show="_section.SECTION_ID==0">
+                                    <input type="text"
+                                           placeholder="Add New"
+                                           required
+                                           maxlength="500"
+                                           name="SECTION{{$index}}"
+                                           ng-class="{'error':SECTION_FORM.submitted && SECTION_FORM.SECTION{{$index}}.$error.required}"
+                                           ng-model="_section.DISPLAY_TEXT" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <button type="button"
+                                        ng-click="ADD_MORE_SECTION_Fn()"
+                                        class="btn btn-light w-100 mb-3">
+                                    <i class="fa-light fa-plus me-3"></i> Add more section
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <h6 class="headings">Assets</h6>
+                    <form name="ASSET_FORM" novalidate>
+                        <div class="row gy-2">
+                            <div class="col-xxl-6 col-md-6 col-xl-6" ng-repeat="_assest in ASSETS_LIST track by $index">
+                                <div class="tags-editable" ng-show="_assest.ASSET_ID>0">
+                                    <i class="fa-light fa-pen"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-title="Edit"></i> {{_assest.DISPLAY_TEXT}}
+
+                                    <i class="fa-light fa-trash-can"
+                                       data-bs-toggle="modal"
+                                       ng-click="DELETE_ASSET_Fn(_assest,$index)"
+                                       data-bs-target="#Delete_Asset"></i>
+                                </div>
+                                <div class="" ng-show="_assest.ASSET_ID==0">
+                                    <input type="text"
+                                           ng-model="_assest.DISPLAY_TEXT"
+                                           maxlength="500"
+                                           required
+                                           name="ASSET{{$index}}"
+                                           ng-class="{'error':ASSET_FORM.submitted && ASSET_FORM.ASSET{{$index}}.$error.required}"
+                                           placeholder="Add New" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <button type="button"
+                                        ng-click="ADD_MORE_ASSETS_Fn()"
+                                        class="btn btn-light w-100 mb-3">
+                                    <i class="fa-light fa-plus me-3"></i> Add more asset
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+
+                    <h6 class="headings">Tags</h6>
+                    <form name="TAG_FORM" novalidate>
+                        <div class="row gy-2">
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-repeat="_tag in TAGS_LIST track by $index">
+                                <div class="tags-editable" ng-show="_tag.TAG_ID>0">
+                                    <i class="fa-light fa-pen"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-title="Edit"></i>
+                                    {{_tag.DISPLAY_TEXT}}
+                                    <i class="fa-light fa-trash-can"
+                                       ng-click="DELETE_TAG_Fn(_tag,$index)"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#Delete_Tag"></i>
+                                </div>
+                                <div class="" ng-show="_tag.TAG_ID==0">
+                                    <input type="text"
+                                           ng-model="_tag.DISPLAY_TEXT"
+                                           maxlength="500"
+                                           name="TAG{{$index}}"
+                                           required
+                                           placeholder="Add New"
+                                           ng-class="{'error':TAG_FORM.submitted && TAG_FORM.TAG{{$index}}.$error.required}" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <button type="button"
+                                        class="btn btn-light w-100"
+                                        ng-click="ADD_MORE_TAGS_Fn()">
+                                    <i class="fa-light fa-plus me-3"></i> Add more tag
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="Upload_Calendar" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">Upload Holiday Calendar</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="btn btn-light">Click here to download calendar template</div>
+                <div class="row mt-3">
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <label>Calendar Name <span class="txt-danger">*</span></label>
+                        <input type="text" placeholder="{{PLACE_HOLDER}}">
+                    </div>
+                </div>
+                <div class="col-xxl-12 col-md-12 col-xl-12">
+                    <label class="mt-3">Document Upload <span class="text-danger">*</span></label>
+                    <form method="post">
+                        <div class="form-group file-area">
+                            <input type="file" name="images" id="images" required="required" multiple="multiple" />
+                            <div class="file-dummy">
+                                <h6><span class="txt-primary">Choose a file</span> or drag and drop here</h6>
+                                <p class="mt-2">*.csv or .xls files (limit 1MB)</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="Preview" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">New Team Member</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <label>Subject</label>
+                        <div class="form-control py-2">
+                            A new member has joined your team!
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-12 col-md-12 col-xl-12">
+                    <label>Message</label>
+                    <div class="form-control py-2">
+                        Hi,
+                        <br /><br />
+                        Malik Wihowo has joined your team on 28 June 2024. Please join us in welcoming him to {EntityName}.
+                        <br /><br />
+                        Regards,
+                        <br />
+                        HR Manager
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_Department" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+
+                    <h6 class="text-center pb-2 fw-500">You are about to delete XXX department</h6>
+                    <p class="text-center text-dark">It is safe to perform this operation as it hasn't been assigned to any employee. Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_Position" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">You are about to delete XXX position</h6>
+                    <p class="text-center text-dark">It is safe to perform this operation as it hasn't been assigned to any employee. Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_Section" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">You are about to delete XXX section</h6>
+                    <p class="text-center text-dark">It is safe to perform this operation as it hasn't been assigned to any employee. Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_Asset" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">You are about to delete XXX asset</h6>
+                    <p class="text-center text-dark">It is safe to perform this operation as it hasn't been assigned to any employee. Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_Tag" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">You are about to delete XXX tag</h6>
+                    <p class="text-center text-dark">It is safe to perform this operation as it hasn't been assigned to any employee. Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_Document" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">You are about to delete XXX Calendar</h6>
+                    <p class="text-center text-dark">Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="View_Error" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Error message goes here...</h6>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-12 col-md-12 col-xl-12"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade cropImageModalOld" id="cropImagePopOld" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="modal-header">
+                    <h3 class="modal-title">Update Profile Photo</h3>
+                    <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="up-photo-content pb-5">
+                    <div id="upload-demo" class="center-block">
+                        <h5><i class="fas fa-arrows-alt mr-1"></i> Drag and move your image as required</h5>
+                    </div>
+                    <div class="upload-action-btn text-center px-2">
+                        <button type="button" id="cropImageBtn" class="btn btn-primary">Save Photo</button>
+                        <button type="button" class="btn btn-default btn-light replacePhoto">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cropper-container {
+        width: 600px;
+        height: 600px;
+        border-radius: 100%;
+        overflow: hidden;
+        position: relative;
+        margin: auto;
+        max-height: 600px; /* Set the fixed height for the container */
+        max-width: 600px; /* Set the fixed height for the container */
+        overflow: hidden; /* Hide overflowing content */
+    }
+
+    #image {
+        max-width: 100%;
+    }
+
+    #cropImageModal .modal-body {
+        min-height: 400px;
+        max-height: 400px;
+    }
+
+    .imgdiv {
+        max-height: 300px !important;
+        max-width: 300px !important;
+    }
+
+    #profilePicture {
+        margin-top: 50px;
+        border: 1px solid red;
+        min-height: 250px;
+        min-width: 250px;
+        max-height: 250px;
+        max-width: 250px;
+    }
+
+    .cropper {
+        max-width: 100%;
+    }
+</style>
+<div class="modal fade cropImageModal" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Update Profile Photo</h3>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="img-container">
+                    <img id="image" ng-src="{{imageSrc}}" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="setMoveLeftMode()"><span class="fa fa-arrow-left" aria-hidden="true"></span> </button>
+                <button class="btn btn-primary" ng-click="setCropRightMode()"><span class="fa fa-arrow-right" aria-hidden="true"></span> </button>
+                <button class="btn btn-primary" ng-click="setMoveUpMode()"><span class="fa fa-arrow-up" aria-hidden="true"></span> </button>
+                <button class="btn btn-primary" ng-click="setCropDownMode()"><span class="fa fa-arrow-down" aria-hidden="true"></span> </button>
+                <button class="btn btn-primary" ng-click="ScaleModeX()"><span class="fa fa-arrows-alt-h" aria-hidden="true"></span> </button>
+                <button class="btn btn-primary" ng-click="ScaleModeY()"><span class="fa fa-arrows-alt-v" aria-hidden="true"></span> </button>
+                <button class="btn btn-primary" ng-click="zoomIn()"><span class="fa fa-search-plus" aria-hidden="true"></span> </button>
+                <button class="btn btn-primary" ng-click="zoomOut()"><span class="fa fa-search-minus" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-primary" ng-click="cropImage()">Save Photo</button>
+                <button type="button" class="btn btn-default btn-light replacePhoto" ng-click="CLOSE_UPLOAD_Fn()" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "PowerInsightIndex";
+    // Layout = "~/Views/Shared/_Layout_PowerInsight.cshtml";
+    Layout = "~/Views/Shared/_Layout_Common.cshtml";
+}
+<div ng-controller="PI_Index_Controller">
+    <ng-view></ng-view>
+</div>
+<script src="~/AngularControllers/PowerInsight/Sales/TopBottom_Sellers.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/IndexController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Landing/PI_Landing.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+@*//Sales*@
+<script src="~/AngularControllers/PowerInsight/Sales/Sales_Summary.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Sales/Detailed_Sales_Analysis.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Sales/Daily_Weekly_Flash.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Sales/Covers.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Sales/Consolidated_Sales.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Sales/Comps_Voids_Analysis.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Sales/PI_Product_AnalysisController.js"></script>
+@*//End Sales*@
+
+@*//COGS*@
+<script src="~/AngularControllers/PowerInsight/COGS/COGS_Summary.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/COGS/Menu_Profitability.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/COGS/Performance_Analysis.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/COGS/Purchase_Analysis.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/COGS/Staff_Food_Cost.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/COGS/Wastage_Analysis.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+@*//ENd COGS*@
+
+
+@*//Staff*@
+
+<script src="~/AngularControllers/PowerInsight/Staff/Staff_Summary.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Staff/Staff_Cost.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Staff/Headcount_Overview.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+
+@*//ENd Staff*@
+
+
+@*//Profit*@
+<script src="~/AngularControllers/PowerInsight/Profit/Weekly_P_L.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PowerInsight/Profit/PNL_Uploads.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+
+@*//end Profit*@
+
+<script src="~/E_Scripts/PowerInsight/assets/js/sidebar-menu.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+
+@*//Control Panel*@
+<script src="~/AngularControllers/PowerInsight/ControlPanel/MappingController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+
+@*//OPEN AI*@
+<script src="~/AngularControllers/PowerInsight/OpenAI/OpenAIChatBot.js"></script>

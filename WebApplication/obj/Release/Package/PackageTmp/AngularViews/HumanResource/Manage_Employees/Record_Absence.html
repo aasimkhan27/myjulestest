@@ -1,0 +1,189 @@
+﻿<div class="mx-3 mt-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xxl col-xl col-md">
+                    <label>Absence Type</label>
+                    <ul class="nav nav-pills mb-0">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    Holiday
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Holiday 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Holiday 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <span class="bulkUpdateSpan">
+                        You can change it individually once applied
+                    </span>
+                </div>
+                <div class="col-xxl col-xl col-md">
+                    <label>Start Date</label>
+                    <input type="date" />
+                </div>
+
+                <div class="col-xxl col-xl col-md">
+                    <label>End Date</label>
+                    <input type="date" />
+                </div>
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto">
+                    <label class="d-block responsiveLabel">&nbsp;</label>
+                    <button class="btn btn-primary applyBtn">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mx-3 mt-3">
+    <div class="card">
+        <div class="card-header pb-0">
+            <div class="row">
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <h5>Employee</h5>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2 ms-auto">
+                    <input type="text" name="search" placeholder="Search" />
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-lg fa-light fa-location-dot"></i>
+                                    Location
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Location 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Location 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-building fa-lg"></i>
+                                    Department
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Department 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Department 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-briefcase-blank fa-lg"></i>
+                                    Position
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Position 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Position 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-nowrap">Employee Name</th>
+                            <th width="20%">Position</th>
+                            <th width="20%" class="text-nowrap">Absence Type</th>
+                            <th width="20%" class="text-nowrap">Start Date</th>
+                            <th class="text-nowrap" width="20%">End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr>
+                            <td class="text-nowrap">
+                                <span class="text_avatar">mw</span>
+                                Malik Wihowo
+                            </td>
+
+                            <td><input type="text" disabled placeholder="Employee" class="mb-0" /></td>
+                            <td>
+                                <ul class="nav nav-pills mb-0">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label">
+                                                <span class="truncate-ellipsis">
+                                                    Holiday
+                                                </span>
+                                            </span>
+                                        </a>
+                                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                            <li class="DontHideOnClick">
+                                                <span>Holiday 1</span>
+                                            </li>
+                                            <li class="DontHideOnClick">
+                                                <span>Holiday 2</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+
+                            <td><input type="date" class="mb-0" /></td>
+                            <td><input type="date" class="mb-0" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="card-footer text-end">
+            <a href="#!/Employee_List" class="btn btn-outline" type="button">Cancel</a>
+            <a href="#!/Preview_And_Update_Absences" class="btn btn-primary" type="button"> Preview and update [1] absences </a>
+        </div>
+    </div>
+</div>
+

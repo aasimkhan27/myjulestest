@@ -1,0 +1,346 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Net Sales Summary</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item mr-2">
+                    <select class="custom-select custom-select-sm mw-150 ng-pristine ng-untouched ng-valid" name="START_TIME" style="max-width:150px" ng-change="ENTITY_CHANGE_FY()" ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in REVE_ENTITY_LIST" ng-model="RevenueAnalyticsSearch.ENTITY_ID">
+                        <option value="">--Select Entity--</option>
+                    </select>
+
+                </li>
+                <li class="nav-item mr-2">
+                    <select class="custom-select custom-select-sm mw-150 ng-pristine ng-untouched ng-valid" name="START_TIME" ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST" ng-model="RevenueAnalyticsSearch.BRANCH_ID">
+                        <option value="">--Select Branch--</option>
+                    </select>
+                </li>
+                <li class="nav-item mt-1 mr-2">
+                    <div class="input-group input-group-sm pt-0" style="display:flex" id="week-picker-wrapper">
+                        <div class="input-group-prepend">
+                            <button type="button" class="btn input-group-text week-prev">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="form-control week-picker font-11 bg-white" value="" readonly="" format="yy-mm-dd" placeholder="Select a Week">
+                        <div class="input-group-append">
+                            <button type="button" class="btn input-group-text week-next">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item mr-2">
+                    <div class="form-group mb-0">
+                        <button type="button" ng-click="GET_DETAILED_REVENUE_ANALYTICS()" class="btn btn-sm btn-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Filter"><i class="far fa-filter"></i></button>
+                    </div>
+                </li>
+                <li class="nav-item mr-2">
+                    <div class="form-group mb-0">
+                        <button type="button" ng-click="RESET_GET_DETAILED_REVENUE_ANALYTICS()" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Reset"><i class="far fa-undo"></i></button>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="form-group mb-0">
+                        <button type="button" class="btn btn-sm btn-wenodo" ng-click="REVENUE_PDF(1)" data-toggle="tooltip" data-html="true" data-original-title="Download PDF"><i class="far fa-file-pdf"></i></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive custom-scrollbar height-auto">
+            <table class="table table-hover compact_table">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th>Week End Date</th>
+                        <th class="text-right">Mon</th>
+                        <th class="text-right">Tue</th>
+                        <th class="text-right">Wed</th>
+                        <th class="text-right">Thu</th>
+                        <th class="text-right">Fri</th>
+                        <th class="text-right">Sat</th>
+                        <th class="text-right">Sun</th>
+                        <th class="text-right">Total</th>
+                        <th class="text-right">Covers</th>
+                        <th class="text-right">Avg SPH</th>
+                        <th class="text-right">LY GP</th>
+                        <th class="text-right">LY Covers</th>
+                        <th class="text-right">LY Avg SPH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 25 Jun 2023</td>
+                        <td class="text-right text-nowrap">&pound; 17,066</td>
+                        <td class="text-right text-nowrap">&pound; 15,744</td>
+                        <td class="text-right text-nowrap">&pound; 16,168</td>
+                        <td class="text-right text-nowrap">&pound; 17,681</td>
+                        <td class="text-right text-nowrap">&pound; 19,081</td>
+                        <td class="text-right text-nowrap">&pound; 17,576</td>
+                        <td class="text-right text-nowrap">&pound; 15,324</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 118,639</td>
+                        <td class="text-right text-nowrap">3,957</td>
+                        <td class="text-right text-nowrap">31.9</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 02 Jul 2023</td>
+                        <td class="text-right text-nowrap">&pound; 16,588</td>
+                        <td class="text-right text-nowrap">&pound; 16,255</td>
+                        <td class="text-right text-nowrap">&pound; 16,553</td>
+                        <td class="text-right text-nowrap">&pound; 18,297</td>
+                        <td class="text-right text-nowrap">&pound; 19,257</td>
+                        <td class="text-right text-nowrap">&pound; 19,192</td>
+                        <td class="text-right text-nowrap">&pound; 16,774</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 122,917</td>
+                        <td class="text-right text-nowrap">3,752</td>
+                        <td class="text-right text-nowrap">32.7</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 09 Jul 2023</td>
+                        <td class="text-right text-nowrap">&pound; 16,567</td>
+                        <td class="text-right text-nowrap">&pound; 16,583</td>
+                        <td class="text-right text-nowrap">&pound; 18,439</td>
+                        <td class="text-right text-nowrap">&pound; 19,000</td>
+                        <td class="text-right text-nowrap">&pound; 18,164</td>
+                        <td class="text-right text-nowrap">&pound; 19,519</td>
+                        <td class="text-right text-nowrap">&pound; 17,976</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 126,248</td>
+                        <td class="text-right text-nowrap">3,734</td>
+                        <td class="text-right text-nowrap">33.6</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 16 Jul 2023</td>
+                        <td class="text-right text-nowrap">&pound; 17,985</td>
+                        <td class="text-right text-nowrap">&pound; 17,191</td>
+                        <td class="text-right text-nowrap">&pound; 17,460</td>
+                        <td class="text-right text-nowrap">&pound; 18,181</td>
+                        <td class="text-right text-nowrap">&pound; 18,952</td>
+                        <td class="text-right text-nowrap">&pound; 19,087</td>
+                        <td class="text-right text-nowrap">&pound; 16,752</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 125,608</td>
+                        <td class="text-right text-nowrap">3,714</td>
+                        <td class="text-right text-nowrap">33.1</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 23 Jul 2023</td>
+                        <td class="text-right text-nowrap">&pound; 17,338</td>
+                        <td class="text-right text-nowrap">&pound; 16,477</td>
+                        <td class="text-right text-nowrap">&pound; 17,753</td>
+                        <td class="text-right text-nowrap">&pound; 17,595</td>
+                        <td class="text-right text-nowrap">&pound; 18,150</td>
+                        <td class="text-right text-nowrap">&pound; 17,056</td>
+                        <td class="text-right text-nowrap">&pound; 17,234</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 121,604</td>
+                        <td class="text-right text-nowrap">3,685</td>
+                        <td class="text-right text-nowrap">32.2</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 30 Jul 2023</td>
+                        <td class="text-right text-nowrap">&pound; 15,836</td>
+                        <td class="text-right text-nowrap">&pound; 17,226</td>
+                        <td class="text-right text-nowrap">&pound; 14,970</td>
+                        <td class="text-right text-nowrap">&pound; 17,801</td>
+                        <td class="text-right text-nowrap">&pound; 18,839</td>
+                        <td class="text-right text-nowrap">&pound; 19,875</td>
+                        <td class="text-right text-nowrap">&pound; 18,107</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 122,654</td>
+                        <td class="text-right text-nowrap">3,674</td>
+                        <td class="text-right text-nowrap">34.3</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 06 Aug 2023</td>
+                        <td class="text-right text-nowrap">&pound; 16,615</td>
+                        <td class="text-right text-nowrap">&pound; 16,721</td>
+                        <td class="text-right text-nowrap">&pound; 16,688</td>
+                        <td class="text-right text-nowrap">&pound; 18,244</td>
+                        <td class="text-right text-nowrap">&pound; 20,328</td>
+                        <td class="text-right text-nowrap">&pound; 18,545</td>
+                        <td class="text-right text-nowrap">&pound; 18,992</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 126,133</td>
+                        <td class="text-right text-nowrap">3,654</td>
+                        <td class="text-right text-nowrap">33.3</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 13 Aug 2023</td>
+                        <td class="text-right text-nowrap">&pound; 15,911</td>
+                        <td class="text-right text-nowrap">&pound; 16,294</td>
+                        <td class="text-right text-nowrap">&pound; 16,747</td>
+                        <td class="text-right text-nowrap">&pound; 17,630</td>
+                        <td class="text-right text-nowrap">&pound; 18,519</td>
+                        <td class="text-right text-nowrap">&pound; 18,573</td>
+                        <td class="text-right text-nowrap">&pound; 17,806</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 121,479</td>
+                        <td class="text-right text-nowrap">3,619</td>
+                        <td class="text-right text-nowrap">33.6</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 20 Aug 2023</td>
+                        <td class="text-right text-nowrap">&pound; 16,552</td>
+                        <td class="text-right text-nowrap">&pound; 16,463</td>
+                        <td class="text-right text-nowrap">&pound; 17,110</td>
+                        <td class="text-right text-nowrap">&pound; 17,539</td>
+                        <td class="text-right text-nowrap">&pound; 19,602</td>
+                        <td class="text-right text-nowrap">&pound; 17,540</td>
+                        <td class="text-right text-nowrap">&pound; 16,625</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 121,430</td>
+                        <td class="text-right text-nowrap">3,607</td>
+                        <td class="text-right text-nowrap">33.7</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 27 Aug 2023</td>
+                        <td class="text-right text-nowrap">&pound; 13,544</td>
+                        <td class="text-right text-nowrap">&pound; 15,294</td>
+                        <td class="text-right text-nowrap">&pound; 16,096</td>
+                        <td class="text-right text-nowrap">&pound; 17,639</td>
+                        <td class="text-right text-nowrap">&pound; 17,992</td>
+                        <td class="text-right text-nowrap">&pound; 18,129</td>
+                        <td class="text-right text-nowrap">&pound; 17,690</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 116,383</td>
+                        <td class="text-right text-nowrap">3,352</td>
+                        <td class="text-right text-nowrap">34.7</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 03 Sep 2023</td>
+                        <td class="text-right text-nowrap">&pound; 16,105</td>
+                        <td class="text-right text-nowrap">&pound; 15,562</td>
+                        <td class="text-right text-nowrap">&pound; 15,360</td>
+                        <td class="text-right text-nowrap">&pound; 17,056</td>
+                        <td class="text-right text-nowrap">&pound; 18,290</td>
+                        <td class="text-right text-nowrap">&pound; 18,369</td>
+                        <td class="text-right text-nowrap">&pound; 15,546</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 116,286</td>
+                        <td class="text-right text-nowrap">3,342</td>
+                        <td class="text-right text-nowrap">35.5</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 10 Sep 2023</td>
+                        <td class="text-right text-nowrap">&pound; 14,822</td>
+                        <td class="text-right text-nowrap">&pound; 14,471</td>
+                        <td class="text-right text-nowrap">&pound; 16,415</td>
+                        <td class="text-right text-nowrap">&pound; 15,121</td>
+                        <td class="text-right text-nowrap">&pound; 17,917</td>
+                        <td class="text-right text-nowrap">&pound; 18,751</td>
+                        <td class="text-right text-nowrap">&pound; 15,822</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 113,319</td>
+                        <td class="text-right text-nowrap">3,331</td>
+                        <td class="text-right text-nowrap">34.9</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td><i class="far fa-calendar-alt"></i> 17 Sep 2023</td>
+                        <td class="text-right text-nowrap">&pound; 16,667</td>
+                        <td class="text-right text-nowrap">&pound; 16,354</td>
+                        <td class="text-right text-nowrap">&pound; 16,570</td>
+                        <td class="text-right text-nowrap">&pound; 13,052</td>
+                        <td class="text-right text-nowrap">&pound; 19,852</td>
+                        <td class="text-right text-nowrap">&pound; 18,826</td>
+                        <td class="text-right text-nowrap">&pound; 17,351</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 118,673</td>
+                        <td class="text-right text-nowrap">3,269</td>
+                        <td class="text-right text-nowrap">34.7</td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                        <td class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-bold">Average 13 Week</td>
+                        <td class="text-right text-nowrap">&pound; 16,277</td>
+                        <td class="text-right text-nowrap">&pound; 16,203</td>
+                        <td class="text-right text-nowrap">&pound; 16,641</td>
+                        <td class="text-right text-nowrap">&pound; 17,295</td>
+                        <td class="text-right text-nowrap">&pound; 18,842</td>
+                        <td class="text-right text-nowrap">&pound; 18,541</td>
+                        <td class="text-right text-nowrap">&pound; 17,077</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 120,875</td>
+                        <td colspan="2"></td>
+                        <td colspan="3" class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-bold">Average 26 Week</td>
+                        <td class="text-right text-nowrap">&pound; 15,730</td>
+                        <td class="text-right text-nowrap">&pound; 15,567</td>
+                        <td class="text-right text-nowrap">&pound; 16,188</td>
+                        <td class="text-right text-nowrap">&pound; 17,072</td>
+                        <td class="text-right text-nowrap">&pound; 18,580</td>
+                        <td class="text-right text-nowrap">&pound; 18,545</td>
+                        <td class="text-right text-nowrap">&pound; 16,696</td>
+                        <td class="text-right text-nowrap text-bold">&pound; 118,377</td>
+                        <td colspan="2"></td>
+                        <td colspan="3" class="bg-light-green text-right"></td>
+                    </tr>
+                    <tr class="no-border">
+                        <td colspan="9">&nbsp;</td>
+                    </tr>
+                    <tr class="no-border">
+                        <td class="text-bold">Last Week</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap">11%</td>
+                        <td class="text-right text-nowrap">17%</td>
+                        <td class="text-right text-nowrap">16%</td>
+                        <td class="text-right text-nowrap">15%</td>
+                        <td class="text-right text-nowrap text-bold">100%</td>
+                    </tr>
+                    <tr class="no-border">
+                        <td class="text-bold">Trend 13 Week</td>
+                        <td class="text-right text-nowrap">13%</td>
+                        <td class="text-right text-nowrap">13%</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap">16%</td>
+                        <td class="text-right text-nowrap">15%</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap text-bold">100%</td>
+                    </tr>
+                    <tr class="no-border">
+                        <td class="text-bold">Trend 26 Week</td>
+                        <td class="text-right text-nowrap">13%</td>
+                        <td class="text-right text-nowrap">13%</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap">16%</td>
+                        <td class="text-right text-nowrap">16%</td>
+                        <td class="text-right text-nowrap">14%</td>
+                        <td class="text-right text-nowrap text-bold">100%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

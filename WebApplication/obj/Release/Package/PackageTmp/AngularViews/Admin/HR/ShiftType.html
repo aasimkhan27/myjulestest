@@ -1,0 +1,202 @@
+﻿<form id="ShiftTypeForm" name="ShiftTypeForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="ShiftTypeSearch.CUSTOMER_ID"
+                            ng-options="CT.CUSTOMER_ID as CT.CUSTOMER_NAME for CT in CUSTOMER_LIST"
+                            required
+                            ng-change="GET_ENTITY_LIST()"
+                            ng-class="{'error':ShiftTypeForm.submitted && ShiftTypeForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="ShiftTypeSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            required
+                            ng-class="{'error':ShiftTypeForm.submitted && ShiftTypeForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>
+                        Shift Type:*
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="SHIFT_TYPE_NAME"
+                           ng-model="ShiftTypeSearch.SHIFT_TYPE_NAME"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':ShiftTypeForm.submitted && ShiftTypeForm.SHIFT_TYPE_NAME.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>
+                        Wage:*
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="8"
+                           name="WAGE_MULTIPLIER"
+                           ng-model="ShiftTypeSearch.WAGE_MULTIPLIER"
+                           placeholder="Enter ..."
+                           required
+                           only-Digits
+                           ng-class="{'error':ShiftTypeForm.submitted && ShiftTypeForm.WAGE_MULTIPLIER.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group" ng-init="$parent.ColorPicker()">
+                    <label>
+                        Color Code:*
+                    </label>
+                    <input type="text"
+                           class="form-control pick-a-color"
+                           maxlength="250"
+                           autocomplete="off"
+                           name="SHIFT_TYPE_COLOR_CODE"
+                           ng-model="ShiftTypeSearch.SHIFT_TYPE_COLOR_CODE"
+                           id="SHIFT_COLOR_CODE"
+                           value="">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>
+                        Description:
+                    </label>
+                    <textarea type="text"
+                              class="form-control"
+                              maxlength="250"
+                              name="DESCRIPTION"
+                              ng-model="ShiftTypeSearch.DESCRIPTION"
+                              placeholder="Enter ..."
+                              ng-class="{'error':ShiftTypeForm.submitted && ShiftTypeForm.DESCRIPTION.$error.required}">
+                    </textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>&nbsp;</label>
+                <div class="form-inline">
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="ShiftTypeSearch.All" name="Active"
+                                   ng-value="-1"
+                                   ng-model="ShiftTypeSearch.ACTIVE" />
+                            <label for="ShiftTypeSearch.All" class="custom-control-label justify-content-left">ALL</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="ShiftTypeSearch.ACTIVE" name="Active"
+                                   ng-model="ShiftTypeSearch.ACTIVE"
+                                   ng-value="1">
+                            <label for="ShiftTypeSearch.ACTIVE" class="custom-control-label justify-content-left">Active</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="ShiftTypeSearch.InActive" name="Active"
+                                   ng-model="ShiftTypeSearch.ACTIVE"
+                                   ng-value="0">
+                            <label for="ShiftTypeSearch.InActive" class="custom-control-label justify-content-left">In-Active</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--<div class="col-md-2">
+        <div class="form-group">
+            <label class="d-block">&nbsp;</label>
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="Absence"
+                       ng-model="ShiftTypeSearch.ACTIVE"
+                       ng-checked="ShiftTypeSearch.ACTIVE">
+                <label for="Absence" class="custom-control-label">Active</label>
+            </div>
+        </div>
+    </div>-->
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" id="IS_DEFAULT"
+                               ng-model="ShiftTypeSearch.IS_DEFAULT"
+                               ng-checked="ShiftTypeSearch.IS_DEFAULT">
+                        <label for="IS_DEFAULT" class="custom-control-label">Is Default</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div data-ng-show="ShiftTypeForm.submitted && ShiftTypeForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button ng-click="ADMIN_INS_UPD_SHIFT_TYPES();" class="btn btn-wenodo">Save</button>
+                    <button ng-click="ADMIN_GET_SHIFT_TYPES(1);" class="btn btn-w-default">Search</button>
+                    <button ng-click="ResetSHIFT_TYPE();" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="card-body">
+    <div class="text-center" ng-show="SHIFT_TYPE_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="SHIFT_TYPE_LIST.length>0">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th class="text-nowrap">Customer</th>
+                    <th class="text-nowrap">Entity</th>
+                    <th class="text-nowrap">Shift Type</th>
+                    <th class="text-nowrap">Shift Wage</th>
+                    <th class="text-nowrap">Shift Color</th>
+                    <th class="text-nowrap">Comment</th>
+                    <th>Status</th>
+                    <th width="5%"></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="8" align="center" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" ng-click="LAZY_GET_SHIFT_TYPES();">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody ng-repeat="SFT in SHIFT_TYPE_LIST" on-finish-render="ngRepeatFinished">
+                <tr>
+                    <td>{{SFT.CUSTOMER_NAME}}</td>
+                    <td>{{SFT.ENTITY_NAME}}</td>
+                    <td>{{SFT.SHIFT_TYPE}}</td>
+                    <td>{{SFT.WAGE_MULTIPLIER}}</td>
+                    <td><span class="event-dots ml-4" style="background-color:#{{SFT.COLOR}}"></span></td>
+                    <td>{{SFT.COMMENTS}}</td>
+                    <td>{{SFT.ACTIVE?'Active':'Inactive'}}</td>
+                    <td>
+                        <a ng-click="EDIT_ADMIN_INS_UPD_SHIFT_TYPES(SFT)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        <!--<a ng-click="DELETE_INS_UPD_ABSENCE_TYPE(LL)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

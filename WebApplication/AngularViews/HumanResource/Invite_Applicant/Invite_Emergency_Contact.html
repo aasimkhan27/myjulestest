@@ -1,0 +1,109 @@
+﻿<div class="row align-items-center" style="height:80vh" ng-show="!LINK_EXPIRE_FLAG && PAGE_LOAD==1">
+    <div class="col-xxl-6 col-ed-6 col-xl-6 text-center">
+        <h4 class="heading-text d-block mb-2">Link is not valid any more!</h4>
+        <p>Oops this invite URL is not valid anymore.</p>
+        <a href="../Login/Index" type="button" class="btn btn-primary">Take me home</a>
+    </div>
+    <div class="col-xxl-6 col-ed-6 col-xl-6 text-center">
+        <a href="../Login/Index">
+            <img src="../../../E_Content/images/rota-login.png" class="img-fluid" style="max-height:500px" />
+        </a>
+    </div>
+</div>
+<div class="row basic_details" ng-show="LINK_EXPIRE_FLAG && PAGE_LOAD==1">
+    <!-- sidebar -->
+    <div class="col-xxl-2 col-md-2 col-xl-2">
+        <div class="app">
+            <templateurl class="w-100" template-url="../AngularViews/HumanResource/Invite_Applicant/Invite_Applicant_Side_Pannel.html?v=1{{AppVersion}}">
+        </div>
+    </div>
+
+    <!-- content side -->
+    <div class="col-xxl-10 col-md-10 col-xl-10 bg-white">
+        <div class="right-panel container-sm">
+            <form name="InviteEmergencyDetailsForm" novalidate>
+                <div class="row">
+                    <h4 class="heading-text text-start">Step 4: Add your Emergency Contact</h4>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <label>Emergency Contact Name</label>
+                        <input type="text"
+                               name="EMERGENCY_CONTACT_NAME"
+                               placeholder="Type Here"
+                               ng-model="InviteEmergencyDetails.EMERGENCY_CONTACT_NAME"
+                               maxlength="100"
+                               onkeypress="return (event.charCode > 64 && eventcharCode < 91) || (event.charCode > 96  && eventcharCode < 123) || (event.charCode > 38 && event.charCode < 40) || event.charCode ===32"                              
+                               ng-class="{'error':InviteEmergencyDetailsForm.submitted &&  (InviteEmergencyDetailsForm.EMERGENCY_CONTACT_NAME.$error.required ||
+                     InviteEmergencyDetailsForm.EMERGENCY_CONTACT_NAME.$error.pattern) }" />
+                        <small class="text-danger" ng-show="InviteEmergencyDetailsForm.EMERGENCY_CONTACT_NAME.$dirty && InviteEmergencyDetailsForm.EMERGENCY_CONTACT_NAME.$error.pattern" style="">Please Enter Alphabet and Special character only</small>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <label>Emergency Contact Relationship</label>
+                        <input type="text"
+                               name="EMERGENCY_CONTACT_RELATION"
+                               placeholder="Type Here"
+                               ng-model="InviteEmergencyDetails.EMERGENCY_CONTACT_RELATION"
+                               maxlength="100"
+                               ng-class="{'error':InviteEmergencyDetailsForm.submitted && InviteEmergencyDetailsForm.EMERGENCY_CONTACT_RELATION.$error.required}" />
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <label>Emergency Contact Number</label>
+                        <span class="international-num w-100">
+                            <input type="hidden" name="emergency_phone_number[full]">
+                            <span class="row gx-0">
+                                <span class="col-xxl-2 col-xl-2 col-md-2">
+                                    <input id="emergencyphone"
+                                           type="tel"
+                                           name="EMERGENCY_PHONE_NUMBER"
+                                           only-numbers
+                                           maxlength="15"
+                                           class="flag_input"
+                                           ng-model="InviteEmergencyDetails.EMERGENCY_PHONE_NUMBER">
+                                </span>
+                                <span class="col-xxl-10 col-xl-10 col-md-10">
+                                    <input type="tel"
+                                           name="EMERGENCY_PHONE_NUMBER_TEXT"
+                                           only-numbers                                           
+                                           maxlength="15"
+                                           class="int_numbers"
+                                           placeholder="Type here"
+                                           ng-pattern="/(^[1-9]\d{0,15}$)/"
+                                           ng-model="InviteEmergencyDetails.EMERGENCY_PHONE_NUMBER_TEXT"
+                                           ng-class="{'error':InviteEmergencyDetailsForm.submitted && InviteEmergencyDetailsForm.EMERGENCY_PHONE_NUMBER_TEXT.$error.required}">
+                                </span>
+                                <span class="f-11 text-danger" ng-show="InviteEmergencyDetailsForm.EMERGENCY_PHONE_NUMBER_TEXT.$dirty && InviteEmergencyDetailsForm.EMERGENCY_PHONE_NUMBER_TEXT.$error.pattern">
+                                    Please enter valid number should not be start a number 0.
+                                </span>
+                            </span>
+
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- previous next buttons -->
+<div class="col-xxl-12 col-xl-12 col-md-12 "  ng-show="LINK_EXPIRE_FLAG && PAGE_LOAD==1">
+    <div class="text-end border-top bottom_container">
+        <button class="btn btn-light"
+                click-once
+                ng-click="NEXT_Fn(3)">
+            Previous
+        </button>
+        <button class="btn btn-primary"
+                click-once
+                ng-click="HRM_INS_UPD_ONBOARDING_STEP_4(5)">
+            Next
+        </button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var input = document.querySelector("#country");
+    var iti = window.intlTelInput(input, {
+        // separateDialCode:true,
+        utilsScript:
+            "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.0/build/js/utils.js",
+    });
+</script>

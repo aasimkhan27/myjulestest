@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "HRIndex";
+    Layout = "~/Views/Shared/_Layout_Common.cshtml";
+}
+<div ng-controller="HRIndexController">
+    <div class="my-2 py-2 pb-3 scrollbar-wrapper d-flex" ng-show="ASSIGNED_REPORT_LIST.length>0">
+        <div class="text-nowrap" ng-repeat="_rpt in ASSIGNED_REPORT_LIST" ng-click="HRMIndexscope.REPORT_COLUMN_MAPPING_Fn(_rpt)" prevent-double-click="2000">
+            <a class="btn-tabs" prevent-double-click="2000" ng-class="{'active':_rpt.IS_SELECTED==true}" ng-click="HRMIndexscope.IS_REPORT_BUTTON_SELECTED_Fn(_rpt)"> {{_rpt.REPORT_NAME}}</a>
+        </div>
+    </div>
+    <ng-view></ng-view>
+</div>
+<script src="~/AngularControllers/HumanResource/HRIndexController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/UserJourneyController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Schedule/ApproveScheduleController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Dashboard/HRDashboardController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Admin/SettingController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/ManageHRController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Admin/OrganisationController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Admin/GeneralController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Lets_Start/BasicDetailsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Access/AccessController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Users/UsersController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Work_Patterns/WorkPatternsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Schedule/ScheduleController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/PunchClock/PunchClockController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Absence/AbsenceController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Payroll/PayrollController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Reporting/ReportingController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Integration/IntegrationController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+
+@*Employee onboarding*@
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpAbsencesController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpAccessController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpAssetsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpDocumentController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpEmploymentInfoController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmployeeListController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpNotesController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpPrimaryDetailsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpQualificaitonController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/EmpWagesController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Employees/Employee/ManageEmployeesController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+@*End Employee onboarding*@
+
+@*Invite Applicant*@
+<script src="~/AngularControllers/HumanResource/Invite_Applicant/InvitePersonalDetailsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Invite_Applicant/InviteContactDetailsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Invite_Applicant/InviteOtherDetailsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Invite_Applicant/InviteEmergencyDetailsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Invite_Applicant/InvitePaymentDetailsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+@*End Invite Applicant*@
+
+
+@*ROTA*@
+<script src="~/AngularControllers/HumanResource/Schedule/EmpScheduleController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Manage_Leaves/ManageLeave.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Feeds/FEEDS.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Dashboard/HRDashboardController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Reporting/EmpReportingController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/HumanResource/Schedule/EmpScheduleController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+@*EXCEL*@
+<script src="~/E_Scripts/ExcelPdfJS/xlsx.core.min.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/E_Scripts/ExcelPdfJS/alasql.min.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<div class="modal fade" tabindex="-1" id="History" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">History</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data Updated</th>
+                                    <th>Modified Date</th>
+                                    <th>Updated by</th>
+                                    <th>Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="_history in EMPLOYEE_HISTORY_HEADERS_LIST">
+                                <tr>
+                                    <td>{{_history.STEP_NAME}}</td>
+                                    <td>{{_history.ARCHIVE_DATE | date}}</td>
+                                    <td>{{_history.USER_NAME}}</td>
+                                    <td>{{_history.COMMENTS==null || _history.COMMENTS==''?'-':_history.COMMENTS}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

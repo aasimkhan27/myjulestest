@@ -1,0 +1,233 @@
+﻿<div class="card mb-0">
+    <div class="card-header">
+        <h5 class="heading-text-2">Budget </h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item">
+                    <a class="btn btn-wenodo" onclick="javascript:history.back(0)">Back</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(1)">
+            <a class="nav-link " ng-class="{'active':TAB_FLAG==1}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Budget</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(2)">
+            <a class="nav-link" ng-class="{'active':TAB_FLAG==2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Budget Uploaded Files</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="custom-content-below-tabContent">
+        <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+            <div class="card-body pt-0">
+                <form>
+                    <div class="row">
+
+                        <div class="col">
+                            <label class="d-block">Branch</label>
+                            <select class="custom-select custom-select-sm"
+                                    name="BRANCH_ID"
+                                    ng-model="UploadedBudgeSearch.BRANCH_ID"
+                                    ng-options="CL.BRANCH_ID as CL.BRANCH_NAME for CL in BRANCH_LIST"
+                                    ng-class="{'error':RevenueForm.submitted && RevenueForm.BRANCH_ID.$error.required}">
+                                <option value="">- Please Select Branch-</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block"> Date</label>
+                                <div id="reportrange" class="custom-select custom-select-sm custom-date min-225">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span></span><b class="caret"></b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <button name="submit" type="submit" class="btn btn-sm btn-wenodo" ng-click="GET_BRANCH_BUDGETS(1)">Search</button>
+                                <button class="btn btn-sm btn-w-default" type="button" ng-click="RESET_DAILY_SALES_FILTER()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive custom-scrollbar height-535">
+                    <div class="text-center text-sm" ng-show="BRANCH_BUDGETS_LIST.length==0" empty-grid></div>
+                    <table class="table table-head-fixed table-striped table-hover mb-0 compact_table" ng-show="BRANCH_BUDGETS_LIST.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th width="10%">Branch Name</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th width="5%">Covers</th>
+                                <th width="8%" class="text-right">Budget</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="XIL in BRANCH_BUDGETS_LIST" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td>{{XIL.BRANCH_NAME}}</td>
+                                <td><i class="fal fa-calendar-alt text-blue"></i> {{XIL.BUDGET_DATE | date}}</td>
+                                <td>{{XIL.CATEGORY_NAME}}</td>
+                                <td>{{XIL.COVERS}}</td>
+                                <td class="text-nowrap text-right"><span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{XIL.BUDGET | number:2}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center table-footer-fixed" colspan="5">
+                                    <a class="btn btn-sm btn-secondary text-white" ng-show="GetData" click-once ng-click="LAZY_GET_BRANCH_BUDGETS()">{{VIEWMORERECORD}}</a>
+                                    <div class="form-inline float-right table-fixed-right">
+                                        <label class="d-block mr-2">Show Records</label>
+                                        <select class="custom-select custom-select-sm w-50px" name="STATUS_TYPE"
+                                                data-placeholder="Select Status"
+                                                ng-model="UploadedBudgeSearch.PAGE_SIZE"
+                                                ng-change="GET_BRANCH_BUDGETS(1)"
+                                                ng-options="PA.ID  as PA.NAME for PA in (PAGE_ARRAY_LIST)"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==2}" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
+            <div class="card-body pt-0">
+                <form>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="d-block">Branch</label>
+                                <select class="custom-select custom-select-sm"
+                                        name="BRANCH_ID_FILTER"
+                                        ng-model="UploadedBudgeSearch.FILTER_BRANCH_ID"
+                                        ng-options="CL.BRANCH_ID as CL.BRANCH_NAME for CL in BRANCH_LIST"
+                                        ng-class="{'error':RevenueForm.submitted && RevenueForm.BRANCH_ID_FILTER.$error.required}">
+                                    <option value="">- Please Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block">File Name</label>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       ng-model="UploadedBudgeSearch.FILE_NAME" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block"> Date</label>
+                                <div id="reportrangeUploaded" class="custom-select custom-select-sm custom-date min-225">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span></span><b class="caret"></b>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <button name="submit" type="submit" class="btn btn-sm btn-wenodo" ng-click="GET_BRANCH_BUDGET_LOGS(1,SORT_SHD_COLUMN_NO,SORT_ORDER_NO_ASCDESC_SHD)">Search</button>
+                                <button class="btn btn-sm btn-w-default" ng-click="RESET_DAILY_SALES_LOGS_FILTER()">Reset</button>
+                                <button ng-show="false" type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel">
+                                    <i class="far fa-file-excel"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive custom-scrollbar height-56vh">
+                    <div class="text-center text-sm" ng-show="BRANCH_BUDGET_LOGS_LIST.length==0" empty-grid></div>
+                    <table class="table table-head-fixed table-striped table-hover mb-0 compact_table" ng-show="BRANCH_BUDGET_LOGS_LIST.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Branch Name</th>
+                                <th>File Name</th>
+                                <th>Insert Count</th>
+                                <th>Total Count</th>
+                                <th>Update Count</th>
+                                <th>Error Count</th>
+                                <th>Date</th>
+                                <th width="2%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="XIL in BRANCH_BUDGET_LOGS_LIST" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td class="text-nowrap">{{XIL.BRANCH_NAME}}</td>
+                                <td>{{XIL.FILE_NAME}}</td>
+                                <td>{{XIL.INSERT_COUNT}}</td>
+                                <td>{{XIL.TOTAL_COUNT}}</td>
+                                <td>{{XIL.UPDATE_COUNT}}</td>
+                                <td>{{XIL.ERROR_COUNT}}</td>
+                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{XIL.UPLOAD_DATE | date}}</td>
+                                <td class="text-center"><a ng-click="GET_BRANCH_BUDGET_LOG_DETAILS(XIL)"><i class="fa fa-eye"></i></a></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center table-footer-fixed" colspan="8">
+                                    <a class="btn btn-sm btn-secondary text-white" ng-show="GetDataLog" click-once ng-click="LAZY_GET_BRANCH_BUDGET_LOGS()">{{VIEWMORERECORD}}</a>
+                                    <div class="form-inline float-right table-fixed-right">
+                                        <label class="d-block mr-2">Show Records</label>
+                                        <select class="custom-select custom-select-sm w-50px" name="STATUS_TYPE"
+                                                data-placeholder="Select Status"
+                                                ng-model="UploadedBudgeSearch.PAGE_SIZE_LOGS"
+                                                ng-change="GET_BRANCH_BUDGET_LOGS(1)"
+                                                ng-options="PA.ID  as PA.NAME for PA in (PAGE_ARRAY_LIST)"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade show" id="LOG_DTLS">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title">Budget Details</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive custom-scrollbar mx-height-380">
+                    <table class="table table-head-fixed table-striped table-hover compact_table mb-0" ng-show="BRANCH_BUDGET_LOG_DETAILS.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th width="3%">S.No</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Covers</th>
+                                <th>Budget</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="XIL in BRANCH_BUDGET_LOG_DETAILS" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{XIL.BUDGET_DATE | date}}</td>
+                                <td>{{XIL.BUDGET_CATEGORY}}</td>
+                                <td>{{XIL.COVERS}}</td>
+                                <td class="text-nowrap">{{XIL.BUDGET | number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+    $('.select2').select2()
+</script>

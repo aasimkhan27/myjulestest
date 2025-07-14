@@ -1,0 +1,117 @@
+﻿
+    <div class="card-header text-bold">
+        Uploads List
+    </div>   
+    <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Entity</label>
+                        <select class="custom-select text-sm"
+                                ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                                ng-model="PAYROLL_FILTER.ENTITY_ID"
+                                ng-change="GET_BRANCH_LIST(PAYROLL_FILTER.ENTITY_ID)">
+                            <option value="">-Select Entity-</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        <label>Branch</label>
+                        <select name="BRANCH" class="custom-select text-sm"
+                                ng-options="BRL.BRANCH_ID as BRL.BRANCH_NAME for BRL in BRANCH_LIST"
+                                ng-model="PAYROLL_FILTER.BRANCH_ID">
+                            <option value="">-Select Branch-</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        <label>Month</label>
+                        <select class="custom-select text-sm" ng-model="PAYROLL_FILTER.MONTH_ID">
+                            <option value="">-Select Month-</option>
+                            <option value="1">JANUARY</option>
+                            <option value="2">FEBRUARY</option>
+                            <option value="3">MARCH</option>
+                            <option value="4">APRIL</option>
+                            <option value="5">MAY</option>
+                            <option value="6">JUNE</option>
+                            <option value="7">JULY</option>
+                            <option value="8">AUGUST</option>
+                            <option value="9">SEPTEMBER</option>
+                            <option value="10">OCTOBER</option>
+                            <option value="11">NOVEMBER</option>
+                            <option value="12">DECEMBER</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">&nbsp;</label>
+                        <button class="btn btn-wenodo" ng-click="GET_WEFILE_UPLOADS(1)">Search</button>
+                        <button class="btn btn-w-default" ng-click="Reset_Filter()"> Reset</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped" ng-show="PAYROLL_LIST.length>0">
+                        <thead class="bg-wenodo-dark-blue">
+                            <tr>
+                                <th>Title</th>
+                                <th width="15%">Restaurant</th>
+                                <th width="15%">Uploaded By</th>
+                                <th width="10%">Type</th>
+                                <th width="8%">Month</th>
+                                <th width="15%">Created Date</th>
+                                <th width="15%">Approver</th>
+                                <th width="15%">Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="10" align="center" ng-show="GetData">
+                                    <a class="btn btn-secondary text-white" ng-click="LAZY_GET_WEFILE_UPLOADS()">{{VIEWMORERECORD}}</a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr ng-repeat="payroll in PAYROLL_LIST">
+                                <td>{{payroll.TITLE}}</td>
+                                <td>{{payroll.RESTAURANT_NAME}}({{payroll.BRANCH_NAME}})</td>
+                                <td>{{payroll.UPLOADED_BY_USER_NAME}}</td>
+                                <td>{{payroll.UPLOAD_TYPE}}</td>
+                                <td>{{GetMonthName(payroll.MONTH)}}</td>
+                                <td>{{payroll.CREATED_DATE | date}}</td>
+                                <td>{{payroll.FOR_USER_NAME}}</td>
+                                <td>
+                                    {{payroll.STATUS_NAME}}
+                                    <!--<span class="badge badge-light-orange" ng-show="CASHUP.STATUS_ID==0">
+                    Pending Approval
+                </span>
+
+                <span class="badge badge-light-grey" ng-show="CASHUP.STATUS_ID==3">
+                    Approval - NA
+                </span>
+                <span class="badge badge-success" ng-show="CASHUP.STATUS_ID==4">
+                    Approved
+                </span>
+                <span class="badge badge-light-red" ng-show="CASHUP.STATUS_ID==5">
+                    Rejected
+                </span>
+                <span class="badge badge-danger" ng-show="CASHUP.STATUS_ID==5">
+                    Rejected
+                </span>-->
+                                </td>
+                                <td><a ng-click="RedirectToDetails(payroll.TABLE_ID)" class="text-dark"> <i class="fas fa-bars" title="View Details"></i></a></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+    </div>

@@ -1,0 +1,78 @@
+﻿<div class="row">
+    <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/HeaderDtls.html?v=2136564{{AppVersion}}">
+</div>
+<div class="card-body">
+        <div class="row">
+            <form class="w-100" id="EmpDtlsForm_4" name="EmpDtlsForm_4" novalidate>
+                <div class="col-md-12">
+                    <div class="row" ng-repeat="CRS in CourseList" ng-init="NG_INIT_COURSE(CRS)">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Course Name:*</label>
+                                <select class="custom-select mb-2"
+                                        name="COURSE_NAME{{$index}}"
+                                        ng-model="CRS.COURSE_MASTER_ID"
+                                        ng-options="RTW.COURSE_MASTER_ID  as RTW.COURSE_NAME  for RTW in (COURSE_MASTER)"
+                                        ng-change="NG_COURSE_NAME(CRS.COURSE_MASTER_ID,CRS)"
+                                        required
+                                        ng-class="{'error':EmpDtlsForm_4.submitted && EmpDtlsForm_4.COURSE_NAME{{$index}}.$error.required}">
+                                    <option value="">- Please Select Course Name-</option>
+                                </select>
+                                <span class="mt-2" ng-show="CRS.COURSE_NAME_IS" ng-init="CRS.COURSE_MASTER_ID==1?CRS.COURSE_NAME_IS=true:CRS.COURSE_NAME_IS=false">
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Enter ..."
+                                           name="COURSE_NAME_OTHER{{$index}}"
+                                           ng-required="CRS.COURSE_NAME_IS"
+                                           maxlength="100"
+                                           ng-model="CRS.COURSE_NAME_OTHERS"
+                                           required
+                                           ng-class="{'error':EmpDtlsForm_4.submitted && EmpDtlsForm_4.COURSE_NAME_OTHER{{$index}}.$error.required}">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Expiry Date:</label>
+                                    <input type="text"
+                                           class="form-control dateinput"
+                                           autocomplete="off"
+                                           name="EXPIRY_DATE{{$index}}"
+                                           readonly
+                                           ng-model="CRS.EXPIRY_DATE"
+                                           ng-value="CRS.EXPIRY_DATE | date" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <label for="certificate{{$index}}" class="btn btn-upload text-nowrap" ng-class="{'error':EmpDtlsForm_4.submitted && CRS.UploadedFiles==null || EmpDtlsForm_4.submitted && CRS.UploadedFiles.length==0,'':CRS.UploadedFiles.length>0}">
+                                    <i class="fal fa-upload"></i> Upload Certificate *
+                                </label>
+                                <span class="hidden-input">
+                                    <input id="certificate{{$index}}" ng-files="getTheFilesToUploadCource($files, 'fileUpl_EvtInfo', 5,CRS,4,$index)" name="file" type="file" />
+                                </span>
+                                <span class="d-block border-top py-2 font-12" ng-repeat="upls in CRS.UploadedFiles">
+                                    <span ng-if="$index!=0" />
+                                    <a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}"> <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>
+                                    <span> <i ng-click="DELETE_UPLOAD_QUALIFICATION(CRS,upls,$index)" class="fa fa-times text-danger fa-sm mt-1 float-right cursor-pointer"></i> </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <label class="d-block">&nbsp;</label>
+                            <div class="d-flex">
+                                <a ng-click="RemoveCourceLine(CRS,$index)" ng-show="!$last || $last && $index>0" class="btn btn-danger"><i class="far fa-trash"></i></a>
+                                <!--<a ng-click="RemoveCourceLine(CRS,$index)" ng-show=" " class="btn btn-danger"><i class="far fa-trash"></i></a>-->
+                                <a class="btn btn-wenodo text-nowrap ml-2" ng-click="AddCourseLine()" ng-show="$last"> <i class="far fa-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" click-once  ng-click="HR_INS_UPD_EMPLOYEE_STEP_4('VIEW')" class="btn btn-wenodo">Save</button>
+                        <button type="button" ng-click="VIEW_TAB_CLICK(4)" class="btn btn-w-default">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+</div>

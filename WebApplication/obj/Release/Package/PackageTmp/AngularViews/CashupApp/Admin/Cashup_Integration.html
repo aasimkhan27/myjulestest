@@ -1,0 +1,634 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Integration</h6>
+                </div>
+                <div class="card-header px-0 border-0">
+                    <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==1}" ng-click="Fn_TAB_CLICK(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Inbound
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==2}" ng-click="Fn_TAB_CLICK(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Mapping
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--BASIC SETUP-->
+                <div class="card-body" ng-show="TAB_ID==1">
+                    <h6 class="headings">EPOS Integration</h6>
+                    <div class="table-responsive scrollbar-wrapper intergrationAdmin">
+                        <table>
+                            <thead class="table-sticky-top">
+                                <tr>
+                                    <th class="text-center border-end text-nowrap">Site Name</th>
+                                    <th class="text-center border-end text-nowrap">EPOS System Name</th>
+                                    <th class="text-center border-end text-nowrap">API or Manual</th>
+                                    <th class="text-center border-end text-nowrap">Data Synced from</th>
+                                    <th class="text-center border-end">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="_bound in CASHUP_INBOUND_LIST">
+                                    <td class="text-center">{{_bound.BRANCH_NAME}}</td>
+                                    <td class="text-center">{{_bound.SYSTEM_NAME}}</td>
+                                    <td class="text-center">{{_bound.INTEGRATION_TYPE}}</td>
+                                    <td class="text-center">{{_bound.LAST_INTEGRATION_DATE |date:'dd/MM/yyyy hh:mm'}}</td>
+                                    <td class="text-center">{{_bound.INTEGRATION_STATUS}}</td>
+                                </tr>
+                                <!--<tr>
+                                    <td class="text-center">Site D</td>
+                                    <td class="text-center">Omega</td>
+                                    <td class="text-center">API</td>
+                                    <td class="text-center text-nowrap">24th August 2024</td>
+                                    <td class="text-center text-nowrap"><i class="fa-regular fa-circle-exclamation text-danger me-1"></i> EPOS Integration Pending</td>
+                                </tr>-->
+                              
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-12 col-md-12 col-xl-12 mt-2 text-end">
+                            <button type="button" class="btn btn-light">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <!--AREA-->
+                <div class="card-body" ng-show="TAB_ID==2">
+                    <!--Payment Method Mapping-->
+                    <div class="row mb-5">
+                            <h6 class="headings">Payment Method Mapping</h6>
+                            <div class="col-xxl-6 col-xl-6 col-md-6">
+                                <label>EPOS System</label>
+                                <input type="text" placeholder="Tissl Horizon" />
+                            </div>
+                            <div class="col-xxl-9 col-xl-9 col-md-12">
+                                <div class="table-responsive scrollbar-wrapper">
+                                    <table>
+                                        <thead class="table-sticky-top">
+                                            <tr>
+                                                <th class="text-center text-nowrap border-end">EPOS Payment Name</th>
+                                                <th class="text-center text-nowrap border-end">Payment Method</th>
+                                                <th class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center">Bank Cards</td>
+                                                <td>
+                                                    <ul class="nav nav-pills min-w-100 mb-0">
+                                                        <li class="dropdown w-100">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                                <span class="select-label" id="select_label">
+                                                                    Select
+                                                                </span>
+                                                            </a>
+                                                            <ul ID="divNewNotifications"
+                                                                class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                                style="min-width:100%">
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-001
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-002
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-003
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-004
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-transparent">
+                                                        <i class="fa-solid fa-ellipsis-stroke"></i>                                                    
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">Card</td>
+                                                <td>
+                                                    <ul class="nav nav-pills min-w-100 mb-0">
+                                                        <li class="dropdown w-100">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                                <span class="select-label" id="select_label">
+                                                                    Select
+                                                                </span>
+                                                            </a>
+                                                            <ul ID="divNewNotifications"
+                                                                class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                                style="min-width:100%">
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-001
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-002
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-003
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-004
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-transparent">
+                                                        <i class="fa-solid fa-ellipsis-stroke"></i>                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">Cash</td>
+                                                <td>
+                                                    <ul class="nav nav-pills min-w-100 mb-0">
+                                                        <li class="dropdown w-100">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                                <span class="select-label" id="select_label">
+                                                                    Select
+                                                                </span>
+                                                            </a>
+                                                            <ul ID="divNewNotifications"
+                                                                class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                                style="min-width:100%">
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-001
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-002
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-003
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-004
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-transparent">
+                                                        <i class="fa-solid fa-ellipsis-stroke"></i>                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">Deliveroo</td>
+                                                <td>
+                                                    <ul class="nav nav-pills min-w-100 mb-0">
+                                                        <li class="dropdown w-100">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                                <span class="select-label" id="select_label">
+                                                                    Select
+                                                                </span>
+                                                            </a>
+                                                            <ul ID="divNewNotifications"
+                                                                class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                                style="min-width:100%">
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-001
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-002
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-003
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-004
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-transparent">
+                                                        <i class="fa-solid fa-ellipsis-stroke"></i>                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">Deliveroo Manual</td>
+                                                <td>
+                                                    <ul class="nav nav-pills min-w-100 mb-0">
+                                                        <li class="dropdown w-100">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                                <span class="select-label" id="select_label">
+                                                                    Select
+                                                                </span>
+                                                            </a>
+                                                            <ul ID="divNewNotifications"
+                                                                class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                                style="min-width:100%">
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-001
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-002
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-003
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-004
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-transparent">
+                                                        <i class="fa-solid fa-ellipsis-stroke"></i>                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">Event Catering1</td>
+                                                <td>
+                                                    <ul class="nav nav-pills min-w-100 mb-0">
+                                                        <li class="dropdown w-100">
+                                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                                <span class="select-label" id="select_label">
+                                                                    Select
+                                                                </span>
+                                                            </a>
+                                                            <ul ID="divNewNotifications"
+                                                                class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                                style="min-width:100%">
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-001
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-002
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-003
+                                                                </li>
+                                                                <li class="DontHideOnClick text-nowrap">
+                                                                    Department-004
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-transparent">
+                                                        <i class="fa-solid fa-ellipsis-stroke"></i>                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                    <!--Category Mapping-->
+                    <hr/>
+                    <div class="row mt-5">
+                           <h5 class="headings">Category Mapping</h5>
+                        <div class="col-xxl-6 col-xl-6 col-md-6">
+                            <label>EPOS System</label>
+                            <input type="text" placeholder="Tissl Horizon" />
+                        </div>
+                        <div class="col-xxl-9 col-xl-9 col-md-9">
+                            <div class="table-responsive scrollbar-wrapper">
+                                <table>
+                                    <thead class="table-sticky-top">
+                                        <tr>
+                                            <th class="text-center text-nowrap border-end">Category ID</th>
+                                            <th class="text-center text-nowrap border-end">Category Code</th>
+                                            <th class="text-center text-nowrap border-end">Category Name</th>
+                                            <th class="text-center  text-nowrap">Category Mapping</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">01</td>
+                                            <td class="text-center">
+                                                Beverage
+                                            </td>
+                                            <td class="text-center">
+                                                Beverage
+                                            </td>
+                                            <td>
+                                                <ul class="nav nav-pills min-w-100 mb-0">
+                                                    <li class="dropdown w-100">
+                                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                            <span class="select-label" id="select_label">
+                                                                Drinks
+                                                            </span>
+                                                        </a>
+                                                        <ul ID="divNewNotifications"
+                                                            class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                            style="min-width:100%">
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-001
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-002
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-003
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-004
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">05</td>
+                                            <td class="text-center">
+                                                Food
+                                            </td>
+                                            <td class="text-center">
+                                                Food
+                                            </td>
+                                            <td>
+                                                <ul class="nav nav-pills min-w-100 mb-0">
+                                                    <li class="dropdown w-100">
+                                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                            <span class="select-label" id="select_label">
+                                                                Food
+                                                            </span>
+                                                        </a>
+                                                        <ul ID="divNewNotifications"
+                                                            class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                            style="min-width:100%">
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-001
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-002
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-003
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-004
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">08</td>
+                                            <td class="text-center">
+                                                MISC
+                                            </td>
+                                            <td class="text-center">
+                                                MISC
+                                            </td>
+                                            <td>
+                                                <ul class="nav nav-pills min-w-100 mb-0">
+                                                    <li class="dropdown w-100">
+                                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                            <span class="select-label" id="select_label">
+                                                                Others
+                                                            </span>
+                                                        </a>
+                                                        <ul ID="divNewNotifications"
+                                                            class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                            style="min-width:100%">
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-001
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-002
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-003
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-004
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">03</td>
+                                            <td class="text-center">
+                                                TOBACCO
+                                            </td>
+                                            <td class="text-center">
+                                                TOBACCO
+                                            </td>
+                                            <td>
+                                                <ul class="nav nav-pills min-w-100 mb-0">
+                                                    <li class="dropdown w-100">
+                                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                            <span class="select-label" id="select_label">
+                                                                Tobacco
+                                                            </span>
+                                                        </a>
+                                                        <ul ID="divNewNotifications"
+                                                            class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                            style="min-width:100%">
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-001
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-002
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-003
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-004
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">06</td>
+                                            <td class="text-center">
+                                                Hot Milk
+                                            </td>
+                                            <td class="text-center">
+                                                Hot MIlk
+                                            </td>
+                                            <td>
+                                                <ul class="nav nav-pills min-w-100 mb-0">
+                                                    <li class="dropdown w-100">
+                                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                            <span class="select-label" id="select_label">
+                                                                Hot Bev
+                                                            </span>
+                                                        </a>
+                                                        <ul ID="divNewNotifications"
+                                                            class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                            style="min-width:100%">
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-001
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-002
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-003
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-004
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-center">02</td>
+                                            <td class="text-center">
+                                                WINE
+                                            </td>
+                                            <td class="text-center">
+                                                WINE
+                                            </td>
+                                            <td>
+                                                <ul class="nav nav-pills min-w-100 mb-0">
+                                                    <li class="dropdown w-100">
+                                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                            <span class="select-label" id="select_label">
+                                                                Wine
+                                                            </span>
+                                                        </a>
+                                                        <ul ID="divNewNotifications"
+                                                            class="dropdown-menu DontHideOnClick scrollbar-wrapper"
+                                                            style="min-width:100%">
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-001
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-002
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-003
+                                                            </li>
+                                                            <li class="DontHideOnClick text-nowrap">
+                                                                Department-004
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-12 col-md-12 col-xl-12 mt-2 text-end">
+                            <button type="button" class="btn btn-light">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EPOS Integration Modal starts -->
+<div class="modal fade" id="Epos_integration" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content custom-modal">
+            <div class="modal-header">
+                <h5 class="headings-modal integration">EPOS Integration</h5>
+                <button type="button" class="btn-close modal-close " data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 mb-3">
+                        <span>
+                            <img class="img-40 rounded-circle float-start me-3" src="E_Content/images/user2-160x160.jpg">
+                            <span class="mt-1">Tissl Horizon</span>
+                            <span class="normal-content">Sync EPOS data</span>
+                        </span>
+                    </div>
+
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>API Key</label>
+                        <input type="text" placeholder="API Key" />
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Org ID</label>
+                        <input type="text" placeholder="Org ID" />
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label>Site ID</label>
+                        <input type="text" placeholder="Site ID" />
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                        <label class="text-nowrap">From when do you want to import the data ?</label>
+                        <input type="date" />
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12 mt-2 text-end">
+                        <button data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#integration_success" class="btn btn-primary">Connect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- EPOS Integration Modal ends -->
+<!-- Integration Successful starts -->
+<div class="modal fade" id="integration_success" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered p-5" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-12 col-ed-12 col-md-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-ed-12 col-md-12">
+                        <div class="p-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="tickIcon">
+                                    <span class="badge text-bg-success-modal">
+                                        <i class="fa-light fa-check fa-lg"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <h6 class="modal_heading">The integration was successful!</h6>
+                            <p class="modal_content">Kindly map the payment methods and categories.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-6 col-ed-6 col-md-6">
+                        <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light w-100">Cancel</button>
+                    </div>
+                    <div class="col-xxl-6 col-ed-6 col-md-6">
+                        <button type="button" class="btn btn-primary w-100">Proceed</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Integration Successful Modal ends -->

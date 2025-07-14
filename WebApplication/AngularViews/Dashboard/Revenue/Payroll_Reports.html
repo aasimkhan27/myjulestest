@@ -1,0 +1,445 @@
+﻿<div class="box-shadow" id="PAYROLL_PDF">
+    <div class="row my-3" hidden>
+        <div class="col-md-6 border-bottom"><img src="{{LOGO_PATH}}" class="img-fluid footer-logo my-2" alt="" /></div>
+        <div class="col-md-6 border-bottom text-right"><img src="../E_Content/images/logo.png" class="img-fluid footer-logo my-2" alt="" /></div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Payroll Reports</h5>
+            <div class="card-tools">
+                <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item mr-2" ng-show="false">
+                        <select class="custom-select custom-select-sm mw-150"
+                                name="ENTITY"
+                                style="max-width:150px"
+                                ng-change="ENTITY_CHANGE_FY()"
+                                ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in REVE_ENTITY_LIST"
+                                ng-model="PayrollSearch.ENTITY_ID"></select>
+
+                    </li>
+                    <li class="nav-item mr-2">
+                        <select class="custom-select custom-select-sm mw-150"
+                                name="BRANCH"
+                                ng-change="PYROLL_BRANCH_CHANGE()"
+                                ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST"
+                                ng-model="PayrollSearch.BRANCH_ID"></select>
+                    </li>
+                    <li class="nav-item mr-2">
+                        <div class="input-group input-group-sm my-0" id="week-picker-wrapper">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn input-group-text week-prev">
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control week-picker bg-white font-11"
+                                   ng-class="{'c-form-control':SHOW_BTN}"
+                                   value=""
+                                   readonly
+                                   format="yy-mm-dd"
+                                   placeholder="Select a Week" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn input-group-text week-next">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <!--<li class="nav-item mr-2">
+                        <div class="form-group mb-0">
+                            <button type="button" ng-click="GET_PAYROLL_ANALYTICS()" class="btn btn-sm btn-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Filter"><i class="far fa-filter"></i></button>
+                        </div>
+                    </li>
+                    <li class="nav-item mr-2">
+                        <div class="form-group mb-0">
+                            <button type="button" ng-click="RESET_GET_PAYROLL_ANALYTICS()" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Reset"><i class="far fa-undo"></i></button>
+                        </div>
+                    </li>-->
+                    <li class="nav-item">
+                        <div class="form-group mb-0">
+                            <button type="button" class="btn btn-sm btn-wenodo" ng-click="PAYROLL_PDF_FY(1)" data-toggle="tooltip" data-html="true" data-original-title="Download PDF"><i class="far fa-file-pdf"></i></button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body" ng-show="!GRID_DISPLAY">
+            <div class="row "> <div class="col-md-12 text-center text-green">{{FETCHING_RECORD}}</div></div>
+        </div>
+        <div class="card-body" ng-show="GRID_DISPLAY">
+            <div class="row">
+                <div class="col mt-2">
+                    <div class="text-center border-pastel-grey box-shadow border-radius-3">
+                        <h5 class="heading-text-2 font-15 py-2 bg-pastel-grey d-block">Revenue per staff hour <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                        <div class="px-2 mt-1">
+                            <span class="info-box-number d-block font-20 text-bold text-blue">
+                                <span class="text-blue"> <span ng-bind-html="CURRENCY_SYMBOL"></span> {{PAYROLL_CARD.Revenue_per_staff_hour | number :0}} <small >(cw)</small></span>
+                                <span class="weekly_revenue_position font-11" >
+                                    <i class="fas fa-triangle"
+                                       ng-show="PAYROLL_CARD.Curr_Prev_Revenue_per_staff_hour_per!=0"
+                                       ng-class="{'text-light-green':PAYROLL_CARD.Curr_Prev_Revenue_per_staff_hour_per>0,'text-red rotate-180':PAYROLL_CARD.Curr_Prev_Revenue_per_staff_hour_per<0}"
+                                       ></i>
+                                    <span class="text-dark text-bold">{{PAYROLL_CARD.Curr_Prev_Revenue_per_staff_hour_per | number :0}}<small  >%</small></span>
+                                </span>
+                            </span>
+                            <span class="info-box-number font-11 d-block text-bold text-dark" >
+                                vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{PAYROLL_CARD.Prev_Revenue_per_staff_hour | number :0}} </span> Prev. wk
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mt-2">
+                    <div class="text-center border-pastel-orange box-shadow border-radius-3">
+                        <h5 class="heading-text-2 font-15 py-2 bg-pastel-orange d-block">Revenue per Staff <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                        <div class="px-2 mt-1">
+                            <span class="info-box-number d-block font-20 text-bold text-blue">
+                                <span ng-bind-html="CURRENCY_SYMBOL"></span> {{PAYROLL_CARD.Revenue_per_staff | number:0}}
+                                <span class="weekly_revenue_position font-11" >
+                                    <i class="fas fa-triangle"
+                                       ng-show="PAYROLL_CARD.Curr_Prev_Revenue_per_staff_per!=0"
+                                       ng-class="{'text-light-green':PAYROLL_CARD.Curr_Prev_Revenue_per_staff_per>0,'text-red rotate-180':PAYROLL_CARD.Curr_Prev_Revenue_per_staff_per<0}"
+                                       ></i>
+                                    <span class="text-dark text-bold">{{PAYROLL_CARD.Curr_Prev_Revenue_per_staff_per | number :0}}<small  >%</small></span>
+                                </span>
+                            </span>
+                            <span class="info-box-number font-11 d-block text-bold text-dark">
+                                vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{PAYROLL_CARD.Prev_Revenue_per_staff | number :0}} </span> Prev. wk
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mt-2">
+                    <div class="text-center border-pastel-purple box-shadow border-radius-3">
+                        <h5 class="heading-text-2 font-15 py-2 bg-pastel-purple d-block">Accrued Holiday Cost <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                        <div class="px-2 mt-1">
+                            <span class="info-box-number d-block font-20 text-bold text-blue">
+                                <span ng-bind-html="CURRENCY_SYMBOL"></span> {{PAYROLL_CARD.Accrued_Holiday_Cost | number:0}}
+                                <span class="weekly_revenue_position font-11" >
+                                    <i class="fas fa-triangle"
+                                       ng-show="PAYROLL_CARD.Curr_Prev_Accrued_Holiday_Cost_per!=0"
+                                       ng-class="{'text-light-green':PAYROLL_CARD.Curr_Prev_Accrued_Holiday_Cost_per>0,'text-red rotate-180':PAYROLL_CARD.Curr_Prev_Accrued_Holiday_Cost_per<0}"
+                                       ></i>
+                                    <span class="text-dark text-bold">{{PAYROLL_CARD.Curr_Prev_Accrued_Holiday_Cost_per | number :0}}<small >%</small></span>
+                                </span>
+                            </span>
+                            <span class="info-box-number font-11 d-block text-bold text-dark" >
+                                vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{PAYROLL_CARD.Prev_Accrued_Holiday_Cost | number :0}} </span> Prev. wk
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col mt-2">
+                    <div class="text-center border-pastel-pink box-shadow border-radius-3">
+                        <h5 class="heading-text-2 font-15 py-2 bg-pastel-pink d-block">Average Wage Cost <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                        <div class="px-2 mt-1">
+                            <span class="info-box-number d-block font-20 text-bold text-blue">
+                                <span ng-bind-html="CURRENCY_SYMBOL"></span> {{PAYROLL_CARD.Average_Wage_Cost | number:0  }}
+                                <span class="weekly_revenue_position font-11" >
+                                    <i class="fas fa-triangle"
+                                       ng-show="PAYROLL_CARD.Curr_Prev_Average_Wage_Cost_per!=0"
+                                       ng-class="{'text-light-green':PAYROLL_CARD.Curr_Prev_Average_Wage_Cost_per>0,'text-red rotate-180':PAYROLL_CARD.Curr_Prev_Average_Wage_Cost_per<0}"
+                                       ></i>
+                                    <span class="text-dark text-bold">{{PAYROLL_CARD.Curr_Prev_Average_Wage_Cost_per | number :0}}<small >%</small></span>
+                                </span>
+                            </span>
+                            <span class="info-box-number font-11 d-block text-bold text-dark" >
+                                vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{PAYROLL_CARD.Prev_Average_Wage_Cost | number :0}} </span> Prev. wk
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mt-2">
+                    <div class="text-center border-pastel-voilet box-shadow border-radius-3">
+                        <h5 class="heading-text-2 font-15 py-2 bg-pastel-voilet d-block">Head Count Summary <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                        <div class="px-2 mt-1">
+                            <span class="info-box-number d-block font-20 text-bold text-blue">
+                                {{PAYROLL_CARD.Head_Count_Summary | number  }}
+                                <span class="weekly_revenue_position font-11" >
+                                    <i class="fas fa-triangle"
+                                       ng-show="PAYROLL_CARD.Curr_Prev_Head_Count_Summary_per!=0"
+                                       ng-class="{'text-light-green':PAYROLL_CARD.Curr_Prev_Head_Count_Summary_per>0,'text-red rotate-180':PAYROLL_CARD.Curr_Prev_Head_Count_Summary_per<0}"
+                                       ></i>
+                                    <span class="text-dark text-bold">{{PAYROLL_CARD.Curr_Prev_Head_Count_Summary_per | number :0}}<small>%</small></span>
+                                </span>
+                            </span>
+                            <span class="info-box-number font-11 d-block text-bold text-dark" >
+                                vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{PAYROLL_CARD.Prev_Head_Count_Summary | number :0}} </span> Prev. wk
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center mt-3">
+                <div class="col-md-6 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                Head Count by Hours
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <fusioncharts id="STAFF_BY_HOURS_ID"
+                                          chartid="STAFF_BY_HOUR_CHARTID"
+                                          width="100%"
+                                          height="400"
+                                          type="heatmap"
+                                          dataSource="{{STAFF_BY_HOURS}}"></fusioncharts>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header"><h5 class="card-title">Weekly Staff Cost Comparison</h5></div>
+                        <div class="card-body">
+                            <fusioncharts id="WEEKLY_STAFF_COST_COMPARISON_ID"
+                                          chartid="WEEKLY_STAFF_COST_COMPARISON_CHARTID"
+                                          width="100%"
+                                          height="400"
+                                          type="msline"
+                                          dataSource="{{WEEKLY_STAFF_COST_COMPARISON}}"></fusioncharts>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header">
+                            <h5 class="card-title">Hourly Department Wage Cost</h5>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-2">
+                                        <select class="custom-select custom-select-sm mw-150"
+                                                name="HOURLY_DEPARTMENT"
+                                                ng-options="WDL.ID as WDL.label for WDL in WEEK_DATASET_LIST"
+                                                ng-change="GET_PAYROLL_ANALYTICS_DEPARTMENT_DAY_WISE('HourlyDepartmentWageCost')"
+                                                ng-model="PayrollSearch.HOURLY_DEPARTMENT_DAY_ID">
+                                            <option value="">--All--</option>
+                                        </select>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <fusioncharts id="HOURLY_DEPARTMENT_WAGE_COST_ID"
+                                          chartid="HOURLY_DEPARTMENT_WAGE_COST_CHARTID"
+                                          width="100%"
+                                          height="400"
+                                          type="mscolumn2d"
+                                          dataSource="{{HOURLY_DEPARTMENT_WAGE_COST}}"></fusioncharts>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header">
+                            <h5 class="card-title">Wage Cost Vs Revenue</h5>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-2">
+                                        <select class="custom-select custom-select-sm mw-150"
+                                                name="WAGE_COST_REVENUE"
+                                                ng-options="WDL.ID as WDL.label for WDL in WEEK_DATASET_LIST"
+                                                ng-change="GET_PAYROLL_ANALYTICS_DEPARTMENT_DAY_WISE('HourlyWageCostRevenueComparision')"
+                                                ng-model="PayrollSearch.WAGE_COST_REVENUE_DAY_ID">
+                                            <option value="">--All--</option>
+                                        </select>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <fusioncharts id="WAGE_COST_VS_REVENUE_ID"
+                                          chartid="WAGE_COST_VS_REVENUE_CHARTID"
+                                          width="100%"
+                                          height="400"
+                                          type="msspline"
+                                          dataSource="{{WAGE_COST_VS_REVENUE}}"></fusioncharts>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header">
+                            <h5 class="card-title">Hourly Wage Cost % of Net Sales</h5>
+
+                        </div>
+                        <div class="card-body">
+                            <fusioncharts id="WAGE_COST_VS_REVENUE_PERCENT_ID"
+                                          chartid="WAGE_COST_VS_REVENUE_PERCENT_CHARTID"
+                                          width="100%"
+                                          height="400"
+                                          type="msspline"
+                                          dataSource="{{WAGE_COST_VS_REVENUE_PERCENT}}"></fusioncharts>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header">
+                            <h5 class="card-title">Hourly Net Sales by Head Count</h5>
+
+                        </div>
+                        <div class="card-body">
+                            <fusioncharts width="100%"
+                                          height="400"
+                                          type="msspline"
+                                          dataSource="{{REVENUE_VS_HEADCOUNT}}"></fusioncharts>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header">
+                            <h5 class="card-title">Average Wage Cost</h5>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-2">
+                                        <select class="custom-select custom-select-sm mw-150"
+                                                ng-click="AVERAGE_WAGE_COST_DDL_FY()"
+                                                ng-model="PayrollSearch.AVERAGE_WAGE_COST_ID"
+                                                ng-options="WDL.ID as WDL.label for WDL in AVERAGE_WAGE_COST_LIST"></select>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <fusioncharts id="AVERAGE_WAGE_COST_ID"
+                                          chartid="AVERAGE_WAGE_COST_CHARTID"
+                                          width="100%"
+                                          height="400"
+                                          type="msstackedcolumn2dlinedy"
+                                          dataSource="{{AVERAGE_WAGE_COST}}"></fusioncharts>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header"><h5 class="card-title">Total Wage Cost</h5></div>
+                        <div class="text-center" ng-show="WEEKLY_WAGE_COST.length==0" empty-grid></div>
+                        <div class="card-body" ng-show="WEEKLY_WAGE_COST.length>0">
+                            <div class="table-responsive custom-scrollbar">
+                                <table class="table table-hover compact_table">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-right">Mon</th>
+                                            <th class="text-right">Tue</th>
+                                            <th class="text-right">Wed</th>
+                                            <th class="text-right">Thu</th>
+                                            <th class="text-right">Fri</th>
+                                            <th class="text-right">Sat</th>
+                                            <th class="text-right">Sun</th>
+                                            <th class="text-right text-bold text-blue">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Cost</td>
+                                            <td class="text-right" ng-class="{'text-bold':$last}" ng-repeat="WC in WEEKLY_WAGE_COST | orderBy:'SortOrder'">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                {{WC.Value | number :0}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Staff expenses</td>
+                                            <td class="text-right" ng-class="{'text-bold':$last}" ng-repeat="WC in WEEKLY_WAGE_COST | orderBy:'SortOrder'">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                {{WC.Value | number :0}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Adjustment</td>
+                                            <td class="text-right" ng-class="{'text-bold':$last}" ng-repeat="WC in WEEKLY_WAGE_COST | orderBy:'SortOrder'">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                {{WC.Value | number :0}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="text-bold">
+                                            <td>Total Adjusted Wage Cost</td>
+                                            <td class="text-right" ng-class="{'text-bold':$last}" ng-repeat="WC in WEEKLY_WAGE_COST | orderBy:'SortOrder'">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                {{WC.Value | number :0}}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="box-shadow">
+                        <div class="card-header"><h5 class="card-title">Total Wage Cost % of Net Sales</h5></div>
+                        <div class="text-center" ng-show="WEEKLY_WAGE_COST_PER.length==0" empty-grid></div>
+                        <div class="card-body" ng-show="WEEKLY_WAGE_COST_PER.length>0">
+                            <div class="table-responsive custom-scrollbar">
+                                <table class="table table-hover compact_table">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-right">Mon</th>
+                                            <th class="text-right">Tue</th>
+                                            <th class="text-right">Wed</th>
+                                            <th class="text-right">Thu</th>
+                                            <th class="text-right">Fri</th>
+                                            <th class="text-right">Sat</th>
+                                            <th class="text-right">Sun</th>
+                                            <th class="text-right text-bold text-blue">Total %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Cost</td>
+                                            <td class="text-right" ng-class="{'text-bold':$last}" ng-repeat="WC in WEEKLY_WAGE_COST_PER | orderBy:'SortOrder'">
+                                                {{WC.Value | number :2}}%
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-5">
+                    <div class="box-shadow">
+                        <div class="card-header"><h5 class="card-title">Wage Cost by Department</h5></div>
+                        <div class="text-center" ng-show="WEEKLY_DEPT_WISE_WAGECOST.length==0" empty-grid></div>
+                        <div class="card-body" ng-show="WEEKLY_DEPT_WISE_WAGECOST.length>0">
+                            <div class="table-responsive custom-scrollbar">
+                                <table class="table table-hover compact_table">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>Department</th>
+                                            <th class="text-right">Mon</th>
+                                            <th class="text-right">Tue</th>
+                                            <th class="text-right">Wed</th>
+                                            <th class="text-right">Thu</th>
+                                            <th class="text-right">Fri</th>
+                                            <th class="text-right">Sat</th>
+                                            <th class="text-right">Sun</th>
+                                            <th class="text-right text-bold text-blue">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="WDC in WEEKLY_DEPT_WISE_WAGECOST">
+                                        <tr>
+                                            <td>{{WDC.Name}}</td>
+                                            <td class="text-right"> <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{WDC.Mon_Amt | number :0}}</td>
+                                            <td class="text-right"> <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{WDC.Tue_Amt | number :0}}</td>
+                                            <td class="text-right"> <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{WDC.Wed_Amt | number :0}}</td>
+                                            <td class="text-right"> <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{WDC.Thu_Amt | number :0}}</td>
+                                            <td class="text-right"> <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{WDC.Fri_Amt | number :0}}</td>
+                                            <td class="text-right"> <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{WDC.Sat_Amt | number :0}}</td>
+                                            <td class="text-right"> <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{WDC.Sun_Amt | number :0}}</td>
+                                            <td class="text-right text-bold"> <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{WDC.Total | number :0}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

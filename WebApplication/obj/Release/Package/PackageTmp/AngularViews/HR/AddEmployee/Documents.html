@@ -1,0 +1,160 @@
+﻿<div class="card-body">
+    <div class="row">
+        <templateurl class="w-100" template-url="../AngularViews/HR/AddEmployee/EmpHeaderDtls.html?v=2136564{{AppVersion}}">
+    </div>
+    <div class="documents-tab">
+        <form id="EmpDtlsForm_7" name="EmpDtlsForm_7" novalidate>
+            <div class="row">
+                <div class="col-md-12 mt-3 ">
+                    <h5 class="text-bold">Work Permit </h5>
+                    
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Document type:<span ng-show="EmpSearch_7.IS_WORK_PERMIT_REQ"> *</span></label>
+                        <select class="custom-select"
+                                name="WORK_PERMIT"
+                                ng-model="EmpSearch_7.WORK_PERMIT_TYPE_ID"
+                                ng-options="PT.WORK_PERMIT_TYPE_ID as PT.WORK_PERMIT_TYPE_NAME   for PT in (WORK_PERMIT_TYPE)"
+                                ng-required="EmpSearch_7.IS_WORK_PERMIT_REQ"
+                                ng-change="WorkPermitChanges()"
+                                ng-class="{'error':EmpDtlsForm_7.submitted && EmpDtlsForm_7.WORK_PERMIT.$error.required}">
+                            <option value="">-Select Document Type-</option>
+                        </select>
+                    </div>
+                </div>
+
+               
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Expiry Date:<span ng-show="EmpSearch_7.IS_WORK_PERMIT_REQ">*</span></label>
+                        <input type="text"
+                               class="form-control dateinput"
+                               autocomplete="off"
+                               name="EX_DATE"
+                               readonly
+                               ng-model="EmpSearch_7.EXPIRY_DATE"
+                               ng-value="EmpSearch_7.EXPIRY_DATE | date"
+                               ng-required="EmpSearch_7.IS_WORK_PERMIT_REQ"
+                               ng-class="{'error':EmpDtlsForm_7.submitted && EmpDtlsForm_7.EX_DATE.$error.required}" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Note:</label>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Enter.."
+                               name="NOTES"
+                              
+                               ng-model="EmpSearch_7.NOTES"
+                               ng-class="{'error':EmpDtlsForm_7.submitted && EmpDtlsForm_7.NOTES.$error.required}"/>
+                    </div>
+                </div>
+                <div class="col-md-4" ng-if="false">
+                    <div class="form-group">
+                        <label>Document type:<span ng-show="EmpSearch_7.IS_WORK_PERMIT_REQ">*</span></label>
+                        <select class="custom-select"
+                                name="DOCUMENT_TYPE"
+                                ng-model="EmpSearch_7.DOCUMENT_TYPE_ID"
+                                ng-options="PT.DOCUMENT_TYPE_ID as PT.DOCUMENT_TYPE_NAME  for PT in (DOCUMENT_TYPE)"
+                                ng-class="{'error':EmpDtlsForm_7.submitted && EmpDtlsForm_7.DOCUMENT_TYPE.$error.required}">
+                            <option value="">- Please Select Document Type</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                        <div class="input-group-prepend" ng-class="{'error':EmpDtlsForm_7.submitted && EMP_WORK_PERMIT==null && !IS_WORK_PERMIT || EmpDtlsForm_7.submitted && EMP_WORK_PERMIT.length==0 && !IS_WORK_PERMIT,'':EMP_WORK_PERMIT.length>0}">
+                            <label for="permit" class="btn btn-upload">
+                                <i class="fal fa-upload"></i> Upload Work Permit <span class="text-normal" ng-show="EmpSearch_7.IS_WORK_PERMIT_REQ">*</span>
+                            </label>
+                            <span class="hidden-input">
+                                <input id="permit" name="file" ng-files="getTheFilesToUpload_7($files, 'permit', 5,5)" type="file" />
+                            </span>
+                        </div>
+                        <span class="d-block" ng-repeat="upls in EMP_WORK_PERMIT">
+                            <a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}"> <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-2">
+                    <h5 class="text-bold">Contracts</h5>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group-prepend">
+                        <label for="contracts" class="btn btn-upload">
+                            <i class="fal fa-upload"></i> Upload Contracts 
+                        </label>
+                        <span class="hidden-input">
+                            <input id="contracts" name="file" ng-files="getTheFilesToUpload_7($files, 'contracts', 5,6)" type="file" />
+                        </span>
+                    </div>
+                    <span class="d-block" ng-repeat="upls in EMP_CONTRACTS">
+                        <a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}"> <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>
+                    
+                    </span>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <h5 class="text-bold">Other Documents</h5>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group-prepend">
+                        <label for="documents" class="btn btn-upload">
+                            <i class="fal fa-upload"></i> Upload Documents
+                        </label>
+                        <span class="hidden-input">
+                            <input id="documents" name="file" ng-files="getTheFilesToUpload_7($files, 'documents', 5,7)" type="file" />
+                        </span>
+                    </div>
+                    <table ng-show="EMP_OTHER_DOCUMENTS.length>0">
+                        <tr>
+                            <td>File Name</td>
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="upls in EMP_OTHER_DOCUMENTS">
+                                <td>
+                                    <a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}"> <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <div data-ng-show="EmpDtlsForm_7.submitted && EmpDtlsForm_7.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                        <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                    </div>
+                    <div id="divInvlidUser" class="hideshowdiv" data-ng-show="EmpDtlsForm_7.$valid">
+                        <span class="help-block">{{InvalidUser}}</span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group mt-3">
+                        <button ng-click="GO_BACK(6)" class="btn btn-w-default">Go Back</button>
+                        <button ng-click="HR_INS_UPD_EMPLOYEE_STEP_7()" click-once  class="btn btn-wenodo">Save </button>
+                        <button ng-show="!EmpSearch_7.IS_WORK_PERMIT_REQ" click-once  ng-click="HR_INS_UPD_EMPLOYEE_STEP_7('SKIP')" class="btn btn-wenodo">Skip </button>
+                        <button ng-click="GO_BACK_TO_LIST()" class="btn btn-w-default">Cancel </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="GO_TO">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                        <div class="col-md-12 text-center">
+                            <label>You have successfully Hired {{EmpSearch_HEADER.FIRST_NAME}}</label>
+                            <div class="form-group">
+                                <button class="btn btn-wenodo" ng-click="GOTO_FY(1)"> Go To Employee List</button>
+                                <button class="btn btn-wenodo" ng-click="GOTO_FY(2)"> View Profile</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

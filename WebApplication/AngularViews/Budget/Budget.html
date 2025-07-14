@@ -1,0 +1,26 @@
+﻿<div class="card-header">
+    <h5 class="heading-text-2 pt-2">Budget</h5>
+    <!--<button class="btn btn-wenodo float-right" type="button">Back</button>-->
+</div>
+
+
+
+<div class="card-body" ng-controller="BudgetController">
+    <div class="app-suit">
+        <div class="at-grid bg-transparent justify-content-center" data-column="8">
+            <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('BUDGET_UPLOAD' ,CHECK_MODULE_ACCESS(52,5))">
+                <div class="at-user">
+                    <div class="at-user__avatar app-text"><i class="fad fa-upload fa-2x"></i></div>
+                    <div class="at-user__name app-text">Upload</div>
+                </div>
+            </div>
+            <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('View_Budget',CHECK_MODULE_ACCESS(52,1))">
+                <div class="at-user">
+                    <div class="at-user__avatar app-text"><i class="fad fa-eye fa-2x"></i></div>
+                    <div class="at-user__name app-text">View</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

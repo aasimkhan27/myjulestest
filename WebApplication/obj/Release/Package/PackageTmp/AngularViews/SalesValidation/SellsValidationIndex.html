@@ -1,0 +1,143 @@
+﻿<form id="SalesValidationForm" name="SalesValidationForm" novalidate ng-init="$parent.dateinputOpenDate()">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group mb-0">
+                    <label class="d-block">Select Date:</label>
+                    <div id="reportrange" class="custom-select custom-select-sm custom-date">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span></span><b class="caret"></b>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group mb-0">
+                    <label class="d-block">Branch:</label>
+                    <select class="custom-select custom-select-sm"
+                            name="BRANCH_ID"
+                            ng-model="SalesValidationSearch.BRANCH_ID"
+                            ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST"
+                            required
+                            ng-class="{'error':SalesValidationForm.submitted && SalesValidationForm.BRANCH_ID.$error.required}">
+                        <option value="">- Please Select Branch-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group mb-0">
+                    <label class="d-block">Status: <span class="float-right text-sm">Selected: {{(VALIDATION_STATUS | filter :{'SELECTED':true}).length}}</span></label>
+                    <!--<select class="custom-select"
+                            name="STATUS_ID"
+                            ng-model="SalesValidationSearch.STATUS_ID"
+                            ng-options="VS.STATUS_ID as VS.STATUS_NAME for VS in VALIDATION_STATUS"
+                            required
+                            ng-class="{'error':SalesValidationForm.submitted && SalesValidationForm.BRANCH_ID.$error.required}">
+                        <option value="">- Please Select Branch-</option>
+                    </select>-->
+
+                    <button class="form-control custom-select-sm text-left" type="button" id="ddlStatus" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true">
+                        - Select Status -
+                        <i class="fas fa-sort float-right mt-1 ml-2"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-left bg-white custom-scrollbar mw-300 DontHideOnClick" aria-labelledby="ddlStatus1">
+                        <li class="dropdown-item">
+                           <div class="custom-control custom-checkbox checkbox-green">
+                                <input class="custom-control-input checkbox-green-input" type="checkbox" id="Select_All_Site"
+                                       ng-checked="(VALIDATION_STATUS | filter :{'SELECTED':true}).length== VALIDATION_STATUS.length"
+                                       ng-change="CHECK_UNCHECK_ALL_STATUS(SalesValidationSearch.SELECT_ALL==null || SalesValidationSearch.SELECT_ALL==undefined ?false: SalesValidationSearch.SELECT_ALL);"
+                                       ng-model="SalesValidationSearch.SELECT_ALL">
+                                <label for="Select_All_Site" class="custom-control-label checkbox-green-label text-sm pt-1">Select All</label>
+                            </div>
+                        </li>
+
+                        <li class="dropdown-item DontHideOnClick" ng-repeat="VS in VALIDATION_STATUS" ng-init="">
+                            <div class="custom-control custom-checkbox checkbox-green">
+                                <input class="custom-control-input checkbox-green-input" type="checkbox" id="Select_All_Site{{$index}}"
+                                       ng-value=""
+                                       ng-model="VS.SELECTED">
+                                <label for="Select_All_Site{{$index}}" class="custom-control-label checkbox-green-label text-sm pt-1">{{VS.STATUS_NAME}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group mb-0">
+                    <label class="d-block">&nbsp;</label>
+                    <button ng-click="GET_CASHUP_LIST_XERO_OUTBOUND_INVOICE(1);" class="btn btn-sm btn-wenodo">Search</button>
+                    <button ng-click="RESET();" class="btn btn-sm btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div data-ng-show="BrnForm.submitted && BrnForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+        </div>
+    </div>
+</form>
+<div class="card-body">
+    <div class="text-center" ng-show="CASHUP_LIST_XERO_OUTBOUND_INVOICE.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="CASHUP_LIST_XERO_OUTBOUND_INVOICE.length>0">
+        <table class="table table-striped compact_table">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th>Invoice Date</th>
+                    <th>Branch</th>
+                    <th>Status</th>
+                    
+                    <th width="5%" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="10" align="center" ng-show="GetData">
+                        <a class="btn btn-sm btn-secondary text-white" ng-click="LAZY_GET_CASHUP_LIST_XERO_OUTBOUND_INVOICE();">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody ng-repeat="CIL in CASHUP_LIST_XERO_OUTBOUND_INVOICE" on-finish-render="ngRepeatFinished">
+                <tr>
+                    <td><i class="fal fa-calendar-alt text-blue"></i> {{CIL.CASHUP_DATE | date}}</td>
+                    <td>{{CIL.BRANCH_NAME}}</td>
+                    <td>
+                        <span ng-if="CIL.STATUS_ID==51 && !(CIL.NET_REVENUE==0 || CIL.NET_REVENUE==null) " class="badge badge-light-grey">Pending</span>
+                        <span ng-if="CIL.STATUS_ID==51 && (CIL.NET_REVENUE==0 || CIL.NET_REVENUE==null) " class="badge badge-light-red">No Sales Data</span>
+                        <span ng-if="CIL.STATUS_ID==52" class="badge badge-light-purple">Validated</span>
+                        <span ng-if="CIL.STATUS_ID==53" class="badge badge-light-orange">Pending Processing</span>
+                        <span ng-if="CIL.STATUS_ID==54" class="badge badge-light-blue">Processing</span>
+                        <span ng-if="CIL.STATUS_ID==55" class="badge badge-success">Sent To Xero</span>
+                        <span ng-if="CIL.STATUS_ID==56" class="badge badge-light-red">Error In Invoice Creation</span>
+                        <span ng-if="CIL.STATUS_ID==57" class="badge badge-danger">Error In Posting Payment</span>
+                    </td>
+                    <!--<td ng-if="CIL.STATUS_ID==51">
+                    <span class="badge badge-light-grey" ng-if="CIL.INTEGRATION_STATUS!=4">Pending</span>
+                    <span class="badge badge-light-red" ng-if="CIL.INTEGRATION_STATUS==4">No Sales Data</span></td>
+                    <td ng-if="CIL.STATUS_ID==52"><span class="badge badge-light-purple">Validated</span></td>
+                    <td ng-if="CIL.STATUS_ID==53"><span class="badge badge-light-orange">Pending Processing</span></td>
+                    <td ng-if="CIL.STATUS_ID==54"><span class="badge badge-light-blue">Processing</span></td>
+                    <td ng-if="CIL.STATUS_ID==55"><span class="badge badge-success">Sent To Xero</span></td>
+                    <td ng-if="CIL.STATUS_ID==56"><span class="badge badge-light-red">Error In Invoice Creation</span></td>
+                    <td ng-if="CIL.STATUS_ID==57"><span class="badge badge-danger">Error In Posting Payment</span></td>-->
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-transparent-wenodo" ng-click="OUTBOUND_INVOICE(CIL);" 
+                           data-trigger="hover"
+                           data-toggle="tooltip"
+                           data-html="true"
+                           data-placement="left"
+                           data-original-title="Edit"><i class="fas fa-edit"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $('.DontHideOnClick').on('click', function (event) {
+        event.stopPropagation();
+    });
+</script>

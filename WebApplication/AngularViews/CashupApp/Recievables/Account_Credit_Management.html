@@ -1,0 +1,617 @@
+﻿<div class="card" ng-show="CASHUP_PRIVILEGE==true">
+    <div class="card-header">
+        <h6>Account Credit Management</h6>
+    </div>
+    <div class="card-header px-0 pb-0 border-0 resCashupTabs">
+        <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==1}" ng-click="Fn_TAB_CLICK(1); GET_ACCOUNT_TRANSACTION_MANAGEMENT();" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    Transactions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==2}" ng-click="Fn_TAB_CLICK(2);GET_ACCOUNT_CUSTOMER_MANAGEMENT()" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    Customer
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--Transactions-->
+    <div class="card-body" ng-show="TAB_ID==1">
+        <!--Header-->
+        <div class="row gx-2 resCashupHeader">
+            <!--<div class="col-xxl-auto col-xl-auto col-md-auto min-w-100">
+        <div class="dropdown">
+            <input type="hidden"
+                   ng-model="ACCOUNT_MGT_SEARCH.SELECTED_SITE.BRANCH_NAME" />
+            <div class="dropdown w-100" aria-labelledby="AccountMgtBranchDDL">
+                <button class="select-label"
+                        type="button"
+                        id="AccountMgtBranchDDL"
+                        data-toggle="dropdown"
+                        aria-expanded="false">
+                    <span class="truncate">{{ACCOUNT_MGT_SEARCH.SELECTED_SITE.BRANCH_NAME || 'Site'}}</span>
+                </button>
+                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                    <li ng-repeat="_site in FILTERED_SITES_LIST"
+                        ng-click="SELECT_SITE(_site)">
+                        <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>-->
+            <div class="col-xxl-1 col-xl-1 col-md-1 min-w-140">
+                <input type="text" name="search" placeholder="Search" class="mb-1" ng-model="ACCOUNT_MGT_SEARCH.SEARCH_TEXT" ng-change="GET_ACCOUNT_TRANSACTION_MANAGEMENT()" />
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <ul class="nav nav-pills min-w-160">
+                    <li class="dropdown w-100">
+                        <a class="text-limitations cursor-pointer"
+                           data-toggle="dropdown">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate">{{ACCOUNT_MGT_SEARCH.SELECTED_SITE.BRANCH_NAME || 'Site'}}</span>
+                            </span>
+                        </a>
+                        <ul ID="divNewNotifications"
+                            class="dropdown-menu scrollbar-wrapper"
+                            style="min-width:100%">
+                            <li ng-repeat="_site in FILTERED_SITES_LIST" ng-click="SELECT_SITE(_site)">
+                                <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <ul class="nav nav-pills min-w-160">
+                    <li class="dropdown w-100">
+                        <a class="text-limitations cursor-pointer"
+                           data-toggle="dropdown">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate">{{ACCOUNT_MGT_SEARCH.MODE_OF_PAYMENT.METHOD_NAME || 'Payment Method'}}</span>
+                            </span>
+                        </a>
+                        <ul ID="divNewNotifications"
+                            class="dropdown-menu scrollbar-wrapper"
+                            style="min-width:100%">
+                            <li ng-click="SELECT_MODE_OF_PAYMENT('Choose')">
+                                Choose
+                            </li>
+                            <li ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-click="SELECT_MODE_OF_PAYMENT(_mode_of_payment)">
+                                {{_mode_of_payment.METHOD_NAME}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <div class="media form-control justify-content-between">
+                    <label class="col-form-label m-r-10" for="Credit">Credit</label>
+                    <div class="media-body switch-sm">
+                        <label class="switch">
+                            <input type="checkbox" id="Week_Day_View" ng-model="ACCOUNT_MGT_SEARCH.IS_RECEIVED"><span class="switch-state bg-primary"></span>
+                        </label>
+                    </div>
+                    <label class="col-form-label m-l-10" for="Recieved">Recieved</label>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2 min-w-140">
+                <div id="reportrange" class="form-control-box">
+                    <span></span>
+                    <i class="fa-regular fa-calendar float-end mt-1"></i>
+                </div>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button ng-click="RESET_ACCOUNT_TRANSACTION_SEARCH()" type="button" class="btn btn-outline w-100" data-bs-toggle="tooltip" data-bs-original-title="Reset"><i class="fa-light fa-undo"></i></button>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <button class="btn btn-light" ng-click="RECEIVE()" ng-show="ACCOUNT_MGT_SEARCH.DATA_ENTRY_ENABLED==true">Receive</button>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button class="btn btn-light w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+                <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                    <li><a class="dropdown-item d-block" ng-click="EXPORT_ACCOUNT_TRANSACTION(2)">XLS</a></li>
+                </ul>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button class="btn btn-primary" ng-click="NEW_CUSTOMER()" ng-show="ACCOUNT_MGT_SEARCH.DATA_ENTRY_ENABLED==true"><i class="fa-light fa-plus me-2"></i>Add New</button>
+            </div>
+        </div>
+
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="(ACCOUNT_TRANSACTION_MANAGEMENT | filter:filterByRedeemedStatus).length==0">
+            <div class="no-record text-center">
+                <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+            </div>
+        </div>
+        <!--Table Starts-->
+        <div class="table-responsive scrollbar-wrapper accCreManTable resCashupTable" ng-show="(ACCOUNT_TRANSACTION_MANAGEMENT | filter:filterByRedeemedStatus).length>0">
+            <table>
+                <thead class="table-sticky-top">
+                    <tr>
+                        <th>
+                            <div class="d-flex">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="flexCheckChecked" type="checkbox" value="" ng-model="CHECKED_ALL" ng-click="CHECK_ALL_ACCOUNT_TRANSACTIONS()">
+                                    <label class="form-check-label ms-1" for="flexCheckChecked">Invoice</label>
+                                </div>                                
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between">
+                                Customer                                
+                            </div>
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between" >
+                                Company                                
+                            </div>
+                        </th>
+
+                        <th class="text-end" >
+                            Credit Amount                            
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between text-nowrap" >
+                                Credit Date                                
+                            </div>
+                        </th>
+                        <th class="text-end">
+                            Received Amount                            
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between text-nowrap">
+                                Received Date                                
+                            </div>
+                        </th>
+                        <th class="text-end">
+                            Remaining Amount                            
+                        </th>
+                        <th>
+                            <div class="d-flex justify-content-between text-nowrap">
+                                Payment Method
+                                <i class="fa-light icon-color ms-auto mt-1"></i>
+                            </div>
+                        </th>
+                        <th class="notes">
+                            Note
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ROW in ACCOUNT_TRANSACTION_MANAGEMENT" ng-init="nginit_account_transaction(ROW)" ng-show="ROW.IS_REDEEMED==ACCOUNT_MGT_SEARCH.IS_RECEIVED">
+                        <td class="justify-content-center">
+                            <div class="form-check">
+                                <input class="form-check-input" id="Wenodo{{$index}}" type="checkbox" value="" ng-model="ROW.CHECKED">
+                                <label class="form-check-label" for="Wenodo{{$index}}"> {{ROW.INVOICE_NUMBER}}</label>
+                            </div>
+                        </td>
+                        <td>{{ROW.CUSTOMER_NAME}}</td>
+                        <td>{{ROW.COMPANY}}</td>
+                        <td class="text-end text-nowrap">{{ROW.AMOUNT | number:2}}</td>
+                        <td class="text-center text-nowrap">{{ROW.CREDIT_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                        <td class="text-end text-nowrap">{{ ACCOUNT_MGT_SEARCH.IS_RECEIVED == false?'-': (ROW.AMOUNT_REDEMED | number:2)}}</td>
+                        <td class="text-nowrap">{{ACCOUNT_MGT_SEARCH.IS_RECEIVED == false?'-': ROW.CREATED_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                        <td class="text-end">{{ROW.REMAINING_AMOUNT | number:2}}</td>
+                        <td>{{ROW.MODE_OF_PAYMENT || '-'}}</td>
+                        <td>{{ROW.NOTE}}</td>
+                    </tr>
+                </tbody>
+
+                <tfoot class="table-sticky-bottom" ng-show="GetData">
+                    <tr>
+                        <td colspan="11" class="text-center">
+                            <button type="button" class="btn btn-sm btn-light btn_fixed" ng-click="GET_ACCOUNT_TRANSACTION_MANAGEMENT(1)">{{PAGINATION_TEXT}}</button>
+                        </td>
+                    </tr>
+                </tfoot>
+
+            </table>
+        </div>
+        <!--Table Ends-->
+    </div>
+    <!--Customer-->
+    <div class="card-body" ng-show="TAB_ID==2">
+        <div class="row g-2 resCashupHeader">
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <ul class="nav nav-pills min-w-160">
+                    <li class="dropdown w-100">
+                        <a class="text-limitations cursor-pointer"
+                           data-toggle="dropdown">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate">{{ACCOUNT_CUST_SEARCH.SELECTED_SITE.BRANCH_NAME || 'Site'}}</span>
+                            </span>
+                        </a>
+                        <ul ID="divNewNotifications"
+                            class="dropdown-menu scrollbar-wrapper"
+                            style="min-width:100%">
+                            <li ng-repeat="_site in FILTERED_SITES_LIST"
+                                ng-click="SELECT_SITE_CUST(_site)">
+                                <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <input type="text" name="search" placeholder="Search" ng-model="ACCOUNT_CUST_SEARCH.SEARCH_TEXT" ng-change="GET_ACCOUNT_CUSTOMER_MANAGEMENT()" />
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button ng-click="RESET_ACCOUNT_CUSTOMER_SEARCH()" type="button" class="btn btn-outline w-100"><i class="fa-light fa-undo"></i></button>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <button class="btn btn-light w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+                <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                    <li><a class="dropdown-item d-block" ng-click="EXPORT_ACCOUNT_CUSTOMER(2)">XLS</a></li>
+                    <li><a class="dropdown-item" ng-click="EXPORT_ACCOUNT_CUSTOMER(1)">CSV</a></li>
+                </ul>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button ng-click="NEW_CUSTOMER()" class="btn btn-primary" ng-show="ACCOUNT_CUST_SEARCH.DATA_ENTRY_ENABLED==true"><i class="fa-light fa-plus me-2"></i>Add New</button>
+            </div>
+        </div>
+
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="ACCOUNT_CUSTOMER_MANAGEMENT.length==0">
+            <div class="no-record text-center">
+                <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+            </div>
+        </div>
+        <!--Table Starts-->
+        <div class="table-responsive scrollbar-wrapper accCreManTable resCashupTable" ng-show="ACCOUNT_CUSTOMER_MANAGEMENT.length>0">
+            <table>
+                <thead class="table-sticky-top">
+                    <tr>
+                        <th class="d-flex">
+                            <div class="form-check">
+                                <input class="form-check-input" id="flexCheckChecked2" type="checkbox" value="" ng-model="CHECKED_ALL_CUST" ng-click="CHECK_ALL_ACCOUNT_CUST()">
+                                <label class="form-check-label ms-auto" for="flexCheckChecked2">Customer Name</label>
+
+                            </div>
+                            <i class="fa-light icon-color ms-auto mt-1"></i>
+                        </th>
+
+                        <th>
+                            Company
+                            <i class="fa-light icon-color ms-auto mt-1"></i>
+                        </th>
+                        <th class="text-nowrap">
+                            Last Txn Date
+                            <i class="fa-light icon-color ms-auto mt-1"></i>
+                        </th>
+                        <th class="text-end text-nowrap">
+                            Credit Amount
+                            <i class="fa-light icon-color ms-auto mt-1"></i>
+                        </th>
+                        <th class="text-end text-nowrap">
+                            Received Amount
+                            <i class="fa-light icon-color ms-auto mt-1"></i>
+                        </th>
+                        <th class="text-end text-nowrap">
+                            Remaining Amount
+                            <i class="fa-light icon-color ms-auto mt-1"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ROW in ACCOUNT_CUSTOMER_MANAGEMENT" ng-init="nginit_account_customer(ROW)">
+                        <td class="justify-content-center">
+                            <div class="form-check">
+                                <input class="form-check-input" id="Check_{{$index}}" type="checkbox" value="Wenodo1" ng-model="ROW.CHECKED">
+                                <label class="form-check-label" for="Check_{{$index}}"> {{ROW.CUSTOMER_NAME}}</label>
+                            </div>
+                        </td>
+                        <td>{{ROW.COMPANY}}</td>
+                        <td>{{ROW.LAST_TXN_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                        <td class="text-end">{{ROW.CREDIT_AMOUNT|number:2}}</td>
+                        <td class="text-end">{{ROW.RECEIVED_AMOUNT}}</td>
+                        <td class="text-end">{{ROW.REMAINING_AMOUNT}}</td>
+                    </tr>
+                </tbody>
+
+                <tfoot class="table-sticky-bottom" ng-show="GetDataCust">
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <button type="button" class="btn btn-sm btn-light btn_fixed" ng-click="GET_ACCOUNT_CUSTOMER_MANAGEMENT(1)">{{PAGINATION_TEXT}}</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!--Table Ends-->
+    </div>
+</div>
+
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_PRIVILEGE==false">
+    <div class="no-record text-center">
+        <span class="d-block text-center">You do not have access to Account Credit Management. Please contact Admin for access.</span>
+    </div>
+</div>
+
+<!--New_Customer Modal Starts-->
+<div class="modal fade" id="New_Customer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content custom-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Customer</h5>
+                    <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close" ng-click="RESET_ADD_CUSTOMER()"></button>
+                </div>
+                <div class="modal-body resCashupHeader">
+                    <form name="NewAccountCustomerForm" novalidate autocomplete="off">
+                        <div class="row g-2">
+                            <!--<div class="col-xxl-auto col-xl-auto col-md-auto">
+            <ul class="nav nav-pills min-w-160 mb-1">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{ACCOUNT_MGT_SEARCH.SELECTED_SITE.BRANCH_NAME || 'Site'}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications"
+                        class="dropdown-menu scrollbar-wrapper"
+                        style="min-width:100%">
+                        <li ng-repeat="_site in FILTERED_SITES_LIST" ng-click="SELECT_SITE(_site)">
+                            <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>-->
+                            <div class="col-xxl-auto col-xl-auto col-md-auto min-w-80">
+                                <!--<div class="dropdown">
+                <input type="hidden"
+                       ng-model="ADD_NEW_CUST.SELECTED_SITE.BRANCH_NAME"
+                       name="ADD_NEW_CUST_BRANCH_NAME"
+                       required
+                       ng-class="{'error':NewAccountCustomerForm.submitted && NewAccountCustomerForm.ADD_NEW_CUST_BRANCH_NAME.$error.required}" />
+                <div class="dropdown w-100" aria-labelledby="AddNewCustBranchDDL">
+                    <button class="select-label"
+                            type="button"
+                            id="AddNewCustBranchDDL"
+                            ng-class="{'error':NewAccountCustomerForm.submitted && NewAccountCustomerForm.ADD_NEW_CUST_BRANCH_NAME.$error.required}"
+                            data-toggle="dropdown"
+                            aria-expanded="false">
+                        <span class="truncate">{{ADD_NEW_CUST.SELECTED_SITE.BRANCH_NAME || 'Site'}}</span>
+                    </button>
+                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li ng-click="RESET_BRANCH_SELECTION(1)">
+                            Choose
+                        </li>
+                        <li ng-repeat="_site in FILTERED_SITES_LIST"
+                            ng-click="SELECT_SITE(_site,1)">
+                            <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>-->
+                                <!--<ul class="nav nav-pills mb-1">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{ADD_NEW_CUST.SELECTED_SITE.BRANCH_NAME || 'Site'}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li ng-click="RESET_BRANCH_SELECTION(1)">
+                            Choose
+                        </li>
+                        <li ng-repeat="_site in FILTERED_SITES_LIST"
+                            ng-click="SELECT_SITE(_site,1)">
+                            <span class="truncate">{{ _site.BRANCH_NAME}}</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>-->
+
+                                <input type="text" disabled ng-model="ADD_NEW_CUST.SELECTED_SITE.BRANCH_NAME" />
+                            </div>
+                            <div class="col-xxl-2 col-xl-2 col-md-2" ng-init="dateinputddmmyy()">
+                                <div class="date-column">
+                                    <input type="text"
+                                           class="dateinputddmmyy"
+                                           placeholder="Credit Date"
+                                           name="CREDIT_DATE"
+                                           ng-model="ADD_NEW_CUST.CREDIT_DATE"
+                                           required
+                                           ng-class="{'error':NewAccountCustomerForm.submitted && NewAccountCustomerForm.CREDIT_DATE.$error.required}" />
+                                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-xxl col-xl col-md">
+                                <label>Customer Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control"
+                                           placeholder="Type here..."
+                                           ng-model="ADD_NEW_CUST.CUSTOMER_NAME"
+                                           ng-change="filterSuggestions()"
+                                           maxlength="20"
+                                           uib-typeahead="suggestion.NAME as suggestion.NAME for suggestion in ADD_NEW_CUST.CUSTOMER_filteredSuggestions | filter:$viewValue"
+                                           typeahead-loading="loading"
+                                           typeahead-on-select="setSelectedCustomer($item)"
+                                           typeahead-no-results="noResults"
+                                           ng-keypress="handleKeyPress($event, site, 'name')"
+                                           ng-mouseover="SET_DROPSCROLL();"
+                                           autocomplete="off"
+                                           typeahead-focus-first="false"
+                                           typeahead-focus-trigger
+                                           required
+                                           name="CUSTOMER_NAME"
+                                           ng-class="{'error':NewAccountCustomerForm.submitted && NewAccountCustomerForm.CUSTOMER_NAME.$error.required}">
+                            </div>
+                            <!--<div class="col-xxl col-xl col-md">
+            <label>Customer Name</label>
+            <input type="text" placeholder="Customer Name" class="mb-1"
+                   ng-model="ADD_NEW_CUST.CUSTOMER_NAME"
+                   required
+                   name="CUSTOMER_NAME"
+                   ng-class="{'error':NewAccountCustomerForm.submitted && NewAccountCustomerForm.CUSTOMER_NAME.$error.required}"/>
+        </div>-->
+                            <div class="col-xxl col-xl col-md">
+                                <label>Email <span class="text-danger">*</span></label>
+                                <input type="text" placeholder="Email" class="mb-1"
+                                       ng-model="ADD_NEW_CUST.CUSTOMER_EMAIL"
+                                       required
+                                       ng-pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+                                       name="CUSTOMER_EMAIL"
+                                       ng-class="{'error':NewAccountCustomerForm.submitted && NewAccountCustomerForm.CUSTOMER_EMAIL.$error.required}" />
+                                <small class="text-danger" ng-show="NewAccountCustomerForm.CUSTOMER_EMAIL.$dirty && NewAccountCustomerForm.CUSTOMER_EMAIL.$error.pattern">Please Enter Valid Email</small>
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <label>Contact Number <span class="text-danger">*</span></label>
+                                <input type="text" placeholder="Contact Number"
+                                       class="mb-1" ng-model="ADD_NEW_CUST.CUSTOMER_PHONE"
+                                       required
+                                       maxlength="15"
+                                       name="CUSTOMER_PHONE"
+                                       ng-class="{'error':(NewAccountCustomerForm.submitted && NewAccountCustomerForm.CUSTOMER_PHONE.$error.required)||ADD_NEW_CUST.CUSTOMER_PHONE.length<10}" />
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <label>Company</label>
+                                <input type="text" placeholder="Company" class="mb-1"
+                                       ng-model="ADD_NEW_CUST.COMPANY"
+                                       name="COMPANY"/>
+                            </div>
+
+                            <div class="col-xxl col-xl col-md text-end">
+                                <label>Credit Amount <span class="text-danger">*</span></label>
+                                <input type="text" placeholder="Amount" class="text-end mb-1"
+                                       ng-model="ADD_NEW_CUST.CREDIT_AMOUNT"
+                                       only-digits
+                                       required
+                                       name="CREDIT_AMOUNT"
+                                       ng-class="{'error':NewAccountCustomerForm.submitted && NewAccountCustomerForm.CREDIT_AMOUNT.$error.required}" />
+                            </div>
+
+                            <div class="col-xxl col-xl col-md">
+                                <label>Invoice <span class="text-danger">*</span></label>
+                                <input type="text" placeholder="Invoice" class="mb-1"
+                                       ng-model="ADD_NEW_CUST.INVOICE"
+                                       required
+                                       name="INVOICE"
+                                       ng-class="{'error':NewAccountCustomerForm.submitted && NewAccountCustomerForm.INVOICE.$error.required}" />
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <label>Note</label>
+                                <input type="text" placeholder="Notes" ng-model="ADD_NEW_CUST.NOTE" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" ng-click="RESET_ADD_CUSTOMER()">Cancel</button>
+                    <button click-once type="button" class="btn btn-primary" aria-label="Close" ng-click="INS_ACCOUNT_CREDIT_MANAGEMENT(1)">Save</button>
+                </div>
+            </div>
+        </div>
+    
+</div>
+<!--New_Customer Modal Ends-->
+<!--Receive_Credit Modal Starts-->
+<div class="modal fade" id="Receive_Credit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content custom-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Receive Credit</h5>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <form name="AccountReceiveForm" autocomplete="off" novalidate>
+                    <div class="row g-2" ng-repeat="ROW in ENTRY_LIST">
+                        <div class="col-xxl col-xl col-md">
+                            <label>Invoice</label>
+                            <input type="text" placeholder="HF674HF78" disabled ng-model="ROW.INVOICE_NUMBER" />
+                        </div>
+                        <div class="col-xxl col-xl col-md">
+                            <label class="text-nowrap">Customer Name</label>
+                            <input type="text" placeholder="" disabled ng-model="ROW.CUSTOMER_NAME" />
+                        </div>
+                        <div class="col-xxl col-xl col-md">
+                            <label>Company</label>
+                            <input type="text" placeholder="Company" disabled ng-model="ROW.COMPANY" />
+                        </div>
+                        <div class="col-xxl col-xl col-md">
+                            <label class="text-nowrap">Payment Method</label>
+                            <div class="dropdown">
+                                <input type="hidden"
+                                       ng-model="ROW.MODE_OF_PAYMENT"
+                                       name="PAYMENT_METHOD_{{$index}}"
+                                       required
+                                       ng-class="{'error':AccountReceiveForm.submitted && AccountReceiveForm.PAYMENT_METHOD_{{$index}}.$error.required}" />
+
+                                <div class="dropdown w-100" aria-labelledby="searchableCustomerButton">
+                                    <button class="select-label w-100"
+                                            type="button"
+                                            data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            ng-class="{'error':AccountReceiveForm.submitted && AccountReceiveForm.PAYMENT_METHOD_{{$index}}.$error.required}">
+                                        <span class="truncate"> {{ROW.MODE_OF_PAYMENT || 'Payment Method'}}</span>
+                                    </button>
+
+                                    <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper" style="min-width:100%">
+                                        <li ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-click="SELECT_MODE_OF_PAYMENT_REDEEM(ROW,_mode_of_payment)">
+                                            {{_mode_of_payment.METHOD_NAME}}
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <!--<ul class="nav nav-pills min-w-160 mb-1">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer"
+                                   data-toggle="dropdown">
+                                    <span class="select-label" id="select_label">
+                                        {{ROW.MODE_OF_PAYMENT || 'Payment Method'}}
+                                    </span>
+                                </a>
+                                <ul ID="divNewNotifications"
+                                    class="dropdown-menu scrollbar-wrapper"
+                                    style="min-width:100%">
+                                    <li ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-click="SELECT_MODE_OF_PAYMENT_REDEEM(ROW,_mode_of_payment)">
+                                        {{_mode_of_payment.METHOD_NAME}}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>-->
+
+                        <div class="col-xxl col-xl col-md text-end">
+                            <label class="text-nowrap">Credit Amount</label>
+                            <input type="text" class="text-end" disabled ng-model="ROW.TOTAL_AMT" />
+                        </div>
+                        <div class="col-xxl col-xl col-md text-end">
+                            <label>Amount <span class="text-danger">*</span></label>
+                            <input type="text" class="text-end"
+                                   ng-model="ROW.AMOUNT"
+                                   required
+                                   name="AMOUNT_{{$index}}"
+                                   ng-class="{'error':AccountReceiveForm.submitted && AccountReceiveForm.AMOUNT_{{$index}}.$error.required}"
+                                   ng-change="VALIDATE_AMOUNT(ROW)" />
+                        </div>
+                        <div class="col-xxl col-xl col-md text-end">
+                            <label class="text-nowrap">Remaining Amount <span class="text-danger">*</span></label>
+                            <input type="text" class="text-end" disabled ng-model="ROW.REMAINING_AMOUNT" />
+                        </div>
+                        <div class="col-xxl col-xl col-md">
+                            <label>Note</label>
+                            <input type="text" placeholder="Note" ng-model="ROW.NOTE" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                <button click-once class="btn btn-primary" ng-click="INS_UPD_CASHUP_ACCOUNT()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Receive_Credit Modal Ends-->
+
+<div class="overlay_loadingNew" style="display:none" id="loader"><div class="loader-index"> <span></span></div></div>

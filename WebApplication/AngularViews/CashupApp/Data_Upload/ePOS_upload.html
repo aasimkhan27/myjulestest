@@ -1,0 +1,792 @@
+﻿<div class="card" ng-show="CASHUP_PRIVILEGE==true">
+    <div class="card-header resCashupHeader">
+        <h6>ePOS Upload</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="row g-1 resCashupHeader">
+            <div class="col-xxl-1 col-xl-1 col-md-1">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a data-toggle="dropdown">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate">
+                                    {{ EPOS_ENTRY_SEARCH.SELECTED_SITE.BRANCH_NAME || 'Select' }}
+                                </span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                            <li ng-repeat="site in FILTERED_SITES_LIST"
+                                ng-click="selectSite(site)">
+                                <span class="truncate">{{ site.BRANCH_NAME }}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <div id="reportrange" class="form-control-box">
+                    <span></span>
+                    <i class="fa-regular fa-calendar float-end mt-1"></i>
+                </div>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <button type="button" ng-click="RESET_EPOS_ENTRY_SEARCH()" class="btn btn-outline w-100"><i class="fa-light fa-undo"></i></button>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <button class="btn btn-light w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+                <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                    <li><a class="dropdown-item d-block" ng-click="EXPORT_EPOS_ENTRY(2)">XLS</a></li>
+                    <li><a class="dropdown-item" ng-click="EXPORT_EPOS_ENTRY(1)">CSV</a></li>
+                    <li><a class="dropdown-item">PDF</a></li>
+                </ul>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto" ng-if="(EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==0
+                                                || EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==11
+                                                || EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==17
+                                                || EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==12
+                                                || EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==15
+                                                || EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==37)">
+                <button class="btn btn-primary" data-bs-target="#ePos_upload_ext" data-bs-toggle="modal">
+                    <i class="fa-light fa-arrow-up-from-bracket"></i>
+                    Upload
+                </button>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto d-none">
+                <button class="btn btn-primary">
+                    <i class="fa-light fa-rotate"></i>
+                    Sync
+                </button>
+            </div>
+        </div>
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="EPOS_ENTRY_LIST.length == 0">
+            <div class="no-record text-center">
+                <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+            </div>
+        </div>
+        <div class="table-responsive dataTable resCashupTable scrollbar-wrapper" ng-show="EPOS_ENTRY_LIST.length>0">
+            <table class="mb-0">
+                <thead class="table-sticky-top">
+                    <tr>
+                        <th>Cashup Date</th>
+                        <th>Site</th>
+                        <th>Session</th>
+                        <th class="text-end">Food</th>
+                        <th class="text-end">Drinks</th>
+                        <th class="text-end">Wine</th>
+                        <th class="text-end">Tobacco</th>
+                        <th class="text-end">Others</th>
+                        <th class="text-end">Hot Bev</th>
+                        <th class="text-end">Total Net Sales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ROW in EPOS_ENTRY_LIST">
+                        <td class="text-nowrap">{{ROW.CASHUP_DATE | date: DISPLAY_DATE_FORMAT}}</td>
+                        <td class="text-nowrap">{{ROW.SITE}}</td>
+                        <td class="text-nowrap">{{ROW.SESSION}}</td>
+                        <td class="text-end text-nowrap">{{ROW.FOOD}}</td>
+                        <td class="text-end text-nowrap">{{ROW.DRINKS}}</td>
+                        <td class="text-end text-nowrap">{{ROW.WINE}}</td>
+                        <td class="text-end text-nowrap">{{ROW.TOBACCO}}</td>
+                        <td class="text-end text-nowrap">{{ROW.OTHERS}}</td>
+                        <td class="text-end text-nowrap">{{ROW.HOT_BEV}}</td>
+                        <td class="text-end text-nowrap">{{ROW.TOTAL_NET_SALES}}</td>
+
+                        <!--<td class="text-center text-nowrap">
+                            <a class="c-pointer">
+                                <i class="fa-light fa-trash-can txt-danger"></i>
+                            </a>
+                        </td>-->
+                    </tr>
+                </tbody>
+                <tfoot ng-show="GetData" class="t_foot_fixed">
+                    <tr>
+                        <td colspan="11" class="text-center"><button type="button" class="btn btn-sm btn-light btn_fixed" ng-click="GET_DATA_UPLOAD_EPOS_ENTRY(1)">{{PAGINATION_TEXT}}</button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- UPLOAD ePOS MODAL STARTS -->
+<!--<div class="modal fade" id="ePos_upload_ext" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">ePOS Upload (23 Sep 2023) </h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body resCashupHeader resBreadCrumbModal">
+                <div class="row g-2">
+                    
+                    <div class="col-xxl-2 col-xl-2 col-md-2">
+                        <input type="text" disabled ng-model="EPOS_UPLOAD_Obj.SELECTED_SITE.BRANCH_NAME" />    
+                    </div>
+                    
+
+                    <div class="col-xxl-2 col-xl-2 col-md-2" ng-init="dateinputddmmyy()">
+                            <div class="date-column">
+                                <input type="text"
+                                       class="dateinputddmmyy"
+                                       placeholder="DD/MM/YY"
+                                       name=""
+                                       ng-model="EPOS_UPLOAD_Obj.CASHUP_DATE" />
+                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>                   
+                    </div>
+
+
+
+
+                    <div class="alert alert-light-primary fade show mt-2">
+                        <div class="row align-items-center ">
+                            <div class="col-auto txt-primary"> <i class="fa-light fa-circle-info"></i></div>
+                            <div class="col">
+                                <p class="txt-primary">Looks like you use micros ePOS. Please follow the below steps to download & upload sales data. </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 breadcrumb_container ">
+                        <span class="mb-2">Navigate on micros ePOS</span>
+                        <nav aria-label="breadcrumb ">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-gray">Reports</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-gray">Daily Sales</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-gray active">Export</a>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <form method="post" class="ng-pristine ng-valid resInputModal">
+                            <div class="form-group file-area">
+                                <input type="file" name="images" id="images" required="required" multiple="multiple">
+                                <div class="file-dummy">
+                                    <i class="fa-light fa-file-plus fa-xl"></i>
+                                    <p class="mb-1 mt-3"><span class="txt-primary">Choose a file</span> <span>or drag and drop here</span></p>
+                                    <p class="mb-1">*.csv, .xls, .ics files limit 10MB</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive mt-3 resCashupTable">
+                    <h5 class="headings">
+                        Preview
+                    </h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="25%">
+
+                                </th>
+                                <th class="text-center" width="25%">
+                                    Breakfast
+                                </th>
+                                <th class="text-center" width="25%">
+                                    Lunch
+                                </th>
+                                <th class="text-center" width="25%">
+                                    Dinner
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Cash
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Card
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Amex
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Others
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="25%">
+
+                                </th>
+                                <th class="text-center" width="25%">
+                                    Breakfast
+                                </th>
+                                <th class="text-center" width="25%">
+                                    Lunch
+                                </th>
+                                <th class="text-center" width="25%">
+                                    Dinner
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Food
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap">
+                                    Drinks
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class=" text-nowrap">
+                                    Others
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                                <td class="text-center text-nowrap"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-content d-none">
+        <div class="modal-header">
+            <h6 class="modal-title">ePOS Upload (23 Sep 2023) </h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row g-2">
+                <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                    <form method="post" class="ng-pristine ng-valid">
+                        <div class="form-group file-area">
+                            <input type="file" name="images" id="images" required="required" multiple="multiple">
+                            <div class="file-dummy txt-primary">
+                                eposuploaad04062024.xls
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12 resInputModal">
+                    <div class="file_container">
+                        <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                        <span>
+                            <span class="file_name">
+                                filename.csv
+                            </span>
+                            <span class="file_size">
+                                25.1 MB
+                            </span>
+                        </span>
+                        <a class="ms-auto">
+                            <i class="fa-light fa-trash-can txt-danger"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive resCashupTable">
+                <h5 class="headings">
+                    Preview
+                </h5>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="25%">
+
+                            </th>
+                            <th class="text-end" width="25%">
+                                Breakfast
+                            </th>
+                            <th class="text-end" width="25%">
+                                Lunch
+                            </th>
+                            <th class="text-end" width="25%">
+                                Dinner
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-start text-nowrap">
+                                Cash
+                            </td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start text-nowrap">
+                                Card
+                            </td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start text-nowrap">
+                                Amex
+                            </td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start text-nowrap">
+                                Others
+                            </td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start text-nowrap f-w-700">
+                                Total
+                            </td>
+                            <td class="text-end text-nowrap f-w-700">£ 100</td>
+                            <td class="text-end text-nowrap f-w-700">£ 100</td>
+                            <td class="text-end text-nowrap f-w-700">£ 100</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="25%">
+
+                            </th>
+                            <th class="text-end" width="25%">
+                                Breakfast
+                            </th>
+                            <th class="text-end" width="25%">
+                                Lunch
+                            </th>
+                            <th class="text-end" width="25%">
+                                Dinner
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-start text-nowrap">
+                                Food
+                            </td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+
+
+                        </tr>
+
+                        <tr>
+                            <td class="text-start text-nowrap">
+                                Drinks
+                            </td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+
+
+                        </tr>
+
+
+
+                        <tr>
+                            <td class="text-start text-nowrap">
+                                Others
+                            </td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+                            <td class="text-end text-nowrap">£ 100</td>
+
+
+                        </tr>
+
+                        <tr>
+                            <td class="text-start text-nowrap f-w-700">
+                                Total
+                            </td>
+                            <td class="text-end text-nowrap f-w-700">£ 100</td>
+                            <td class="text-end text-nowrap f-w-700">£ 100</td>
+                            <td class="text-end text-nowrap f-w-700">£ 100</td>
+
+
+                        </tr>
+
+
+
+
+
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+        <div class="modal-footer text-end">
+            <button class="btn btn-light">Cancel</button>
+            <button class="btn btn-primary">Save</button>
+        </div>
+
+    </div>
+    
+</div>-->
+<!-- UPLOAD ePOS MODAL ENDS -->
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_PRIVILEGE==false">
+    <div class="no-record text-center">
+        <span class="d-block text-center">You do not have access to ePOS Entry. Please contact Admin for access.</span>
+    </div>
+</div>
+
+<div class="modal fade" id="ePos_upload_ext" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        
+        <form name="EntrySelectCashupDetailsForm" autocomplete="off" novalidate>
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h6 class="modal-title">ePOS Upload</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="REMOVE_UPLOAD_Fn()"></button>
+                </div>
+                <div class="modal-body resBreadCrumbModal resInputModal">
+                    <div class="row g-2">
+                        <div class="col-xxl-2 col-xl-2 col-md-2">
+                            <input type="text" disabled ng-model="EPOS_UPLOAD_Obj.SELECTED_SITE.BRANCH_NAME" />
+                        </div>
+
+
+                        <div class="col-xxl-2 col-xl-2 col-md-2" ng-init="dateinputddmmyy()">
+                            <div class="date-column">
+                                <input type="text"
+                                       class="dateinputddmmyy"
+                                       placeholder="DD/MM/YY"
+                                       name=""
+                                       ng-model="EPOS_UPLOAD_Obj.CASHUP_DATE" />
+                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xxl-2 col-xl-2 col-md-2" ng-show="CASHUP_BY_AREA">
+                            <ul class="nav nav-pills mb-1">
+                                <li class="dropdown w-100">
+                                    <input type="hidden"
+                                           ng-model="EPOS_UPLOAD_Obj.SELECTED_AREA"
+                                           ng-required="CASHUP_BY_AREA"
+                                           name="SELECTED_AREA"
+                                           ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.SELECTED_AREA.$error.required}" />
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                        <span class="select-label" id="select_label" ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.SELECTED_AREA.$error.required}">
+                                            {{EPOS_UPLOAD_Obj.SELECTED_AREA.AREA_NAME || 'Area'}}
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                        <li ng-click="RESET_AREA()">
+                                            Choose
+                                        </li>
+                                        <li ng-repeat="_area in AREA_LIST" ng-click="SELECT_AREA(_area)">
+                                            {{ _area.AREA_NAME}}
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-xxl-2 col-xl-2 col-md-2" ng-show="CASHUP_BY_SESSION">
+                            <ul class="nav nav-pills mb-1">
+                                <li class="dropdown w-100">
+                                    <input type="hidden"
+                                           ng-model="EPOS_UPLOAD_Obj.SELECTED_AREA"
+                                           name="SELECTED_AREA"
+                                           required
+                                           ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.SELECTED_AREA.$error.required}" />
+
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                        <span class="select-label" id="select_label" ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.SELECTED_AREA.$error.required}">
+                                            {{EPOS_UPLOAD_Obj.SELECTED_SESSION.SESSION_NAME || 'Session'}}
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                        <li ng-click="RESET_SESSION()">
+                                            Choose
+                                        </li>
+                                        <li ng-repeat="_session in SESSION_LIST"  ng-click="SELECT_SESSION(_session)">
+                                            {{ _session.SESSION_NAME}}
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="alert alert-light-primary fade show mt-2">
+                            <div class="row align-items-center ">
+                                <div class="col-auto txt-primary">
+                                    <i class="fa-light fa-circle-info"></i>
+                                </div>
+                                <div class="col">
+                                    <p class="txt-primary">Looks like you use {{CASHUP_ENTRY_SEARCH.SYSTEM_NAME}}. Please follow the below steps to download & upload sales data. </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <div class="form-group file-area" ng-show="EPOS_UPLOAD_Obj.UploadedFiles.length==0">
+                                <input type="file" name="file" id="ngexcelfile" required="required" multiple="multiple"
+                                       ng-files="attachFile($files,EPOS_UPLOAD_Obj);getTheFilesToUpload($files, 'fileUpl_EvtInfo', 5)" /> <!--ng-model="EPOs_Search.UploadedFiles"-->
+                                <div class="file-dummy">
+                                    <i class="fa-light fa-file-plus fa-xl"></i>
+                                    <p class="mb-1 mt-3">
+                                        <span class="txt-primary">Choose a file</span>
+                                        <span>or drag and drop here</span>
+                                    </p>
+                                    <p class="mb-1">*.csv, .xls files limit 10MB</p>
+                                </div>
+                            </div>
+
+                            <div class="file_container" ng-repeat="_upload in EPOS_UPLOAD_Obj.UploadedFiles">
+                                <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                                <span>
+                                    <span class="file_name">
+                                        {{_upload.name}}
+                                    </span>
+                                </span>
+                                <a class="ms-auto" ng-click="REMOVE_UPLOAD_Fn()">
+                                    <i class="fa-light fa-trash-can txt-danger"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-end">
+                    <div class="input-group-append">
+                        <img ng-if="Uploading" src="../../E_Content/images/loading.gif" style="height: 25px;margin-left:20px;" />
+                    </div>
+                    <button class="btn btn-primary" ng-show="EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==0 ||
+                        EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==11 || EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==17  ||
+                        EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==12  || EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==37" ng-click="ReadExcelData()">
+                        Save
+                    </button>
+                    <!--<button class="btn btn-primary" ng-show="EPOS_UPLOAD_Obj.INTEGRATION_SYSTEM_ID==15" ng-click="ReadExcelData_Micros();">Save</button>-->
+                </div>
+            </div>
+        </form>
+        
+        <div class="modal-content d-none">
+            <div class="modal-header">
+                <h6 class="modal-title">ePOS Upload (04-June-2024)</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <form method="post" class="ng-pristine ng-valid">
+                            <div class="form-group file-area">
+                                <input type="file" name="images" id="images" required="required" multiple="multiple">
+                                <div class="file-dummy txt-primary">
+                                    eposuploaad04062024.xls
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <div class="file_container">
+                            <i class="fa-light fa-file-lines text-grey fa-lg"></i>
+                            <span>
+                                <span class="file_name">
+                                    filename.csv
+                                </span>
+                                <span class="file_size">
+                                    25.1 MB
+                                </span>
+                            </span>
+                            <a class="ms-auto">
+                                <i class="fa-light fa-trash-can txt-danger"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive mt-2">
+                    <h5 class="headings">
+                        Table
+                    </h5>
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-center" width="25%">
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Breakfast
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Lunch
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Dinner
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Cash
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Card
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Amex
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Others
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th class="text-center" width="25%">
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Breakfast
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Lunch
+                                </th>
+                                <th class="text-end" width="25%">
+                                    Dinner
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Food
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Drinks
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap">
+                                    Others
+                                </td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                                <td class="text-end text-nowrap">£ 100</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start text-nowrap f-w-700">
+                                    Total
+                                </td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                                <td class="text-end text-nowrap f-w-700">£ 100</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light">Cancel</button>
+                <button class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

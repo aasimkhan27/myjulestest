@@ -1,0 +1,841 @@
+﻿<a href="#!/Calendar" class="text-bold"><i class="fal fa-chevron-left fa-lg mr-2 my-4"></i> Back to calendar</a>
+<div class="card-primary card-outline">
+    <div class="card-body p-1">
+        <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+
+            <li class="nav-item" ng-if="EMPLOYEE_ID!='null'">
+
+                <a class="nav-link " ng-class="{'active':STEP_FLAG==1,'':STEP_FLAG!=1}" ng-click="TAB_CLICK(1)" id="custom-content-above-home-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-home" aria-selected="true">My Requested Leaves</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ng-click="TAB_CLICK(2)" ng-class="{'active':STEP_FLAG==2,'':STEP_FLAG!=2}" id="custom-content-above-profile-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Leaves for my Approvals</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="custom-content-above-tabContent">
+            <div class="tab-pane fade" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab" ng-show="STEP_FLAG==1" ng-class="{'show active':STEP_FLAG==1,'':STEP_FLAG!=1}">
+                <div class="col-md-12">
+                    <div class="row">
+                        <h6 class="app-text mb-0 mt-1">Filter by:</h6>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="ABSENCE_TYPE"
+                                        ng-model="LeaveSearch.ABSENCE_TYPE_ID"
+                                        ng-options="PT.ABSENCE_TYPE_ID as PT.ABSENCE_TYPE_NAME  for PT in (ABSENCE_TYPE)">
+                                    <option value="">-Select Absence Type</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="DEPARTMENT_ID"
+                                        ng-options="DPT.DEPARTMENT_ID as DPT.DEPARTMENT_NAME for DPT in (HR_DEPARTMENTS)"
+                                        ng-model="LeaveSearch.DEPARTMENT_ID">
+                                    <option value="">-Select Department-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="STATUS_ID"
+                                        ng-model="LeaveSearch.STATUS_ID"
+                                        ng-options="RTW.ID as RTW.NAME for RTW in (STATUS_LIST)">
+                                    <option value="">-Select Status-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-wenodo" ng-click="GET_MY_LEAVE_LIST(1)">Search</button>
+                            <button class="btn btn-w-default" ng-click="ResetMyLeave()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="text-center" ng-show="LEAVE_MY_LIST.length==0" empty-grid>
+                    </div>
+                    <div class="table-responsive" ng-show="LEAVE_MY_LIST.length>0">
+                        <table class="table">
+                            <thead class="bg-wenodo-dark-blue">
+                                <tr>
+                                    <th>Absence Type</th>
+                                    <th>Employee Name</th>
+                                    <th>Department</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Duration</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot ng-show="GetData">
+                                <tr>
+                                    <td colspan="11" align="center">
+                                        <a class="btn btn-secondary text-white ng-binding" ng-click="LAZY_LOAD()">{{VIEWMORERECORD}}</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody ng-repeat="LL in LEAVE_MY_LIST" ng-init="NG_INIT_LEAVE_LIST(LL)" on-finish-render="ngRepeatFinished">
+                                <tr>
+                                    <td>
+                                        <span class="event-dots event-leave" style="background-color:#{{LL.ABSENCE_COLOR_CODE}}!important"></span> {{LL.ABSENCE_TYPE_NAME}}
+                                    </td>
+                                    <td>{{LL.EMPLOYEE_NAME}}</td>
+                                    <td>{{LL.DEPARTMENT_NAME}}</td>
+                                    <td>{{LL.START_DATE | date}}</td>
+                                    <td>{{LL.END_DATE | date}}</td>
+                                    <td>{{LL.CAL_LEAVE_DAYS | number :2 }}</td>
+                                    <td>
+
+                                        <a ng-show="LL.STATUS_ID==15" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Auto Approved"><i class="fad fa-shield-check fa-lg text-green"></i></a>
+                                        <a ng-show="LL.STATUS_ID==11" ng-click="POP_LEVAE_APPROVE(LL,'CANCEL_LEAVE',1)" data-toggle="tooltip" data-html="true" data-original-title="Pending"><i class="fad fa-alarm-exclamation fa-lg text-secondary"></i></a>
+                                        <a ng-show="LL.STATUS_ID==12" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Approved"><i class="fad fa-check-double fa-lg text-green"></i></a>
+                                        <a ng-show="LL.STATUS_ID==13" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Rejected"><i class="fad fa-times-circle fa-lg text-danger"></i></a>
+                                        <i ng-show="LL.STATUS_ID==11" ng-click="POP_LEVAE_APPROVE(LL,'CANCEL_LEAVE',1)" class="fad fa-calendar-times fa-lg text-danger  cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Cancelled Applied Leave"></i>
+                                        <a ng-show="LL.STATUS_ID==14" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Cancelled"><i class="fad fa-ban fa-lg text-danger"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab" ng-show="STEP_FLAG==2" ng-class="{'show active':STEP_FLAG==2,'':STEP_FLAG!=2}">
+                <div class="col-md-12">
+                    <div class="row">
+                        <h6 class="app-text mb-0 mt-1">Filter by:</h6>
+                        <div class="col-md-2" ng-if="false">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="EMPLOYEE_IDS"
+                                        ng-model="LeaveRequestSearch.EMPLOYEE_ID"
+                                        ng-options="PT.EMP_PRS_ID as PT.USER_NAME  for PT in (REPORTING_EMPLOYEE_LIST)">
+                                    <option value="">-Select Employee</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="ABSENCE_TYPE"
+                                        ng-model="LeaveRequestSearch.ABSENCE_TYPE_ID"
+                                        ng-options="PT.ABSENCE_TYPE_ID as PT.ABSENCE_TYPE_NAME  for PT in (ABSENCE_TYPE)">
+                                    <option value="">-Select Absence Type</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="DEPARTMENT_ID"
+                                        ng-options="DPT.DEPARTMENT_ID as DPT.DEPARTMENT_NAME for DPT in (HR_DEPARTMENTS)"
+                                        ng-model="LeaveRequestSearch.DEPARTMENT_ID">
+                                    <option value="">-Select Department-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="STATUS_ID"
+                                        ng-model="LeaveRequestSearch.STATUS_ID"
+                                        ng-options="RTW.ID as RTW.NAME for RTW in (STATUS_LIST)">
+                                    <option value="">-Select Status-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-wenodo" ng-click="GET_LEAVE_REQUEST_LIST(1)">Search</button>
+                            <button class="btn btn-w-default" ng-click="ResetReqLev()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="text-center" ng-show="LEAVE_REQUEST_LIST.length==0" empty-grid>
+                    </div>
+                    <div class="table-responsive" ng-show="LEAVE_REQUEST_LIST.length>0">
+                        <table class="table">
+                            <thead class="bg-wenodo-dark-blue">
+                                <tr>
+                                    <th class="text-nowrap">Absence Type</th>
+                                    <th class="text-nowrap">Employee Name</th>
+                                    <th>Department</th>
+                                    <th class="text-nowrap">Start Date</th>
+                                    <th class="text-nowrap">End Date</th>
+                                    <th>Duration</th>
+                                    <th>Overlaps</th>
+                                    <th class="text-nowrap">Recorded By</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot ng-show="GetDataR">
+                                <tr>
+                                    <td colspan="11" align="center">
+                                        <a class="btn btn-secondary text-white ng-binding" ng-click="LAZY_LOAD_REQUEST()">{{VIEWMORERECORD}}</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody ng-repeat="LL in LEAVE_REQUEST_LIST" ng-init="NG_INIT_LEAVE_LIST(LL)" on-finish-render="ngRepeatFinished">
+                                <tr>
+                                    <td>
+                                        <span class="event-dots event-leave" style="background-color:#{{LL.ABSENCE_COLOR_CODE}}!important"></span> {{LL.ABSENCE_TYPE_NAME}}
+                                    </td>
+                                    <td>{{LL.EMPLOYEE_ID}}{{LL.EMPLOYEE_NAME}}</td>
+                                    <td>{{LL.DEPARTMENT_NAME}}</td>
+                                    <td class="text-nowrap">{{LL.START_DATE | date}}</td>
+                                    <td class="text-nowrap">{{LL.END_DATE | date}}</td>
+                                    <td>{{LL.CAL_LEAVE_DAYS | number :2 }}</td>
+                                    <td>{{LL.OVERLAP}}</td>
+                                    <td>
+                                        <span ng-show="LL.STATUS_ID==15"> {{LL.APPLIED_BY_EMPLOYEE_NAME}}</span>
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <a ng-show="LL.STATUS_ID==15 " ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Auto Approved"><i class="fad fa-shield-check fa-lg text-green"></i></a>
+                                        <a ng-show="LL.STATUS_ID==11" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Pending"><i class="fad fa-alarm-exclamation fa-lg text-secondary"></i></a>
+                                        <a ng-show="LL.STATUS_ID==12" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Approved"><i class="fad fa-check-double fa-lg text-green"></i></a>
+                                        <a ng-show="LL.STATUS_ID==13" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Rejected"><i class="fad fa-times-circle fa-lg text-danger"></i></a>
+                                        <!--LL.END_DATE_PASSED_FLAG==0 && LL.STATUS_ID!=14 && LL.STATUS_ID!=13 ||-->
+                                        <i ng-show="(LL.STATUS_ID==11)  ||  (LL.STATUS_ID==15 ||LL.STATUS_ID==12) && EMPLOYEE_ID!=LL.EMP_PRS_ID"
+                                           data-toggle="tooltip"
+                                           data-html="true"
+                                           data-original-title="Cancel Applied Leave"
+                                           ng-click="POP_LEVAE_APPROVE(LL,'CANCEL_LEAVE',2)"
+                                           class="fad fa-calendar-times fa-lg text-danger  cursor-pointer"></i>
+
+                                        <a ng-show="LL.STATUS_ID==14" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Cancelled"><i class="fad fa-ban fa-lg text-danger"></i></a>
+                                        <a class="cursor-pointer" ng-show="LL.ATTACHMENT_COUNT>0" ng-click="POP_LEVAE_APPROVE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Attachment"><i class="fas fa-paperclip text-blue"></i></a>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="MY_REQUEST_LEAVE_DETAILS_C">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> Absence request </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="col-md-12 mb-3">
+                    <img ng-show="EMP_DTDS.IMAGE_PATH==null || EMP_DTDS.IMAGE_PATH==''" src="../dist/img/user1-128x128.jpg" class="img-size-32 mr-1 img-circle">
+                    <img ng-show="EMP_DTDS.IMAGE_PATH!=null && EMP_DTDS.IMAGE_PATH!=''" src="{{EMP_DTDS.IMAGE_PATH}}" class="img-size-32 mr-1 img-circle">
+                    {{EMP_DTDS.EMPLOYEE_NAME}}
+                </div>
+                <div class="row mt-2 ml-1">
+                    <div class="col-md-4 border">
+                        <div class="form-group mb-0">
+                            <label>Absence Type</label>
+                            <div class="input-group">
+                                {{EMP_DTDS.ABSENCE_TYPE_NAME}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 border">
+                        <div class="form-group mb-0">
+                            <label>Start Date / Time</label>
+                            <div class="input-group">
+                                <i class="far fa-calendar-alt text-blue"></i> {{EMP_DTDS.START_DATE | date:'d/M/yyyy'}}
+                                <span class="float-right"><i class="far fa-clock text-blue"></i> {{EMP_DTDS.START_DATE | date:'HH:mm:ss'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 border">
+                        <div class="form-group mb-0">
+                            <label>End Date / Time</label>
+                            <div class="input-group">
+                                <i class="far fa-calendar-alt text-blue"></i> {{EMP_DTDS.END_DATE | date:'d/M/yyyy' }}
+                                <span class="float-right"><i class="far fa-clock text-blue"></i> {{EMP_DTDS.END_DATE | date: 'HH:mm:ss'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 border">
+                        <div class="form-group mb-0">
+                            <label>
+                                Duration
+                                <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1">(Days)</span>
+                                <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==3">(Shifts)</span>
+                                <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">(Hours)</span>
+                            </label>
+                            <div class="input-group">
+                                {{EMP_DTDS.CAL_LEAVE_DAYS | number :2}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 border">
+                        <div class="form-group mb-0">
+                            <label>Paid</label>
+                            <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1 || EMP_DTDS.ENTITLEMENT_UNIT_ID==3">
+                                <div class="input-group">
+                                    {{EMP_DTDS.DURATION_DAYS_PAID | number :2}}
+                                </div>
+                            </div>
+                            <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">
+                                <div class="input-group">
+                                    {{EMP_DTDS.DURATION_HOURS_PAID | number :2}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 border">
+                        <div class="form-group mb-0">
+                            <label>Unpaid</label>
+                            <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1 || EMP_DTDS.ENTITLEMENT_UNIT_ID==3">
+                                <div class="input-group">
+                                    {{EMP_DTDS.DURATION_DAYS_UNPAID | number :2}}
+                                </div>
+                            </div>
+                            <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">
+                                <div class="input-group">
+                                    {{EMP_DTDS.DURATION_HOURS_UNPAID | number :2}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 border">
+                        <div class="form-group">
+                            <label>Leave Comments</label>
+                            <div class="input-group">
+                                {{EMP_DTDS.COMMENTS==null?'-':EMP_DTDS.COMMENTS}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label> Comments</label>
+                        <textarea class="form-control"
+                                  rows="5"
+                                  placeholder="Enter."
+                                  ng-model="LEAVE_CANCEL"></textarea>
+                    </div>
+                    <div class="col-md-6 border ">
+                        <div class="form-group">
+                            <label class="d-block">Attachment </label>
+                            <span ng-show="EMP_DTDS.UPLOADED_FILES.length==0">-</span>
+                            <span class="d-block" ng-repeat="File in EMP_DTDS.UPLOADED_FILES">
+                                <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="{{File.ORIGINAL_FILE_NAME}}" class="d-block font-12 text-blue cursor-pointer border-bottom">
+                                    {{File.ORIGINAL_FILE_NAME}}
+                                    <span class="float-right"><i class="fas fa-download"></i></span>
+                                </a>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="modal-header">
+                        <h4 class="modal-title"> {{EMP_DTDS.OVERLAP_LIST.length}} other absences overlap</h4>
+                    </div>
+                    <div class="col-md-12" ng-show="EMP_DTDS.OVERLAP_LIST.length>0">
+                        <table class="table table-striped">
+                            <thead class="bg-wenodo-dark-blue">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="LL in EMP_DTDS.OVERLAP_LIST">
+                                <tr>
+                                    <td>{{LL.EMPLOYEE_NAME}}</td>
+                                    <td>{{LL.START_DATE | date}}</td>
+                                    <td>{{LL.END_DATE | date}}</td>
+                                    <td> <label ng-click="POP_VIEW_OVERLAP(LL)">View</label> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-left" ng-show="MYREQUEST=='MYREQUEST'">
+                <button type="button" class="btn btn-wenodo" ng-click="CNCL_HR_LEAVE_REQUESTS(EMP_DTDS,EMP_DTDS.TAB_CLICK)"> Cancel Leave </button>
+            </div>
+            <div class="modal-footer justify-content-left" ng-show="MYREQUEST==''">
+                <button type="button" ng-click="REJECT_APPROVE_FLAG = 0;APP_REJ_HR_LEAVE_REQUESTS(12,EMP_DTDS)" class="btn btn-wenodo">Approve </button>
+                <button type="button" ng-click="REJECT_APPROVE_FLAG = 1;APP_REJ_HR_LEAVE_REQUESTS(13,EMP_DTDS)" class="btn btn-danger">Reject </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Leave_details_Cancel">
+    <div class="modal-dialog modal-lg">
+        <form name="AbsenceLeave" novalidate>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <img ng-show="EMP_DTDS.IMAGE_PATH==null || EMP_DTDS.IMAGE_PATH==''" src="../dist/img/user1-128x128.jpg" class="img-size-32 mr-1 img-circle">
+                        <img ng-show="EMP_DTDS.IMAGE_PATH!=null && EMP_DTDS.IMAGE_PATH!=''" src="{{EMP_DTDS.IMAGE_PATH}}" class="img-size-32 mr-1 img-circle"> Absence request by   {{EMP_DTDS.EMPLOYEE_NAME}}
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="row mt-2 ml-1">
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>Absence Type</label>
+                                <div class="input-group">
+                                    {{EMP_DTDS.ABSENCE_TYPE_NAME}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>Start Date / Time</label>
+                                <div class="input-group">
+                                    <i class="far fa-calendar-alt text-blue"></i> {{EMP_DTDS.START_DATE | date:'d/M/yyyy'}}
+                                    <span class="float-right"><i class="far fa-clock text-blue"></i> {{EMP_DTDS.START_DATE | date:'HH:mm:ss'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>End Date / Time</label>
+                                <div class="input-group">
+                                    <i class="far fa-calendar-alt text-blue"></i> {{EMP_DTDS.END_DATE | date:'d/M/yyyy' }}
+                                    <span class="float-right"><i class="far fa-clock text-blue"></i> {{EMP_DTDS.END_DATE | date: 'HH:mm:ss'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>
+                                    Duration
+                                    <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1">(Days)</span>
+                                    <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==3">(Shifts)</span>
+                                    <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">(Hours)</span>
+                                </label>
+                                <div class="input-group">
+                                    {{EMP_DTDS.CAL_LEAVE_DAYS | number :2}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>Paid</label>
+                                <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1 || EMP_DTDS.ENTITLEMENT_UNIT_ID==3">
+                                    <div class="input-group">
+                                        {{EMP_DTDS.DURATION_DAYS_PAID | number :2}}
+                                    </div>
+                                </div>
+                                <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">
+                                    <div class="input-group">
+                                        {{EMP_DTDS.DURATION_HOURS_PAID | number :2}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>Unpaid</label>
+                                <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1 || EMP_DTDS.ENTITLEMENT_UNIT_ID==3">
+                                    <div class="input-group">
+                                        {{EMP_DTDS.DURATION_DAYS_UNPAID | number :2}}
+                                    </div>
+                                </div>
+                                <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">
+                                    <div class="input-group">
+                                        {{EMP_DTDS.DURATION_HOURS_UNPAID | number :2}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 border">
+                            <div class="form-group mb-0">
+                                <label>Leave Comments</label>
+                                <div class="input-group">
+                                    {{EMP_DTDS.COMMENTS==null || EMP_DTDS.COMMENTS==""?'-':EMP_DTDS.COMMENTS}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 border">
+                            <!--<div class="form-group mb-0">
+                                <label> Canceled Comments</label>
+                                <div class="input-group">
+                                    {{EMP_DTDS.APP_REJ_COMMENTS==null || EMP_DTDS.APP_REJ_COMMENTS==""?'-':EMP_DTDS.APP_REJ_COMMENTS}}
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="col-md-12" ng-show="EMP_DTDS.STATUS_ID!=14 && EMP_DTDS.END_DATE_PASSED_FLAG==0 || EMP_DTDS.STATUS_ID==11">
+                            <label>Cancel Comments: *</label>
+                            <textarea class="form-control mb-0"
+                                      rows="5"
+                                      name="COMMENTS"
+                                      ng-change="LEVAE_COMMENS_FY(1)"
+                                      placeholder="Enter."
+                                      ng-model="LEAVE_CANCEL"
+                                      ng-class="{'error':AbsenceSubmit.submitted && REJECT_APPROVE_FLAG==1}"></textarea>
+                        </div>
+                        <div class="col-md-12  border">
+                            <div class="form-group">
+                                <label class="d-block">Attachment </label>
+                                <span ng-show="EMP_DTDS.UPLOADED_FILES.length==0">-</span>
+                                <span class="d-block" ng-repeat="File in EMP_DTDS.UPLOADED_FILES">
+                                    <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="{{File.ORIGINAL_FILE_NAME}}" class="d-block font-12 text-blue cursor-pointer border-bottom">
+                                        {{File.ORIGINAL_FILE_NAME}}
+                                        <span class="float-right"><i class="fas fa-download"></i></span>
+                                    </a>
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 px-0 mt-2">
+                            <div data-ng-show="AbsenceSubmit.submitted && AbsenceLeave.$invalid || REJECT_APPROVE_FLAG==1" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="AbsenceLeave.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+
+                        <div class="modal-header">
+                            <h4 class="modal-title"> {{EMP_DTDS.OVERLAP_LIST.length}} other absences overlap</h4>
+                        </div>
+                        <div class="col-md-12" ng-show="EMP_DTDS.OVERLAP_LIST.length>0">
+                            <table class="table table-striped">
+                                <thead class="bg-wenodo-dark-blue">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="LL in EMP_DTDS.OVERLAP_LIST" ng-init="NG_INIT_LEAVE_LIST(LL)">
+                                    <tr>
+                                        <td>{{LL.EMPLOYEE_NAME}}</td>
+                                        <td>{{LL.START_DATE | date}}</td>
+                                        <td>{{LL.END_DATE | date}}</td>
+                                        <td> <a class="text-blue cursor-pointer" ng-click="POP_VIEW_OVERLAP(LL)">View</a> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-left" ng-show="EMP_DTDS.STATUS_ID!=14 && EMP_DTDS.END_DATE_PASSED_FLAG==0 || EMP_DTDS.STATUS_ID==11">
+                    <button type="button" class="btn btn-wenodo" ng-click="CNCL_HR_LEAVE_REQUESTS(EMP_DTDS,EMP_DTDS.TAB_CLICK)"> Cancel Leave </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="Leave_details_Approve_Reject">
+    <div class="modal-dialog modal-lg">
+        <form name="AbsenceLeave" novalidate>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <img ng-show="EMP_DTDS.IMAGE_PATH==null || EMP_DTDS.IMAGE_PATH==''" src="../dist/img/user1-128x128.jpg" class="img-size-32 mr-1 img-circle">
+                        <img ng-show="EMP_DTDS.IMAGE_PATH!=null && EMP_DTDS.IMAGE_PATH!=''" src="{{EMP_DTDS.IMAGE_PATH}}" class="img-size-32 mr-1 img-circle">
+                        Absence request by {{EMP_DTDS.EMPLOYEE_NAME}}
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="row mt-2 ml-1">
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>Absence Type</label>
+                                <div class="input-group">
+                                    {{EMP_DTDS.ABSENCE_TYPE_NAME}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>Start Date / Time</label>
+                                <div class="input-group">
+                                    <i class="far fa-calendar-alt text-blue"></i> {{EMP_DTDS.START_DATE | date:'d/M/yyyy'}}
+                                    <span class="float-right"><i class="far fa-clock text-blue"></i> {{EMP_DTDS.START_DATE | date:'HH:mm:ss'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>End Date / Time</label>
+                                <div class="input-group">
+                                    <i class="far fa-calendar-alt text-blue"></i> {{EMP_DTDS.END_DATE | date:'d/M/yyyy' }}
+                                    <span class="float-right"><i class="far fa-clock text-blue"></i> {{EMP_DTDS.END_DATE | date: 'HH:mm:ss'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>
+                                    Duration
+                                    <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1">(Days)</span>
+                                    <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==3">(Shifts)</span>
+                                    <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">(Hours)</span>
+                                </label>
+                                <div class="input-group">
+                                    {{EMP_DTDS.CAL_LEAVE_DAYS | number :2}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>Paid</label>
+                                <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1 || EMP_DTDS.ENTITLEMENT_UNIT_ID==3">
+                                    <div ng-show="EMP_DTDS.STATUS_ID!=11">
+                                        {{EMP_DTDS.DURATION_DAYS_PAID | number :2}}
+                                    </div>
+                                    <div ng-show="EMP_DTDS.STATUS_ID==11">
+                                        <input type="text"
+                                               only-digits
+                                               ng-model="EMP_DTDS.DURATION_DAYS_PAID"
+                                               class="form-control" />
+                                    </div>
+                                </div>
+                                <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">
+                                    <div ng-show="EMP_DTDS.STATUS_ID!=11">
+                                        {{EMP_DTDS.DURATION_HOURS_PAID | number :2}}
+                                    </div>
+                                    <div ng-show="EMP_DTDS.STATUS_ID==11">
+                                        <input type="text"
+                                               only-digits
+                                               ng-model="EMP_DTDS.DURATION_HOURS_PAID"
+                                               class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 border">
+                            <div class="form-group mb-0">
+                                <label>Unpaid</label>
+                                <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1 || EMP_DTDS.ENTITLEMENT_UNIT_ID==3">
+                                    <div ng-show="EMP_DTDS.STATUS_ID!=11">
+                                        {{EMP_DTDS.DURATION_DAYS_UNPAID | number :2}}
+                                    </div>
+                                    <div ng-show="EMP_DTDS.STATUS_ID==11">
+                                        <input type="text"
+                                               only-digits
+                                               ng-model="EMP_DTDS.DURATION_DAYS_UNPAID"
+                                               class="form-control" />
+                                    </div>
+
+                                </div>
+                                <div ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">
+                                    <div ng-show="EMP_DTDS.STATUS_ID!=11">
+                                        {{EMP_DTDS.DURATION_HOURS_UNPAID | number :2}}
+                                    </div>
+                                    <div ng-show="EMP_DTDS.STATUS_ID==11">
+                                        <input type="text"
+                                               only-digits
+                                               ng-model="EMP_DTDS.DURATION_HOURS_UNPAID"
+                                               class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 border">
+                            <div class="form-group mb-0">
+                                <label>Leave Comments</label>
+                                <div class="input-group">
+                                    {{EMP_DTDS.COMMENTS==null || EMP_DTDS.COMMENTS==""?'-':EMP_DTDS.COMMENTS}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 border">
+                            
+                            <div class="form-group mb-0">
+                                <label> <span ng-show="EMP_DTDS.STATUS_ID==14">Canceled</span> <span ng-show="EMP_DTDS.STATUS_ID!=14">Approved / Rejected</span>  Comments</label>
+                                <div class="input-group">
+                                    {{EMP_DTDS.APP_REJ_COMMENTS==null || EMP_DTDS.APP_REJ_COMMENTS==""?'-':EMP_DTDS.APP_REJ_COMMENTS}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 border">
+                            
+                          
+
+                            <div ng-show="EMP_DTDS.STATUS_ID==11 && EMP_DTDS.END_DATE_PASSED_FLAG==0">
+                                <label>Approve / Reject Comments :<span ng-show="REJECT_APPROVE_FLAG==1">*</span> </label>
+                                <textarea class="form-control"
+                                          rows="5"
+                                          name="COMMENTS"
+                                          ng-change="LEVAE_COMMENS_FY(1)"
+                                          placeholder="Enter."
+                                          ng-model="LEAVE_CANCEL"
+                                          ng-class="{'error':AbsenceSubmit.submitted && REJECT_APPROVE_FLAG==1}"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12 border">
+                            <div class="form-group mb-0">
+                                <label class="d-block">Attachment </label>
+                                <span ng-show="EMP_DTDS.UPLOADED_FILES.length==0">-</span>
+                                <span class="d-block" ng-repeat="File in EMP_DTDS.UPLOADED_FILES">
+                                    <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="{{File.ORIGINAL_FILE_NAME}}" class="d-block font-12 text-blue cursor-pointer border-bottom">
+                                        {{File.ORIGINAL_FILE_NAME}}
+                                        <span class="float-right"><i class="fas fa-download"></i></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 px-0 mt-2">
+                            <div data-ng-show="AbsenceSubmit.submitted && AbsenceLeave.$invalid || REJECT_APPROVE_FLAG==1" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="AbsenceLeave.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h4 class="modal-title"> {{EMP_DTDS.OVERLAP_LIST.length}} other absences overlap</h4>
+                        </div>
+                        <div class="col-md-12 mt-2" ng-show="EMP_DTDS.OVERLAP_LIST.length>0">
+                            <table class="table table-striped">
+                                <thead class="bg-wenodo-dark-blue">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="LL in EMP_DTDS.OVERLAP_LIST">
+                                    <tr>
+                                        <td>{{LL.EMPLOYEE_NAME}}</td>
+                                        <td>{{LL.START_DATE | date}}</td>
+                                        <td>{{LL.END_DATE | date}}</td>
+                                        <td> <a class="text-blue cursor-pointer" ng-click="POP_VIEW_OVERLAP(LL)">View</a> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-left" ng-show="EMP_DTDS.STATUS_ID==11 && EMP_DTDS.END_DATE_PASSED_FLAG==0">
+                    <button type="button" ng-click="APP_REJ_HR_LEAVE_REQUESTS(12,EMP_DTDS)" class="btn btn-wenodo">Approve </button>
+                    <button type="button" ng-click="APP_REJ_HR_LEAVE_REQUESTS(13,EMP_DTDS)" class="btn btn-danger">Reject </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="Leave_details_VIEW_OVERLAP">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> Absence request</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="col-md-12 mb-3">
+                    <img ng-show="OVERLAP_DATA.IMAGE_PATH==null || OVERLAP_DATA.IMAGE_PATH==''" src="../dist/img/user1-128x128.jpg" class="img-size-32 mr-1 img-circle">
+                    <img ng-show="OVERLAP_DATA.IMAGE_PATH!=null && OVERLAP_DATA.IMAGE_PATH!=''" src="{{OVERLAP_DATA.IMAGE_PATH}}" class="img-size-32 mr-1 img-circle">
+                    {{OVERLAP_DATA.EMPLOYEE_NAME}}
+                </div>
+
+                <div class="row mt-2 ml-1">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Department</label>
+                            <div class="input-group">
+                                {{OVERLAP_DATA.DEPARTMENT_NAME}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Absence Type</label>
+                            <div class="input-group">
+                                {{OVERLAP_DATA.ABSENCE_TYPE_NAME}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>
+                                Duration
+                                <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==1">(Days)</span>
+                                <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==3">(Shifts)</span>
+                                <span ng-show="EMP_DTDS.ENTITLEMENT_UNIT_ID==2">(Hours)</span>
+                            </label>
+                            <div class="input-group">
+                                {{OVERLAP_DATA.CAL_LEAVE_DAYS | number :2}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <div class="input-group">
+                                {{OVERLAP_DATA.START_DATE | date:'d/M/yyyy'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Start Time</label>
+                            <div class="input-group">
+                                {{OVERLAP_DATA.START_DATE | date:'HH:mm:ss'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <div class="input-group">
+                                {{OVERLAP_DATA.END_DATE | date:'d/M/yyyy' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>End Time</label>
+                            <div class="input-group">
+                                {{OVERLAP_DATA.END_DATE | date: 'HH:mm:ss'}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Comments</label>
+                            <div class="input-group">
+                                {{OVERLAP_DATA.COMMENTS==null?'-':OVERLAP_DATA.COMMENTS}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div ng-repeat="LIST in [{'DATA':OVERLAP_DATA}]" ng-include="'../AngularViews/CommonView/FormLabelView.html?v=2136564{{AppVersion}}'"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <h4 class="text-bold">{{OVERLAP_DATA.OVERLAP_LIST.length}} other absences overlap</h4>
+                    </div>
+                    <div class="col-md-12" ng-show="OVERLAP_DATA.OVERLAP_LIST.length>0">
+                        <table class="table table-striped mt-2">
+                            <thead class="bg-wenodo-dark-blue">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="LL in OVERLAP_DATA.OVERLAP_LIST">
+                                <tr>
+                                    <td>{{LL.EMPLOYEE_NAME}}</td>
+                                    <td>{{LL.START_DATE | date}}</td>
+                                    <td>{{LL.END_DATE | date}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

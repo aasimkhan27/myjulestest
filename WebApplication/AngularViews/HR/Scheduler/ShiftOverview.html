@@ -1,0 +1,64 @@
+﻿<div class="row">
+    <div class="col-auto">
+        <label class="mb-0"> Filter By</label>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <select class="custom-select"
+                    ng-options="EL as EL.EMPLOYEE_NAME for EL in EMPLOYEE_LIST"
+                    ng-model="Section_Week_Search.SHIFT_OVERVIEW_EMP_PRS_ID" ng-change="ROTA_EMP_SHIFT_OVERVIEW(Section_Week_Search.SHIFT_OVERVIEW_EMP_PRS_ID,'EMP_VIEW')">
+                <option value="">-Select Employee-</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="text-center" empty-grid ng-show="SHIFTOVERCOUNT==0"></div>
+<div class="table-responsive custom-scrollbar height-400" ng-show="SHIFTOVERCOUNT>0">
+    <table class="table table-striped table-head-fixed">
+        <thead class="bg-wenodo-dark-blue">
+            <tr>
+                <th class="mw-150">Date</th>
+                <th class="mw-200">Time</th>
+                <th class="text-nowrap">Clock (In&Out)</th>
+                <th>Department</th>
+                <th>Section</th>
+                <th class="text-nowrap">Shift Type</th>
+                <th class="text-nowrap">Paid Breaks</th>
+                <th class="text-nowrap">UnPaid Breaks</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="SOL in SHIFT_OVERVIEW_LIST">
+            <tr ng-repeat="TSHIFT in SOL.TOTAL_SHIFT" ng-init="SOVSGIFT($index)">
+                <td> {{SOL.NewDate | date}}</td>
+                <td>
+                    {{TSHIFT.START_TIME | date:'HH:mm' }} -{{TSHIFT.END_TIME | date:'HH:mm'}}
+                    <br />
+                    {{TSHIFT.START_TIME | date }}- {{TSHIFT.END_TIME | date}}
+                </td>
+                <td>{{TSHIFT.LOGIN_LOGOUT_DETAILS.LOGIN_DATE | date:'HH:mm'}} - {{TSHIFT.LOGIN_LOGOUT_DETAILS.LOGOUT_DATE | date:'HH:mm'}} <i title="Approved" ng-show="TSHIFT.LOGIN_LOGOUT_DETAILS.IS_APPROVED" class="fas fa-check-circle text-green"></i> </td>
+                <td>{{TSHIFT.DEPARTMENT_NAME}}</td>
+                <td>{{TSHIFT.SECTION_NAME}}</td>
+                <td>{{TSHIFT.SHIFT_TYPE}}</td>
+                <td>{{TSHIFT.PAID_BREAK}}</td>
+                <td>{{TSHIFT.UNPAID_BREAK}}</td>
+                <td>{{TSHIFT.NOTES}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="semibold">
+                <td>{{SHIFTOVERCOUNT}} Shifts</td>
+                <td> </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

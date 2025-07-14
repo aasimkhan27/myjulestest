@@ -1,0 +1,358 @@
+﻿<div class="card">
+    <templateurl template-url="../AngularViews/CashupApp/Cashup_Entry/CashupEntryHeader.html" class="cashup_entry_header"></templateurl>
+
+    <div class="card-body pt-1 cashup-entry-body">
+        <div class="row gx-2 resSites cashup_entry_header_details">
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Site: <span class="f-w-700">{{SELECTED_SITE}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Area: <span class="f-w-700">{{SELECTED_AREA || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Session: <span class="f-w-700">{{SELECTED_SESSION || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Cashup Date: <span class="f-w-700">{{CASHUP_DATE | date:DISPLAY_DATE_FORMAT }}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Actual : {{CASHUP_INFO.ACTUAL=(TOTAL_DELHIVERY_AMT| number:2)}}
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    ePOS : {{CASHUP_INFO.EPOS | number:2}}
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Variance : <span class="txt-danger" ng-if="(TOTAL_DELHIVERY_AMT-CASHUP_INFO.EPOS) < 0">
+                        <i class="fa-light fa-arrow-down-right txt-danger"></i>
+                        {{TOTAL_DELHIVERY_AMT-CASHUP_INFO.EPOS | number:2}}
+                    </span>
+
+                    <span class="txt-success" ng-if="(TOTAL_DELHIVERY_AMT-CASHUP_INFO.EPOS) > 0">
+                        <i class="fa-light fa-arrow-up-right txt-success"></i>
+                        {{TOTAL_DELHIVERY_AMT-CASHUP_INFO.EPOS | number:2}}
+                    </span>
+                    <span class="txt-success" ng-if="(TOTAL_DELHIVERY_AMT-CASHUP_INFO.EPOS) == 0">
+                        <i class="fa-light"></i>
+                        {{TOTAL_DELHIVERY_AMT-CASHUP_INFO.EPOS | number:2}}
+                    </span>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xxl-10 col-xl-10 col-md-10 mt-2">
+                <h5 class="headings ">Deliveries</h5>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2 mb-2 text-end" ng-show="false">
+                <button class="btn btn-light text-nowrap">Auto Fill From EPOS</button>
+            </div>
+            <div class="col-xxl-12 col-xl-12 col-md-12">
+                <form name="DeliveryEntryForm" autocomplete="off" novalidate>
+                    <div class="table-responsive scrollbar-wrapper mx-height-100 resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-center text-nowrap">Delivery Partner <span class="txt-danger">*</span></th>
+                                    <th class="text-center">Units <span class="txt-danger">*</span></th>
+                                    <th class="text-center">Date <span class="txt-danger">*</span></th>
+                                    <th class="text-center text-nowrap">Payment Method <span class="txt-danger">*</span></th>
+                                    <th class="text-end">Amount <span class="txt-danger">*</span></th>
+                                    <th class="text-center">Note</th>
+                                    <th class="text-center">Uploads</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in DELIVERY_DECLARATION_LIST" ng-show="ROW.ACTIVE==1" ng-init="nginit_delivery(ROW)">
+                                    <td>
+                                        <input type="text"
+                                               required
+                                               name="NAME_{{$index}}"
+                                               placeholder="Add Here"
+                                               class="mb-0 min-w-80"
+                                               ng-model="ROW.NAME"
+                                               ng-class="{'error':DeliveryEntryForm.submitted && DeliveryEntryForm.NAME_{{$index}}.$error.required}"
+                                               ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                               required
+                                               name="UNITS_{{$index}}"
+                                               placeholder="Add Here" class="mb-0 min-w-80"
+                                               ng-model="ROW.UNITS"
+                                               ng-class="{'error':DeliveryEntryForm.submitted && DeliveryEntryForm.UNITS_{{$index}}.$error.required}"
+                                               ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+
+                                    </td>
+                                    <td>
+                                        <div class="date-column" ng-init="dateinputddmmyy()">
+                                            <input type="text"
+                                                   class="dateinputddmmyy mb-0 min-w-120"
+                                                   placeholder="DD/MM/YY"
+                                                   name="DATE_{{$index}}"
+                                                   ng-model="ROW.DATE"
+                                                   required
+                                                   ng-class="{'error':DeliveryEntryForm.submitted && DeliveryEntryForm.DATE_{{$index}}.$error.required}"
+                                                   ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                            <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills">
+                                            <li class="dropdown w-100">
+                                                <input type="hidden"
+                                                       ng-model="ROW.MODE_OF_PAYMENT_ID"
+                                                       name="MODE_OF_PAYMENT_ID_{{$index}}"
+                                                       required
+                                                       ng-class="{'error':DeliveryEntryForm.submitted && DeliveryEntryForm.MODE_OF_PAYMENT_ID_{{$index}}.$error.required}" />
+
+                                                <a class="text-limitations cursor-pointer"
+                                                   data-toggle="dropdown"
+                                                   ng-class="{'disabled':!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}">
+                                                    <!--ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"-->
+                                                    <span class="select-label" id="select_label" ng-class="{'error':DeliveryEntryForm.submitted && DeliveryEntryForm.MODE_OF_PAYMENT_ID_{{$index}}.$error.required}">
+                                                        {{ROW.SELECTED_MODE_OF_PAYMENT_NAME || 'Add'}}
+                                                    </span>
+                                                </a>
+                                                <ul ID="divNewNotifications" class="dropdown-menu unique-dropdown-list scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li class="unique-dropdown-content" ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-show="_mode_of_payment.ACTIVE==true" ng-click="SELECT_MODE_OF_PAYMENT(ROW,_mode_of_payment)">
+                                                        {{_mode_of_payment.METHOD_NAME}}
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                        <!--<div class="dropdown">
+                                        <input type="hidden"
+                                               ng-model="ROW.MODE_OF_PAYMENT_ID"
+                                               name="MODE_OF_PAYMENT_ID_{{$index}}"
+                                               required
+                                               ng-class="{'error':DeliveryEntryForm.submitted && DeliveryEntryForm.MODE_OF_PAYMENT_ID_{{$index}}.$error.required}" />
+                                        <div class="dropdown w-100" aria-labelledby="modeOfPaymentDDL">
+                                            <button class="select-label"
+                                                    type="button"
+                                                    id="modeOfPaymentDDL"
+                                                    ng-class="{'error':DeliveryEntryForm.submitted && DeliveryEntryForm.MODE_OF_PAYMENT_ID_{{$index}}.$error.required}"
+                                                    data-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                    ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                                <span class="truncate">{{ROW.SELECTED_MODE_OF_PAYMENT_NAME || 'Add'}}</span>
+                                            </button>
+                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                                <li ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-click="SELECT_MODE_OF_PAYMENT(ROW,_mode_of_payment)">
+                                                    {{_mode_of_payment.METHOD_NAME}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>-->
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                               placeholder="Add Here"
+                                               class="mb-0 text-end min-w-80"
+                                               only-digits
+                                               ng-model="ROW.AMOUNT"
+                                               ng-change="CALCULATE_TOTAL()"
+                                               name="AMOUNT_{{$index}}"
+                                               required
+                                               ng-class="{'error':DeliveryEntryForm.submitted && DeliveryEntryForm.AMOUNT_{{$index}}.$error.required}"
+                                               ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Add Here" class="mb-0 min-w-80" ng-model="ROW.NOTE" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                    </td>
+                                    <td class="text-center">
+                                        <label for="CardFile{{$index}}" class="btn btn-primary text-nowrap" ng-show="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                            <i class="fa-light fa-arrow-up-from-bracket"></i>
+                                            Upload
+                                        </label>
+                                        <span class="hidden-input">
+                                            <input type="file" name="file" required="required"
+                                                   id="CardFile{{$index}}"
+                                                   ng-files="getTheFilesToUploadDelivery($files, 'DeliveryFile', 10, ROW, 58, $index)"
+                                                   ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                        </span>
+                                        <div ng-repeat="upls in ROW.UploadedFiles">
+                                            <button class="btn btn-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                                                <span class="truncate"><i class="fa-solid fa-file-pdf me-2"></i>{{upls.ORIGINAL_FILE_NAME| limitTo: 10}}</span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-block dropdown-menu-end" style="">
+                                                <li>
+                                                    <a class="dropdown-item d-block" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                                        <i class="fa-light fa-eye me-2"></i>
+                                                        View
+                                                    </a>
+                                                </li>
+                                                <li ng-show="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                                    <a class="dropdown-item d-block" ng-click="DELETE_UPLOAD_CARD_ALL(ROW,upls,$index)">
+                                                        <i class="fa-light fa-trash-can me-2"></i>
+                                                        Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <button click-once type="button" class="btn btn-transparent c-pointer" ng-click="DELETE_DECLARATION(ROW)" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"><i class="fa-light fa-trash-can txt-danger"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray">
+                                    <td class="text-center">Total</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-end">{{TOTAL_DELHIVERY_AMT| number:2}}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="10">
+                                        <button click-once type="button" class="btn btn-outline w-100" ng-click="ADD_NEW_ROW()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                            <i class="fa-light fa-plus"></i> Add New Row
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+
+                <hr />
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <h6 class="headings">Comments</h6>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resTextAreaCashup">
+                        <textarea rows="4" placeholder="Add Comments..." ng-model="CASHUP_ENTRY_NOTE" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"></textarea>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once type="button" class="btn btn-primary" ng-click="INS_UPD_CASHUP_HEADER_NOTES()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">Comment</button>
+                    </div>
+                </div>
+                <div class="textarea-bg resText" ng-repeat="COM in DELIVERY_TAB_NOTE_LIST" ng-init="NOTE_INIT(COM)">
+                    <div class="comment-elements">
+                        <span class="text_avatar">{{COM.USER_NAME | limitTo:1}}</span>
+                        <span>{{COM.USER_NAME}}</span>
+                        <span class="text-gray">{{COM.CREATED_DATE | date:'dd-MMM-yyyy hh:mm a'}}</span>
+                        <span class="comment-pen-icon">
+                            <i class="fa-light fa-pen ms-1 c-pointer" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && EDIT_COMMENT(COM)"></i>
+                            <i class="fa-light fa-trash-alt ms-1 c-pointer txt-danger" ng-show="!COM.isEditable" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && DELETE_COMMENT(COM)"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-xl-auto col-md-auto empty-coloumn">
+                            <span>&nbsp;</span>
+                        </div>
+                        <div class="col-xxl col-xl col-md resTextAreaCashup">
+                            <textarea ng-readonly="!COM.isEditable"
+                                      ng-model="COM.NOTE"
+                                      ng-class="{'bg-white':COM.isEditable==true,'bg-gray':COM.isEditable==false}"
+                                      ng-blur="INS_UPD_CASHUP_HEADER_NOTES(COM)">{{COM.NOTE}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <!--Comments Code Ends-->
+            </div>
+        </div>
+    </div>
+    <div class="sticky_bottom_navigator">
+        <div class="card">
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once type="button" class="btn btn-light" ng-click="PREVIOUS()">Previous</button>
+                        <button click-once type="button" class="btn btn-light" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" ng-click="INS_UPD_CASHUP_DELIVERY(0)">Save</button>
+                        <button click-once type="button" class="btn btn-primary" ng-click="CONTINUE()">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="proceed" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon_danger">
+                            <div class="badge text-bg-danger-modal">
+                                <i class="fa-solid fa-exclamation fa-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="modal_infoText">
+                        There is a Variance of {{CURRENCY_SYMBOL}}  {{(TOTAL_DELHIVERY_AMT-CASHUP_INFO.EPOS) | number:2}}, do you still
+                        want to proceed?
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button click-once type="button" class="btn btn-primary w-100" data-bs-dismiss="modal" ng-click="INS_UPD_CASHUP_DELIVERY(1)">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var dropdownMenu;
+
+    $('table').on('show.bs.dropdown', function (e) {
+        var $target = $(e.target);
+        dropdownMenu = $target.find('.unique-dropdown-list');
+
+        $('body').append(dropdownMenu.detach());
+
+
+        var targetOffset = $target.offset();
+        dropdownMenu.css({
+            'display': 'block',
+            'top': targetOffset.top + $target.outerHeight(),
+            'left': targetOffset.left,
+            'min-width': $target.outerWidth(),
+            'max-width': '250px',
+            'max-height': '300px',
+            'z-index': '1060',
+            'overflow': 'auto',
+            'position': 'absolute',
+
+        });
+    });
+
+    $('table').on('hide.bs.dropdown', function (e) {
+        var $target = $(e.target);
+        $target.append(dropdownMenu.detach());
+        dropdownMenu.hide();
+    });
+
+</script>

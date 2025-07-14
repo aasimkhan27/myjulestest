@@ -1,0 +1,195 @@
+﻿<div class="card-header">
+    <h5 class="heading-text-2 mt-2">Department List</h5>
+    <div class="card-tools">
+        <div class="col-auto ml-auto">
+            <!--<a href="#!/Addteam" class="btn btn-wenodo btn-block">Add</a>-->
+            <div class="btn-group">
+                <button type="button" ng-show="IS_DEP || IS_POS || IS_EMP || IS_INV" class="btn btn-wenodo btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add
+                </button>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm">
+                    <a ng-if="CHECK_MODULE_ACCESS(1,2)?IS_DEP=true:IS_DEP=false" ng-show="!IS_DEPARTMENT_FLAG" class="dropdown-item" href="#!/Adddepartment">Add Department</a>
+                    <a ng-if="CHECK_MODULE_ACCESS(2,2)?IS_POS=true:IS_POS=false" ng-show="!IS_POSITION_FLAG" class="dropdown-item" href="#!/Addposition">Add Position</a>
+                    <a ng-if="CHECK_MODULE_ACCESS(3,2)?IS_EMP=true:IS_EMP=false" class="dropdown-item" href="#!/Addemployee">Add Employee</a>
+                    <a ng-if="CHECK_MODULE_ACCESS(45,2)?IS_INV=true:IS_INV=false" class="dropdown-item" href="#!/AddApplicant">Invite Applicant</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-auto"><h6 class="app-text mb-0 mt-1">Filter by:</h6></div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Department Code ..."
+                       maxlength="100"
+                       ng-model="DeptSearch.DEPARTMENT_CODE">
+            </div>
+        </div>
+        <div class="col-md-2">
+
+            <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Department Name ..."
+                       name="COURSE_NAME"
+                       maxlength="100"
+                       ng-model="DeptSearch.DEPARTMENT_NAME">
+            </div>
+        </div>
+        <div class="col-md-2" ng-show="!IS_DEPARTMENT_FLAG">
+            <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Division Code ..."
+                       maxlength="100"
+                       ng-model="DeptSearch.DIVISION_CODE">
+            </div>
+        </div>
+        <div class="col-md-2" ng-show="!IS_DEPARTMENT_FLAG">
+            <div class="form-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Division Name ..."
+                       maxlength="100"
+                       ng-model="DeptSearch.DIVISION_NAME">
+            </div>
+        </div>
+
+        <!--<div class="col-md-1">
+            <div class="form-group">
+                <select class="custom-select"
+                        name="POSITION_IDS"
+                        ng-model="RFLAG"
+                        ng-options="RTW.ID as RTW.NAME for RTW in (TEAMFILTER)">
+                    <option value="">- Select Reporting Department-</option>
+                </select>
+            </div>
+        </div>-->
+        <div class="col-auto">
+            <button class="btn btn-wenodo" click-once ng-click="HR_GET_DEPARTMENTS(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)">Search</button>
+            <button class="btn btn-w-default" ng-click="RESET_DEPT()">Reset</button>
+        </div>
+    </div>
+
+    <div class="text-center" ng-show="DEPARTMENT_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="DEPARTMENT_LIST.length>0">
+        <table class="table table-hover table-striped">
+            <tfoot ng-show="GetData">
+                <tr>
+                    <td ng-if="!IS_DEPARTMENT_FLAG"></td>
+                    <td colspan="4" align="center" >
+                        <a class="btn btn-secondary text-white"  click-once ng-click="GET_DEPARTMENT_LAZY_LOAD()">{{VIEWMORERECORD}}</a>
+                    </td>
+                    <td ng-if="!IS_DEPARTMENT_FLAG"></td>
+                </tr>
+            </tfoot>
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th ng-repeat="DH in HEADER_DEPT_LIST" ng-class="HL.CLASS_NAME" ng-click="HR_GET_DEPARTMENTS(1,DH.ID,!SORT_ORDER_NO_ASCDESC)">
+                        <a class="text-bold">
+                            {{DH.NAME}}
+                            <i class="far " ng-show="DH.ID==SORT_COLUMN_NO"
+                               ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC,'fa-angle-up':SORT_ORDER_NO_ASCDESC}"></i>
+                        </a>
+                    </th>
+                    <th align="right"></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="PPL in DEPARTMENT_LIST" ng-init="initcheckeditadd(PPL)" on-finish-render="ngRepeatFinished">
+                <tr>
+                    <td>
+                        <span class="btn btn-default p-2 cursor-default"
+                              style="background-color: #{{PPL.DEPARTMENT_COLOR}}; margin-top:-5px"></span> {{PPL.DEPARTMENT_NAME}}
+                    </td>
+                    <td>{{PPL.DEPARTMENT_CODE}}</td>
+                    <td ng-if="!IS_DEPARTMENT_FLAG">{{PPL.DIVISION_NAME}}</td>
+                    <td ng-if="!IS_DEPARTMENT_FLAG">{{PPL.PARENT_DEPARTMENT_NAME}}</td>
+                    <td>{{PPL.EMPLOYEE_COUNT}}</td>
+                    <td align="right">
+                        <a ng-if="DeptSearch.IS_EDIT_DEPARTMENT"
+                           ng-click="EDIT_DEPARTMENT(PPL)"
+                           data-toggle="tooltip" data-html="true"
+                           data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        <!--<a ng-click="HR_DELETE_EMPLOYEE_POP(EML)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="AddDepartment">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Department</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body min-max-height-400" style="overflow:visible">
+                <form id="DepartmentForm" class="w-100" name="DepartmentForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Department Name:*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       ng-model="Departmentsearch.DEPARTMENT_NAME"
+                                       name="DEPARTMENT_NAME"
+                                       required
+                                       ng-class="{'error':DepartmentForm.submitted && DepartmentForm.DEPARTMENT_NAME.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Department Code:*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       ng-model="Departmentsearch.DEPARTMENT_CODE"
+                                       name="DEPARTMENT_CODE"
+                                       required
+                                       ng-class="{'error':DepartmentForm.submitted && DepartmentForm.DEPARTMENT_CODE.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Department Color:*</label>
+                                <div ng-init="$parent.ColorPicker(undefined,true,'pick-a-colorDepart');">
+                                    <input type="text"
+                                           class="form-control pick-a-colorDepart"
+                                           maxlength="250"
+                                           id="ids2"
+                                           autocomplete="off"
+                                           name="DEPARTMENT_COLOR"
+                                           ng-model="Departmentsearch.DEPARTMENT_COLOR">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="DepartmentForm.submitted && DepartmentForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="DepartmentForm.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button class="btn btn-wenodo" ng-click="INS_UPD_DEPARTMENT()"> Submit </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

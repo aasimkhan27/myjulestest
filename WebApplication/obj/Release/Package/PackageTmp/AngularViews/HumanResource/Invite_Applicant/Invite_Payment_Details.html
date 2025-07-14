@@ -1,0 +1,140 @@
+﻿<div class="row align-items-center" style="height:80vh" ng-show="!LINK_EXPIRE_FLAG && PAGE_LOAD==1">
+    <div class="col-xxl-6 col-ed-6 col-xl-6 text-center">
+        <h4 class="heading-text d-block mb-2">Link is not valid any more!</h4>
+        <p>Oops this invite URL is not valid anymore.</p>
+        <a href="../Login/Index" type="button" class="btn btn-primary">Take me home</a>
+    </div>
+    <div class="col-xxl-6 col-ed-6 col-xl-6 text-center">
+        <a href="../Login/Index">
+            <img src="../../../E_Content/images/rota-login.png" class="img-fluid" style="max-height:500px" />
+        </a>
+    </div>
+</div>
+<div class="row basic_details" ng-show="LINK_EXPIRE_FLAG && PAGE_LOAD==1">
+    <!-- sidebar -->
+    <div class="col-xxl-2 col-md-2 col-xl-2">
+        <div class="app">
+            <templateurl class="w-100" template-url="../AngularViews/HumanResource/Invite_Applicant/Invite_Applicant_Side_Pannel.html?v=1{{AppVersion}}">
+        </div>
+    </div>
+
+    <!-- content side -->
+    <div class="col-xxl-10 col-md-10 col-xl-10 bg-white">
+        <div class="right-panel container-sm">
+            <form name="InvitePaymentDetailsForm" novalidate>
+                <div class="row">
+                    <h4 class="heading-text text-start">Step 5: Add your Payment Details</h4>
+
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <label>Account Holder Name<span class="txt-danger">*</span></label>
+                        <input type="text"
+                               name="ACCOUNT_HOLDER_NAME"
+                               placeholder="Type Here"
+                               ng-model="InvitePaymentDetails.ACCOUNT_HOLDER_NAME"
+                               maxlength="100"
+                               onkeypress="return (event.charCode > 64 && eventcharCode < 91) || (event.charCode > 96  && eventcharCode < 123) || (event.charCode > 38 && event.charCode < 40) || event.charCode ===32"
+                               required
+                               ng-class="{'error':InvitePaymentDetailsForm.submitted && InvitePaymentDetailsForm.ACCOUNT_HOLDER_NAME.$error.required}" />
+                        <small class="text-danger" ng-show="InvitePaymentDetailsForm.ACCOUNT_HOLDER_NAME.$dirty && InvitePaymentDetailsForm.ACCOUNT_HOLDER_NAME.$error.pattern" style="">Please Enter Alphabet and Special character only</small>
+                    </div>
+
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <label>Bank<span class="txt-danger">*</span></label>
+                        <input type="text"
+                               name="BANK_NAME"
+                               placeholder="Type Here"
+                               ng-model="InvitePaymentDetails.BANK_NAME"
+                               maxlength="100"
+                               required
+                               ng-class="{'error':InvitePaymentDetailsForm.submitted && InvitePaymentDetailsForm.BANK_NAME.$error.required}" />
+                    </div>
+
+                    <div class="col-xxl-6 col-xl-6 col-md-6" ng-show="InvitePaymentDetails.COUNTRY_ID!=101">
+                        <label>{{InvitePaymentDetails.SORT_CODE_LABEL}}<span class="txt-danger" ng-show="InvitePaymentDetails.COUNTRY_ID==225">*</span></label>
+                        <input type="text"
+                               name="SORT_CODE"
+                               placeholder="Type Here"
+                               only-numbers
+                               ng-model="InvitePaymentDetails.SORT_CODE"
+                               maxlength="{{SORT_MAX_LENGTH}}"
+                               ng-required="InvitePaymentDetails.COUNTRY_ID==225"
+                               ng-class="{'error':InvitePaymentDetailsForm.submitted && InvitePaymentDetailsForm.SORT_CODE.$error.required}" />
+                        <small class="text-danger" ng-show="InvitePaymentDetailsForm.SORT_CODE.$dirty && InvitePaymentDetailsForm.SORT_CODE.$error.pattern" style="">Please Enter the Special Symbol and Character</small>
+                        <!--ng-pattern="regexPattern"-->
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-md-6" ng-show="InvitePaymentDetails.COUNTRY_ID==101">
+                        <label>{{InvitePaymentDetails.SORT_CODE_LABEL}}</label>
+                        <input type="text"
+                               name="SORT_CODE"
+                               placeholder="Type Here"
+                               ng-model="InvitePaymentDetails.SORT_CODE"
+                               maxlength="{{SORT_MAX_LENGTH}}"
+                               ng-class="{'error':InvitePaymentDetailsForm.submitted && InvitePaymentDetailsForm.SORT_CODE.$error.required}" />
+                        <small class="text-danger" ng-show="InvitePaymentDetailsForm.SORT_CODE.$dirty && InvitePaymentDetailsForm.SORT_CODE.$error.pattern" style="">Please Enter the Special Symbol and Character</small>
+                        <!--ng-pattern="regexPattern"-->
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <label>{{InvitePaymentDetails.ACCOUNT_NUMBER_LABEL}}<span class="txt-danger" ng-show="InvitePaymentDetails.COUNTRY_ID==225">*</span></label>
+                        <input type="text"
+                               name="ACCOUNT_NUMBER"
+                               placeholder="Type Here"
+                               ng-model="InvitePaymentDetails.ACCOUNT_NUMBER"
+                               maxlength="100"
+                               only-numbers
+                               ng-required="InvitePaymentDetails.COUNTRY_ID==225"
+                               ng-class="{'error':InvitePaymentDetailsForm.submitted && InvitePaymentDetailsForm.ACCOUNT_NUMBER.$error.required}" />
+                    </div>
+
+                    <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="false">
+                        <label>Roll Number<span class="txt-danger">*</span></label>
+                        <input type="text"
+                               name="ROLL_NUMBER"
+                               placeholder="Type Here"
+                               ng-model="InvitePaymentDetails.ROLL_NUMBER"
+                               maxlength="250"
+                               ng-class="{'error':InvitePaymentDetailsForm.submitted && InvitePaymentDetailsForm.ROLL_NUMBER.$error.required}" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- previous next buttons -->
+<div class="col-xxl-12 col-xl-12 col-md-12 " ng-show="LINK_EXPIRE_FLAG && PAGE_LOAD==1">
+    <div class="text-end border-top bottom_container">
+        <button class="btn btn-light"
+                click-once
+                ng-click="NEXT_Fn(4)">
+            Previous
+        </button>
+        <button class="btn btn-primary"
+                click-once
+                ng-click="HRM_BANK_VALIDATION()">
+            Submit
+        </button>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="Saved_Successfully" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-body scrollbar-wrapper" style="max-height:550px;">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon">
+                            <span class="badge text-bg-success-modal">
+                                <i class="fa-light fa-check fa-lg"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <h6 class="text-center pb-2 fw-500">Successfully submit data.</h6>
+                    <p class="text-center">Thanks for updating your record. It has passed on to the HR for processing.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a ng-click="OKAY_Fn()" class="btn btn-primary w-100">Okay</a>
+            </div>
+        </div>
+    </div>
+</div>

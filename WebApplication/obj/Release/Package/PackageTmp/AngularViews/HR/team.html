@@ -1,0 +1,585 @@
+﻿<div class="card-primary card-outline">
+    <div class="card-body p-1">
+        <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+            <li class="nav-item" ng-if="TAB_DIRECTORY">
+                <a class="nav-link" ng-class="{'active':STEP_FLAG==2,'':STEP_FLAG!=2}" ng-click="TAB_CLICK(2)" id="custom-content-above-profile-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Directory</a>
+            </li>
+            <li class="nav-item" ng-if="TAB_DIRECTORY">
+                <a class="nav-link" ng-class="{'active':STEP_FLAG==3,'':STEP_FLAG!=3}" ng-click="TAB_CLICK(3);GET_INCOM_EMPLOYEE_DIRECTORY(1,SORT_COLUMN_NO_INCOM, SORT_ORDER_NO_ASCDESC_INCOM);" id="custom-content-above-UnEmp-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-UnEmp" aria-selected="false">Incomplete Profile</a>
+            </li>
+            <li class="nav-item" ng-if="CHECK_MODULE_ACCESS(45, 1)">
+                <a class="nav-link" ng-class="{'active':STEP_FLAG==4,'':STEP_FLAG!=4}" ng-click="TAB_CLICK(4);HR_GET_EMPLOYEE_INVITATION_LIST(1,SORT_COLUMN_NO_INVT, SORT_ORDER_NO_ASCDESC_INVT);" id="custom-content-above-UnEmp-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-UnEmp" aria-selected="false">Invited Applicants</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " ng-class="{'active':STEP_FLAG==1,'':STEP_FLAG!=1}" ng-click="TAB_CLICK(1)" id="custom-content-above-home-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Org Chart</a>
+            </li>
+            <div class="col-auto ml-auto mt-1">
+                <div class="row">
+                    <div class="col-auto" ng-if="false">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control form-control-navbar" ng-model="TeamSearch.NAME" type="search" placeholder="Search" aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar bg-white border app-text" type="submit"> 
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn " ng-class="{'btn-wenodo':EMPLOYEE_DIRECTORY_SELECTED_LIST.length>0,'btn-disabled':EMPLOYEE_DIRECTORY_SELECTED_LIST.length==0}" ng-show="RESEND_INVITATION_ALLOW"  ng-click="RESEND_HR_INVITE()" title="Send Invitation Email">
+                            Invite <span ng-show="EMPLOYEE_DIRECTORY_SELECTED_LIST.length>0">({{EMPLOYEE_DIRECTORY_SELECTED_LIST.length}})</span>
+                        </button>
+                    </div>
+                    <div class="col-auto">
+                        <!--<a href="#!/Addteam" class="btn btn-wenodo btn-block">Add</a>-->
+                        <div class="btn-group">
+                            <button type="button" ng-show="IS_DEP || IS_POS || IS_EMP || IS_INV" class="btn btn-wenodo btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Add
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm">
+                                <a ng-if="CHECK_MODULE_ACCESS(1,2)?IS_DEP=true:IS_DEP=false" ng-show="!IS_DEPARTMENT_FLAG" class="dropdown-item" href="#!/Adddepartment">Add Department</a>
+                                <a ng-if="CHECK_MODULE_ACCESS(2,2)?IS_POS=true:IS_POS=false" ng-show="!IS_POSITION_FLAG" class="dropdown-item" href="#!/Addposition">Add Position</a>
+                                <a ng-if="CHECK_MODULE_ACCESS(3,2)?IS_EMP=true:IS_EMP=false" class="dropdown-item" href="#!/Addemployee">Add Employee</a>
+                                <a ng-if="CHECK_MODULE_ACCESS(45,2)?IS_INV=true:IS_INV=false" class="dropdown-item" href="#!/AddApplicant">Invite Applicant</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ul>
+        <div class="tab-content" id="custom-content-above-tabContent">
+            <div class="tab-pane fade" ng-show="STEP_FLAG==1" ng-class="{'show active':STEP_FLAG==1,'':STEP_FLAG!=1}" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                <div class="text-center" ng-show="ORG_HIERARCHY_ALL.length==0" empty-grid>  </div>
+                <div id="tree"></div>
+            </div>
+            <div class="tab-pane fade" ng-show="STEP_FLAG==2" ng-class="{'show active':STEP_FLAG==2,'':STEP_FLAG!=2}" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-auto"><h6 class="app-text mb-0 mt-1">Filter by:</h6></div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter Employee No ..."
+                                       name="COURSE_NAME"
+                                       maxlength="100"
+                                       ng-model="TeamSearch.EMPLOYEE_NO">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter Employee Name ..."
+                                       maxlength="100"
+                                       ng-model="TeamSearch.EMPLOYEE_NAME">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="DEPARTMENT_ID"
+                                        ng-options="DPT.DEPARTMENT_ID as DPT.DEPARTMENT_NAME for DPT in (HR_DEPARTMENTS)"
+                                        ng-model="TeamSearch.DEPARTMENT_ID">
+                                    <option value="">-  Select Department-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="POSITION_IDS"
+                                        ng-model="TeamSearch.POSITION_ID"
+                                        ng-options="RTW.POSITION_ID as RTW.POSITION_TITLE for RTW in (POSITION_LIST)">
+                                    <option value="">- Select Position-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="BRANCH_IDS"
+                                        ng-model="TeamSearch.BRANCH_IDS"
+                                        ng-options="RTW.BRANCH_ID as RTW.BRANCH_NAME for RTW in (DIRT_BRANCH_LIST)">
+                                    <option value="">- Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="POSITION_IDS"
+                                        ng-model="RFLAG"
+                                        ng-options="RTW.ID as RTW.NAME for RTW in (TEAMFILTER)">
+                                    <option value="">- Select -</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="POSITION_IDS"
+                                        ng-model="TeamSearch.ACTIVE"
+                                        ng-options="RTW.ID as RTW.NAME for RTW in (ACTIVE_LIST)">
+                                    <option value="">- Select -</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-wenodo" click-once ng-click="GET_EMPLOYEE_DIRECTORY(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)">Search</button>
+                            <button class="btn btn-w-default" ng-click="ResetEmp()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="text-center" ng-show="EMPLOYEE_DIRECTORY_LIST.length==0" empty-grid>
+                    </div>
+                    <div class="table-responsive custom-scrollbar height-70vh" ng-show="EMPLOYEE_DIRECTORY_LIST.length>0">
+                        <table class="table table-hover table-striped table-head-fixed mb-0">
+                            <thead class="bg-wenodo-dark-blue">
+                                <tr class="text-nowrap">
+                                    <th class="text-center" width="3%">S.No</th>
+                                    <th width="3%">
+                                        <div class="form-inline" data-toggle="tooltip" data-html="true" ng-show="RESEND_INVITATION_ALLOW">
+                                            <!-- data-original-title="Re-Invite" -->
+                                            <!--ng-show="EML.ACTIVE"-->
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input"
+                                                       type="checkbox"
+                                                       ng-model="TeamSearch.IS_SELECTED"
+                                                       ng-change="INVITE_EMPLOYEE_ALL_FY()"
+                                                       id="InvitationAll{{$index}}">
+                                                <label for="InvitationAll{{$index}}" class="custom-control-label">&nbsp;</label>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th class="" ng-repeat="HPL in HEADER_EMPT_LIST" ng-class="HPL.CLASS_NAME"
+                                        ng-click="GET_EMPLOYEE_DIRECTORY(1,HPL.ID,!SORT_ORDER_NO_ASCDESC)">
+                                        <span class="text-bold cursor-pointer">{{HPL.NAME}} <i class="far " ng-show="HPL.ID==SORT_COLUMN_NO" ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC,'fa-angle-up':SORT_ORDER_NO_ASCDESC}"></i> </span>
+                                    </th>
+                                    <th width="12%"></th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="EML in  EMPLOYEE_DIRECTORY_LIST" on-finish-render="ngRepeatFinished">
+                                <tr>
+                                    <td class="text-center">{{$index+1}}</td>
+                                    <td>
+                                        <div class="form-inline" data-toggle="tooltip" data-html="true" data-original-title="Re-Invite" ng-show="EML.ACTIVE && RESEND_INVITATION_ALLOW">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input"
+                                                       type="checkbox"
+                                                       ng-model="EML.IS_SELECTED"
+                                                       ng-change="INVITE_EMPLOYEE_LINE_FY(EML)"
+                                                       id="Invitation{{$index}}">
+                                                <label for="Invitation{{$index}}" class="custom-control-label"></label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span ng-show="EML.IMAGE_PATH==null">
+                                            <img src="../dist/img/user1-128x128.jpg" class="img-size-32 mr-1 img-circle">
+                                        </span>
+                                        <span ng-show="EML.IMAGE_PATH!=null">
+                                            <img src="{{EML.IMAGE_PATH}}" class="img-size-32 mr-1 img-circle">
+                                        </span>
+                                        <a href="../DashBoard/hrIndex#!/EditProfile?EmpID={{EML.ID}}">
+                                            {{EML.EMPLOYEE_NO}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="../DashBoard/hrIndex#!/EditProfile?EmpID={{EML.ID}}">
+                                            {{EML.FIRST_NAME}}
+                                        </a>
+                                    </td>
+                                    <td>{{EML.LAST_NAME}}</td>
+                                    <td>{{EML.DEPARTMENT_NAME}}</td>
+                                    <td>{{EML.POSITION_TITLE}}</td>
+                                    <td>{{EML.BRANCH_NAME}}</td>
+                                    <td>{{EML.STATUS}}</td>
+
+                                    <td>
+                                        <a href="../DashBoard/hrIndex#!/EditProfile?EmpID={{EML.ID}}" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fad fa-eye fa-lg text-secondary"></i></a>
+                                        <a ng-show="EML.ACTIVE" ng-if="EDIT_ALLOW" href="../DashBoard/hrIndex#!/EditProfile?EmpID={{EML.ID}}&STG={{EML.STEP_NO}}" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                                        <a ng-show="EML.ACTIVE" ng-if="DELETE_ALLOW" ng-click="HR_DELETE_EMPLOYEE_POP(EML)" data-toggle="tooltip" data-html="true" data-original-title="Mark as Leaver"><i class="fad fa-trash-alt fa-lg text-danger"></i></a>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot >
+                                <tr class="sticky-bottom">
+                                    <td colspan="3">
+                                        <span class="border p-2 border-radius-5 semibold">
+                                            <span ng-show="EMPLOYEE_DIRECTORY_LIST.length>0" class="text-success">Active: {{EMPLOYEE_DIRECTORY_LIST[0].ACTIVE_COUNT }}</span> |
+                                            <span ng-show="EMPLOYEE_DIRECTORY_LIST.length>0" class="text-danger">Inactive: {{EMPLOYEE_DIRECTORY_LIST[0].INACTIVE_COUNT  }}</span>
+                                        </span>
+                                    </td>
+                                    <td colspan="7" align="center">
+                                        <a class="btn btn-secondary text-white" ng-show="GetData" click-once ng-click="LAZY_LOAG_GET_EMPLOYEE_DIRECTORY()">{{VIEWMORERECORD}}</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" ng-show="STEP_FLAG==3" ng-class="{'show active':STEP_FLAG==3,'':STEP_FLAG!=3}" id="custom-content-above-UnEmp" role="tabpanel" aria-labelledby="custom-content-above-UnEmp-tab">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-auto"><h6 class="app-text mb-0 mt-1">Filter by:</h6></div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter Employee No ..."
+                                       name="COURSE_NAME"
+                                       maxlength="100"
+                                       ng-model="TeamSearch.EMPLOYEE_NO_IN">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter Employee Name ..."
+                                       maxlength="100"
+                                       ng-model="TeamSearch.EMPLOYEE_NAME_IN">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="DEPARTMENT_ID"
+                                        ng-options="DPT.DEPARTMENT_ID as DPT.DEPARTMENT_NAME for DPT in (HR_DEPARTMENTS)"
+                                        ng-model="TeamSearch.DEPARTMENT_ID_IN">
+                                    <option value="">-  Select Department-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="POSITION_IDS"
+                                        ng-model="TeamSearch.POSITION_ID_IN"
+                                        ng-options="RTW.POSITION_ID as RTW.POSITION_TITLE for RTW in (POSITION_LIST)">
+                                    <option value="">- Select Position-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="BRANCH_IDS"
+                                        ng-model="TeamSearch.INCOM_BRANCH_IDS"
+                                        ng-options="RTW.BRANCH_ID as RTW.BRANCH_NAME for RTW in (INCOM_BRANCH_LIST)">
+                                    <option value="">- Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="TEAM_F"
+                                        ng-model="IN_RFLAG"
+                                        ng-options="RTW.ID as RTW.NAME for RTW in (TEAMFILTER)">
+                                    <!--<option value="">- Select All-</option>-->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <button class="btn btn-wenodo" click-once ng-click="GET_INCOM_EMPLOYEE_DIRECTORY(1,SORT_COLUMN_NO_INCOM, SORT_ORDER_NO_ASCDESC_INCOM)">Search</button>
+                            <button class="btn btn-w-default" ng-click="ResetInEmp()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="text-center" ng-show="INCOM_EMPLOYEE_DIRECTORY_LIST.length==0" empty-grid>
+                    </div>
+                    <div class="table-responsive custom-scrollbar height-auto" ng-show="INCOM_EMPLOYEE_DIRECTORY_LIST.length>0">
+                        <table class="table table-hover table-striped">
+                            <thead class="bg-wenodo-dark-blue">
+                                <tr>
+                                    <th class="" ng-repeat="HPL in HEADER_EMPT_INCOM_LIST" ng-class="HPL.CLASS_NAME"
+                                        ng-click="GET_INCOM_EMPLOYEE_DIRECTORY(1,HPL.ID,!SORT_ORDER_NO_ASCDESC_INCOM)">
+                                        <span class="text-bold cursor-pointer">{{HPL.NAME}} <i class="far " ng-show="HPL.ID==SORT_COLUMN_NO_INCOM" ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC_INCOM,'fa-angle-up':SORT_ORDER_NO_ASCDESC_INCOM}"></i> </span>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot ng-show="GetDataInc">
+                                <tr>
+                                    <td colspan="12" align="center">
+                                        <a class="btn btn-secondary text-white ng-binding" click-once ng-click="LAZY_LOAG_GET_INCOM_EMPLOYEE_DIRECTORY()">{{VIEWMORERECORD}}</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody ng-repeat=" EML in  INCOM_EMPLOYEE_DIRECTORY_LIST" on-finish-render="ngRepeatFinished">
+                                <tr>
+                                    <td>
+                                        <span ng-show="EML.IMAGE_PATH==null"><img src="../dist/img/user1-128x128.jpg" class="img-size-32 mr-1 img-circle"></span>
+                                        <span ng-show="EML.IMAGE_PATH!=null"><img src="{{EML.IMAGE_PATH}}" class="img-size-32 mr-1 img-circle"></span>{{EML.EMPLOYEE_NO}}
+                                    </td>
+                                    <td>{{EML.FIRST_NAME}}</td>
+                                    <td>{{EML.LAST_NAME}}</td>
+                                    <td>{{EML.DEPARTMENT_NAME}}</td>
+                                    <td>{{EML.POSITION_TITLE}}</td>
+                                    <td>{{EML.BRANCH_NAME}}</td>
+                                    <td>
+                                        <a ng-click="RedirectiononEmp(EML)" ng-show="EDIT_INCOM_ALLOW" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                                        <a ng-show="EML.ACTIVE==1 " ng-if="DELETE_INCOM_ALLOW" ng-click="HR_DELETE_EMPLOYEE(EML)" data-toggle="tooltip" data-html="true" data-original-title="Delete"><i class="fad fa-trash-alt fa-lg text-danger"></i></a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" ng-show="STEP_FLAG==4" ng-class="{'show active':STEP_FLAG==4,'':STEP_FLAG!=4}" id="custom-content-above-UnEmp" role="tabpanel" aria-labelledby="custom-content-above-UnEmp-tab">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-auto"><h6 class="app-text mb-0 mt-1">Filter by:</h6></div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter First Name ..."
+                                       name="COURSE_NAME"
+                                       maxlength="100"
+                                       ng-model="TeamSearch.FIRST_NAME_INVITE">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter Last Name ..."
+                                       maxlength="100"
+                                       ng-model="TeamSearch.LAST_NAME_INVITE">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter Email ..."
+                                       maxlength="100"
+                                       ng-model="TeamSearch.PERSONAL_EMAIL_INVITE">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="STATUS_IDS"
+                                        ng-options="DPT.STATUS_ID as DPT.STATUS_NAME for DPT in (HR_STATUS)"
+                                        ng-model="TeamSearch.STATUS_IDS">
+                                    <option value="">-  Select Status-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <button class="btn btn-wenodo" click-once ng-click="HR_GET_EMPLOYEE_INVITATION_LIST(1,SORT_COLUMN_NO_INVT, SORT_ORDER_NO_ASCDESC_INVT)">Search</button>
+                            <button class="btn btn-w-default" ng-click="ResetInviEmp()">Reset</button>
+                        </div>
+                    </div>
+                    <div class="text-center" ng-show="EMPLOYEE_INVITATION_LIST.length==0" empty-grid>
+                    </div>
+                    <div class="table-responsive custom-scrollbar height-auto" ng-show="EMPLOYEE_INVITATION_LIST.length>0">
+                        <table class="table table-hover table-striped">
+                            <thead class="bg-wenodo-dark-blue">
+                                <tr>
+                                    <th class="" ng-repeat="HPL in HEADER_EMPT_INVT_LIST" ng-class="HPL.CLASS_NAME"
+                                        ng-click="HR_GET_EMPLOYEE_INVITATION_LIST(1,HPL.ID,!SORT_ORDER_NO_ASCDESC_INVT)">
+                                        <span class="text-bold cursor-pointer">{{HPL.NAME}} <i class="far " ng-show="HPL.ID==SORT_COLUMN_NO_INVT" ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC_INVT,'fa-angle-up':SORT_ORDER_NO_ASCDESC_INVT}"></i> </span>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot ng-show="GetDataInvit">
+                                <tr>
+                                    <td colspan="11" align="center">
+                                        <a class="btn btn-secondary text-white ng-binding" click-once ng-click="LAZY_LOAG_HR_GET_EMPLOYEE_INVITATION_LIST()">{{VIEWMORERECORD}}</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody ng-repeat="EML in  EMPLOYEE_INVITATION_LIST" on-finish-render="ngRepeatFinished">
+                                <tr>
+                                    <td>
+
+                                        <span ng-show="EML.IMAGE_PATH==null">
+                                            <img src="../dist/img/user1-128x128.jpg" class="img-size-32 mr-1 img-circle">
+                                        </span>
+                                        <span ng-show="EML.IMAGE_PATH!=null">
+                                            <img src="{{EML.IMAGE_PATH}}" class="img-size-32 mr-1 img-circle">
+                                        </span>
+                                        {{EML.EMPLOYEE_NO}}
+                                    </td>
+
+                                    <td>{{EML.FIRST_NAME}}</td>
+                                    <td>{{EML.LAST_NAME}}</td>
+                                    <td>{{EML.PERSONAL_EMAIL}}</td>
+                                    <td>{{EML.STATUS_NAME}}</td>
+                                    <td>{{EML.CREATED_DATE|date}}</td>
+                                    <td>
+                                        <a ng-show="EML.STATUS_ID!=34 && EML.STATUS_ID!=33" ng-if="EDIT_INVIT_ALLOW" data-toggle="tooltip" data-html="true" data-original-title="Edit" href="../DashBoard/hrIndex#!/AddApplicant?EMP_ID={{EML.TABLE_ID}}"><i class="fad fa-edit fa-lg text-green"></i></a>
+                                        <a ng-show="EML.STATUS_ID!=34  && EML.STATUS_ID!=33" ng-if="DELETE_INVIT_ALLOW" data-toggle="tooltip" data-html="true" data-original-title="Delete" ng-click="HR_DEL_EMPLOYEE_INVITATION(EML)"><i class="fad fa-trash-alt fa-lg text-danger"></i></a>
+                                        <a ng-show="EML.STATUS_ID==32"
+                                           ng-click="ON_BOARD_POP(EML)" 
+                                           data-toggle="tooltip" 
+                                           data-html="true" 
+                                           data-original-title="Onboard"><i class="fad fa-chalkboard-teacher text-green"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ON_BOARD_POP">
+    <div class="modal-dialog modal-lg">
+        <form id="CustomForm" name="CustomForm" autocomplete="off" novalidate>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Onboard {{SELECTED_EMP.FIRST_NAME}} {{SELECTED_EMP.LAST_NAME}}
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body ">
+                    <div class="form-group" ng-show="EMPLOYEE_NO_SETTING==1">
+                        <label>Employee No:*</label>
+                        <input type="text"
+                               class="form-control"
+                               name="EMPLOYEE_NO"
+                               maxlength="20"
+                               ng-disabled="EMP_ID>0"
+                               ng-required="EMPLOYEE_NO_SETTING==1"
+                               ng-model="SELECTED_EMP.EMPLOYEE_NO"
+                               ng-class="{'error':CustomForm.submitted && CustomForm.EMPLOYEE_NO.$error.required}">
+                    </div>
+                    <label class="d-block">Comments </label>
+                    <textarea class="form-control" rows="5"
+                              maxlength="250"
+                              ng-model="SELECTED_EMP.textCommanComments"></textarea>
+                    <small>
+                        <!--Note:-Appoved shift(s) can't be deleted;-->
+                    </small>
+                    <div class="row mt-1">
+                        <div data-ng-show="CustomForm.submitted && CustomForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                        <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CustomForm.$valid">
+                            <span class="help-block">{{InvalidUser}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="HR_ONBOARD_EMPLOYEE_FROM_INVITATION()" class="btn btn-wenodo">Save</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="ProfileInActive">
+    <form id="TermiForm" name="TermiForm" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Leaver {{EMP_DTSL.EMPLOYEE_NO}}-{{EMP_DTSL.FIRST_NAME}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Leaver Type: *</label>
+                                <select class="custom-select"
+                                        name="TERMINATION_TYPE"
+                                        ng-model="TerminateSearch.TERMINATION_REASONS_ID"
+                                        ng-options="PT.ID as PT.TERMINATION_REASONS_NAME  for PT in (TERMINATION_REASONS_LIST)"
+                                        required
+                                        ng-class="{'error':TermiForm.submitted && TermiForm.TERMINATION_TYPE.$error.required}">
+                                    <option value="">-Select Termination Type-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Leaver Date: *</label>
+                                <input class="form-control dateinputOpenDate"
+                                       type="text"
+                                       name="TERMINATION_DATE"
+                                       placeholder="Select Date"
+                                       ng-model="TerminateSearch.TERMINATION_DATE"
+                                       ng-value="TerminateSearch.TERMINATION_DATE | date"
+                                       required
+                                       autocomplete="off"
+                                       ng-class="{'error':TermiForm.submitted && TermiForm.TERMINATION_DATE.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <!-- checkbox -->
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" 
+                                           type="checkbox" 
+                                           name="PAY_HOLIDAY"
+                                           id="customCheckbox2"
+                                           ng-model="TerminateSearch.PAY_HOLIDAY">
+                                    <label for="customCheckbox2" class="custom-control-label">Leave to be Pay</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-show="TERM_REPORTING_EMPLOYEE_LIST.length>0">
+                            <div class="form-group">
+                                <label>Reportee</label>
+                                <select multiple class="form-control" disabled ng-model="TerminateSearch.REPORTEE" ng-options="PT.ID as PT.USER_NAME  for PT in (TERM_REPORTING_EMPLOYEE_LIST)"></select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6" ng-show="TERM_REPORTING_EMPLOYEE_LIST.length>0">
+                            <div class="form-group">
+                                <label>Reporting Manager:<span ng-show="TERM_REPORTING_EMPLOYEE_LIST.length>0">*</span></label>
+                                <select class="custom-select"
+                                        name="REPORTING_MANAGER"
+                                        ng-model="TerminateSearch.REPORTING_MANAGER_IDS"
+                                        ng-options="PT.REPORTING_MANAGER_ID as PT.USER_NAME  for PT in (REPLACEMENT_REPORTING_MANAGER_LIST)"
+                                        ng-required="TERM_REPORTING_EMPLOYEE_LIST.length>0"
+                                        ng-class="{'error':TermiForm.submitted && TermiForm.REPORTING_MANAGER.$error.required}">
+                                    <option value="">-Select Reporting Manager-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <!-- textarea -->
+                            <div class="form-group">
+                                <label>Comments: *</label>
+                                <textarea class="form-control"
+                                          rows="6"
+                                          name="TERMINATION_COMMENTS"
+                                          placeholder="Enter Comments ..."
+                                          required
+                                          ng-class="{'error':TermiForm.submitted && TermiForm.TERMINATION_COMMENTS.$error.required}"
+                                          ng-model="TerminateSearch.TERMINATION_COMMENTS"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-left">
+                    <button type="button" ng-click="HR_DELETE_EMPLOYEE_COMP(EMP_DTSL)" class="btn btn-wenodo">Submit Termination</button>
+                    <button type="button" ng-click="RESET_TER()" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

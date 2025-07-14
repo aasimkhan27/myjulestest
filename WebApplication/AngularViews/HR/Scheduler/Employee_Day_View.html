@@ -1,0 +1,349 @@
+﻿<div class="card mb-0">
+    <div class="card-header pl-2 pr-0">
+        <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/SchHeader.html?v=111{{AppVersion}}'"></div>
+    </div>
+    <div class="card-body p-0 px-2">
+        <div class="row">
+            <div class="col-md-12 px-2 py-0">
+                <div class="row sticky-top e-day-view">
+                    <div class="col-md-2 p-0 bg-light-blue">
+                        <div class="card-header p-2">
+                            <div class="btn-group btn-group-sm btn-block">
+                                <input type="text" class="form-control" placeholder="Search">
+                                <button type="button" class="btn btn-w-default"><i class="fa fa-sort-amount-down-alt"></i></button>
+                                <button type="button" class="btn btn-w-default dropdown-toggle" data-toggle="dropdown"></button>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm" aria-haspopup="true" aria-expanded="false">
+                                    <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH()">Create New</a>
+                                    <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_1=true">Save as template</a>
+                                    <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_2=true">Edit template</a>
+                                    <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_3=true">Apply template</a>
+                                    <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH_ON_OFF_4=true">Copy week</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto text-center text-nowrap header-border-bottom semibold font-12 pt-3"></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">01 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">02 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">03 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">04 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">05 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">06 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">07 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">08 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">09 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">10 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">11 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">12 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">13 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">14 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">15 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">16 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">17 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">18 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">19 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">20 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">21 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">22 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col text-center text-nowrap header-border-bottom semibold font-12 pt-3">23 <span class="d-block text-grey text-normal">|</span></div>
+                    <div class="col-auto text-center text-nowrap header-border-bottom semibold font-12 pt-3"></div>
+                </div>
+            </div>
+            
+            <div class="custom-scrollbar height-66vh">
+                <div class="col-md-12">
+                    <div class="row row-eq-height">
+                        <div class="col-md-2 p-0 bg-light-blue header-border-bottom">
+                            <div class="col-md-12 py-3">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <span class="name-badge">CR</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="text-sm">
+                                            <span class="employee-name-limit">Chan Ranawat </span>
+                                            <button type="button" class="btn btn-tool float-right" data-toggle="dropdown"><i class="fa fa-bars mt-2"></i></button>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-haspopup="true" aria-expanded="false">
+                                                <a class="dropdown-item text-sm">Highlight shifts</a>
+                                                <a class="dropdown-item text-sm">Jump to next shift</a>
+                                                <a class="dropdown-item text-sm">View profile</a>
+                                                <a class="dropdown-item text-sm">Turn all shifts to 'Open'</a>
+                                            </div>
+                                            <small class="d-block">0h 0m / 0 Shifts</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 border">
+                            <div class="row pos-relative icon-hover">
+                                <div class="col-md-12 mb-2">
+                                    <div class="col-md-2 bg-light-green cursor-pointer d-block my-2" data-toggle="modal" data-target="#Add_Shift">
+                                        <span class="d-block text-nowrap font-12 mb-0">
+                                            07:30 - 17:00
+                                            <span class="float-right"><i class="fas fa-lock fa-sm"></i></span>
+                                        </span>
+                                        <span class="badge badge-light-orange employee-name-limit semibold">Manager</span>
+                                    </div>
+                                    <div class="col-md-6 bg-light-blue cursor-pointer d-block" data-toggle="modal" data-target="#Add_Shift">
+                                        <span class="d-block text-nowrap font-12 mb-0">
+                                            07:30 - 17:00
+                                            <span class="float-right"><i class="fas fa-lock fa-sm"></i></span>
+                                        </span>
+                                        <span class="badge badge-light-green employee-name-limit semibold">Manager</span>
+                                    </div>
+                                    <div class="col-md-4 bg-light-orange cursor-pointer d-block my-2" data-toggle="modal" data-target="#Add_Shift">
+                                        <span class="d-block text-nowrap font-12 mb-0">
+                                            07:30 - 17:00
+                                            <span class="float-right"><i class="fas fa-lock fa-sm"></i></span>
+                                        </span>
+                                        <span class="badge badge-light-blue employee-name-limit semibold">Kitchen Porter</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto text-center"></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col-auto text-center text-nowrap"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-eq-height">
+                        <div class="col-md-2 p-0 bg-light-blue header-border-bottom">
+                            <div class="col-md-12 py-3">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <span class="name-badge">AK</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="text-sm">
+                                            <span class="employee-name-limit">Aasim Sultan Khan </span>
+                                            <button type="button" class="btn btn-tool float-right" data-toggle="dropdown"><i class="fa fa-bars mt-2"></i></button>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-haspopup="true" aria-expanded="false">
+                                                <a class="dropdown-item text-sm">Highlight shifts</a>
+                                                <a class="dropdown-item text-sm">Jump to next shift</a>
+                                                <a class="dropdown-item text-sm">View profile</a>
+                                                <a class="dropdown-item text-sm">Turn all shifts to 'Open'</a>
+                                            </div>
+                                            <small class="d-block">0h 0m / 0 Shifts</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 border">
+                            <div class="row pos-relative icon-hover">
+                                <div class="col-md-12 mb-2">
+                                    <div class="col-md-2 bg-light-green cursor-pointer d-block my-2" data-toggle="modal" data-target="#Add_Shift">
+                                        <span class="d-block text-nowrap font-12 mb-0">
+                                            07:30 - 17:00
+                                            <span class="float-right"><i class="fas fa-lock fa-sm"></i></span>
+                                        </span>
+                                        <span class="badge badge-light-blue employee-name-limit semibold">Chef</span>
+                                    </div>
+                                    <div class="col-md-12 bg-light-blue cursor-pointer d-block" data-toggle="modal" data-target="#Add_Shift">
+                                        <span class="d-block text-nowrap font-12 mb-0">
+                                            07:30 - 17:00
+                                            <span class="float-right"><i class="fas fa-lock fa-sm"></i></span>
+                                        </span>
+                                        <span class="badge badge-light-orange employee-name-limit semibold">Manager</span>
+                                        <span class="badge badge-dark float-right text-xs">Empty</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto text-center"></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col-auto text-center text-nowrap"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-eq-height">
+                        <div class="col-md-2 p-0 bg-light-blue header-border-bottom">
+                            <div class="col-md-12 py-3">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <span class="name-badge">SK</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="text-sm">
+                                            <span class="employee-name-limit">Sahil Khan </span>
+                                            <button type="button" class="btn btn-tool float-right" data-toggle="dropdown"><i class="fa fa-bars mt-2"></i></button>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-haspopup="true" aria-expanded="false">
+                                                <a class="dropdown-item text-sm">Highlight shifts</a>
+                                                <a class="dropdown-item text-sm">Jump to next shift</a>
+                                                <a class="dropdown-item text-sm">View profile</a>
+                                                <a class="dropdown-item text-sm">Turn all shifts to 'Open'</a>
+                                            </div>
+                                            <small class="d-block">0h 0m / 0 Shifts</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 border">
+                            <div class="row align-items-center icon-hover">
+                                <div class="col-auto text-center"></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col-auto text-center text-nowrap"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-eq-height">
+                        <div class="col-md-2 p-0 bg-light-blue header-border-bottom">
+                            <div class="col-md-12 py-3">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <span class="name-badge">CR</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="text-sm">
+                                            <span class="employee-name-limit">Chan Ranawat </span>
+                                            <button type="button" class="btn btn-tool float-right" data-toggle="dropdown"><i class="fa fa-bars mt-2"></i></button>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-haspopup="true" aria-expanded="false">
+                                                <a class="dropdown-item text-sm">Highlight shifts</a>
+                                                <a class="dropdown-item text-sm">Jump to next shift</a>
+                                                <a class="dropdown-item text-sm">View profile</a>
+                                                <a class="dropdown-item text-sm">Turn all shifts to 'Open'</a>
+                                            </div>
+                                            <small class="d-block">0h 0m / 0 Shifts</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 border">
+                            <div class="row pos-relative icon-hover">
+                                <div class="col-md-12 mb-2">
+                                    <div class="col-md-2 bg-light-green cursor-pointer d-block my-2" data-toggle="modal" data-target="#Add_Shift">
+                                        <span class="d-block text-nowrap font-12 mb-0">
+                                            07:30 - 17:00
+                                            <span class="float-right"><i class="fas fa-lock fa-sm"></i></span>
+                                        </span>
+                                        <span class="badge badge-light-orange employee-name-limit semibold">Manager</span>
+                                    </div>
+                                    <div class="col-md-6 bg-light-blue cursor-pointer d-block" data-toggle="modal" data-target="#Add_Shift">
+                                        <span class="d-block text-nowrap font-12 mb-0">
+                                            07:30 - 17:00
+                                            <span class="float-right"><i class="fas fa-lock fa-sm"></i></span>
+                                        </span>
+                                        <span class="badge badge-light-green employee-name-limit semibold">Manager</span>
+                                    </div>
+                                    <div class="col-md-4 bg-light-orange cursor-pointer d-block my-2" data-toggle="modal" data-target="#Add_Shift">
+                                        <span class="d-block text-nowrap font-12 mb-0">
+                                            07:30 - 17:00
+                                            <span class="float-right"><i class="fas fa-lock fa-sm"></i></span>
+                                        </span>
+                                        <span class="badge badge-light-blue employee-name-limit semibold">Kitchen Porter</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto text-center"></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col min-height-49 text-center cursor-pointer" data-toggle="modal" data-target="#Add_Shift"><i class="fas fa-plus text-grey fa-xs bs-icon"></i></div>
+                                <div class="col-auto text-center text-nowrap"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<script type="text/javascript">
+    $('#divNewNotifications li').on('click', function () {
+        $('#dropdown_title').html($(this).find('a').html());
+    });
+</script>
+<script type="text/javascript">
+    $('.select2').select2();
+</script>

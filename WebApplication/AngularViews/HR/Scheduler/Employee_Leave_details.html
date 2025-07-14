@@ -1,0 +1,83 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Employee Leave Details</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item">
+                    <div class="form-group mb-0">
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" placeholder="Select Date MM/DD/YY">
+                            <div class="input-group-addon">
+                                <i class="far fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Department</th>
+                        <th>Date</th>
+                        <th>Punch In</th>
+                        <th>Punch out</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span>
+                                <img src="https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2020/06/08/Pictures/_d670cd18-a96f-11ea-9c49-07241376e8f9.jpg" class="img-size-32 mr-1 profile-pic">
+                            </span>
+                            <b>Pierce Brosnan</b>
+                        </td>
+                        <td>C00060027</td>
+                        <td>Accounting</td>
+                        <td>Jan 28, 1984</td>
+                        <td><span class="badge badge-success">14:30</span></td>
+                        <td><span class="badge badge-danger">23:30</span></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>
+                                <img src="https://media.vanityfair.com/photos/5f4d3a7e1e10df7a77868a63/2:3/w_1428,h_2142,c_limit/BradPitt-GettyImages-1158782727.jpg" class="img-size-32 mr-1 profile-pic">
+                            </span>
+                            <b>Brad Pitt</b>
+                        </td>
+                        <td>C00060027</td>
+                        <td>Accounting</td>
+                        <td>Jan 28, 1984</td>
+                        <td><span class="badge badge-success">12:00</span></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>
+                                <img src="https://www.onthisday.com/images/people/robert-downey-jr-medium.jpg" class="img-size-32 mr-1 profile-pic">
+                            </span>
+                            <b>Robert Downey Jr.</b>
+                        </td>
+                        <td>C00060027</td>
+                        <td>Accounting</td>
+                        <td>Jan 28, 1984</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.fn.datepicker.defaults.format = "mm/dd/yyyy";
+    $('.datepicker').datepicker({
+        startDate: '-3d'
+    });
+</script>

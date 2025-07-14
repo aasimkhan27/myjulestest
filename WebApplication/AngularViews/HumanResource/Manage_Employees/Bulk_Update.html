@@ -1,0 +1,177 @@
+﻿<div class="mx-3 mt-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-3 col-md-3">
+                    <label class="d-block">Pay Type</label>
+                    <ul class="nav nav-pills mb-0">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    Hourly
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">Hourly</li>
+                                <li class="DontHideOnClick">Salaried</li> 
+                                <li class="DontHideOnClick">Fixed</li>
+                                <li class="DontHideOnClick">Weekly</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xxl-3 col-xl-3 col-md-3">
+                    <label class="d-block">Valid From</label>
+                    <input type="date" class="mb-0" />
+                </div>
+                <div class="col-xxl-auto col-xl-auto col-md-auto">
+                    <label class="d-block">&nbsp;</label>
+                    <button class="btn btn-primary applyBtn">Apply</button>
+                </div>
+
+                <div class="col-xxl-12 col-xl-12 col-md-12">
+                    <span class="bulkUpdateSpan">
+                        You can change it individually once applied
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="mx-3 mt-3">
+    <div class="card">
+        <div class="card-header pb-0">
+            <div class="row">
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <h5 class="mt-3">Employee</h5>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2 ms-auto">
+                    <input type="text" name="search" placeholder="Search" />
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-lg fa-light fa-location-dot"></i>
+                                    Location
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Location 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Location 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-building fa-lg"></i>
+                                    Department
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Department 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Department 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <i class="fa-light fa-briefcase-blank fa-lg"></i>
+                                    Position
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Position 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Position 2
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-nowrap">Employee Name</th>
+                            <th width="20%">Position</th>
+                            <th class="text-nowrap" width="20%">Paid by</th>
+                            <th class="text-nowrap" width="20%">Hourly Wage</th>
+                            <th class="text-nowrap" width="20%">Valid From</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-nowrap">
+                                <span class="text_avatar">mw</span>
+                                Malik Wihowo
+                            </td>
+
+                            <td><input type="text" disabled placeholder="Employee" class="mb-0" /></td>
+
+                            <td class="text-nowrap">
+                                <div class="bg-grey p-2 rounded">
+                                    <span class="text_avatar">ra</span>
+                                    Rifqy Aulia
+                                </div>
+                            </td>
+                            <td>
+                                <div class="placeholder_eye_table placeholder_pound_before p-relative" data-type="£">
+                                    <input type="text" placeholder="00.00" class="mb-1 ps-4" />
+                                </div>
+                                <span class="bulkUpdateSpan text-nowrap">Current Wage: £ 13</span>
+                                <span class="bulkUpdateSpan text-nowrap float-end">Hourly Wage: £ 5</span>
+                            </td>
+                            <td><input type="date" class="mb-0" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="card-footer text-end">
+            <a href="#!/Employee_List" class="btn btn-outline">
+                Cancel
+            </a>
+            <a href="#!/Preview_And_Update_Wages" class="btn btn-primary">
+                Preview and update [1] wages
+            </a>
+        </div>
+    </div>
+</div>
+

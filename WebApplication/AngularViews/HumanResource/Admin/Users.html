@@ -1,0 +1,629 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Users</h6>
+                </div>
+                <div class="card-body">
+                    <h6 class="headings">Employee Types</h6>
+                    <form name="EMPLOYEE_TYPES_FORM" novalidate>
+                        <div class="row gy-2">
+                            <div class="col-xxl-3 col-md-4 col-xl-3"
+                                 ng-repeat="_employee in EMPLOYEE_TYPES_LIST">
+                                <div class="" ng-class="{'tags':_employee.EDITABLE==0,'tags-editable': _employee.EMPLOYEE_TYPES_ID>0 && _employee.EDITABLE==1 && !_employee.HIDE_SHOW,'':_employee.EMPLOYEE_TYPES_ID==0 || _employee.HIDE_SHOW}">
+                                    <i class="fa-light fa-pen"
+                                       ng-show="_employee.EDITABLE==1 && _employee.EMPLOYEE_TYPES_ID>0  && !_employee.HIDE_SHOW"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-title="Edit"
+                                       ng-click="EDIT_EMPLOYEE_TYPES_Fn(_employee,$index)"></i>
+                                    <span ng-show="_employee.EDITABLE==0">
+                                        {{_employee.EMPLOYEE_TYPE_NAMES}}
+                                    </span>
+                                    <span ng-show="_employee.EDITABLE==1 && _employee.EMPLOYEE_TYPES_ID>0 && !_employee.HIDE_SHOW">
+                                        {{_employee.EMPLOYEE_TYPE_NAMES}}
+                                    </span>
+
+                                    <div class="input-group" ng-show="_employee.EDITABLE==1 &&  _employee.HIDE_SHOW">
+                                        <input type="text"
+                                               class="form-control"
+                                               maxlength="100"
+                                               typeahead-on-select="SetQuotationValues(QL,$index)"
+                                               autocomplete="off"
+                                               no-blank-paste
+                                               name="EMPLOYEE_TYPE_NAMES{{$index}}"
+                                               placeholder={{PlaceHolder}}
+                                               ng-model="_employee.EMPLOYEE_TYPE_NAMES"
+                                               ng-enter="HRM_INS_UPD_EMPLOYEE_TYPES(_employee,index,1)"
+                                               required
+                                               ng-class="{'error':EMPLOYEE_TYPES_FORM.submitted && EMPLOYEE_TYPES_FORM.ADD_NEW.$error.required}" />
+                                        <button class="btn btn btn-transparent"
+                                                type="button"
+                                                ng-click="HRM_INS_UPD_EMPLOYEE_TYPES(_employee,index,1)">
+                                            <span><i class="fa-light fa-save"></i></span>
+                                        </button>
+                                    </div>
+                                    <i class="fa-light fa-trash-can"
+                                       ng-show="_employee.EDITABLE==1 && _employee.EMPLOYEE_TYPES_ID>0 && !_employee.HIDE_SHOW"
+                                       data-bs-toggle="modal"
+                                       ng-click="DELETE_EMPLOYEE_TYPES_Fn(_employee,$index,2)"
+                                       data-bs-target="#Delete_Employee_Type"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-4 col-xl-3">
+                                <div class="input-group">
+                                    <input type="text"
+                                           class="form-control"
+                                           maxlength="100"
+                                           typeahead-on-select="SetQuotationValues(QL,$index)"
+                                           autocomplete="off"
+                                           no-blank-paste
+                                           name="EMPLOYEE_TYPE_NAMES{{$index}}"
+                                           placeholder={{PlaceHolder}}
+                                           ng-model="UserSearch.EMPLOYEE_TYPE_NAMES"
+                                           ng-enter="HRM_INS_UPD_EMPLOYEE_TYPES(UserSearch,index,1)"
+                                           required
+                                           ng-class="{'error':EMPLOYEE_TYPES_FORM.submitted && UserSearch.EMPLOYEE_TYPE_NAMES==''}" />
+                                    <button class="btn btn btn-transparent"
+                                            type="button"
+                                            ng-click="HRM_INS_UPD_EMPLOYEE_TYPES(UserSearch,index,1)">
+                                        <span><i class="fa-light fa-save"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-show="false">
+                                <button type="button"
+                                        ng-click="ADD_MORE_EMPLOYEE_TYPE_Fn()"
+                                        class="btn btn-light w-100">
+                                    <i class="fa-light fa-plus me-3"></i> Add more
+                                </button>
+                            </div>
+                        </div>
+                </form>
+                    <hr />
+
+                    <h6 class="headings">Employee Statuses</h6>
+                    <div class="row gy-2">
+                        <div class="col-xxl-3 col-md-4 col-xl-3" ng-repeat="_employee_sts in EMPLOYEE_STATUSES_LIST">
+                            <div class="tags">{{_employee_sts.EMPLOYEE_STATUS_NAMES}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <h6 class="headings">Termination Reasons</h6>
+                    <form name="TERMINATION_REASONS_FORM" novalidate>
+                        <div class="row gy-2">
+                            <div class="col-xxl-3 col-md-4 col-xl-3"
+                                 ng-repeat="_employee_ter in TERMINATION_REASONS_LIST">
+                                <div class=""
+                                     ng-class="{'tags':_employee_ter.EDITABLE==0, 'tags-editable': _employee_ter.TERMINATION_REASONS_ID>0 && _employee_ter.EDITABLE==1 && !_employee_ter.HIDE_SHOW,'':_employee_ter.TERMINATION_REASONS_ID==0 || _employee_ter.HIDE_SHOW}">
+                                    <i class="fa-light fa-pen"
+                                       ng-show="_employee_ter.EDITABLE==1 && _employee_ter.TERMINATION_REASONS_ID>0 && !_employee_ter.HIDE_SHOW"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-title="Edit"
+                                       ng-click="EDIT_TERMINATION_TYPES_Fn(_employee_ter,$index)"></i>
+                                    <span ng-show="_employee_ter.EDITABLE==0">
+                                        {{_employee_ter.TERMINATION_REASONS_NAME}}
+                                    </span>
+                                    <span ng-show="_employee_ter.EDITABLE==1 && _employee_ter.TERMINATION_REASONS_ID>0 && !_employee_ter.HIDE_SHOW">
+                                        {{_employee_ter.TERMINATION_REASONS_NAME}}
+                                    </span>
+                                    <div class="input-group" ng-show="_employee_ter.EDITABLE==1 &&  _employee_ter.HIDE_SHOW">
+                                        <input type="text"
+                                               class="form-control"
+                                               maxlength="100"
+                                               typeahead-on-select="SetQuotationValues(QL,$index)"
+                                               autocomplete="off"
+                                                no-blank-paste
+                                               name="TERMINATION_REASONS_NAMES{{$index}}"
+                                               placeholder={{PlaceHolder}}
+                                               ng-enter="HRM_INS_UPD_TERMINATION_REASONS(_employee_ter,index,1)"
+                                               ng-model="_employee_ter.TERMINATION_REASONS_NAMES"
+                                               required
+                                               ng-class="{'error':TERMINATION_REASONS_FORM.submitted && TERMINATION_REASONS_FORM.ADD_NEW.$error.required}" />
+                                        <button class="btn btn btn-transparent"
+                                                type="button"
+                                                ng-click="HRM_INS_UPD_TERMINATION_REASONS(_employee_ter,index,1)">
+                                            <span><i class="fa-light fa-save"></i></span>
+                                        </button>
+                                    </div>
+
+                                    <i class="fa-light fa-trash-can"
+                                       ng-show="_employee_ter.EDITABLE==1 && _employee_ter.TERMINATION_REASONS_ID>0 && !_employee_ter.HIDE_SHOW"
+                                       data-bs-toggle="modal"
+                                       ng-click="DELETE_TERMINATION_TYPES_Fn(_employee_ter,$index,2)"
+                                       data-bs-target="#TERMINATION_REASONS"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-4 col-xl-3">
+                                <div class="input-group">
+                                    <input type="text"
+                                           class="form-control"
+                                           maxlength="100"
+                                           typeahead-on-select="SetQuotationValues(QL,$index)"
+                                           autocomplete="off"
+                                            no-blank-paste
+                                           name="TERMINATION_REASONS_NAMES{{$index}}"
+                                           placeholder={{PlaceHolder}}
+                                           ng-enter="HRM_INS_UPD_TERMINATION_REASONS(UserSearch,index,1)"
+                                           ng-model="UserSearch.TERMINATION_REASONS_NAMES"
+                                           required
+                                           ng-class="{'error':TERMINATION_REASONS_FORM.submitted && UserSearch.TERMINATION_REASONS_NAMES==''}" />
+                                    <button class="btn btn btn-transparent"
+                                            type="button"
+                                            ng-click="HRM_INS_UPD_TERMINATION_REASONS(UserSearch,index,1)">
+                                        <span><i class="fa-light fa-save"></i></span>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-show="false">
+                                <button type="button" ng-click="ADD_MORE_TERMINATION_TYPE_Fn()"
+                                        class="btn btn-light w-100">
+                                    <i class="fa-light fa-plus me-3"></i> Add more
+                                </button>
+                            </div>
+                        </div>
+</form>
+                    <hr />
+                    <h6 class="headings">Qualification Type</h6>
+                    <form name="QUALIFICATION_TYPE_FORM" novalidate>
+                        <div class="row gy-2">
+                            <div class="col-xxl-3 col-md-4 col-xl-3" ng-repeat="_qualification in QUALIFICATION_TYPE_LIST">
+                                <div class=""
+                                     ng-class="{'tags':_qualification.EDITABLE==0, 'tags-editable': _qualification.QUALIFICATION_TYPE_ID>0 && _qualification.EDITABLE==1 && !_qualification.HIDE_SHOW,'':_qualification.QUALIFICATION_TYPE_ID==0 || _qualification.HIDE_SHOW}">
+                                    <i class="fa-light fa-pen"
+                                       ng-show="_qualification.EDITABLE==1 && _qualification.QUALIFICATION_TYPE_ID>0&& !_qualification.HIDE_SHOW"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-title="Edit"
+                                       ng-click="EDIT_QUALIFICATION_TYPE_Fn(_qualification,$index)">
+
+                                    </i>
+                                    <span ng-show="_qualification.EDITABLE==0">
+                                        {{_qualification.QUALIFICATION_NAME}}
+                                    </span>
+                                    <span ng-show="_qualification.EDITABLE==1 && _qualification.QUALIFICATION_TYPE_ID>0 && !_qualification.HIDE_SHOW">
+                                        {{_qualification.QUALIFICATION_NAMES}}
+                                    </span>
+                                    <div class="input-group" ng-show="_qualification.EDITABLE==1 &&  _qualification.HIDE_SHOW">
+                                        <input type="text"
+                                               class="form-control"
+                                               maxlength="100"
+                                               typeahead-on-select="SetQuotationValues(QL,$index)"
+                                               autocomplete="off"
+                                               no-blank-paste
+                                               name="QUALIFICATION_NAMES{{$index}}"
+                                               placeholder={{PlaceHolder}}
+                                               ng-enter="HRM_INS_UPD_QUALIFICATION_TYPE(_qualification,index,1)"
+                                               ng-model="_qualification.QUALIFICATION_NAMES"
+                                               required
+                                               ng-class="{'error':QUALIFICATION_TYPE_FORM.submitted && QUALIFICATION_TYPE_FORM.ADD_NEW.$error.required}" />
+                                        <button class="btn btn btn-transparent"
+                                                type="button"
+                                                ng-click="HRM_INS_UPD_QUALIFICATION_TYPE(_qualification,index,1)">
+                                            <span><i class="fa-light fa-save"></i></span>
+                                        </button>
+                                    </div>
+                                    <i class="fa-light fa-trash-can"
+                                       ng-show="_qualification.EDITABLE==1 && _qualification.QUALIFICATION_TYPE_ID>0 && !_qualification.HIDE_SHOW"
+                                       data-bs-toggle="modal"
+                                       ng-click="DELETE_QUALIFICATION_TYPES_Fn(_qualification,$index,2)"
+                                       data-bs-target="#TERMINATION_REASONS"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-4 col-xl-3">
+                                <div class="input-group" >
+                                    <input type="text"
+                                           class="form-control"
+                                           maxlength="100"
+                                           typeahead-on-select="SetQuotationValues(QL,$index)"
+                                           autocomplete="off"
+                                           no-blank-paste
+                                           name="QUALIFICATION_NAMES{{$index}}"
+                                           placeholder={{PlaceHolder}}
+                                           ng-enter="HRM_INS_UPD_QUALIFICATION_TYPE(UserSearch,index,1)"
+                                           ng-model="UserSearch.QUALIFICATION_NAMES"
+                                           required
+                                           ng-class="{'error':QUALIFICATION_TYPE_FORM.submitted && UserSearch.QUALIFICATION_NAMES==''}" />
+                                    <button class="btn btn btn-transparent"
+                                            type="button"
+                                            ng-click="HRM_INS_UPD_QUALIFICATION_TYPE(UserSearch,index,1)">
+                                        <span><i class="fa-light fa-save"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                                <div class="col-xxl-3 col-md-3 col-xl-3" ng-show="false">
+                                    <button type="button" class="btn btn-light w-100" ng-click="ADD_MORE_QUALIFICATION_TYPE_Fn()"><i class="fa-light fa-plus me-3"></i> Add more</button>
+                                </div>
+                            </div>
+</form>
+                    <hr />
+
+                    <h6 class="headings">Document Requests</h6>
+                    <form name="DOCUMENT_REQUEST_FORM" novalidate>
+                        <div class="row gy-2">
+                            <div class="col-xxl-3 col-md-4 col-xl-3" ng-repeat="_document in DOCUMENT_REQUEST_LIST">
+
+                                <!--<div class="tags">{{_document.DOCUMENT_REQUEST_NAMES}}</div>-->
+                                <div class=""
+                                     ng-class="{'tags-editable':_document.DOCUMENT_REQUEST_MSTR_ID>0 && !_document.HIDE_SHOW,'':_document.DOCUMENT_REQUEST_MSTR_ID==0 || _document.HIDE_SHOW}">
+                                    <i class="fa-light fa-pen"
+                                       ng-show="_document.DOCUMENT_REQUEST_MSTR_ID>0 && !_document.HIDE_SHOW"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-title="Edit"
+                                       ng-click="EDIT_DOCUMENT_REQUEST_Fn(_document,$index)"></i>
+                                    <span ng-show="_document.DOCUMENT_REQUEST_MSTR_ID>0 && !_document.HIDE_SHOW">
+                                        {{_document.DOCUMENT_REQUEST_NAMES}}
+                                    </span>
+                                    <div class="input-group" ng-show="_document.HIDE_SHOW">
+                                        <input type="text"
+                                               class="form-control"
+                                               maxlength="100"
+                                               typeahead-on-select="SetQuotationValues(QL,$index)"
+                                               autocomplete="off"
+                                               no-blank-paste
+                                               name="DOCUMENT_REQUEST_NAMES{{$index}}"
+                                               placeholder={{PlaceHolder}}
+                                               ng-model="_document.DOCUMENT_REQUEST_NAMES"
+                                               ng-enter="HRM_INS_UPD_DOCUMENT_REQUEST_MSTR(_document,index,1)"
+                                               required
+                                               ng-class="{'error':DOCUMENT_REQUEST_FORM.submitted && DOCUMENT_REQUEST_FORM.ADD_NEW.$error.required}" />
+                                        <button class="btn btn btn-transparent"
+                                                type="button"
+                                                ng-click="HRM_INS_UPD_DOCUMENT_REQUEST_MSTR(_document,index,1)">
+                                            <span><i class="fa-light fa-save"></i></span>
+                                        </button>
+                                    </div>
+                                    <i class="fa-light fa-trash-can"
+                                       ng-show="_document.DOCUMENT_REQUEST_MSTR_ID>0 && !_document.HIDE_SHOW"
+                                       data-bs-toggle="modal"
+                                       ng-click="DELETE_DOCUMENT_REQUEST_Fn(_document,$index,2)"
+                                       data-bs-target="#TERMINATION_REASONS"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-4 col-xl-3">
+                                <div class="input-group" >
+                                    <input type="text"
+                                           class="form-control"
+                                           maxlength="100"
+                                           typeahead-on-select="SetQuotationValues(QL,$index)"
+                                           autocomplete="off"
+                                           no-blank-paste
+                                           name="DOCUMENT_REQUEST_NAMES{{$index}}"
+                                           placeholder={{PlaceHolder}}
+                                           ng-model="UserSearch.DOCUMENT_REQUEST_NAMES"
+                                           ng-enter="HRM_INS_UPD_DOCUMENT_REQUEST_MSTR(UserSearch,index,1)"
+                                           required
+                                           ng-class="{'error':DOCUMENT_REQUEST_FORM.submitted && UserSearch.DOCUMENT_REQUEST_NAMES==''}" />
+                                    <button class="btn btn btn-transparent"
+                                            type="button"
+                                            ng-click="HRM_INS_UPD_DOCUMENT_REQUEST_MSTR(UserSearch,index,1)">
+                                        <span><i class="fa-light fa-save"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-show="false">
+                                <button type="button" class="btn btn-light w-100" ng-click="ADD_MORE_DOCUMENT_REQUEST_Fn()"><i class="fa-light fa-plus me-3"></i> Add more</button>
+                            </div>
+                        </div>
+</form>
+                    <hr />
+
+                    <h6 class="headings"  ng-show="false">User Card View</h6>
+                    <div class="row justify-content-between mt-3" ng-show="false">
+                        <div class="col-xxl-5 col-md-5 col-xl-5">
+                            <div class="row">
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+
+                                    <div class="non-dragable">Profile Picture</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="non-dragable">Status</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="dragable">Employee Name</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="dragable">Department</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="dragable">Section</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="dragable">Position</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="dragable">Email</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="dragable">Phone Number</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="non-dragable">Hire Date</div>
+                                </div>
+                                <div class="col-xxl-6 col-md-6 col-xl-6">
+                                    <div class="dragable">Role</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-5 col-md-5 col-xl-5">
+                            <div class="card bg-primary">
+                                <div class="card-body">
+                                    <span class="dragable_head">Section 1 - Not Editable</span>
+                                    <div class="row">
+                                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                                            <div class="card-body non-editable-border">
+                                                <div class="row gy-2">
+                                                    <div class="col-xxl-6 col-md-6 col-xl-6"><span class="dragged">Profile Picture</span></div>
+                                                    <div class="col-xxl-6 col-md-6 col-xl-6"><span class="dragged">Status</span></div>
+                                                    <div class="col-xxl-12 col-md-12 col-xl-12"><span class="dragged">Employee Name</span></div>
+                                                    <div class="col-xxl-6 col-md-6 col-xl-6"><span class="dragged">Employee Number</span></div>
+                                                    <div class="col-xxl-6 col-md-6 col-xl-6"><span class="dragged">Location</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="row gy-2 mt-2">
+                                                <div class="col-xxl-6 col-md-6 col-xl-6"><span class="dragged">Department</span></div>
+                                                <div class="col-xxl-6 col-md-6 col-xl-6"><span class="dragged">Position</span></div>
+                                                <div class="col-xxl-6 col-md-6 col-xl-6"><span class="dragged">Manager</span></div>
+                                                <div class="col-xxl-6 col-md-6 col-xl-6"><span class="dragged">Hire Date</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-12 col-md-12 col-xl-12 mt-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="f-14 mb-0 f-w-500">Preview</h6>
+                                </div>
+                                <div class="card-body employee_card_view">
+                                    <div class="col-xxl-4 col-md-6 col-xl-6 mx-auto">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row g-3">
+                                                    <div class="col-xxl-7 col-md-7 col-xl-7">
+                                                        <span class="profile_avatar">mw</span>
+                                                        <span class="employee_name">Malik Wihowo</span>
+                                                        <p class="f-w-500">123456890 • Farm of family</p>
+                                                    </div>
+                                                    <div class="col-xxl-5 col-md-5 col-xl-5">
+                                                        <div class="d-flex align-items-center justify-content-end">
+                                                            <span class="badge-lg badge-light-warning">Waiting</span>
+                                                            <div class="form-check ms-2">
+                                                                <input class="form-check-input"
+                                                                       id="flexCheckChecked"
+                                                                       type="checkbox"
+                                                                       value=""
+                                                                       name="WAITING"
+                                                                       ng-model="WAITING"
+                                                                       required
+                                                                       ng-class="{'error':UserJourneyform.submitted && UserJourneyform.WAITING.$error.required}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr class="mb-0" />
+
+                                                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                        <div class="border-right">
+                                                            <span class="f-14-text">Department</span>
+                                                            <span>IT</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                                                        <span class="f-14-text">Position</span>
+                                                        <span>Employee</span>
+                                                    </div>
+
+                                                    <hr class="mb-0" />
+
+                                                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                        <i class="fa-light fa-square-user me-2"></i> Programmer
+                                                    </div>
+
+                                                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                        <i class="fa-light fa-phone me-2"></i> +61 847 3738 38
+                                                    </div>
+
+                                                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                        <i class="fa-light fa-envelope me-2"></i> malik@gmail.com
+                                                    </div>
+
+                                                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                                                        <i class="fa-light fa-user me-2"></i> Fariz
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Employee Number Generation</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-sm btn-light"
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS_MULTIPLE()">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-xxl-5 col-md-5 col-xl-5">
+                            <div class="media form-control justify-content-between">
+                                <label class="col-form-label m-r-10">Auto generate</label>
+                                <div class="media-body switch-sm">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               name="AUTO_GENERATE"
+                                              
+                                               ng-model="UserSearch.AUTO_GENERATE"
+                                               ng-class="{'error':UserJourneyform.submitted && UserJourneyform.AUTO_GENERATE.$error.required}" />
+                                        <span class="switch-state bg-primary"></span>
+                                    </label>
+                                </div>
+                                <label class="col-form-label m-r-10">Manually Entered </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-xxl-5 col-md-5 col-xl-5">
+                            <label class="text-nowrap">Prefix for auto-Generated employee number</label>
+                            <input type="text"
+                                   ng-model="UserSearch.AUTO_GENERATE_PREFIX_NO"
+                                   required
+                                   ng-disabled="UserSearch.AUTO_GENERATE"
+                                   placeholder="PF"
+                                   ng-class="{'error':UserJourneyform.submitted && UserJourneyform.AUTO_GENERATE.$error.required}" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-ed-auto col-xl-auto">
+                            <div class="alert alert-light-primary mb-3">
+                                <div class="row gx-1 align-items-center">
+                                    <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-light fa-circle-exclamation fa-lg alert-primary-text"></i></div>
+                                    <div class="col-xxl col-md col-xl">
+                                        <span class="alert-primary-text">Employee number will be displayed and stored as PF-001. If Prefix is left blank, then the employee number will be numeric only</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Probation Period</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-sm btn-light"
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS(UserSearch.DEFAULT_PROB_IN_MONTHS,49)">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Default Probation Duration in Months</label>
+                        <input type="text"
+                               name="DEFAULT_PROB_IN_MONTHS"
+                               placeholder="0"
+                               ng-model="UserSearch.DEFAULT_PROB_IN_MONTHS"
+                               only-numbers
+                               maxlength="2"
+                               ng-class="{'error':UserJourneyform.submitted && UserJourneyform.DEFAULT_PROB_IN_MONTHS.$error.required}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="Employee_Type" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Delete "{{SELECTED_EMPLOYEE.EMPLOYEE_TYPE_NAMES}}" from Employee Type?</h6>
+                    <p class="text-center text-dark">Are you sure you want to delete?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal" ng-click="HRM_INS_UPD_EMPLOYEE_TYPES(SELECTED_EMPLOYEE,0,2)">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Termination_Type" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Delete "{{SELECTED_TERMINATION_TYPE.TERMINATION_REASONS_NAMES}}" from Termination Type?</h6>
+                    <p class="text-center text-dark">Are you sure you want to delete?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal" ng-click="HRM_INS_UPD_TERMINATION_REASONS(SELECTED_TERMINATION_TYPE,0,2)">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Qualification_Type" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Delete "{{SELECTED_QUALIFICATION.QUALIFICATION_NAMES}}" from Qualification Type?</h6>
+                    <p class="text-center text-dark">Are you sure you want to delete?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal" ng-click="HRM_INS_UPD_QUALIFICATION_TYPE(SELECTED_QUALIFICATION,0,2)">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Document_Request" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Delete "{{SELECTED_DOCUMENT.DOCUMENT_REQUEST_NAMES}}" from Qualification Type?</h6>
+                    <p class="text-center text-dark">Are you sure you want to delete?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Cancel</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal" ng-click="HRM_INS_UPD_DOCUMENT_REQUEST_MSTR(SELECTED_DOCUMENT,0,2)">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

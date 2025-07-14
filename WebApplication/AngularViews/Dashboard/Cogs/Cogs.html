@@ -1,0 +1,576 @@
+﻿<div class="box-shadow" id="PDF_DOWNLOAD">
+    <div class="row my-3" hidden>
+        <div class="col-md-6 border-bottom"><img src="{{LOGO_PATH}}" class="img-fluid footer-logo my-2" alt="" /></div>
+        <div class="col-md-6 border-bottom text-right"><img src="../E_Content/images/logo.png" class="img-fluid footer-logo my-2" alt="" /></div>
+    </div>
+    <div class="card-header">
+        <h5 class="card-title">COGS</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item mr-2" ng-show="false">
+                    <select class="custom-select custom-select-sm mw-150"
+                            name="ENTITY"
+                            style="max-width:150px"
+                            ng-change="ENTITY_CHANGE_FY()"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in REVE_ENTITY_LIST"
+                            ng-model="CogsSearch.ENTITY_ID"></select>
+
+                </li>
+                <li class="nav-item mr-2">
+                    <select class="custom-select custom-select-sm mw-150"
+                            name="BRANCH"
+                            ng-change="COGS_BRANCH_CHANGE()"
+                            ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST"
+                            ng-model="CogsSearch.BRANCH_ID"></select>
+                </li>
+                <li class="nav-item mr-2">
+                    <div class="input-group input-group-sm my-0" id="week-picker-wrapper">
+                        <div class="input-group-prepend">
+                            <button type="button" class="btn input-group-text week-prev">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="form-control week-picker bg-white font-11"
+                               ng-class="{'c-form-control':SHOW_BTN}"
+                               value=""
+                               readonly
+                               format="yy-mm-dd"
+                               placeholder="Select a Week" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn input-group-text week-next">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="form-group mb-0">
+                        <button type="button" class="btn btn-sm btn-wenodo" ng-click="COGS_PDF(1)" data-toggle="tooltip" data-html="true" data-original-title="Download PDF"><i class="far fa-file-pdf"></i></button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col mt-2" ng-show="CogsSearch.GP_FOOD.SHOW">
+                <div class="text-center border-pastel-green box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-green d-block">Food GP % <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span class="text-blue">{{CogsSearch.GP_FOOD.CurrentWeekAMT | number :0}} % <small>(cw)</small></span>
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.GP_FOOD.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.GP_FOOD.PERCENT>0,'text-red rotate-180':CogsSearch.GP_FOOD.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.GP_FOOD.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs <span class="font-14">{{CogsSearch.GP_FOOD.LastWeekAMT}}%</span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.GP_DRINKS.SHOW">
+                <div class="text-center border-pastel-purple box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-purple d-block">Drinks GP % <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span class="text-blue">{{CogsSearch.GP_DRINKS.CurrentWeekAMT | number :0}} % <small>(cw)</small></span>
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.GP_DRINKS.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.GP_DRINKS.PERCENT>0,'text-red rotate-180':CogsSearch.GP_DRINKS.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.GP_DRINKS.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs <span class="font-14">{{CogsSearch.GP_DRINKS.LastWeekAMT}}%</span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.GP_WINE.SHOW">
+                <div class="text-center border-pastel-orange box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-orange d-block">Wine GP % <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span class="text-blue">{{CogsSearch.GP_WINE.CurrentWeekAMT | number :0}} % <small>(cw)</small></span>
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.GP_WINE.PERCENT!=0"
+                                   ng-class="{'text-light-green':GP_WINE.GP_WINE.PERCENT>0,'text-red rotate-180':CogsSearch.GP_WINE.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.GP_WINE.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs <span class="font-14">{{CogsSearch.GP_WINE.LastWeekAMT}}%</span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col mt-2" ng-show="CogsSearch.GP_HOTBEV.SHOW">
+                <div class="text-center border-pastel-pink box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-pink d-block">Hot Bev GP % <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span class="text-blue">{{CogsSearch.GP_HOTBEV.CurrentWeekAMT | number :0}} % <small>(cw)</small></span>
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.GP_HOTBEV.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.GP_HOTBEV.PERCENT>0,'text-red rotate-180':CogsSearch.GP_HOTBEV.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.GP_HOTBEV.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs <span class="font-14">{{CogsSearch.GP_HOTBEV.LastWeekAMT}}%</span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.GP_TOBACCO.SHOW">
+                <div class="text-center border-pastel-voilet box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-voilet d-block">Tobacco GP % <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span class="text-blue">{{CogsSearch.GP_TOBACCO.CurrentWeekAMT | number :0}} % <small>(cw)</small></span>
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.GP_TOBACCO.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.GP_TOBACCO.PERCENT>0,'text-red rotate-180':CogsSearch.GP_TOBACCO.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.GP_TOBACCO.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs <span class="font-14">{{CogsSearch.GP_TOBACCO.LastWeekAMT}}%</span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.GP_OTHERS.SHOW">
+                <div class="text-center border-pastel-pink box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-yellow d-block">Others GP % <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span class="text-blue">{{CogsSearch.GP_OTHERS.CurrentWeekAMT | number :0}} % <small>(cw)</small></span>
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.GP_OTHERS.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.GP_OTHERS.PERCENT>0,'text-red rotate-180':CogsSearch.GP_OTHERS.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.GP_OTHERS.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs <span class="font-14">{{CogsSearch.GP_OTHERS.LastWeekAMT}}%</span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mt-2" ng-show="CogsSearch.PURCHASE_FOOD.SHOW">
+                <div class="text-center border-pastel-sky box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-sky d-block">Total Purchases Food <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.PURCHASE_FOOD.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.PURCHASE_FOOD.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.PURCHASE_FOOD.PERCENT>0,'text-red rotate-180':CogsSearch.PURCHASE_FOOD.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.PURCHASE_FOOD.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.PURCHASE_FOOD.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.PURCHASE_DRINKS.SHOW">
+                <div class="text-center border-pastel-red box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-red d-block">Total Purchases Drinks <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.PURCHASE_DRINKS.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.PURCHASE_DRINKS.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.PURCHASE_DRINKS.PERCENT>0,'text-red rotate-180':CogsSearch.PURCHASE_DRINKS.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.PURCHASE_DRINKS.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.PURCHASE_DRINKS.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.PURCHASE_WIN.SHOW">
+                <div class="text-center border-pastel-mud box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-mud d-block">Total Purchases Wine  <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.PURCHASE_WIN.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.PURCHASE_WIN.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.PURCHASE_WIN.PERCENT>0,'text-red rotate-180':CogsSearch.PURCHASE_WIN.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.PURCHASE_WIN.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.PURCHASE_WIN.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.TotalPurchase.SHOW">
+                <div class="text-center border-pastel-grey box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-grey d-block">Total Purchases <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.TotalPurchase.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.TotalPurchase.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.TotalPurchase.PERCENT>0,'text-red rotate-180':CogsSearch.TotalPurchase.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.TotalPurchase.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.TotalPurchase.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.TotalWastage.SHOW">
+                <div class="text-center border-pastel-blue box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-blue d-block">Total Wastage  <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.TotalWastage.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.TotalWastage.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.TotalWastage.PERCENT>0,'text-red rotate-180':CogsSearch.TotalWastage.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.TotalWastage.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.TotalWastage.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col mt-2" ng-show="CogsSearch.StaffFood.SHOW">
+                <div class="text-center border-pastel-mud box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-mud d-block">Staff Food <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.StaffFood.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.StaffFood.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.StaffFood.PERCENT>0,'text-red rotate-180':CogsSearch.StaffFood.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.StaffFood.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.StaffFood.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.PURCHASE_HOTBEV.SHOW">
+                <div class="text-center border-pastel-red box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-red d-block">Hot Bev <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.PURCHASE_HOTBEV.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.PURCHASE_HOTBEV.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.PURCHASE_HOTBEV.PERCENT>0,'text-red rotate-180':CogsSearch.PURCHASE_HOTBEV.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.PURCHASE_HOTBEV.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.PURCHASE_HOTBEV.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col mt-2" ng-show="CogsSearch.PURCHASE_OTHERS.SHOW">
+                <div class="text-center border-pastel-voilet box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-voilet d-block">Others <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.PURCHASE_OTHERS.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.PURCHASE_OTHERS.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.PURCHASE_OTHERS.PERCENT>0,'text-red rotate-180':CogsSearch.PURCHASE_OTHERS.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.PURCHASE_OTHERS.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.PURCHASE_OTHERS.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-2" ng-show="CogsSearch.PURCHASE_TOBACCO.SHOW">
+                <div class="text-center border-pastel-red box-shadow border-radius-3">
+                    <h5 class="heading-text-2 font-15 py-2 bg-pastel-red d-block">Tabacco <i class="far fa-sm fa-info-circle" data-toggle="tooltip" data-html="true" data-original-title="Your Text goes here..."></i></h5>
+                    <div class="px-2 mt-1">
+                        <span class="info-box-number d-block font-20 text-bold text-blue">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span> {{CogsSearch.PURCHASE_TOBACCO.CurrentWeekAMT | number:0  }}
+                            <span class="weekly_revenue_position font-11">
+                                <i class="fas fa-triangle"
+                                   ng-show="CogsSearch.PURCHASE_TOBACCO.PERCENT!=0"
+                                   ng-class="{'text-light-green':CogsSearch.PURCHASE_TOBACCO.PERCENT>0,'text-red rotate-180':CogsSearch.PURCHASE_TOBACCO.PERCENT<0}"></i>
+                                <span class="text-dark text-bold">{{CogsSearch.PURCHASE_TOBACCO.PERCENT | number :0}}<small>%</small></span>
+                            </span>
+                        </span>
+                        <span class="info-box-number font-11 d-block text-bold text-dark">
+                            vs  <span ng-bind-html="CURRENCY_SYMBOL"></span>  <span class="font-14">{{CogsSearch.PURCHASE_TOBACCO.LastWeekAMT  | number :0}} </span> Prev. wk
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-4 mb-3">
+                <div class="box-shadow">
+                    <div class="card-header"><h5 class="card-title">Variance Report</h5></div>
+                    <div class="table-responsive custom-scrollbar">
+                        <table class="table table-hover table-head-fixed compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>Category</th>
+                                    <th class="text-right">Theoritical GP</th>
+                                    <th class="text-right">Actual GP</th>
+                                    <th class="text-right">GP Variance</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="GPV in GPVarianceReport">
+                                <tr>
+                                    <td class="text-bold">{{GPV.CATEGORY_NAME}}</td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPV.THEORITICAL_GP | number :2}} </td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPV.ACTUAL_GP | number :2}} </td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPV.GP_VARIANCE | number :2}} </td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr class="text-bold">
+                                    <td>Total</td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPVarianceReport | total:'THEORITICAL_GP' | number :2}} </td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPVarianceReport | total:'ACTUAL_GP' | number :2}} </td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPVarianceReport | total:'GP_VARIANCE' | number :2}} </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="box-shadow">
+                    <div class="card-header"><h5 class="card-title">Bridge Food</h5></div>
+                    <div class="table-responsive custom-scrollbar">
+                        <table class="table table-hover table-head-fixed compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>Variance in Food GP</th>
+                                    <th class="text-right">Week 1</th>
+                                    <th class="text-right">Week 2</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="GPV in BridgeReportFood">
+                                <tr>
+                                    <td class="text-bold">{{GPV.Name}}</td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPV.WK1_VAL | number :2}} </td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPV.WK2_VAL | number :2}} </td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr class="text-bold">
+                                    <td>Total</td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{BridgeReportFood | total:'WK1_VAL' | number :2}} </td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{BridgeReportFood | total:'WK2_VAL' | number :2}} </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="box-shadow">
+                    <div class="card-header"><h5 class="card-title">Bridge Drinks</h5></div>
+                    <div class="table-responsive custom-scrollbar">
+                        <table class="table table-hover table-head-fixed compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>Category</th>
+                                    <th class="text-right">Week 1</th>
+                                    <th class="text-right">Week 2</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="GPV in BridgeReportDrinks">
+                                <tr>
+                                    <td class="text-bold">{{GPV.Name}}</td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPV.WK1_VAL | number :2}} </td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{GPV.WK2_VAL | number :2}} </td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr class="text-bold">
+                                    <td>Total</td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{BridgeReportDrinks | total:'WK1_VAL' | number :2}} </td>
+                                    <td class="text-right text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{BridgeReportDrinks | total:'WK2_VAL' | number :2}} </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="box-shadow">
+                    <div class="card-header"><h5 class="card-title">Waste value by item name</h5></div>
+                    <div class="card-body">
+                        <!--<img src="../../../E_Content/images/waste_value_by_item_name.jpg" class="img-fluid" />-->
+                        <div class="text-center" ng-show="data_Waste.length==0" empty-grid></div>
+                        <div class="chart" style="max-height:500px;overflow-y:auto" ng-show="data_Waste.length>0">
+                            <canvas id="doughnut_Waste" class="chart chart-doughnut"
+                                    chart-data="data_Waste"
+                                    chart-labels="labels_Waste"
+                                    chart-colors="colours_Waste"
+                                    chart-options="options_Waste"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="box-shadow" >
+                    <div class="card-header"><h5 class="card-title">List of staff food items</h5></div>
+                    <div class="card-body"  style="max-height:500px;overflow-y:auto" >
+                        <!--<img src="../../../E_Content/images/list_of_staff_food_items.jpg" class="img-fluid" />-->
+                        <div class="text-center" ng-show="data_Staff.length==0" empty-grid></div>
+                        <div  class="chart-container" style="position: relative; height:40vh; width:80vw" ng-show="data_Staff.length>0"  >
+                            <canvas id="doughnut_staff"   class="chart chart-doughnut"
+                                    chart-data="data_staff"
+                                    height="321"
+                                    chart-labels="labels_Staff"
+                                    chart-colors="colours_staff"
+                                    chart-options="options_staff"></canvas>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5">
+                <div class="box-shadow">
+                    <div class="card-header"><h5 class="card-title">Wastage Summary     - Overall</h5></div>
+                    <div class="card-body">
+                        <!--<img src="../../../E_Content/images/Wastage_Summary_Overall.jpg" class="img-fluid" />-->
+                        <div class="chart" style="max-height:500px;overflow-y:auto">
+                            <canvas id="WASTAGE_SUMMARY_BAR" height="500"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5">
+                <div class="box-shadow">
+                    <div class="card-header">
+                        <h5 class="card-title">Wastage Summary - Last 13 Weeks</h5>
+                        <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn btn-sm bg-light-grey cursor-pointer" data-toggle="tooltip" data-html="true" data-original-title="Graph" ng-click="TAB_CLICK_SHDL_FY(2)">
+                                            <input type="radio" name="options" id="option2" autocomplete="off"> <i class="fas fa-chart-line"></i>
+                                        </label>
+                                        <label class="btn btn-sm cursor-pointer bg-wenodo-blue text-white" ng-class="{'bg-wenodo-blue text-white':TAB_FLAG==1,'':TAB_FLAG!=1}" data-toggle="tooltip" data-html="true" data-original-title="Grid" ng-click="TAB_CLICK_SHDL_FY(1)">
+                                            <input type="radio" name="options" id="option1" autocomplete="off" checked=""> <i class="fas fa-list-ul"></i>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body" style="height:300px;">
+                        <img src="../../../E_Content/images/Wastage-Summary---last-13-weeks.jpg" class="img-fluid" ng-show="false" />
+                        <div class="table-responsive custom-scrollbar">
+                            <table class="table table-hover table-head-fixed compact_table">
+                                <thead class="bg-wenodo-border">
+                                    <tr>
+                                        <th></th>
+                                        <th class="text-nowrap">Week 1</th>
+                                        <th class="text-nowrap">Week 2</th>
+                                        <th class="text-nowrap">Week 3</th>
+                                        <th class="text-nowrap">Week 4</th>
+                                        <th class="text-nowrap">Week 5</th>
+                                        <th class="text-nowrap">Week 6</th>
+                                        <th class="text-nowrap">Week 7</th>
+                                        <th class="text-nowrap">Week 8</th>
+                                        <th class="text-nowrap">Week 9</th>
+                                        <th class="text-nowrap">Week 10</th>
+                                        <th class="text-nowrap">Week 11</th>
+                                        <th class="text-nowrap">Week 12</th>
+                                        <th class="text-nowrap">Week 13</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="WWSL in WeeklyWasteSummaryList">
+                                    <tr>
+                                        <td class="text-nowrap">{{WWSL.REASON}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK1}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK2}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK3}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK4}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK5}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK6}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK7}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK8}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK9}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK10}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK11}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK12}}</td>
+                                        <td class="text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{WWSL.WEEK13}}</td>
+                                    </tr>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr class="text-bold">
+                                        <td class="text-nowrap">Total</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK1' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK2' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK3' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK4' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK5' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK6' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK7' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK8' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK9' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK10' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK11' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK12' | number :2}}</td>
+                                        <td>{{WeeklyWasteSummaryList | total:'WEEK13' | number :2}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

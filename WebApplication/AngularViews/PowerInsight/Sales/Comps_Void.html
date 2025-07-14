@@ -1,0 +1,700 @@
+﻿<div class="card" ng-show="THIS_APP_PAGE_COMPONENTS_LIST.length==0 && LOAD_APP_COMPONENTS==1">
+    <div class="card-body">
+        <div empty-component></div>
+    </div>
+</div>
+<div id="PRINT_COMPS_VOIDS_ANALYSIS" ng-show="THIS_APP_PAGE_COMPONENTS_LIST.length>0">
+
+    <div class="container-fluid">
+        <div class="row my-3" hidden>
+            <div class="col-md-6 border-bottom">
+                <img src="{{LOGO_PATH}}" class="Print_Logo_start" alt="" />
+            </div>
+            <div class="col-md-6 border-bottom text-end">
+                <img src="../E_Content/images/logo.png" class="Print_Logo_end" alt="" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row sticky_pi_header">
+        <div class="col d-flex text-nowrap">
+            <h4>Comps & Voids Analysis</h4>
+            <div class="mt-1 ms-2">
+                <blockquote class="blockquote bg-light-success py-0 mb-0 rounded">
+                    <p class="mb-0 txt-dark">{{Input_Model.SELECTED_PERIOD_TYPE}}: <span ng-show="Input_Model.PERIOD_TYPE_ID!=4">{{Input_Model.WEEK_NO}} |</span>   {{Input_Model.START_DATE | date :'dd MMM yyyy'}} - {{Input_Model.END_DATE | date :'dd MMM yyyy'}}</p>
+                </blockquote>
+            </div>
+        </div>
+
+        <div class="col-2 ms-auto mobile-none print_pdf_doc">
+            <ul class="nav nav-pills" id="SITE_DDL">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{Input_Model.DISPLAY_TEXT_SITE}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu  scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li ng-click="SITE_All_Fn()" class="DontHideOnClick">
+                            <i class="fa-regular fa-lg"
+                               ng-class="{'fa-square-check txt-success':(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length,'fa-square':(SITE_LIST | filter:{IS_CHECK:true}).length!=SITE_LIST.length}"></i>
+                            <span class="ms-2">All</span>
+                            <span ng-show="false"> {{  IS_ALL_SITE_CHECK=(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length?true:false}}</span>
+                        </li>
+                        <li ng-repeat="site in SITE_LIST" class="DontHideOnClick d-flex" ng-click="SITE_Fn(site,2)" on-finish-render="ngRepeatFinishedequalizerRender">
+                            <i class="fa-regular fa-lg mt-2 " ng-class="{'fa-square-check txt-success':site.IS_CHECK,'fa-square':!site.IS_CHECK}"></i>
+                            <span class="truncate ms-2">{{site.Value}}</span>
+                        </li>
+                        <li class="sticky-bottom bg-white">
+                            <button ng-click="Fn_BLUR_SITES()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-primary">Apply</button>
+                            <button ng-click="RESET_SITES_Fn()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-light DontHideOnClick">Reset</button>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc">
+            <ul class="nav nav-pills" id="CURRENCY_DDL">
+                <li class="dropdown w-100">
+                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <span class="truncate">{{Input_Model.DISPLAY_TEXT_CURRENCY}}</span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu w-100">
+                        <li ng-repeat="currency in CURRENCY_LIST" ng-click="CURRENCY_Fn(currency)">
+                            {{currency.Value}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-auto mobile-none print_pdf_doc">
+            <input class="btn-check radio-light" id="option1" type="radio" name="filter">
+            <label class="btn list-light-primary"
+                   for="option1"
+                   data-bs-toggle="tooltip"
+                   ng-click="FILTER_BY_PERIOD_TYPE_Fn(1)"
+                   ng-class="{'list-light-secondary':Input_Model.PERIOD_TYPE_ID==1}"
+                   data-bs-original-title="Select Week">W</label>
+
+            <input class="btn-check radio-light" id="option2" type="radio" name="filter">
+            <label class="btn list-light-primary"
+                   for="option2"
+                   data-bs-toggle="tooltip"
+                   ng-click="FILTER_BY_PERIOD_TYPE_Fn(2)"
+                   ng-class="{'list-light-secondary':Input_Model.PERIOD_TYPE_ID==2}"
+                   data-bs-original-title="Select Month">M</label>
+
+            <input class="btn-check radio-light" ng-show="false" id="option3" type="radio" name="filter">
+            <label class="btn list-light-primary"
+                   for="option3"
+                   data-bs-toggle="tooltip"
+                   ng-click="FILTER_BY_PERIOD_TYPE_Fn(4)"
+                   ng-class="{'list-light-secondary':Input_Model.PERIOD_TYPE_ID==4}"
+                   data-bs-original-title="Select Period">P</label>
+
+            <input class="btn-check radio-light" id="option4" type="radio" name="filter">
+            <label class="btn list-light-primary"
+                   for="option4"
+                   data-bs-toggle="tooltip"
+                   ng-click="FILTER_BY_PERIOD_TYPE_Fn(3)"
+                   ng-class="{'list-light-secondary':Input_Model.PERIOD_TYPE_ID==3}"
+                   data-bs-original-title="Select Quarter">Q</label>
+
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc" id="DATEPICKER" ng-show="Input_Model.PERIOD_TYPE_ID==1">
+            <!--<label class="form-label mx-3 mt-2 text-nowrap">Week Ending</label>-->
+            <div class="input-group input-group-sm datepicker_margin" id="week-picker-wrapper">
+                <div class="input-group-prepend" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                    <button type="button" click-once class="btn btn-light week-prev px-3"><i class="fas fa-arrow-left"></i></button>
+                </div>
+                <input type="text" class="week-picker" ng-class="{'week-picker-disabled':BTN_HIDE_WEEK_PICKER==0}" readonly placeholder="Select a Week" />
+                <div class="input-group-append" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                    <button type="button" click-once class="btn btn-light week-next px-3">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc" id="MONTH_DATEPICKER1" ng-show="Input_Model.PERIOD_TYPE_ID==2">
+            <input class="form-control MonthView"
+                   name="START_DATE"
+                   autocomplete="off"
+                   placeholder="Select  month"
+                   ng-model="Input_Model.DISPLAY_START_DATE"
+                   type="text">
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc" ng-show="Input_Model.PERIOD_TYPE_ID==3">
+            <span ng-show="false">{{Input_Model.DISPLAY_QUARTER_START_DATE=((Input_Model.START_DATE | date :'dd/MM/yyyy') + '-' + (Input_Model.END_DATE | date :'dd/MM/yyyy'))}}</span>
+            <input class="form-control QuarterView"
+                   name="START_DATE"
+                   autocomplete="off"
+                   placeholder="Select  month"
+                   ng-model="Input_Model.DISPLAY_QUARTER_START_DATE"
+                   type="text">
+
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc" id="RANGE_DATEPICKER1" ng-show="Input_Model.PERIOD_TYPE_ID==4">
+            <span ng-show="false">{{Input_Model.DISPLAY_RANGE_START_DATE=HIT_ALLOW==1?((Input_Model.START_DATE | date :'dd/MM/yyyy') + '-' + (Input_Model.END_DATE | date :'dd/MM/yyyy')):''}}</span>
+            <div class="form">
+                <div id="week-picker-range" class="date week_picker_range">
+                    <span class="input-group-addon d-block">
+                        <input type="text"
+                               name="DATE"
+                               readonly
+                               ng-model="Input_Model.DISPLAY_RANGE_START_DATE"
+                               class="form-control DISPLAY_RANGE_START_DATE"
+                               placeholder="Select a week..." />
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto mobile-none mt-2 print_pdf_doc" id="BUTTON_FILTER">
+            <a class="text-dark c-pointer" data-bs-toggle="tooltip" ng-click="PRINT_PDF_CV(1,'PRINT_COMPS_VOIDS_ANALYSIS','Comps_Voids_Analysis',3)" data-bs-placement="top" title="Print"><i class="fa-light fa-print fa-lg"></i></a>
+            <a class="text-dark ms-2 c-pointer" ng-click="RESET_FILTER()" data-bs-toggle="tooltip" data-bs-placement="top" title="Reset Data"><i class="fa-light fa-arrows-rotate fa-lg"></i></a>
+        </div>
+        <div class="col-auto ms-auto desktop-none print_pdf_doc">
+            <!--desktop-none-->
+            <a class="text-dark c-pointer" data-bs-toggle="modal" data-bs-target="#filter_popup" data-bs-original-title="Filter" title="Filter"><i class="fa-light fa-filter fa-lg"></i></a>
+        </div>
+        <div class="col-sm-12 col-xl-12">
+            <h6 class="d-inline f-14">Selected Sites:</h6>
+            <span class="badge badge-light-primary sites-block" ng-repeat="site in SITE_LIST"
+                  ng-show="site.IS_APPLAY_CHECK">
+                {{site.Value}}
+                <span class="txt-primary"> {{site.DISPLAY_TEXT_CURRENCY}}</span>
+                <span ng-click="SITE_Fn(site,1)">
+                    <i class="fa-regular fa-times"></i>
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="header-top">
+                            <h5 class="txt-primary"></h5>
+                            <div class="card-header-right-icon">
+                                <button class="btn px-2" type="button"
+                                        id="Comps_btn"
+                                        ng-click="Fn_FLIP('comps_front','comps_back',0,HIDE_SHOW_FLAG_1,1)"
+                                        data-bs-trigger="hover"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Flip View">
+                                    <i class="fa-light fa-lg fa-right-left-large"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-body cardFront" id="comps_front">
+                            <div class="row" ng-show="!HIDE_SHOW_FLAG_1">
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card widget-hover border-t-grey">
+                                        <div class="card-body">
+                                            <div class="widget-content d-block">
+                                                <h6 class="mb-2 f-14">{{Display_Model.Sales.TITLE}}</h6>
+                                                <h4 class="txt-primary">{{Display_Model.Sales_Data.CURRENT_VALUE}}</h4>
+                                                <div class="row">
+                                                    <div class="col-md-6 f-w-500 text-nowrap">
+                                                        LW <i class="fa-regular  ms-1"
+                                                              ng-class="{'fa-arrow-up fa-rotate-success font-success':Display_Model.Sales_Data.LW_PERCENT>0,' fa-arrow-down fa-rotate-danger font-danger':Display_Model.Sales_Data.LW_PERCENT<0}"></i>
+                                                        <span class="font-success"
+                                                              ng-class="{'font-success':Display_Model.Sales_Data.LW_PERCENT>0,'font-secondary':Display_Model.Sales_Data.LW_PERCENT<0}">{{(NAN_Fn(Display_Model.Sales_Data.LW_PERCENT)?0:Display_Model.Sales_Data.LW_PERCENT)| makePositive}}%</span>
+                                                    </div>
+                                                    <div class="col-md-6 f-w-500 text-nowrap text-end">
+                                                        LY <i class="fa-regular ms-1 "
+                                                              ng-class="{'fa-arrow-up fa-rotate-success font-success':Display_Model.Sales_Data.LY_PERCENT>0,'fa-arrow-down fa-rotate-danger font-danger':Display_Model.Sales_Data.LY_PERCENT<0}"></i>
+                                                        <span class=""
+                                                              ng-class="{'font-success':Display_Model.Sales_Data.LY_PERCENT>0,'font-secondary':Display_Model.Sales_Data.LY_PERCENT<0}">{{(NAN_Fn(Display_Model.Sales_Data.LY_PERCENT)?0:Display_Model.Sales_Data.LY_PERCENT) | makePositive}}%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card widget-hover border-t-grey">
+                                        <div class="card-body">
+                                            <div class="widget-content d-block">
+                                                <h6 class="mb-2 f-14">{{Display_Model.Total_Comps.TITLE}}</h6>
+                                                <h4 class="txt-primary"> {{Display_Model.Total_Comps_Data.CURRENT_VALUE}} <span class="f-w-500 text-nowrap text-end f-14 txt-dark float-end" ng-show="Display_Model.Total_Comps_Data.SALES_PERCENT!=null">% of Sales: <span class="ms-1">{{Display_Model.Total_Comps_Data.SALES_PERCENT}}</span></span></h4>
+                                                <div class="row">
+                                                    <div class="col-md-6 f-w-500 text-nowrap">
+                                                        LW <i class="fa-regular  ms-1"
+                                                              ng-class="{'fa-arrow-up fa-rotate-success font-success':Display_Model.Total_Comps_Data.LW_PERCENT>0,' fa-arrow-down fa-rotate-danger font-danger':Display_Model.Total_Comps_Data.LW_PERCENT<0}"></i>
+                                                        <span class=""
+                                                              ng-class="{'font-success':Display_Model.Total_Comps_Data.LW_PERCENT>0,'font-danger':Display_Model.Total_Comps_Data.LW_PERCENT<0}">{{(NAN_Fn(Display_Model.Total_Comps_Data.LW_PERCENT)?0:Display_Model.Total_Comps_Data.LW_PERCENT)| makePositive}}%</span>
+                                                    </div>
+                                                    <div class="col-md-6 f-w-500 text-nowrap text-end">
+                                                        LY <i class="fa-regular ms-1 "
+                                                              ng-class="{'fa-arrow-up fa-rotate-success font-success':Display_Model.Total_Comps_Data.LY_PERCENT>0,'fa-arrow-down fa-rotate-danger font-danger':Display_Model.Total_Comps_Data.LY_PERCENT<0}"></i>
+                                                        <span class=""
+                                                              ng-class="{'font-success':Display_Model.Total_Comps_Data.LY_PERCENT>0,'font-secondary':Display_Model.Total_Comps_Data.LY_PERCENT<0}">
+                                                            {{(NAN_Fn(Display_Model.Total_Comps_Data.LY_PERCENT)?0:Display_Model.Total_Comps_Data.LY_PERCENT) | makePositive}}%
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card widget-hover border-t-grey">
+                                        <div class="card-body">
+                                            <div class="widget-content d-block">
+                                                <h6 class="mb-2 f-14">{{Display_Model.Total_Voids.TITLE}}</h6>
+                                                <h4 class="txt-primary"> {{Display_Model.Total_Voids_data.CURRENT_VALUE}} <span class="f-w-500 text-nowrap text-end f-14 txt-dark float-end" ng-show="Display_Model.Total_Voids_data.SALES_PERCENT!=null">% of Sales: <span class="ms-1">{{Display_Model.Total_Voids_data.SALES_PERCENT}}</span></span></h4>
+                                                <div class="row">
+                                                    <div class="col-md-6 f-w-500 text-nowrap">
+                                                        LW <i class="fa-regular  ms-1"
+                                                              ng-class="{'fa-arrow-up fa-rotate-success font-success':Display_Model.Total_Voids_data.LW_PERCENT>0,' fa-arrow-down fa-rotate-danger font-danger':Display_Model.Total_Voids_data.LW_PERCENT<0}"></i>
+                                                        <span class=""
+                                                              ng-class="{'font-success':Display_Model.Total_Voids_data.LW_PERCENT>0,'font-secondary':Display_Model.Total_Voids_data.LW_PERCENT<0}">{{(NAN_Fn(Display_Model.Total_Voids_data.LW_PERCENT)?0:Display_Model.Total_Voids_data.LW_PERCENT)| makePositive}}%</span>
+                                                    </div>
+                                                    <div class="col-md-6 f-w-500 text-nowrap text-end">
+                                                        LY <i class="fa-regular ms-1 "
+                                                              ng-class="{'fa-arrow-up fa-rotate-success font-success':Display_Model.Total_Voids_data.LY_PERCENT>0,'fa-arrow-down fa-rotate-danger font-danger':Display_Model.Total_Voids_data.LY_PERCENT<0}"></i>
+                                                        <span class=""
+                                                              ng-class="{'font-success':Display_Model.Total_Voids_data.LY_PERCENT>0,'font-secondary':Display_Model.Total_Voids_data.LY_PERCENT<0}">{{(NAN_Fn(Display_Model.Total_Voids_data.LY_PERCENT)?0:Display_Model.Total_Voids_data.LY_PERCENT) | makePositive}}%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card height-equal">
+                                        <div class="card-header" ng-if="!HIDE_SHOW_FLAG_1">
+                                            <div class="header-top">
+                                                <h6 class="font-primary">{{Display_Model.COMPS_BY_REASON_DATA.TITLE}}</h6>
+                                                <div class="card-header-right-icon">
+                                                    <span class="badge badge-light text-dark"> Total: {{Display_Model.COMPS_BY_REASON_DATA.TITLE_VALUE}}</span>
+                                                    <span class="badge badge-light-primary" ng-show="Display_Model.COMPS_BY_REASON_DATA.CUMULATIVE_YTD!=null">Cumulative YTD: {{Display_Model.COMPS_BY_REASON_DATA.CUMULATIVE_YTD}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div id="Comps_by_Reason"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card height-equal">
+                                        <div class="card-header" ng-if="!HIDE_SHOW_FLAG_1">
+                                            <div class="header-top">
+                                                <h6 class="font-primary">{{Display_Model.COMPS_DATA.TITLE}}</h6>
+                                                <div class="card-header-right-icon" ng-show="Display_Model.COMPS_DATA.CUMULATIVE_YTD!=null">
+                                                    <span class="badge badge-light-primary">Cumulative YTD: {{Display_Model.COMPS_DATA.CUMULATIVE_YTD}}</span>
+                                                    <!--<div class="card shadow-sm mb-0 bg-light-success">
+                                                        <div class="card-body p-2">
+                                                            <span class="f-light">Cumulative YTD:</span> <span class="text-dark fw-bold">{{Display_Model.COMPS_DATA.CUMULATIVE_YTD}}</span>
+                                                        </div>
+                                                    </div>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="Comps"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card height-equal">
+                                        <div class="card-header" ng-if="!HIDE_SHOW_FLAG_1">
+                                            <div class="header-top">
+                                                <h6 class="font-primary">{{Display_Model.COMPS_EMPL.TITLE}}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="Comps_by_Employee"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card height-equal mb-0">
+                                        <div class="card-header" ng-if="!HIDE_SHOW_FLAG_1">
+                                            <div class="header-top">
+                                                <h6 class="font-primary">{{Display_Model.VOIDS_BY_REASON_DATA.TITLE}}</h6>
+                                                <div class="card-header-right-icon">
+                                                    <span class="badge badge-light text-dark"> Total: {{Display_Model.VOIDS_BY_REASON_DATA.TITLE_VALUE}}</span>
+                                                    <span class="badge badge-light-primary" ng-show="Display_Model.VOIDS_BY_REASON_DATA.CUMULATIVE_YTD!=null"> Cumulative YTD: {{Display_Model.VOIDS_BY_REASON_DATA.CUMULATIVE_YTD}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div id="Voids_by_Reason"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card mb-0 height-equal">
+                                        <div class="card-header" ng-if="!HIDE_SHOW_FLAG_1">
+                                            <div class="header-top">
+                                                <h6 class="font-primary">{{Display_Model.VOIDS_DATA.TITLE}}</h6>
+                                                <div class="card-header-right-icon" ng-show="Display_Model.VOIDS_DATA.CUMULATIVE_YTD!=null">
+                                                    <span class="badge badge-light-primary">Cumulative YTD: {{Display_Model.VOIDS_DATA.CUMULATIVE_YTD}}</span>
+                                                    <!--<div class="card shadow-sm mb-0 bg-light-success">
+                                                        <div class="card-body p-2">
+                                                            <span class="f-light">Cumulative YTD:</span> <span class="text-dark fw-bold">{{Display_Model.VOIDS_DATA.CUMULATIVE_YTD}}</span>
+                                                        </div>
+                                                    </div>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="Voids"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-show="!HIDE_SHOW_FLAG_1">
+                                    <div class="card mb-0 height-equal">
+                                        <div class="card-header">
+                                            <div class="header-top" ng-if="!HIDE_SHOW_FLAG_1">
+
+                                                <h6 class="font-primary">{{Display_Model.VOIDS_BY_EMPLOYEE_DATA.TITLE}}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="Voids_by_Employee"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="card-body cardBack" id="comps_back">
+                            <div class="card-header ps-0 pt-0">
+                                <div class="header-top">
+                                    <h6 class="font-primary">Comps Summary</h6>
+                                </div>
+                            </div>
+                            <div class="table-responsive scrollbar-wrapper mx-height-400" ng-if="HIDE_SHOW_FLAG_1">
+                                <table class="table table-hover table-border consolidated-table mb-2" id="CV">
+                                    <thead class="table-header-fixed">
+                                        <tr>
+                                            <th class="text-nowrap">Week Ending</th>
+                                            <th class="text-end" width="20%" ng-repeat="DISCOUNT_REASON in Display_Model.DISCOUNT_REASON track by $index">{{DISCOUNT_REASON}}</th>
+                                            <th class="text-end bg-grey">Total</th>
+                                            <th class="text-end">Gross Sales</th>
+                                            <th class="text-end">Discount %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="list in Display_Model.Void_C50_List.CompsSummaryData" ng-class="{'bg-light-purple f-w-700':list.ROW_TEXT=='Avg. 4 Weeks' || list.ROW_TEXT=='Avg. 13 Weeks' || list.ROW_TEXT=='Avg. 26 Weeks','t-footer':$last}">
+                                            <td class="text-nowrap">{{list.ROW_TEXT}}</td>
+                                            <td class="text-end" ng-repeat="data in list.DISCOUNT_DATA_STRING track by $index">{{data}}</td>
+                                            <td class="text-end bg-grey text-dark">{{list.TOTAL}}</td>
+                                            <td class="text-end">{{list.GROSS_SALES}}</td>
+                                            <td class="text-end">{{list.PERCENTAGE_DISCOUNT}}</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <div class="card-header ps-0">
+                                <div class="header-top">
+                                    <h6 class="font-primary">Voids Summary</h6>
+                                </div>
+                            </div>
+                            <div class="table-responsive scrollbar-wrapper mx-height-400" ng-if="HIDE_SHOW_FLAG_1">
+                                <table class="table table-hover consolidated-table">
+                                    <thead class="table-header-fixed">
+                                        <tr>
+                                            <th width="3%"></th>
+                                            <th></th>
+                                            <th class="text-center" colspan="2" ng-repeat="weekDate in Display_Model.Void_C51_GrpDate_List  track by $index">{{weekDate}}</th>
+                                            <th class="text-end" colspan="2"></th>
+                                            <th class="text-end">Weekly Sales</th>
+                                        </tr>
+                                        <tr class="bg-light-purple">
+                                            <th></th>
+                                            <th>Voids Summary</th>
+                                            <th class="text-center" colspan="2" 
+                                                ng-repeat="weekDay in Display_Model.Void_C51_GrpDay_List track by $index">{{weekDay}}</th>
+                                            <th class="text-center" colspan="2">Total</th>
+                                            <th class="text-end">{{Display_Model.Void_C51_List.VoidGross}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th>Reason</th>
+                                            <th class="text-end" ng-repeat-start="x in [].constructor(Input_Model.CONSTRUCTOR_51) track by $index" >Unit</th>
+                                            <th class="text-end" ng-repeat-end>Amount</th>
+                                            <!--<th class="text-end">Unit</th>
+                                            <th class="text-end">Amount</th>
+                                            <th class="text-end">Unit</th>
+                                            <th class="text-end">Amount</th>
+                                            <th class="text-end">Unit</th>
+                                            <th class="text-end">Amount</th>
+                                            <th class="text-end">Unit</th>
+                                            <th class="text-end">Amount</th>
+                                            <th class="text-end">Unit</th>
+                                            <th class="text-end">Amount</th>
+                                            <th class="text-end">Unit</th>
+                                            <th class="text-end">Amount</th>
+                                            <th class="text-end">Unit</th>
+                                            <th class="text-end">Amount</th>-->
+                                            <th class="text-end">% Sales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="data in Display_Model.Void_C51_List.groupDatas" ng-if="data.ColSpan!=0">
+                                            <td rowspan="{{data.ColSpan}}"><!--<span class="verticaltext_content text-dark">--><span class="f-w-700">{{Display_Model.Void_C51_List.GroupName}}</span><!--</span>--></td>
+                                            <td>{{data.ReasonName}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in data.UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in data.TOTAL_UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end">{{data.Percentage}}</td>
+                                        </tr>
+                                        <tr ng-repeat="data in Display_Model.Void_C51_List.groupDatas" ng-if="data.ColSpan==0">
+                                            <td>{{data.ReasonName}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in data.UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in data.TOTAL_UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end">{{data.Percentage}}</td>
+                                        </tr>
+                                        <tr ng-class="{'f-w-700':Display_Model.Void_C51_List.GroupName =='By Reason Code' || Display_Model.EMP_C51_List.GroupName=='By Employee'}">
+                                            <td rowspan="2"></td>
+                                            <td class="bg-grey">Total</td>
+                                            <td class="text-end bg-grey" ng-repeat-start="UNIT_AMT in Display_Model.Void_C51_Bottom_List track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end bg-grey" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end bg-grey" ng-repeat-start="TOTAL_UNIT_AMT in Display_Model.Void_C51_Bottom_Total_List track by $index">{{TOTAL_UNIT_AMT.Key}}</td>
+                                            <td class="text-end bg-grey" ng-repeat-end>{{TOTAL_UNIT_AMT.Value}}</td>
+                                            <td class="text-end bg-grey">{{Display_Model.Void_C51_List.groupDatas[0].Percentage_Bottom}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Last Week</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in Display_Model.Void_C51_List.LW_UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in Display_Model.Void_C51_List.TOTAL_LW_UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end"></td>
+                                        </tr>
+                                        <!--EMP-->
+                                        <tr>
+                                            <th></th>
+                                            <th>Employee</th>
+                                            <th class="text-end" ng-repeat-start="x in [].constructor(Input_Model.CONSTRUCTOR_51) track by $index">Unit</th>
+                                            <th class="text-end" ng-repeat-end>Amount</th>
+                                            <th class="text-end">% Sales</th>
+                                        </tr>
+                                        <tr ng-repeat="data in Display_Model.EMP_C51_List.groupDatas " ng-if="data.ColSpan!=0">
+                                            <td rowspan="{{data.ColSpan}}"><!--<span class="verticaltext_content text-nowrap text-dark">--><span class="f-w-700">{{Display_Model.EMP_C51_List.GroupName}}</span><!--</span>--></td>
+                                            <td>{{data.ReasonName}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in data.UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in data.TOTAL_UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end">{{data.Percentage}}</td>
+                                        </tr>
+                                        <tr ng-repeat="data in Display_Model.EMP_C51_List.groupDatas" ng-if="data.ColSpan==0">
+                                            <td>{{data.ReasonName}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in data.UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in data.TOTAL_UNIT_AMT track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end">{{data.Percentage}}</td>
+                                        </tr>
+                                        <tr ng-class="{'td-footer':Display_Model.Void_C51_List.GroupName =='By Reason Code' || Display_Model.EMP_C51_List.GroupName=='By Employee'}">
+                                            <td rowspan="2"></td>
+                                            <td>Total</td>
+                                            <td class="text-end" ng-repeat-start="UNIT_AMT in Display_Model.EMP_C51_Bottom_List track by $index">{{UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{UNIT_AMT.Value}}</td>
+                                            <td class="text-end" ng-repeat-start="TOTAL_UNIT_AMT in Display_Model.EMP_C51_Bottom_Total_List track by $index">{{TOTAL_UNIT_AMT.Key}}</td>
+                                            <td class="text-end" ng-repeat-end>{{TOTAL_UNIT_AMT.Value}}</td>
+                                            <td class="text-end">{{Display_Model.Void_C51_List.groupDatas[0].Percentage_Bottom}}</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-6 col-ed-6 col-xl-6 box-col-4">
+                <div class="card height-equal">
+                    <div class="card-header">
+                        <div class="header-top">
+                            <h5 class="txt-primary">
+                                Complimentary <i class="fa-regular fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-original-title="The complimentary reasons are based on the reason codes used in ePOS and the %s reflect the contribution % towards total."></i>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive scrollbar-wrapper">
+                            <!-- scrollbar-wrapper -->
+                            <table class="table table-hover consolidated-table">
+                                <thead class="table-header-fixed">
+                                    <tr>
+                                        <th>Reason Code</th>
+                                        <th class="text-end text-nowrap" ng-repeat="Header in Display_Model.HEADER_LIST">{{Header}}</th>
+                                        <!--<th class="text-end">Tue</th>
+                                        <th class="text-end">Wed</th>
+                                        <th class="text-end">Thu</th>
+                                        <th class="text-end">Fri</th>
+                                        <th class="text-end">Sat</th>
+                                        <th class="text-end">Sun</th>-->
+                                        <th class="text-end bg-grey">Total</th>
+                                        <th class="text-end"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data_Comp_C48 in Display_Model.Complimentary_C48_List"
+                                        ng-class="{'td-footer':data_Comp_C48.COMPLIMENTARY_VOID_NAME =='Total Comps' , 'bg-primary td-text-white':data_Comp_C48.COMPLIMENTARY_VOID_NAME=='% of Gross Sales'}"
+                                        on-finish-render="ngRepeatFinishedequalizerRender">
+                                        <td>{{data_Comp_C48.COMPLIMENTARY_VOID_NAME}}</td>
+                                        <td ng-repeat="data in data_Comp_C48.WEEKLY_AMOUNT track by $index" ng-class="{'bg-grey text-dark':$last}" class="text-end">{{data}}</td>
+                                        <td class="text-end">{{data_Comp_C48.Percent}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-6 col-ed-6 col-xl-6 box-col-4">
+                <div class="card height-equal">
+                    <div class="card-header">
+                        <div class="header-top">
+                            <h5 class="txt-primary">Voids <i class="fa-regular fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-original-title="The void reasons are based on the reason codes used in ePOS and the %s reflect the contribution % towards total."></i></h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive scrollbar-wrapper">
+                            <table class="table table-hover consolidated-table">
+                                <thead class="table-header-fixed">
+                                    <tr>
+                                        <th>Voids</th>
+                                        <th class="text-end text-nowrap" ng-repeat="Header in Display_Model.HEADER_LIST">{{Header}}</th>
+                                        <!--<th class="text-end">Tue</th>
+                                        <th class="text-end">Wed</th>
+                                        <th class="text-end">Thu</th>
+                                        <th class="text-end">Fri</th>
+                                        <th class="text-end">Sat</th>
+                                        <th class="text-end">Sun</th>-->
+                                        <th class="text-end bg-grey">Total</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data_Comp_C49 in Display_Model.Void_C49_List"
+                                        ng-class="{'td-footer':data_Comp_C49.COMPLIMENTARY_VOID_NAME =='Total Voids', 'bg-primary td-text-white':data_Comp_C49.COMPLIMENTARY_VOID_NAME=='% of Gross Sales'}" on-finish-render="ngRepeatFinishedequalizerRender">
+                                        <td>{{data_Comp_C49.COMPLIMENTARY_VOID_NAME}}</td>
+                                        <td ng-repeat="data in data_Comp_C49.WEEKLY_AMOUNT track by $index" ng-class="{'bg-grey text-dark':$last}" class="text-end">{{data}}</td>
+                                        <td class="text-end" ng-class="{'t-footer':data_Comp_C49.COMPLIMENTARY_VOID_NAME =='Total Voids' || data_Comp_C49.COMPLIMENTARY_VOID_NAME=='% of Gross Sales'}">{{data_Comp_C49.Percent}} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid Ends-->
+<div class="modal fade" id="filter_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Filters</h5>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer"
+                                       data-toggle="dropdown">
+                                        <span class="select-label" id="select_label">
+                                            {{Input_Model.DISPLAY_TEXT_SITE}}
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications" class="dropdown-menu w-auto" style="min-width:100%">
+                                        <li ng-click="SITE_All_Fn()" class="DontHideOnClick">
+                                            <i class="fa-regular fa-lg"
+                                               ng-class="{'fa-square-check txt-success':(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length,'fa-square':(SITE_LIST | filter:{IS_CHECK:true}).length!=SITE_LIST.length}"></i>
+                                            <span class="fs-12">All</span>
+                                            <span ng-show="false"> {{  IS_ALL_SITE_CHECK=(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length?true:false}}</span>
+                                        </li>
+                                        <li ng-repeat="site in SITE_LIST" class="DontHideOnClick text-nowrap" ng-click="SITE_Fn(site,2)">
+                                            <i class="fa-regular fa-lg" ng-class="{'fa-square-check txt-success':site.IS_CHECK,'fa-square':!site.IS_CHECK}"></i>
+                                            <span class="fs-12">{{site.Value}}</span>
+                                        </li>
+                                        <li class="sticky-bottom bg-white float-end">
+                                            <button ng-click="Fn_BLUR_SITES()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-primary">Apply</button>
+                                            <button ng-click="RESET_SITES_Fn()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-light DontHideOnClick">Reset</button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                        <span class="select-label" id="select_label">
+                                            {{Input_Model.DISPLAY_TEXT_CURRENCY}}
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications" class="dropdown-menu w-100">
+                                        <li ng-repeat="currency in CURRENCY_LIST" ng-click="CURRENCY_Fn(currency)">
+                                            {{currency.Value}}
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <div class="input-group input-group-sm" id="week-picker-copy-wrapper">
+                                <div class="input-group-prepend" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                                    <button type="button" click-once class="btn btn-light week-prev px-2"><i class="fas fa-arrow-left"></i></button>
+                                </div>
+                                <input type="text" class="form-control week-picker-copy" readonly placeholder="Select a Week" />
+                                <div class="input-group-append" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                                    <button type="button" click-once class="btn btn-light week-next px-2">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

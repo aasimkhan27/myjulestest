@@ -1,0 +1,260 @@
+﻿<div class="card">
+    <templateurl template-url="../AngularViews/CashupApp/Cashup_Entry/CashupEntryHeader.html" class="cashup_entry_header"></templateurl>
+
+    <div class="card-body pt-1 cashup-entry-body">
+        <div class="row gx-2 resSites cashup_entry_header_details">
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Site: <span class="f-w-700">{{SELECTED_SITE}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Area: <span class="f-w-700">{{SELECTED_AREA || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Session: <span class="f-w-700">{{SELECTED_SESSION || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Cashup Date: <span class="f-w-700">{{CASHUP_DATE | date:DISPLAY_DATE_FORMAT }}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Actual : {{CASHUP_INFO.ACTUAL = (TOTAL_CARD_AMOUNT| number:2 )}}
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    ePOS : {{CASHUP_INFO.EPOS | number:2}}
+                </span>
+            </div>
+
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Variance : <span class="txt-danger" ng-if="(TOTAL_CARD_AMOUNT-CASHUP_INFO.EPOS) < 0">
+                        <i class="fa-light fa-arrow-down-right txt-danger"></i>
+                        {{(TOTAL_CARD_AMOUNT-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+
+                    <span class="txt-success" ng-if="(TOTAL_CARD_AMOUNT-CASHUP_INFO.EPOS) > 0">
+                        <i class="fa-light fa-arrow-up-right txt-success"></i>
+                        {{(TOTAL_CARD_AMOUNT-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+                    <span class="txt-success" ng-if="(TOTAL_CARD_AMOUNT-CASHUP_INFO.EPOS) == 0">
+                        <i class="fa-light"></i>
+                        {{(TOTAL_CARD_AMOUNT-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xxl-12 col-xl-12 col-md-12 mt-2">
+                <h5 class="headings">Cards</h5>
+                <form name="CardsEntryForm" autocomplete="off" novalidate>
+                    <div class="table-responsive scrollbar-wrapper resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-center text-nowrap" width="10%">PDQ Terminal <span class="txt-danger">*</span></th>
+                                    <th class="text-center text-nowrap" ng-repeat="card in CARDS_LIST" width="10%">
+                                        <i ng-class="getCardIcon(card.CARD_NAME)" class="me-2 txt-primary"></i> {{ card.CARD_NAME }}
+                                    </th>
+                                    <!--<th class="text-center text-nowrap" ng-repeat="card in CARDS_LIST | filter:{ACTIVE: true}" width="10%">
+                                    <i ng-class="getCardIcon(card.CARD_NAME)" class="me-2 txt-primary"></i> {{ card.CARD_NAME }}
+                                </th>-->
+                                    <th class="text-end text-nowrap" width="10%">Total Amount</th>
+                                    <th class="text-center text-nowrap" width="10%">Uploads</th>
+                                    <th class="text-center text-nowrap" width="10%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in CARDS_ENTRY_LIST" ng-show="ROW.ACTIVE==1" ng-init="nginit_cards(ROW)">
+                                    <td>
+                                        <div class="dropdown">
+                                            <input type="hidden"
+                                                   ng-model="ROW.SELECTED_PDQ.PDQ_CODE"
+                                                   name="PDQ_CODE_{{$index}}"
+                                                   required
+                                                   ng-class="{'error':CardsEntryForm.submitted && CardsEntryForm.PDQ_CODE_{{$index}}.$error.required}" />
+                                            <div class="dropdown w-100" aria-labelledby="PdqDDL">
+                                                <button class="select-label"
+                                                        type="button"
+                                                        id="PdqDDL"
+                                                        ng-class="{'error':CardsEntryForm.submitted && CardsEntryForm.PDQ_CODE_{{$index}}.$error.required,
+                                                                   'disabled':!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}"
+                                                        data-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    <!--ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"-->
+                                                    <span class="truncate">{{ROW.SELECTED_PDQ.PDQ_CODE || DD_DEFAULT_TEXT.PDQ}}</span>
+                                                </button>
+                                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li ng-click="RESET_PDQ_SELECTION(ROW)">
+                                                        {{DD_DEFAULT_TEXT.PDQ}}
+                                                    </li>
+                                                    <li ng-repeat="PDQ in PDQ_LIST" ng-click="SELECT_PDQ(ROW,PDQ)">
+                                                        {{PDQ.PDQ_CODE}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td ng-repeat="card in CARDS_LIST">
+                                        <input type="text"
+                                               only-digits placeholder="Add Here"
+                                               class="mb-0 min-w-100 text-end" ng-model="ROW[card.CARD_NAME+'_VALUE'].AMOUNT"
+                                               ng-change="CALCULATE_TOTAL_AMOUNT_ROWWISE(ROW,CARDS_ENTRY_LIST)"
+                                               ng-disabled="(!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED) || card.ACTIVE==false" />
+                                        
+                                    </td>
+                                    <td class="mb-0 text-end">{{ROW.TOTAL_AMOUNT | number:2}}</td>
+                                    <td class="text-center">
+                                        <label for="CardFile{{ROW.INDEX}}" class="btn btn-primary text-nowrap" ng-show="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                            <i class="fa-light fa-arrow-up-from-bracket"></i>
+                                            Upload
+                                        </label>
+                                        <span class="hidden-input">
+                                            <input type="file" name="file" required="required"
+                                                   id="CardFile{{ROW.INDEX}}"
+                                                   class=" min-w-100"
+                                                   ng-files="getTheFilesToUploadCards($files, 'CardFile', 10, ROW, 11, ROW.INDEX)"
+                                                   ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                        </span>
+
+                                        <div ng-repeat="upls in ROW.UploadedFiles">
+                                            <button class="btn btn-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                                                <span class="truncate"><i class="fa-solid fa-file-pdf me-2"></i>{{upls.ORIGINAL_FILE_NAME| limitTo: 10}}</span>
+                                            </button>
+
+                                            <ul class="dropdown-menu dropdown-block dropdown-menu-end" style="">
+                                                <li>
+                                                    <a class="dropdown-item d-block" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                                        <i class="fa-light fa-eye me-2"></i>
+                                                        View
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item d-block" ng-show="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"
+                                                       ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && DELETE_UPLOAD(ROW,upls,$index)">
+                                                        <i class="fa-light fa-trash-can me-2"></i>
+                                                        Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <button click-once type="button" class="btn btn-transparent c-pointer" ng-click="DELETE_ROW(ROW)" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"><i class="fa-light fa-trash-can txt-danger"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray">
+                                    <td class="text-center">Total</td>
+                                    <td ng-repeat="card in CARDS_LIST"></td><!--| filter:{ACTIVE: true}-->
+                                    <td class="text-end">{{ TOTAL_CARD_AMOUNT | number:2}}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="{{4+CARDS_LIST.length}}">
+                                        <button click-once type="button" class="btn btn-outline w-100" ng-click="ADD_NEW_ROW()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                            <i class="fa-light fa-plus"></i> Add New Row
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+                <hr />
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <h6 class="headings">Comments</h6>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resTextAreaCashup">
+                        <textarea rows="4" placeholder="Add Comments..." ng-model="CASHUP_ENTRY_NOTE" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"></textarea>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once type="button" class="btn btn-primary" ng-click="INS_UPD_CASHUP_HEADER_NOTES()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">Comment</button>
+                    </div>
+                </div>
+                <div class="textarea-bg resText" ng-repeat="COM in CARD_TAB_NOTE_LIST" ng-init="NOTE_INIT(COM)">
+                    <div class="comment-elements">
+                        <span class="text_avatar">{{COM.USER_NAME | limitTo:1}}</span>
+                        <span>{{COM.USER_NAME}}</span>
+                        <span class="text-gray">{{COM.CREATED_DATE | date:'dd-MMM-yyyy hh:mm a'}}</span>
+                        <span class="comment-pen-icon">
+                            <i class="fa-light fa-pen ms-1 c-pointer" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && EDIT_COMMENT(COM)" ng-disabled=""></i>
+                            <i class="fa-light fa-trash-alt ms-1 c-pointer txt-danger" ng-show="!COM.isEditable" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && DELETE_COMMENT(COM)"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-xl-auto col-md-auto empty-coloumn">
+                            <span>&nbsp;</span>
+                        </div>
+                        <div class="col-xxl col-xl col-md resTextAreaCashup">
+                            <textarea ng-readonly="!COM.isEditable"
+                                      ng-model="COM.NOTE"
+                                      ng-class="{'bg-white':COM.isEditable==true,'bg-gray':COM.isEditable==false}"
+                                      ng-blur="INS_UPD_CASHUP_HEADER_NOTES(COM)">{{COM.NOTE}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <!--Comments Code Ends-->
+            </div>
+        </div>
+    </div>
+    <div class="sticky_bottom_navigator">
+        <div class="card">
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once type="button" class="btn btn-light" ng-click="PREVIOUS()">Previous</button>
+                        <button click-once type="button" class="btn btn-light" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" data-bs-target="#save" data-bs-toggle="modal" ng-click="INS_UPD_DEL_CARD_DECLARATION(0)">Save</button>
+                        <button click-once type="button" class="btn btn-primary" ng-click="CONTINUE()" data-bs-toggle="modal">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="proceed" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button> <!-- ng-click="RESET_ON_MODAL_CLOSE()"-->
+                </div>
+                <div class="modal-body">
+                    <div class="modal-toggle-wrapper">
+                        <div class="d-flex justify-content-center">
+                            <div class="tickIcon_danger">
+                                <div class="badge text-bg-danger-modal">
+                                    <i class="fa-solid fa-exclamation fa-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="modal_infoText">
+                            There is a Variance of {{CURRENCY_SYMBOL}}  {{(TOTAL_CARD_AMOUNT-CASHUP_INFO.EPOS) | number:2}}, do you still
+                            want to proceed?
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <div class="row w-100">
+                        <div class="col-xxl-6 col-md-6 col-md-6">
+                            <button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button> <!--ng-click="RESET_ON_MODAL_CLOSE()"-->
+                        </div>
+                        <div class="col-xxl-6 col-md-6 col-md-6">
+                            <button click-once class="btn btn-primary w-100" type="button" data-bs-dismiss="modal" ng-click="INS_UPD_DEL_CARD_DECLARATION(1)">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

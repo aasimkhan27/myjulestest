@@ -1,0 +1,531 @@
+﻿<form id="BrnForm" name="BrnForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            ng-disabled="BrachSearch.CONTROL_ENABLE_DISABLE_FLAG"
+                            name="CUSTOMER_ID"
+                            ng-model="BrachSearch.CUSTOMER_ID"
+                            ng-options="EL.CUSTOMER_ID as EL.CUSTOMER_NAME for EL in BRANCH_CUSTOMER_LIST"
+                            ng-change="GET_ENTITY_LIST()"
+                            required
+                            ng-class="{'error':BrnForm.submitted && BrnForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer -</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            ng-disabled="BrachSearch.CONTROL_ENABLE_DISABLE_FLAG"
+                            name="ENTITY_ID"
+                            ng-model="BrachSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            ng-change="GET_LOCATION()"
+                            required
+                            ng-class="{'error':BrnForm.submitted && BrnForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Time Zone:*</label>
+                    <select class="custom-select"
+                            name="TIME_ZONE_NAME"
+                            ng-model="BrachSearch.TIME_ZONE_NAME"
+                            ng-options="EL.TIME_ZONE_NAME as EL.TIME_ZONE_NAME for EL in TIME_ZONE_NAME_LIST"
+                            required
+                            ng-class="{'error':BrnForm.submitted && BrnForm.TIME_ZONE_NAME.$error.required}">
+                        <option value="">- Please Select Time Zone-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Location:*</label>
+                    <select class="custom-select"
+                            name="LOCATION_ID"
+                            ng-model="BrachSearch.LOCATION_ID"
+                            ng-options="EL.LOCATION_ID as EL.LOCATION_NAME for EL in LOCATION"
+                            required
+                            ng-class="{'error':BrnForm.submitted && BrnForm.LOCATION_ID.$error.required}">
+                        <option value="">- Please Select Location-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Currency:*</label>
+                    <select class="custom-select"
+                            name="CURRENCYS"
+                            required
+                            ng-model="BrachSearch.CURRENCY_ID"
+                            ng-options="CRY.CURRENCY_ID as (CRY.CURRENCY_NAME|uppercase) for CRY in (CURRENCY)"
+                            ng-class="{'error':BrnForm.submitted && BrnForm.CURRENCYS.$error.required}">
+                        <option value="">- Please Select Currency-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Country:*</label>
+                    <select class="custom-select"
+                            name="COUNTRY_ID"
+                            ng-model="BrachSearch.COUNTRY_ID"
+                            ng-options="CTY.COUNTRY_ID as CTY.COUNTRY_NAME for CTY in COUNTRY"
+                            required
+                            ng-change="GET_STATES()"
+                            ng-class="{'error':BrnForm.submitted && BrnForm.COUNTRY_ID.$error.required}">
+                        <option value="">- Please Select Country-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>State:*</label>
+                    <select class="custom-select"
+                            name="STATE"
+                            ng-model="BrachSearch.STATE_ID"
+                            ng-options="STR.STATE_ID as (STR.STATE_NAME | uppercase) for STR in STATES"
+                            required
+                            ng-class="{'error':BrnForm.submitted && BrnForm.STATE.$error.required}">
+                        <option value="">- Please Select State-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>City:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="CITY_NAME"
+                           required
+                           ng-model="BrachSearch.CITY_NAME"
+                           placeholder="Enter ..."
+                           ng-class="{'error':BrnForm.submitted && BrnForm.CITY_NAME.$error.required}">
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Address:*</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="ADDRESS"
+                           required
+                           ng-class="{'error':BrnForm.submitted && BrnForm.ADDRESS.$error.required}"
+                           ng-model="BrachSearch.ADDRESS">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Zipcode/Post Code:*</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="ZIPCODE"
+                           maxlength="15"
+                           ng-change="BrachSearch.ZIPCODE = (BrachSearch.ZIPCODE | uppercase)"
+                           required
+                           ng-class="{'error':BrnForm.submitted && BrnForm.ZIPCODE.$error.required}"
+                           ng-model="BrachSearch.ZIPCODE">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Branch Name:*</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="BRANCH_NAME"
+                           maxlength="250"
+                           required
+                           ng-class="{'error':BrnForm.submitted && BrnForm.BRANCH_NAME.$error.required}"
+                           ng-model="BrachSearch.BRANCH_NAME">
+                </div>
+            </div>
+            <!--<div class="col-md-4">
+        <div class="form-group">
+            <label>Branch Code:</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Enter ..."
+                   name="BRANCH_CODE"
+                   maxlength="50"
+                   ng-class="{'error':BrnForm.submitted && BrnForm.BRANCH_CODE.$error.required}"
+                   ng-model="BrachSearch.BRANCH_CODE">
+        </div>
+    </div>-->
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Contact Name:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="CONTACT_NAME"
+                           maxlength="50"
+                           ng-class="{'error':BrnForm.submitted && BrnForm.CONTACT_NAME.$error.required}"
+                           ng-model="BrachSearch.CONTACT_NAME">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Contact Number:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="CONTACT_NUMBER"
+                           maxlength="50"
+                           only-numbers
+                           ng-class="{'error':BrnForm.submitted && BrnForm.CONTACT_NUMBER.$error.required}"
+                           ng-model="BrachSearch.CONTACT_NUMBER">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Contact Email:*</label>
+                    <input type="email"
+                            ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+                           required
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="CONTACT_EMAIL"
+                           maxlength="50"
+                           ng-class="{'error':BrnForm.submitted && BrnForm.CONTACT_EMAIL.$error.required}"
+                           ng-model="BrachSearch.CONTACT_EMAIL">
+                    <small class="text-danger" ng-show="BrnForm.CONTACT_EMAIL.$dirty && BrnForm.CONTACT_EMAIL.$error.pattern">Please Enter Valid Email</small>
+                </div>
+            </div>
+            <!--<div class="col-md-4">
+        <div class="form-group">
+            <label>Tax Code:</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Enter ..."
+                   name="TAX_CODE"
+                   maxlength="50"
+                   ng-class="{'error':BrnForm.submitted && BrnForm.TAX_CODE.$error.required}"
+                   ng-model="BrachSearch.TAX_CODE">
+        </div>
+    </div>-->
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>FAX:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="FAX"
+                           maxlength="50"
+                           only-numbers
+                           ng-class="{'error':BrnForm.submitted && BrnForm.FAX.$error.required}"
+                           ng-model="BrachSearch.FAX">
+                </div>
+            </div>
+
+
+            <!--<div class="col-md-4">
+        <div class="form-group">
+            <label>Limited Company Name:</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Enter ..."
+                   name="LIMITED_COMPANY_NAME"
+                   maxlength="250"
+                   ng-class="{'error':BrnForm.submitted && BrnForm.LIMITED_COMPANY_NAME.$error.required}"
+                   ng-model="BrachSearch.LIMITED_COMPANY_NAME">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Company Registration No:*</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Enter ..."
+                   name="COMPANY_REGISTRATION_NO"
+                   maxlength="50"
+                   required
+                   ng-class="{'error':BrnForm.submitted && BrnForm.COMPANY_REGISTRATION_NO.$error.required}"
+                   ng-model="BrachSearch.COMPANY_REGISTRATION_NO">
+        </div>
+    </div>-->
+
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Latitude:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="LATITUDE"
+                           onkeypress="return LONGITUDE_LATITUDE(this,event,1);"
+                           maxlength="50"
+                           ng-class="{'error':BrnForm.submitted && BrnForm.LATITUDE.$error.required}"
+                           ng-model="BrachSearch.LATITUDE">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Longitude:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="LONGITUDE"
+                           maxlength="50"
+                           onkeypress="return LONGITUDE_LATITUDE(this,event,1);"
+                           ng-class="{'error':BrnForm.submitted && BrnForm.LONGITUDE.$error.required}"
+                           ng-model="BrachSearch.LONGITUDE">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Original Latitude:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="ORIGINAL_LATITUDE"
+                           onkeypress="return LONGITUDE_LATITUDE(this,event,1);"
+                           maxlength="50"
+                           ng-class="{'error':BrnForm.submitted && BrnForm.ORIGINAL_LATITUDE.$error.required}"
+                           ng-model="BrachSearch.ORIGINAL_LATITUDE">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Original Logitude:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="ORIGINAL_LONGITUDE"
+                           maxlength="50"
+                           onkeypress="return LONGITUDE_LATITUDE(this,event,1);"
+                           ng-class="{'error':BrnForm.submitted && BrnForm.ORIGINAL_LONGITUDE.$error.required}"
+                           ng-model="BrachSearch.ORIGINAL_LONGITUDE">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Variance:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="Variance"
+                           maxlength="50"
+                           onkeypress="return LONGITUDE_LATITUDE(this,event,0);"
+                           ng-class="{'error':BrnForm.submitted && BrnForm.Variance.$error.required}"
+                           ng-model="BrachSearch.VARIANCE">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Geofence Radius:</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter ..."
+                           name="GEOFENCE_RADIUS"
+                           maxlength="50"
+                           onkeypress="return LONGITUDE_LATITUDE(this,event,0);"
+                           ng-class="{'error':BrnForm.submitted && BrnForm.GEOFENCE_RADIUS.$error.required}"
+                           ng-model="BrachSearch.GEOFENCE_RADIUS">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Logo:*</label>
+                    <div class="form-group">
+                        <div class="input-group-prepend" ng-class="{'error':BrnForm.submitted && BrachSearch.UploadedFiles==null  || BrnForm.submitted && BrachSearch.UploadedFiles.length==0,'':BrachSearch.UploadedFiles.length>0}">
+                            <label for="logo1" class="btn btn-upload">
+                                <i class="fal fa-upload"></i> Logo
+                            </label>
+                            <span class="hidden-input">
+                                <input id="logo1" name="file" ng-files="getTheFilesToUploadall($files,5,BrachSearch,1, 'logo','BRANCH')" type="file">
+                            </span>
+                        </div>
+                    </div>
+                    <span ng-repeat="File in BrachSearch.UploadedFiles">
+                        <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" target="_blank"><i class="fa fa-download"></i> {{File.SERVER_FILE_NAME}}</a>
+                    </span>
+                </div>
+            </div>            
+            <div class="col-md-4 px-0">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+                    <div class="row w-100">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="BrachSearch.IS_REVENUE_BRANCH"
+                                           ng-model="BrachSearch.IS_REVENUE_BRANCH"
+                                           ng-checked="BrachSearch.IS_REVENUE_BRANCH">
+                                    <label for="BrachSearch.IS_REVENUE_BRANCH" class="custom-control-label text-nowrap">Is Revenue Branch</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="BrachSearch.USE_EPOS_COVERS_IN_DASHBOARDS"
+                                           ng-model="BrachSearch.USE_EPOS_COVERS_IN_DASHBOARDS"
+                                           ng-checked="BrachSearch.USE_EPOS_COVERS_IN_DASHBOARDS">
+                                    <label for="BrachSearch.USE_EPOS_COVERS_IN_DASHBOARDS" class="custom-control-label text-nowrap">Use Epos Covers</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="BrachSearch.SHOW_IN_DASHBOARD"
+                                           ng-model="BrachSearch.SHOW_IN_DASHBOARD"
+                                           ng-checked="BrachSearch.SHOW_IN_DASHBOARD">
+                                    <label for="BrachSearch.SHOW_IN_DASHBOARD" class="custom-control-label text-nowrap">Show In Dashboard</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>&nbsp;</label>
+                <div class="form-inline">
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="BrachSearch.All" name="Branch"
+                                   ng-value="-1"
+                                   ng-model="BrachSearch.ACTIVE" />
+                            <label for="BrachSearch.All" class="custom-control-label justify-content-left">ALL</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="BrachSearch.ACTIVE" name="Branch"
+                                   ng-model="BrachSearch.ACTIVE"
+                                   ng-value="1">
+                            <label for="BrachSearch.ACTIVE" class="custom-control-label justify-content-left">Active</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="BrachSearch.InActive" name="Branch"
+                                   ng-model="BrachSearch.ACTIVE"
+                                   ng-value="0">
+                            <label for="BrachSearch.InActive" class="custom-control-label justify-content-left">In-Active</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div data-ng-show="BrnForm.submitted && BrnForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+            </div>
+            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="BrnForm.$valid">
+                <span class="help-block">{{InvalidUser}}</span>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <div class="form-group">
+                <button type="button" ng-click="ADMIN_INS_UPD_BRANCH()" class="btn btn-wenodo">Save</button>
+                <button type="button" ng-click="ADMIN_GET_BRANCH(1)" class="btn btn-w-default">Search</button>
+                <button type="button" ng-click="ResetBRN()" class="btn btn-w-default">Reset</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="card-body">
+    <div class="text-center" ng-show="BRANCH_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="BRANCH_LIST.length>0">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th>Entity</th>
+                    <th>Location</th>
+                    <th class="text-nowrap">Branch Name</th>
+                    <th class="text-nowrap">Branch Code</th>
+                    <th class="mw-300">Address</th>
+                    <th class="text-nowrap">Contact Name</th>
+                    <th class="text-nowrap">Contact Number</th>
+                    <th class="text-nowrap">View Revenue</th>
+                    <th class="text-nowrap">Use Epos Covers</th>
+                    <th class="text-nowrap">Show In Dashboard</th>
+                    <th class="text-nowrap">Latitude</th>
+                    <th class="text-nowrap">Longitude</th>
+                    <th class="text-nowrap">Original Latitude</th>
+                    <th class="text-nowrap">Original Longitude</th>
+                    <th class="text-nowrap">Variance</th>
+                    <th class="text-nowrap">Geofence radius</th>
+                    <th class="text-nowrap">Creation Date</th>
+                    <th>Status</th>
+                    <th class="headcol-right-header"></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="10" align="center" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_BRANCH()">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody ng-repeat="BL in BRANCH_LIST" on-finish-render="ngRepeatFinished">
+                <tr>
+
+                    <td>{{BL.ENTITY_NAME}}</td>
+                    <td class="text-nowrap">{{BL.LOCATION_NAME}}</td>
+                    <td class="text-nowrap">{{BL.BRANCH_NAME}}</td>
+                    <td>{{BL.BRANCH_CODE}}</td>
+                    <td>{{BL.ADDRESS}}</td>
+                    <td>{{BL.CONTACT_NAME}}</td>
+                    <td>{{BL.CONTACT_NUMBER}}</td>
+                    <td ng-if="BL.IS_REVENUE_BRANCH==true"><i class="fas fa-check text-success"></i></td>
+                    <td ng-if="BL.IS_REVENUE_BRANCH==false || BL.IS_REVENUE_BRANCH==null"><i class="fas fa-times text-danger"></i></td>
+                    <td ng-if="BL.USE_EPOS_COVERS_IN_DASHBOARDS==true"> <i class="fas fa-check text-success"></i></td>
+                    <td ng-if="BL.USE_EPOS_COVERS_IN_DASHBOARDS==false"> <i class="fas fa-times text-danger"></i></td>
+                    <td ng-if="BL.SHOW_IN_DASHBOARD==null || BL.SHOW_IN_DASHBOARD==false"> <i class="fas fa-times text-danger"></i></td>
+                    <td ng-if="BL.SHOW_IN_DASHBOARD==true"> <i class="fas fa-check text-success"></i></td>
+                    <td>{{BL.LATITUDE_WEB}}</td>
+                    <td>{{BL.LONGITUDE_WEB}}</td>
+                    <td>{{BL.ORIGINAL_LATITUDE}}</td>
+                    <td>{{BL.ORIGINAL_LONGITUDE}}</td>
+                    <td>{{BL.VARIANCE}}</td>
+                    <td>{{BL.GEOFENCE_RADIUS}}</td>
+                    <td>{{BL.CREATED_DATE | date}}</td>
+                    <td>{{BL.ACTIVE?'Active':'Inactive'}}</td>
+                    <td class="headcol-right">
+                        <a ng-click="EDIT_INS_UPD_BRANCH(BL)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        <!--<a  ng-click="DELETE_INS_UPD_BRANCH(BL)" ><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function LONGITUDE_LATITUDE(el, evt,FLAG) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        var number = el.value.split('.');
+        if (charCode != 46 && charCode != 45 && charCode > 31 && (charCode < 48 || charCode > 57) || ((parseFloat(el.value) > 0 || parseFloat(el.value) < 0) && charCode == 45 )) {
+            return false;
+        }
+        //just one dot
+        if (number.length > 1 && charCode == 46) {
+            return false;
+        }
+        //get the carat position
+        var caratPos = getSelectionStart(el);
+        var dotPos = el.value.indexOf(".") || el.value.indexOf("-");
+        if (caratPos > dotPos && dotPos > -1 && (number[1].length > 1)) {
+            return false;
+        }
+        return true;
+    }
+</script>

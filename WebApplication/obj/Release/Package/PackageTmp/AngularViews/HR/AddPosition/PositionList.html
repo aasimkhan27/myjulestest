@@ -1,0 +1,253 @@
+﻿<div class="card-header">
+    <h5 class="heading-text-2 mt-2">Position List</h5>
+    <div class="card-tools">
+        <div class="col-auto ml-auto">
+            <!--<a href="#!/Addteam" class="btn btn-wenodo btn-block">Add</a>-->
+            <div class="btn-group">
+                <button type="button" ng-show="IS_DEP || IS_POS || IS_EMP || IS_INV" class="btn btn-wenodo btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add
+                </button>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm">
+                    <a ng-if="CHECK_MODULE_ACCESS(1,2)?IS_DEP=true:IS_DEP=false" ng-show="!IS_DEPARTMENT_FLAG" class="dropdown-item" href="#!/Adddepartment">Add Department</a>
+                    <a ng-if="CHECK_MODULE_ACCESS(2,2)?IS_POS=true:IS_POS=false" ng-show="!IS_POSITION_FLAG"  class="dropdown-item" href="#!/Addposition">Add Position</a>
+                    <a ng-if="CHECK_MODULE_ACCESS(3,2)?IS_EMP=true:IS_EMP=false" class="dropdown-item" href="#!/Addemployee">Add Employee</a>
+                    <a ng-if="CHECK_MODULE_ACCESS(45,2)?IS_INV=true:IS_INV=false" class="dropdown-item" href="#!/AddApplicant">Invite Applicant</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-auto"><h6 class="app-text mb-0 mt-2">Filter by:</h6></div>
+        <div class="col-md-11">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Position ID ..."
+                                   maxlength="50"
+                                   ng-model="PositionSearch.POSITION_ID_TEXT">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Position Name..."
+                               maxlength="250"
+                               ng-model="PositionSearch.POSITION_TITLE">
+                    </div>
+                </div>
+                <div class="col-md-3" ng-show="!IS_POSITION_FLAG">
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Reporting Position ID"
+                               maxlength="50"
+                               ng-model="PositionSearch.REPORTING_POSITION_ID">
+                    </div>
+                </div>
+                <div class="col-md-3"  ng-show="!IS_POSITION_FLAG">
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Reporting Position Name"
+                               maxlength="250"
+                               ng-model="PositionSearch.REPORTING_POSITION_NAME">
+                    </div>
+                </div>
+
+                <div class="col-md-3" ng-show="!IS_POSITION_FLAG">
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Department Name ..."
+                               name="DEPARTMENT_NAME"
+                               maxlength="100"
+                               ng-model="PositionSearch.DEPARTMENT_NAME">
+                    </div>
+                </div>
+                <div class="col-md-3"  ng-show="!IS_POSITION_FLAG">
+                    <div class="form-group">
+                        <!--<select class="custom-select"
+                                name="STATUS"
+                                ng-model="PositionSearch.BRANCH_ID"
+                                ng-options="RTW.BRANCH_ID as RTW.BRANCH_NAME for RTW in (BRANCH_LIST)">
+                            <option value="">- Select Branch-</option>
+                        </select>-->
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Branch Name ..."
+                               name="BRANCH_NAME"
+                               maxlength="100"
+                               ng-model="PositionSearch.BRANCH_NAME">
+
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <select class="custom-select"
+                                name="STATUS"
+                                ng-model="PositionSearch.FLAG"
+                                ng-options="RTW.ID as RTW.NAME for RTW in (STATUS)">
+                            <option value="">- Select Status-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-wenodo" click-once ng-click="GET_POSITIONS(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)">Search</button>
+                    <button class="btn btn-w-default"  ng-click="ResetPostion()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="text-center" ng-show="POSITIONS_LIST.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="POSITIONS_LIST.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th class="" ng-repeat="HPL in HEADER_PST_LIST" ng-class="HPL.CLASS_NAME" ng-click="GET_POSITIONS(1,HPL.ID,!SORT_ORDER_NO_ASCDESC)">
+                            <a class="text-bold">{{HPL.NAME}} <i class="far " ng-show="HPL.ID==SORT_COLUMN_NO" ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC,'fa-angle-up':SORT_ORDER_NO_ASCDESC}"></i> </a>
+                        </th>
+                       
+                        <th class="headcol-right-header"></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="PPL in POSITIONS_LIST" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td> {{PPL.POSITION_ID_TEXT}}</td>
+                        <td>{{PPL.POSITION_TITLE}}</td>
+                        <td ng-show="!IS_POSITION_FLAG">{{PPL.REPORTING_POSITION_ID_TEXT==null?'-':PPL.REPORTING_POSITION_ID_TEXT}}</td>
+                        <td ng-show="!IS_POSITION_FLAG">{{PPL.REPORTING_POSITION_NAME==null?'-':PPL.REPORTING_POSITION_NAME}}</td>
+                        <td ng-show="!IS_POSITION_FLAG">{{PPL.DEPARTMENT_CODE}} {{PPL.DEPARTMENT_NAME ==null?'-':PPL.DEPARTMENT_NAME}}</td>
+                        <td ng-show="!IS_POSITION_FLAG">{{PPL.BRANCH_NAME}}</td>
+                        <td>{{PPL.EMPLOYEE_COUNT==0?'Vacant':PPL.EMPLOYEE_COUNT}}</td>
+                        <td >{{PPL.STEP_NO==3?'Completed':'Incomplete'}}</td>
+                        <td class="headcol-right">
+                            <a ng-show="PositionSearch.IS_EDIT_POSITION" 
+                               ng-click="RedirectiononPosition(PPL,PPL.STEP_NO)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot ng-show="GetData">
+                    <tr>
+                        <td colspan="2" ng-show="!IS_POSITION_FLAG"></td>
+                        <td colspan="4" align="center">
+                            <a class="btn btn-secondary text-white" click-once ng-click="GET_POSITION_LAZY_LOAD()">{{VIEWMORERECORD}}</a>
+                        </td>
+                        <td></td>
+                        <td colspan="2" ng-show="!IS_POSITION_FLAG"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+<div class="modal fade" id="AddPosition">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Position</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="PostionForm" class="w-100" name="PostionForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-12" ng-show="false">
+                            <div class="form-group">
+                                <label>Position ID:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="Positionsearch.POSITION_ID">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Position Title:*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       ng-model="Positionsearch.POSITION_TITLE"
+                                       name="POSTION_NAME"
+                                       required
+                                       ng-class="{'error':PostionForm.submitted && PostionForm.POSTION_NAME.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <div class="custom-control custom-checkbox"
+                                     ng-class="{'error':PostionForm.submitted && PostionForm.IS_MANAGER_POSITION.$error.required}">
+                                    <input class="custom-control-input" type="checkbox"
+                                           autocomplete="off"
+                                           name="IS_MANAGER_POSITION"
+                                           ng-model="Positionsearch.IS_MANAGER_POSITION"
+                                           id="IS_MANAGER_POSITION"
+                                           ng-value="opd">
+                                    <label class="custom-control-label" for="IS_MANAGER_POSITION">Is Manager </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <div class="custom-control custom-checkbox" ng-class="{'error':PostionForm.submitted && PostionForm.IS_ADMIN_POSITION.$error.required}">
+                                    <input class="custom-control-input" type="checkbox"
+                                           autocomplete="off"
+                                           name="IS_ADMIN_POSITION"
+                                           ng-model="Positionsearch.IS_ADMIN_POSITION"
+                                           id="IS_ADMIN_POSITION"
+                                           ng-value="opd">
+                                    <label class="custom-control-label" for="IS_ADMIN_POSITION">Is Admin</label>
+                                </div>
+                            </div>
+
+                            <!--<div class="form-group" ng-class="{'error':CustomForm.submitted && CustomForm.FIELD_NAME.$error.required}">
+                        <label>&nbsp;</label>
+                        <span class="bigcheck">
+                            <label class="bigcheck">
+                                <input type="checkbox" class="bigcheck"
+                                       autocomplete="off"
+                                       name="FIELD_NAME"
+                                       ng-model="CUSTOM_FIELD.FIELD_VALUE"
+                                       id="IS_ADMIN_POSITION"
+                                       required
+                                       ng-value="opd" />
+                                <span class="bigcheck-target"></span>
+                                <span class="bigcheck_label" for="IS_ADMIN_POSITION">Is Admin <span>*</span></span>
+                            </label>
+                        </span>
+                    </div>-->
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="PostionForm.submitted && PostionForm.$invalid"
+                                 class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PostionForm.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button class="btn btn-wenodo" ng-click="HR_INS_UPD_POSITIONS()"> Submit</button>
+                    <button class="btn btn-w-default" ng-click="POSITIONS_CANCEL()"> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

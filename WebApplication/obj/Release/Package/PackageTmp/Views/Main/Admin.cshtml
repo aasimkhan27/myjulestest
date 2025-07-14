@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<script type="text/javascript">
+
+        var AppVersion = @System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString();
+
+       // var AppVersion = 84934845;
+</script>
+<div class="wrapper" ng-controller="AdminController">
+    <aside class="Wenodo-main-sidebar sidebar-hr" data-widget="tree">
+        <section class="Wenodo-sidebar">
+            <ul class="Wenodo-sidebar-menu tree" data-widget="tree" role="menu" data-accordion="false">
+                <li>
+                    <a href="#!/Sindx" ng-class="{'active':1==SelectedTab}">
+                        <i class="fal fa-home fa-2x"></i>
+                        <p class="d-block mb-0 font-500">Setup</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#!/Setup_Cash" ng-class="{'active':2==SelectedTab}">
+                        <i class="fal fa-users fa-2x"></i>
+                        <p class="d-block mb-0 font-500">Cashup</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#!/Setup_HR" ng-class="{'active':3==SelectedTab}">
+                        <i class="fal fa-calendar-alt fa-2x"></i>
+                        <p class="d-block mb-0 font-500">HR</p>
+                    </a>
+                </li>
+                <li ng-if="false">
+                    <a href="#!/Setup_Wefyle" >
+                        <i class="fal fa-calculator fa-2x"></i>
+                        <p class="d-block mb-0 font-500">Wefyle</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#!/ReportIndex" ng-class="{'active':4==SelectedTab}">
+                        <i class="fal fa-calculator fa-2x"></i>
+                        <p class="d-block mb-0 font-500">Fallouts</p>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    @*<div class="content-wrapper">
+        <section class="content">*@
+            <div class="row pb-2 px-3 shadow-sm">
+                <div class="col-md-11"><span class="nav-item heading-text">{{PAGE_HEADER}}</span></div>
+                <div class="col-md-1 text-right">
+                    @Html.Hidden("xeroCode", (object)TempData["code"])
+                    <button type="button" class="btn btn-wenodo" data-toggle="dropdown">
+                        <i class="fal fa-bars"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right text-sm custom-scrollbar mw-300">
+                        <a class="dropdown-item" ng-click="REDIRECTION_PAGE(MAPP_URL.templateUrl);"
+                           ng-class="{'active': MAPP_URL.templateUrl==$parent.urlpath}"
+                           ng-repeat="MAPP_URL in ADMIN_SEUP_PATH_URL">
+                            <i class={{MAPP_URL.class}}></i> {{MAPP_URL.Name}}
+                        </a>
+                        @*<a class="dropdown-item"><i class="far fa-utensils-alt"></i> Entity</a>
+                            <a class="dropdown-item"><i class="far fa-map-marker-alt"></i> Location</a>
+                            <a class="dropdown-item"><i class="far fa-hotel"></i> Branch</a>
+                            <a class="dropdown-item"><i class="far fa-map-marked-alt"></i> Area</a>
+                            <a class="dropdown-item"><i class="far fa-map"></i> Branch Area Mapping</a>
+                            <a class="dropdown-item"><i class="far fa-user-tag"></i> Role List</a>
+                            <a class="dropdown-item"><i class="far fa-plus-octagon"></i> Create Role</a>
+                            <a class="dropdown-item"><i class="far fa-th-list"></i> Group List</a>
+                            <a class="dropdown-item"><i class="far fa-users-medical"></i> Create Group</a>
+                            <a class="dropdown-item"><i class="far fa-users-cog"></i> Assign Group List</a>
+                            <a class="dropdown-item"><i class="far fa-users"></i> Assign Group</a>*@
+                    </div>
+                </div>
+            </div>
+            <ng-view></ng-view>
+        @*</section>
+    </div>*@
+</div>
+<script src="~/AngularControllers/WefyleAdminController.js"></script>
+<script src="~/AngularControllers/CashupAdminController.js"></script>
+<script src="~/AngularControllers/SetupAdminController.js"></script>
+<script src="~/AngularControllers/Admin/CustomerIntegrationController.js"></script>

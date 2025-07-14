@@ -1,0 +1,152 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Access</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <h6 class="headings">Manage Standard Roles</h6>
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                            <div class="table-responsive mb-3">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Standard Roles</th>
+                                            <th width="15%"
+                                                ng-repeat="_role in ROLES_LIST"
+                                                class="text-center">{{_role.ROLE_NAME}}</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="_privilege in MODULE_ROLES_LIST">
+                                            <td class="bg-grey">{{_privilege.PRIVILEGE_NAME}}</td>
+                                            <td class="text-center" ng-repeat="_role in _privilege.StandardRole_obj">
+                                                <div class="media d-block">
+                                                    <div class="media-body switch-sm">
+                                                        <label class="switch">
+                                                            <input type="checkbox"
+                                                                   checked=""
+                                                                   disabled
+                                                                   name="SYSTEM_SETUP"
+                                                                   ng-model="_role.FLAG"
+                                                                   ng-checked="_role.FLAG==1">
+                                                            <span class="switch-state"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr />
+                        <h6 class="headings mt-3">Roles Assignment</h6>
+
+                        <div class="col-xxl-auto col-md-auto col-xl-auto">
+                            <div class="alert alert-light-primary">
+                                <div class="row align-items-center">
+                                    <div class="col-auto"><i class="fa-light fa-circle-exclamation alert-primary-text f-24"></i></div>
+                                    <div class="col">
+                                        <span class="alert-primary-text"> To provide/update module level access, go to <span class="alert-link">Manage Employees</span> section</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-md-6 col-xl-3 ms-auto">
+                            <form name="rolesearch">
+                                <input type="text"
+                                       name="search"
+                                       autocomplete="off"
+                                       placeholder="Search.."
+                                       ng-model="OrganisationSearch.SEARCH" />
+                                <button type="submit" ng-show="false" class="btn btn-wenodo"
+                                        click-once
+                                        ng-click="HRM_GET_ACCESS_ROLES_ASSIGNMENT(1)"></button>
+
+                            </form>
+                        </div>
+
+                        <div class="col-xxl-2 col-md-6 col-xl-2">
+                            <input type="hidden"
+                                   name="STANDARD_ROLE_ID"
+                                   placeholder="Add Here"
+                                   ng-model="OrganisationSearch.STANDARD_ROLE_ID" />
+                            <ul class="nav nav-pills" ng-class="{'error':UserRoleForm.submitted && UserRoleForm.STANDARD_ROLE_ID.$error.required}">
+                                <li class="dropdown w-100 show">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                        <span class="select-label" id="select_label">
+                                            <span class="truncate">{{OrganisationSearch.CUSTOM_ROLE_NAME}}</span>
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu dropdown-menu-right scrollbar-wrapper  w-100">
+                                        <li class=""
+                                            ng-show="OrganisationSearch.DD_DEFAULT_TEXT!=OrganisationSearch.CUSTOM_ROLE_NAME"
+                                            ng-click="SELECTED_ROLE_Fn('')">{{OrganisationSearch.DD_DEFAULT_TEXT}}</li>
+                                        <li class=""
+                                            ng-click="SELECTED_ROLE_Fn(_role)"
+                                            ng-repeat="_role in ROLES_LIST">
+                                            <span class="">{{_role.ROLE_NAME}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+
+                            <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="ACCESS_ROLES_ASSIGNMENT_LIST.length == 0">
+                                <div class="no-record text-center mt-2">{{LOAD_FETCH_TEXT}}</div>
+                            </div>
+
+                            <div class="table-responsive scrollbar-wrapper mx-height-400" ng-show="ACCESS_ROLES_ASSIGNMENT_LIST.length > 0">
+                                <table>
+                                    <thead class="thead_fixed">
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Email</th>
+                                            <th>Assigned Date</th>
+                                            <th>Role</th>
+                                            <th width="10%" class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="_access in  ACCESS_ROLES_ASSIGNMENT_LIST " ng-init="ng_initemployee(_access)">
+                                            <td>
+                                                <span class="text_avatar">{{_access.SHORT_NAME}}</span>
+                                                {{_access.EMPLOYEE_NAME}}
+                                            </td>
+                                            <td>{{_access.EMAIL}}</td>
+                                            <td>{{_access.ASSIGNED_DATE | date}}</td>
+                                            <td>{{_access.ROLE_NAME}}</td>
+                                            <td class="text-center">
+                                                <a href="../Hr/HRIndex#!/EmpAccess?EMP_ID={{_access.EMPLY_PRSNL_ID}}&&STEP_NO={{_access.STEP_NO}}" type="button"
+                                                   class="btn btn-sm btn-transparent"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-title="Edit">
+                                                    <i class="fa-light fa-pen fa-lg"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot class="t_foot_fixed" ng-show="GetData">
+                                        <tr>
+                                            <td colspan="5" class="text-center">
+                                                <button type="button" click-once ng-click="LAZY_LOAD_GET_ACCESS_ROLES_ASSIGNMENT_Fn()" class="btn btn-sm btn-light btn_fixed">Load More...</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

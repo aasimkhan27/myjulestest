@@ -1,0 +1,403 @@
+﻿<div class="card" ng-show="CASHUP_PRIVILEGE==true">
+    <div class="card-header px-0 pb-0 border-0 resCashupTabs">
+        <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==1}" ng-click="Fn_TAB_CLICK(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    Banked Records
+                </a>
+            </li>
+            <li class="nav-item" ng-show="CHECK_TAB_ACCESS()">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==2}" ng-click="Fn_TAB_CLICK(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    Banking
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--Banking Records-->
+    <div class="card-body" ng-show="TAB_ID==1">
+        <div class="row resCashupHeader">
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="text-limitations cursor-pointer"
+                           data-toggle="dropdown">
+                            <span class="select-label" id="select_label">
+                                <span class="truncate">{{CASH_BANKING_SEARCH.SELECTED_SITE.BRANCH_NAME||'Site'}}</span>
+                            </span>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                            <li class="ng-scope" ng-repeat="_site in FILTERED_SITES_LIST" ng-click="SELECT_SITE(_site)">
+                                <div class="form-check">
+                                    <label class="form-check-label text_truncate text-nowrap ng-binding" for="Site-{{$index}}">{{ _site.BRANCH_NAME}}</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <button class="btn btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+                <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                    <li><a class="dropdown-item" ng-click="EXPORT_BANKED_CASH(2)">XLS</a></li>
+                    <li><a class="dropdown-item" ng-click="EXPORT_BANKED_CASH(1)">CSV</a></li>
+                    <!--<li><a class="dropdown-item">PDF</a></li>-->
+                </ul>
+            </div>
+        </div>
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="BANKED_CASH_LIST.length == 0">
+            <div class="no-record text-center">
+                <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+            </div>
+        </div>
+        <div class="table-responsive scrollbar-wrapper mx-height-100 resCashupTable" ng-show="BANKED_CASH_LIST.length>0">
+            <table class="table-hover">
+                <thead>
+                    <tr>
+                        <th width="15%">Site</th>
+                        <th>Banked Date</th>
+                        <th>Cashup Date</th>
+                        <th class="text-end text-nowrap">ePOS Cash</th>
+                        <th class="text-end text-nowrap">Banked Cash</th>
+                        <th>Approved Date</th>
+                        <th class="text-center ">Banking Status</th>
+                        <th>Uploads</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat-start="ROW in BANKED_CASH_LIST" ng-init="nginit_banked_cash(ROW)">
+                        <td>
+                            <div class="d-flex justify-content-between align-items-center text-nowrap">
+                                <span class="dropdown_span">{{ROW.BRANCH_NAME}}</span>
+                                <a class="btn-toggle-dropdown text-gray" ng-click="ROW.isOpen = !ROW.isOpen">
+                                    <i class="fa-sm fa-light txt-grey ms-2 c-pointer" ng-class="{'fa-chevron-down': !ROW.isOpen, 'fa-chevron-up': ROW.isOpen}"></i>
+                                </a>
+                            </div>
+                        </td>
+                        <td>{{ROW.BANKED_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                        <td>-</td>
+                        <td class="text-end">{{CURRENCY_SYMBOL}} {{ROW.EPOS_CASH_TOTAL}}</td>
+                        <td class="text-end">{{CURRENCY_SYMBOL}} {{ROW.BANKED_CASH}}</td>
+                        <td>{{ROW.APPROVED_DATE==null?'-':ROW.APPROVED_DATE|date:DISPLAY_DATE_FORMAT}}</td>
+
+                        <td class="text-center ">
+                            <span ng-class="{
+                                              'cashup-badge-lg badge-light-warning': ROW.BANKING_STATUS === 'In Approval',
+                                              'cashup-badge-lg badge-light-success': ROW.BANKING_STATUS === 'Approved'}">{{ROW.BANKING_STATUS}}</span>
+                        </td>
+                        <td>
+                            <div ng-repeat="upls in ROW.UploadedFiles">
+                                <a class="dashboard-pdf" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                    {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                                </a>
+                            </div>
+                            <!--<a class="dashboard-pdf">dashboard.pdf</a>-->
+                                        <!--<div ng-repeat="upls in ROW.UploadedFiles">
+                                <button class="btn btn-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                                    <span class="truncate"><i class="fa-solid fa-file-pdf me-2"></i>{{upls.ORIGINAL_FILE_NAME| limitTo: 10}}</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-block dropdown-menu-end" style="">
+                                    <li>
+                                        <a class="dropdown-item d-block" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                            <i class="fa-light fa-eye me-2"></i>
+                                            View
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>-->
+                        </td>
+                        <td class="text-center"><a ng-click="SELECT_ROW_FOR_APPROVAL(ROW)" ng-show="ROW.BANKING_STATUS!='Approved'&&(ROW.STANDARD_ROLE_ID==16||ROW.STANDARD_ROLE_ID==17)" class="dashboard-pdf">View</a></td> <!--ng-show="ROW.BANKING_STATUS!='Approved'"-->
+                    </tr>
+                    <tr ng-show="ROW.isOpen" class="bg-grey" ng-repeat="cashup in ROW.CASHUP_LIST" ng-repeat-end>
+                        <td>{{cashup.BRANCH_NAME}}</td>
+                        <td> - </td>
+                        <td>{{cashup.CASHUP_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                        <td class="text-end">{{CURRENCY_SYMBOL}} {{cashup.EPOS_CASH}}</td>
+                        <td class="text-end">-</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+
+                <tfoot class="table-sticky-bottom" ng-show="GetData">
+                    <tr>
+                        <td colspan="9" class="text-center">
+                            <button type="button" class="btn btn-sm btn-light btn_fixed" ng-click="GET_CASHUP_BANKED_RECORDS(1)">{{PAGINATION_TEXT}}</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <!--Banked -->
+    <!--FIRST CARD-->
+    <div class="card-body" ng-show="TAB_ID==2">
+        <h6 class="headings">Create Entry</h6>
+        <form name="CashBankingEntryForm" autocomplete="off" novalidate>
+            <div class="row">
+                <div class="col-xxl-6 col-xl-6 col-md-6">
+                    <div ng-show="CASHUP_BANKING_ENTRY_LIST.length == 0">
+                        <div class="no-record text-center">
+                            <span class="d-block text-center">No Records Selected</span>
+                        </div>
+                    </div>
+                    <div class="table-responsive scrollbar-wrapper mx-height-100 resCashupTable" ng-show="CASHUP_BANKING_ENTRY_LIST.length > 0">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Site</th>
+                                    <th>Cashup Date</th>
+                                    <th>ePOS Cash</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in CASHUP_BANKING_ENTRY_LIST">
+                                    <td>{{ROW.BRANCH_NAME}}</td>
+                                    <td>{{ROW.CASHUP_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                                    <td>{{CURRENCY_SYMBOL}} {{ROW.EPOS_CASH | number:2}}</td>
+                                </tr>
+                            </tbody>
+                            <!--<tfoot>
+                                <tr>
+                                    <td colspan="12" class="text-center"><button type="button" class="btn btn-sm btn-light">Load More...</button></td>
+                                </tr>
+                            </tfoot>-->
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-xxl-6 col-xl-6 col-md-6">
+                    <div class="row resCashupHeader">
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label>ePOS Cash ({{CURRENCY_SYMBOL}})</label>
+                            <div class="placeholder_pound" data-type="{{CURRENCY_SYMBOL}}">
+                                <input type="text" disabled ng-model="CASH_BANKING_SEARCH.EPOS_TOTAL" />
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label>Banked Cash ({{CURRENCY_SYMBOL}})</label>
+                            <div class="placeholder_pound" data-type="{{CURRENCY_SYMBOL}}">
+                                <input type="text"
+                                       only-number-with-digit
+                                       ng-model="CASH_BANKING_SEARCH.BANKED_CASH"
+                                       required
+                                       name="BANKED_CASH"
+                                       ng-class="{'error':CashBankingEntryForm.submitted && CashBankingEntryForm.BANKED_CASH.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label>Variance ({{CURRENCY_SYMBOL}}) (Banked - ePOS)</label>
+                            <div class="placeholder_pound" data-type="{{CURRENCY_SYMBOL}}">
+                                <input type="text" disabled value="{{CASH_BANKING_SEARCH.BANKED_CASH-CASH_BANKING_SEARCH.EPOS_TOTAL | number:2}}" />
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label>Deposit Date <span class="text-danger">*</span></label>
+                            <div class="date-column" ng-init="dateinputddmmyy()">
+                                <input type="text"
+                                       class="dateinputddmmyy mb-0 min-w-120"
+                                       placeholder="DD/MM/YY"
+                                       name="DATE"
+                                       ng-model="CASH_BANKING_SEARCH.DEPOSIT_DATE"
+                                       required
+                                       ng-class="{'error':CashBankingEntryForm.submitted && CashBankingEntryForm.DATE.$error.required}" />
+                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label>Bank Slip Ref <span class="text-danger">*</span></label>
+                            <input type="text"
+                                   only-number-with-digit
+                                   ng-model="CASH_BANKING_SEARCH.BANK_SLIP_REF"
+                                   required
+                                   name="BANK_SLIP_REF"
+                                   placeholder="HYS48R"
+                                   ng-class="{'error':CashBankingEntryForm.submitted && CashBankingEntryForm.BANK_SLIP_REF.$error.required}" />
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label>Notes </label>
+                            <input type="text" placeholder="Type here" ng-model="CASH_BANKING_SEARCH.NOTES" />
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <!--<label>Uploads</label>
+        <a href="javascript:;" class="btn btn-primary d-block">
+            <input type="file" class="item-img filepreviewprofile c-pointer">
+            <i class="fa-light fa-arrow-up-from-bracket me-2"></i>Upload
+        </a>-->
+
+                            <label for="File" class="btn btn-primary text-nowrap w-100">
+                                <i class="fa-light fa-arrow-up-from-bracket"></i>
+                                Upload
+                            </label>
+                            <span class="hidden-input">
+                                <input type="file" name="file" required="required"
+                                       id="File"
+                                       ng-files="getTheFilesToUploadCashBank($files, 'CashBankFile', 10, CASH_BANKING_SEARCH, 27)">
+                            </span>
+
+                            <!--<span class="border b-r-5 w-100 p-2 my-2 d-flex align-items-center">
+                                <a class="f-11 truncate" href="/Uploads/147/50/20250624143324762_hot_cup_png.png" download="download">
+                                    <i class="fa fa-download"></i> {upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                                </a>
+                                <i ng-click="DELETE_TEAM_FILE_UPLOAD_Fn(MyLeaveFormSearch,File,$index)" class="fa-light fa-lg fa-xmark txt-danger ms-auto c-pointer"></i>
+                            </span>-->
+
+
+                            <div ng-repeat="upls in CASH_BANKING_SEARCH.UploadedFiles">
+
+                                <span class="border b-r-5 w-100 p-2 my-2 d-flex align-items-center">
+                                    <a class="f-11 truncate" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                        <i class="fa fa-download"></i> {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                                    </a>
+                                    <i ng-click="DELETE_UPLOAD_ALL(CASH_BANKING_SEARCH,upls,$index)" class="fa-light fa-lg fa-xmark txt-danger ms-auto c-pointer"></i>
+                                </span>
+
+                                <!--<button class="border b-r-5 w-100 p-2 my-2 d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                                    <span class="truncate"><i class="fa-solid fa-file-pdf me-2"></i>{{upls.ORIGINAL_FILE_NAME| limitTo: 10}}</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-block dropdown-menu-end" style="">
+                                    <li>
+                                        <a class="dropdown-item d-block" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                            <i class="fa-light fa-eye me-2"></i>
+                                            View
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-block" ng-click="DELETE_UPLOAD_ALL(CASH_BANKING_SEARCH,upls,$index)">
+                                            <i class="fa-light fa-trash-can me-2"></i>
+                                            Delete
+                                        </a>
+                                    </li>
+                                </ul>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                    <button click-once class="btn btn-light" ng-click="RESET_ENTRY()" ng-show="IS_APPROVE==false">Reset</button>
+                    <button click-once class="btn btn-light" ng-click="REJECT()" ng-show="IS_APPROVE==true">Reject</button>
+                    <button click-once class="btn btn-primary" ng-click="INS_UPD_CASH_BANKING_ENTRY()" ng-show="IS_APPROVE==false" ng-disabled="CASH_BANKING_SEARCH.SELECTED_SITE.STANDARD_ROLE_ID==19">Submit</button>
+                    <button click-once class="btn btn-primary" ng-click="APPROVE()" ng-show="IS_APPROVE==true">Approve</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <div class="card resCashupHeader" ng-show="TAB_ID==2">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <ul class="nav nav-pills mb-1">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate">{{CASH_BANKING_SEARCH.SELECTED_SITE.BRANCH_NAME||'Site'}}</span>
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li ng-repeat="_site in FILTERED_SITES_LIST_FOR_BANKING" ng-click="SELECT_SITE(_site)">
+                                    {{ _site.BRANCH_NAME}}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_BANKING_RECORDS.length == 0">
+                <div class="no-record text-center">
+                    <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+                </div>
+            </div>
+            <div class="table-responsive scrollbar-wrapper mx-height-100 resCashupTable" ng-show="CASHUP_BANKING_RECORDS.length > 0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="flexCheckChecked" type="checkbox" ng-model="RECORD_CHECKED_ALL" ng-click="CHECK_ALL_RECORDS()">
+                                    <label class="form-check-label ms-1" for="flexCheckChecked">Site</label>
+                                </div>
+                            </th>
+                            <th>Cashup Date</th>
+                            <th class="text-end">ePOS Cash</th>
+                            <th class="text-center">Banking Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="ROW in CASHUP_BANKING_RECORDS" ng-init="nginit_cashbanking(ROW)">
+                            <td class="text-nowrap">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="{{ROW.CASHUP_MAIN_ID}}" type="checkbox" ng-model="ROW.CHECKED" ng-click="UPDATE_ENTRY(ROW)">
+                                    <label class="form-check-label" for="{{ROW.CASHUP_MAIN_ID}}"> {{ROW.BRANCH_NAME}}</label>
+                                </div>
+                            </td>
+                            <td class="text-nowrap">{{ROW.CASHUP_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                            <td class="text-end">{{CURRENCY_SYMBOL}} {{ROW.EPOS_CASH | number:2}}</td>
+
+                            <td class="text-center">
+                                <span ng-class="{
+                                              'cashup-badge-lg badge-light-primary ': ROW.BANKING_STATUS === 'Draft',
+                                              'cashup-badge-lg badge-white': ROW.BANKING_STATUS === 'Pending',
+                                              'cashup-badge-lg badge-light-success': ROW.BANKING_STATUS === 'In Approval'}">{{ROW.BANKING_STATUS}}</span>
+                            </td>
+                            <!--<td class="text-nowrap text-center"><span class="badge-lg badge-light-primary">{{ROW.BANKING_STATUS}} </span></td>-->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td click-once colspan="12" class="text-center"><button type="button" class="btn btn-sm btn-light btn-fixed" ng-click="GET_CASHUP_BANKING_RECORDS(1)">Load More...</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card" ng-show="TAB_ID==2">
+        <div class="card-body">
+            <div class="row resTextAreaCashup">
+                <div class="col-xxl-12 col-xl-12 col-md-12">
+                    <h6 class="headings">Comments</h6>
+                    <textarea class="mb-0" rows="4" placeholder="Add Comments..." ng-model="CASH_BANKING_SEARCH.COMMENT"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="button" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+
+
+
+
+
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_PRIVILEGE==false">
+    <div class="no-record text-center">
+        <span class="d-block text-center">You do not have access to Cash Banking. Please contact Admin for access.</span>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.btn-toggle-dropdown').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const targetClass = btn.getAttribute('data-target');
+
+            document.querySelectorAll(`.${targetClass}`).forEach((dropdownContent) => {
+                dropdownContent.classList.toggle('d-none');
+            });
+
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+
+            const firstRow = btn.closest('tr');
+            firstRow.classList.toggle('bg-grey');
+            firstRow.classList.toggle('bg-white');
+        });
+    });
+</script>

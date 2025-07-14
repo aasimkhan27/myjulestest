@@ -1,0 +1,406 @@
+﻿<div class="row g-2 align-items-center mb-3 resCashupHeader">
+    <div class="col-xxl col-md col-xl">
+        <img class="img-32 rounded-circle" alt="" src="{{IMAGE_PATH}}" /> <span class="f-16 f-w-600">Hello, <span class="txt-green">{{User_Name}}!</span></span>
+    </div>
+    <!--<div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+        <span class="temp_cont">
+            Current temperature:
+            <i class="fa-duotone fa-cloud-rain txt-primary mx-1"></i>
+            -1&deg;C/ <i class="fa-duotone fa-sun txt-warning mx-1"></i>
+            30&deg;C
+        </span>
+    </div>-->
+    <div class="col-xxl-auto col-xl-auto col-md-auto">
+        <a ng-click="REDIRECT_CASHUP_ENTRY()" class="btn btn-primary">
+            Cashup Entry
+        </a>
+    </div>
+    <div class="col-xxl-2 col-xl-2 col-md-2">
+        <ul class="nav nav-pills mb-1">
+            <li class="dropdown w-100">
+                <a class="text-limitations cursor-pointer"
+                   data-toggle="dropdown">
+                    <span class="select-label" id="select_label">
+                        {{DASHBOARD_SEARCH_OBJ.SELECTED_SITE.BRANCH_NAME || 'Site'}}
+                    </span>
+                </a>
+                <ul ID="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                    <li ng-repeat="_site in FILTERED_SITES_LIST" ng-click="SELECT_SITE(_site)">
+                        <div>
+                            <span class="truncate">{{_site.BRANCH_NAME}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-xxl-2 col-xl-2 col-md-2">
+        <div id="reportrange" class="form-control-box max-w-140 mb-1">
+            <span></span>
+            <i class="fa-regular fa-calendar float-end mt-1"></i>
+        </div>
+    </div>
+    <div class="col-xxl-auto col-xl-auto col-md-auto">
+        <button type="button" class="btn btn-outline mb-1">
+            <i class="fa-thin fa-print"></i>
+            Print
+        </button>
+    </div>
+</div>
+
+<div class="row resCashupHeader">
+    <div class="col-xxl-3 col-xl-3 col-md-3">
+        <div class="card ">
+            <div class="card-body">
+                <div class="card-header p-0 border-0 resCashupTabs">
+                    <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+                        <li class="nav-item ps-0 ">
+                            <a class="nav-link nav-border tab-info active f-w-700" ng-class="{'active':TAB_ID==1}" ng-click="Fn_TAB_CLICK(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Info <p class="d-inline"></p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link nav-border tab-info f-w-700" ng-class="{'active':TAB_ID==2}" ng-click="Fn_TAB_CLICK(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Action <p class="d-inline"></p>
+                            </a>
+                        </li>
+                        <li class="nav-item ms-auto">
+                            <i class="fa-regular fa-arrow-up-right txt-primary"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="py-3 active " ng-show="TAB_ID==1">
+                    <ul class="lessons-lists mt-2 scrollbar-wrapper cashup_dashboard_wrapper resTextSpan">
+                        <li>
+                            <div class="row mx-0">
+                                <div class="col-xxl col-xl col-md">
+                                    <span>POS Data last synced on 4th Jun 01:00</span>
+                                </div>
+
+                                <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                                    <i class="fa-solid fa-thumbtack text-gray"></i>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row mx-0">
+                                <div class="col-xxl col-xl col-md">
+                                    <span>Last cashup submission on 2nd Jun</span>
+                                    <span class="f-w-700">£729.83</span>
+                                    <span class="f-w-700 txt-danger">
+                                        +5%
+                                    </span>
+                                </div>
+
+                                <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                                    <i class="fa-solid fa-thumbtack text-gray"></i>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row mx-0">
+                                <div class="col-xxl col-xl col-md">
+                                    <span>Last cashup submission on 2nd Jun</span>
+                                    <span class="f-w-700">£729.83</span>
+                                    <span class="f-w-700 txt-danger">
+                                        +5%
+                                    </span>
+                                </div>
+                                <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                                    <i class="fa-light fa-thumbtack text-gray"></i>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="py-3" ng-show="TAB_ID==2">
+                    <ul class="lessons-lists mt-2 scrollbar-wrapper cashup_dashboard_wrapper resTextSpan">
+                        <li>
+                            <div class="row mx-0">
+                                <div class="col-xxl-12 col-xl-12 col-md-12">
+                                    <span class="d-block">3rd Jun Cashup in <span class="txt-warning f-w-700">pending</span> status</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row mx-0">
+                                <div class="col-xxl-12 col-xl-12 col-md-12">
+                                    2nd Jun Cashup <span class="txt-warning f-w-700">pending approval</span>
+                                    <span class="f-w-700">£323.93.83</span>
+                                    <span class="f-w-700 txt-danger">
+                                        +5%
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row mx-0">
+                                <div class="col-xxl-12 col-xl-12 col-md-12">
+                                    <span class="d-block"><span class="txt-primary f-w-700">Upload</span> 3rd Jun Covers</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="py-3" ng-show="TAB_ID==3">
+                    <ul class="lessons-lists mt-2 cashup_dashboard_wrapper">
+                        <li>
+                            <div class="row">
+                                <div class="col-xxl-12 col-xl-12 col-md-12">
+                                    <span class="d-block">3rd Jun Cashup in <span class="txt-warning f-w-700">pending</span> status</span>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-9 col-xl-9 col-md-9">
+        <div class="row">
+            <div class="col-xxl-4 col-xl-4 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="txt_heading_sm">Sales</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="txt_heading_lg mb-1">{{CURRENCY_SYMBOL}}{{DASHBOARD_SALES.SALES.CURRENT | number:2}}</span>
+                        <span class="d-block text-nowrap resTextSpan">
+                            <i class="fa-solid" ng-class="{'fa-arrow-up-right txt-success':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.SALES.CURRENT, DASHBOARD_SALES.SALES.PREVIOUS)>0,'fa-arrow-down-right txt-danger':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.SALES.CURRENT, DASHBOARD_SALES.SALES.PREVIOUS)<0}"></i>
+                            <span class="txt-danger f-w-700">{{ (SALES_PERCENT_CALCULATION(DASHBOARD_SALES.SALES.CURRENT, DASHBOARD_SALES.SALES.PREVIOUS) | number:2) ||'-'}}%</span>
+                            <span class="text-gray">vs Last Period </span>
+                            <span class="txt_heading_exsm">{{CURRENCY_SYMBOL}}{{DASHBOARD_SALES.SALES.PREVIOUS | number:2}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="txt_heading_sm">Covers</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="txt_heading_lg mb-1">{{DASHBOARD_SALES.COVERS.CURRENT}}</span>
+                        <span class="d-block text-nowrap resTextSpan">
+                            <i class="fa-solid txt-danger" ng-class="{'fa-arrow-up-right txt-success':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.COVERS.CURRENT, DASHBOARD_SALES.COVERS.PREVIOUS)>0,'fa-arrow-down-right txt-danger':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.COVERS.CURRENT, DASHBOARD_SALES.COVERS.PREVIOUS)<0}"></i>
+                            <span class="txt-danger f-w-700">{{ (SALES_PERCENT_CALCULATION(DASHBOARD_SALES.COVERS.CURRENT, DASHBOARD_SALES.COVERS.PREVIOUS) | number:2) ||'-'}}%</span>
+                            <span class="text-gray">vs Last Period </span>
+                            <span class="txt_heading_exsm"> {{DASHBOARD_SALES.COVERS.PREVIOUS}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="txt_heading_sm">Spend</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="txt_heading_lg mb-1">{{CURRENCY_SYMBOL}}{{(DASHBOARD_SALES.SPEND.CURRENT | number:2)||'-'}}</span>
+                        <span class="d-block text-nowrap resTextSpan">
+                            <i class="fa-solid" ng-class="{'fa-arrow-up-right txt-success':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.SPEND.CURRENT, DASHBOARD_SALES.SPEND.PREVIOUS)>0,'fa-arrow-down-right txt-danger':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.SPEND.CURRENT, DASHBOARD_SALES.SPEND.PREVIOUS)<0}"></i>
+                            <span class="txt-danger f-w-700">{{ (SALES_PERCENT_CALCULATION(DASHBOARD_SALES.SPEND.CURRENT, DASHBOARD_SALES.SPEND.PREVIOUS) | number:2) ||'-'}}%</span>
+                            <span class="text-gray">vs Last Period </span>
+                            <span class="txt_heading_exsm">  {{CURRENCY_SYMBOL}}{{(DASHBOARD_SALES.SPEND.PREVIOUS | number:2)||'-'}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="txt_heading_sm">Comps</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="txt_heading_lg mb-1">{{CURRENCY_SYMBOL}}{{DASHBOARD_SALES.COMPS.CURRENT | number:2}}</span>
+                        <span class="d-block text-nowrap resTextSpan">
+                            <i class="fa-solid" ng-class="{'fa-arrow-up-right txt-success':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.COMPS.CURRENT, DASHBOARD_SALES.COMPS.PREVIOUS)>0,'fa-arrow-down-right txt-danger':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.COMPS.CURRENT, DASHBOARD_SALES.COMPS.PREVIOUS)<0}"></i>
+                            <span class="txt-danger f-w-700">{{ (SALES_PERCENT_CALCULATION(DASHBOARD_SALES.COMPS.CURRENT, DASHBOARD_SALES.COMPS.PREVIOUS) | number:2) ||'-'}}%</span>
+                            <span class="text-gray">vs Last Period </span>
+                            <span class="txt_heading_exsm">  {{CURRENCY_SYMBOL}}{{DASHBOARD_SALES.COMPS.PREVIOUS | number:2}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="txt_heading_sm">Voids</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="txt_heading_lg mb-1">{{CURRENCY_SYMBOL}}{{DASHBOARD_SALES.VOIDS.CURRENT | number:2}}</span>
+                        <span class="d-block text-nowrap resTextSpan">
+                            <i class="fa-solid" ng-class="{'fa-arrow-up-right txt-success':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.VOIDS.CURRENT, DASHBOARD_SALES.VOIDS.PREVIOUS)>0,'fa-arrow-down-right txt-danger':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.VOIDS.CURRENT, DASHBOARD_SALES.VOIDS.PREVIOUS)<0}"></i>
+                            <span class="txt-danger f-w-700">{{ (SALES_PERCENT_CALCULATION(DASHBOARD_SALES.VOIDS.CURRENT, DASHBOARD_SALES.VOIDS.PREVIOUS) | number:2) ||'-'}}%</span>
+                            <span class="text-gray">vs Last Period </span>
+                            <span class="txt_heading_exsm">{{CURRENCY_SYMBOL}}{{DASHBOARD_SALES.VOIDS.PREVIOUS | number:2}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-4 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="txt_heading_sm">Petty Cash</span>
+                    </div>
+                    <div class="card-body">
+                        <span class="txt_heading_lg mb-1">{{CURRENCY_SYMBOL}}{{DASHBOARD_SALES.PETTY_CASH.CURRENT | number:2}}</span>
+                        <span class="d-block text-nowrap resTextSpan">
+                            <i class="fa-solid" ng-class="{'fa-arrow-up-right txt-success':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.PETTY_CASH.CURRENT, DASHBOARD_SALES.PETTY_CASH.PREVIOUS)>0,'fa-arrow-down-right txt-danger':SALES_PERCENT_CALCULATION(DASHBOARD_SALES.PETTY_CASH.CURRENT, DASHBOARD_SALES.PETTY_CASH.PREVIOUS)<0}"></i>
+                            <span class="txt-danger f-w-700">{{ (SALES_PERCENT_CALCULATION(DASHBOARD_SALES.PETTY_CASH.CURRENT, DASHBOARD_SALES.PETTY_CASH.PREVIOUS) | number:2) ||'-'}}%</span>
+                            <span class="text-gray">vs Last Period </span>
+                            <span class="txt_heading_exsm">  {{CURRENCY_SYMBOL}}{{DASHBOARD_SALES.PETTY_CASH.PREVIOUS | number:2}} </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xxl-6 col-xl-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Sales Trend</span>
+            </div>
+            <div class="card-body" ng-show="SALES_TREND_EMPTY==false">
+                <div id="sales"></div>
+            </div>
+            <div class="card-body" ng-show="SALES_TREND_EMPTY==true">
+                No records found!
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-6 col-xl-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Rolling 13 week Cashup Variance</span>
+            </div>
+            <div class="card-body" ng-show="VARIANCE_EMPTY==false">
+                <div id="Cashup_Variance"></div>
+            </div>
+            <div class="card-body" ng-show="VARIANCE_EMPTY==true">
+                No records found!
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-12 col-xl-12 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Sales by Payment Type</span>
+            </div>
+            <div class="card-body" ng-show="PAYMENT_TYPE_EMPTY==false">
+                <div id="Payment_Type"></div>
+            </div>
+            <div class="card-body" ng-show="PAYMENT_TYPE_EMPTY==true">
+                No records found!
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-4 col-xl-4 col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Sales by Session</span>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_SESSION_SERIES.length>0">
+                <div id="Sales_by_Session" class="custom_total_css"></div>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_SESSION_SERIES.length==0">
+                No records found!
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xxl-4 col-xl-4 col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Sales by Category</span>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_CATEGORY_SERIES.length>0">
+                <div id="Sales_by_Category" class="custom_total_css"></div>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_CATEGORY_SERIES.length==0">
+                No records found!
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-4 col-xl-4 col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Sales by Media</span>
+            </div>
+
+            <div class="card-body" ng-show="SALES_BY_MEDIA_SERIES.length>0">
+                <div id="Sales_by_Media" class="custom_total_css"></div>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_MEDIA_SERIES.length==0">
+                No records found!
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xxl-6 col-xl-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Sales by Area</span>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_AREA_SERIES.length>0">
+                <div id="Sales_by_Area" class="custom_total_css"></div>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_AREA_SERIES.length==0">
+                No records found!
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-6 col-xl-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Sales by Revenue Type</span>
+            </div>
+
+            <div class="card-body" ng-show="SALES_BY_REVENUE_SERIES.length>0">
+                <div id="Sales_by_Revenue_Type" class="custom_total_css"></div>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_REVENUE_SERIES.length==0">
+                No records found!
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-6 col-xl-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Complimentary / Void</span>
+            </div>
+
+            <div class="card-body" ng-show="SALES_BY_COMP_EMPTY==false">
+                <div id="Complimentary_Void" class="custom_total_css"></div>
+            </div>
+            <div class="card-body" ng-show="SALES_BY_COMP_EMPTY==true">
+                No records found!
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-6 col-xl-6 col-md-6" ng-show="false">
+        <div class="card">
+            <div class="card-header">
+                <span class="txt_heading_sm">Petty Cash</span>
+            </div>
+
+            <div class="card-body">
+                <div id="Petty_Cash" class="custom_total_css"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left'
+        }, function (start, end, label) {
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    });
+</script>
+<script src="../../E_Scripts/CASHUP_SCRIPTS/cashup_charts.js"></script>

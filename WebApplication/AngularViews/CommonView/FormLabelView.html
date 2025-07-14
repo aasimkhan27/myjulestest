@@ -1,0 +1,204 @@
+﻿<div class="card-body pt-2" ng-repeat="HEADER in LIST.DATA.HEADER_LIST" ng-show="HEADER.FIELD_MASTER_ID!=146 &&  HEADER.FIELD_MASTER_ID != 145">
+    <div class="col-md-12 mt-2 pl-0">
+        <h5 class="heading-text-2">{{HEADER.HEADER_NAME}}</h5>
+    </div>
+    <div class="content-bg">
+        <div class="row">
+            <div class="{{LIST.DATA.COLMD}}"
+                 ng-repeat="CUSTOM_FIELD in  HEADER.CUSTOM_FIELDS_LIST  |  filter: {ACTIVE:true}" ng-init="initializeviewcustfields(CUSTOM_FIELD,$index, LIST.DATA)" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID!=null" on-finish-render="ngRepeatFinished">
+                <div class="form-group">
+                    <label class="mb-0" ng-show="CUSTOM_FIELD.FIELD_TYPE_ID!=6">
+                        {{CUSTOM_FIELD.ENTITY_COLUMN_NAME}}
+                        <span class="ml-2 cursor-pointer" data-toggle="modal" 
+                              ng-click="EDIT_CUSTOM_FIELD_FY(CUSTOM_FIELD)">
+                            <i class="fal fa-edit fa-sm text-success" 
+                               data-toggle="tooltip" 
+                               data-html="true" 
+                              ng-show="IS_ACCESS_ADD_MORE_FEILD" 
+                               data-original-title="Edit Field"></i>
+                        </span>
+                    </label>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==1">
+                        <!--LongText-->
+                        {{CUSTOM_FIELD.FIELD_VALUE==null?'-':CUSTOM_FIELD.FIELD_VALUE}}
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==2">
+                        <!--ShortText-->
+                        {{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE=='' ?'-':CUSTOM_FIELD.FIELD_VALUE}}
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==12">
+                        <!--ShortTextAlphabet-->
+                        {{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE=='' ?'-':CUSTOM_FIELD.FIELD_VALUE}}
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==3">
+                        <!--DROPDOWN-->
+                        {{CUSTOM_FIELD.FIELD_VALUE==null?'-':CUSTOM_FIELD.FIELD_VALUE}}
+                        <span ng-click="POP_DATA_CUSTOM_FIELD(CUSTOM_FIELD)" 
+                              class="cursor-pointer" 
+                              ng-show="CUSTOM_FIELD.FIELD_MASTER_ID==146 && !CUSTOM_FIELD.IS_ADD_PLUS" 
+                              data-toggle="tooltip" 
+                              data-html="true" 
+                              data-original-title="View Details"><i class="fa fa-eye"></i></span>
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==4">
+                        <!--Email-->
+                        {{CUSTOM_FIELD.FIELD_VALUE==null?'-':CUSTOM_FIELD.FIELD_VALUE}}
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==5">
+                        {{CUSTOM_FIELD.FIELD_VALUE==null?'-':CUSTOM_FIELD.FIELD_VALUE}}
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==6">
+                        <label>
+                            <!--{{CUSTOM_FIELD.FIELD_VALUE}}-->
+                            <i ng-show="CUSTOM_FIELD.FIELD_VALUE" class="fas fa-check-square fa-lg text-blue"></i>
+                            <i ng-show="!CUSTOM_FIELD.FIELD_VALUE" class="fas fa-times-square fa-lg"></i>
+                            <span class="ml-2 text-dark">
+                                {{CUSTOM_FIELD.ENTITY_COLUMN_NAME}}
+                                <span class="ml-2 cursor-pointer" data-toggle="modal"
+                                      ng-click="EDIT_CUSTOM_FIELD_FY(CUSTOM_FIELD)">
+                                    <i class="fal fa-edit fa-sm text-success"
+                                       data-toggle="tooltip"
+                                       data-html="true"
+                                       ng-show="IS_ACCESS_ADD_MORE_FEILD"
+                                       data-original-title="Edit Field"></i>
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="mt-2" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==7">
+                        <div class="form-group mb-0" ng-repeat="Op in CUSTOM_FIELD.checkedOption" ng-show="CUSTOM_FIELD.checkedOption[0]!=''">
+                            <label>
+                                <i class="fas fa-check text-wenodo-light-blue"></i>
+                                {{Op}}
+                            </label>
+                        </div>
+                        <span ng-show="CUSTOM_FIELD.checkedOption.length==0 || CUSTOM_FIELD.checkedOption.length[0]==''">-</span>
+                    </div>
+                    <div ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==8">
+                        <!--RADIO BUTTON-->
+                        {{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==9">
+                        <!--DATE-->
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE!='1/1/0001 12:00:00 AM'">
+                            {{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE | date}}
+                        </span>
+                        <span ng-show="CUSTOM_FIELD.FIELD_VALUE=='1/1/0001 12:00:00 AM'">-</span>
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==10 && !IS_COMPENSATION_PAGE || CUSTOM_FIELD.FIELD_TYPE_ID==10 && IS_COMPENSATION_PAGE && IS_COMPENSATION">
+                        <!--Numeric Decimal-->
+                        {{CUSTOM_FIELD.FIELD_VALUE==null || CUSTOM_FIELD.FIELD_VALUE==''?'-':CUSTOM_FIELD.FIELD_VALUE}}
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==10  && !IS_COMPENSATION && IS_COMPENSATION_PAGE">
+                        <span class="fa fa fa-asterisk"></span>
+                        <span class="fa fa fa-asterisk"></span>
+                        <span class="fa fa fa-asterisk"></span>
+                        <span class="fa fa fa-asterisk"></span>
+                        <span class="fa fa fa-asterisk"></span>
+                        <span class="fa fa fa-asterisk"></span>
+                        <span class="fa fa fa-asterisk"></span>
+                        <span class="fa fa fa-asterisk"></span>
+                    </div>
+                    <div class="form-content" ng-if="CUSTOM_FIELD.FIELD_TYPE_ID==11">
+                        <!--Upload-->
+                        <span ng-repeat="File in CUSTOM_FIELD.UploadedFiles">
+                            <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" download="download" data-toggle="tooltip" data-html="true" data-original-title="Download"><i class="fa fa-download"></i> {{File.ORIGINAL_FILE_NAME}} </a>
+                            <span ng-show="CUSTOM_FIELD.UploadedFiles.length>1"><br /></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body px-4">
+    <label class="mb-0 d-block" ng-show="ViewEffEmpSearch_1.WORK_PERMIT_UPD.length>0">Attachment:</label>
+    <span ng-repeat="File in ViewEffEmpSearch_1.WORK_PERMIT_UPD" ng-show="ViewEffEmpSearch_1.WORK_PERMIT_UPD.length>0">
+        <a href="{{File.FILE_PATH}}{{File.SERVER_FILE_NAME}}" class="mb-1" download="{{File.SERVER_FILE_NAME}}" data-toggle="tooltip" data-html="true" data-original-title="View Details"><i class="fa fa-download"></i> {{File.ORIGINAL_FILE_NAME}}<br /> </a>
+    </span>
+    <span ng-show="ViewEffEmpSearch_1.WORK_PERMIT_UPD.length==0">-</span>
+</div>
+<div class="col-md-12" ng-show="EFFECTIVE_LINE.APP_PAGE_ID==9 || ViewEmpSearch_5.APP_PAGE_ID==9">
+    <h6 class="heading-text-2">Additional Payments/Deductions</h6>
+</div>
+<div class="col-md-12 px-0" ng-show="EFFECTIVE_LINE.APP_PAGE_ID==9 || ViewEmpSearch_5.APP_PAGE_ID==9">
+    <!--{{LIST.DATA.ADDITIONAL_PAY_LIST.length}}-->
+    <div class="col-md-12 w-100 text-center" empty-grid ng-show="LIST.DATA.ADDITIONAL_PAY_LIST.length==0">
+    </div>
+    <div class="col-md-12" ng-show="LIST.DATA.ADDITIONAL_PAY_LIST.length>0">
+        <div class="row w-100">
+            <div class="table-responsive custom-scrollbar height-auto">
+                <table class="table table-striped">
+                    <thead class="bg-wenodo-dark-blue">
+                        <tr>
+                            <th>Pay Code</th>
+                            <th>Frequency</th>
+                            <th>Amount</th>
+                            <th>Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="PY_LIST in  LIST.DATA.ADDITIONAL_PAY_LIST" ng-show="LIST.DATA.ADDITIONAL_PAY_LIST.length>0">
+                        <tr>
+                            <td>{{PY_LIST.PAY_CODE_NAME}} <span ng-show="PY_LIST.PAY_CODE_DESCRIPTION!=null"> - </span> {{PY_LIST.PAY_CODE_DESCRIPTION}}</td>
+                            <td>{{PY_LIST.PAY_FREQUENCY_NAME}}</td>
+                            <td ng-if="IS_COMPENSATION">
+                                {{PY_LIST.AMOUNT}}
+                            </td>
+                            <td ng-if="IS_COMPENSATION">
+                                {{PY_LIST.RATE}}
+                            </td>
+                            <td ng-if="!IS_COMPENSATION">
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                            </td>
+                            <td ng-if="!IS_COMPENSATION">
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                                <span class="fa fa fa-asterisk"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div ng-show="EFFECTIVE_LINE.APP_PAGE_ID==10">
+    <div class="card-body pt-0">
+        <div class="text-center" ng-show="LIST.DATA.ABSENCE_TYPE_EMP_UPD.length==0" empty-grid></div>
+        <div class="table-responsive custom-scrollbar height-auto">
+            <table class="table table-striped  mb-0 ">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Absence type</th>
+                        <th>Allocation</th>
+                        <th>Units</th>
+                        <th>Start</th>
+                        <th>Year End</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="LL in LIST.DATA.ABSENCE_TYPE_EMP_UPD">
+                    <tr>
+                        <td>{{LL.ABSENCE_TYPE_NAME  }}</td>
+                        <td>{{LL.ALLOCATION_DAYS}}</td>
+                        <td>{{LL.UNIT_NAME  }}</td>
+                        <td>{{LL.START_DATE | date  }}</td>
+                        <td>{{LL.END_DATE | date }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

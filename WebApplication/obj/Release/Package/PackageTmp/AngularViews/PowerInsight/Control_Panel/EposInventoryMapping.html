@@ -1,0 +1,98 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Inventory Mapping</h6>
+                </div>
+                <form id="InventoryMappingForm" name="InventoryMappingForm" novalidate>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <ul class="nav nav-pills">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label_Branch" ng-if="InventoryMappingSearch.DISPLAY_TEXT_BRANCH!=undefined || InventoryMappingSearch.DISPLAY_TEXT_BRANCH!=null">
+                                                {{InventoryMappingSearch.DISPLAY_TEXT_BRANCH}}
+                                            </span>
+                                        </a>
+                                        <ul ID="divBranch" class="dropdown-menu w-100 scrollbar-wrapper" style="z-index: 10;">
+                                            <li ng-repeat="BL in BRANCH_LIST"
+                                                ng-click="Fn_BRANCH_CHANGE(BL)">
+                                                {{BL.BRANCH_NAME}}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-3">
+                                <ul class="nav nav-pills">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label_Integration" ng-if="EposSalesCategotyMappingSearch.DISPLAY_TEXT_INTEGRATION_SYSTEM_NAME!=undefined || EposSalesCategotyMappingSearch.DISPLAY_TEXT_INTEGRATION_SYSTEM_NAME!=null">
+                                                {{EposSalesCategotyMappingSearch.DISPLAY_TEXT_INTEGRATION_SYSTEM_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul ID="divIntegration" class="dropdown-menu w-100 scrollbar-wrapper">
+                                            <li ng-repeat="IL in INTEGRATIONSYSTEM_LIST">
+                                                {{IL.SYSTEM_NAME}}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-auto ms-auto">
+                                <!--<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="Search" ng-click="GET_INVENTORY_CATEGORY_TO_WENODO_CATEGORY_MAPPING();"><i class="fa-regular fa-search"></i></button>-->
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="card-body" ng-show="INVENTORY_CATEGORY_LIST.length>0">
+                    <form id="InventoryCategotyMappingListForm" name="InventoryCategotyMappingListForm" novalidate>
+                        <div class="table-responsive scrollbar-wrapper height-60vh">
+                            <table class="table table-hover consolidated-table">
+                                <thead class="table-header-fixed" style="z-index: 9;">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Category Name</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="INV in INVENTORY_CATEGORY_LIST" on-finish-render="ngRepeatFinished">
+                                        <td class="text-nowrap"> {{$index+1}} </td>
+                                        <td class="text-nowrap"> {{INV.INVENTORY_CATEGORY_NAME}} </td>
+                                        <td>
+                                            <ul class="nav nav-pills">
+                                                <li class="dropdown w-100">
+                                                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                                        <span class="select-label" id="select_label">
+                                                            {{INV.CATEGORY_MASTER_ID==null || INV.CATEGORY_MASTER_ID==""?'-Select-': (CATEGORY_MASTER_LIST | filter:{'ID': INV.CATEGORY_MASTER_ID }:true)[0].CATEGORY_NAME }}
+                                                        </span>
+                                                    </a>
+                                                    <ul ID="divEntity" class="dropdown-menu w-100 scrollbar-wrapper">
+                                                        <li ng-repeat="CATEGORY in CATEGORY_MASTER_LIST"
+                                                            ng-click="Fn_CATEGORY_CLICK(CATEGORY,INV)"
+                                                            ng-model="INV.CATEGORY_MASTER_ID">
+                                                            {{CATEGORY.CATEGORY_NAME}}
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="col-md-12 mt-2">
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="Search" ng-click="INS_UPD_INVENTORY_CATEGORY_TO_WENODO_CATEGORY_MAPPING();">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            

@@ -1,0 +1,142 @@
+﻿<form id="PensionSchForm" name="PensionSchForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="PensionSchSearch.CUSTOMER_ID"
+                            ng-options="CT.CUSTOMER_ID as CT.CUSTOMER_NAME for CT in CUSTOMER_LIST"
+                            required
+                            ng-change="GET_ENTITY_LIST()"
+                            ng-class="{'error':PensionSchForm.submitted && PensionSchForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Select Customer-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="PensionSchSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            required
+                            ng-change="ADMIN_GET_EMPLOYEE_CATEGORY()"
+                            ng-class="{'error':PensionSchForm.submitted && PensionSchForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>
+                        Pension Scheme Name:*
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="SCHEME_NAME"
+                           ng-model="PensionSchSearch.PENSION_SCHEME_NAME"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':PensionSchForm.submitted && PensionSchForm.SCHEME_NAME.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-inline mb-3">
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PensionSchSearch.ACTIVE" name="ccradio"
+                                   ng-model="PensionSchSearch.ACTIVE"
+                                   ng-value="1">
+                            <label for="PensionSchSearch.ACTIVE" class="custom-control-label justify-content-left">Active</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PensionSchSearch.InActive" name="ccradio"
+                                   ng-value="0"
+                                   ng-model="PensionSchSearch.ACTIVE">
+                            <label for="PensionSchSearch.InActive" class="custom-control-label justify-content-left">In-Active</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PensionSchSearch.All" name="ccradio"
+                                   ng-value="-1"
+                                   ng-model="PensionSchSearch.ACTIVE" />
+                            <label for="PensionSchSearch.All" class="custom-control-label justify-content-left">ALL</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-md-4">
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" id="SCHEME_NAME"
+                               ng-model="PensionSchSearch.ACTIVE"
+                               ng-checked="PensionSchSearch.ACTIVE">
+                        <label for="SCHEME_NAME" class="custom-control-label">Active</label>
+                    </div>
+                </div>
+            </div>-->
+            <div class="col-md-12">
+                <div data-ng-show="PensionSchForm.submitted && PensionSchForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PensionSchForm.$valid">
+                    <span class="help-block">{{InvalidUser}}</span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button ng-click="ADMIN_INS_UPD_PENSION_SCHEME()" class="btn btn-wenodo">Save</button>
+                    <button ng-click="ADMIN_GET_PENSION_SCHEME(1)" class="btn btn-w-default">Search</button>
+                    <button ng-click="RESET_PEN()" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="card-body">
+    <div class="text-center" ng-show="PENSION_SCHEME_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="PENSION_SCHEME_LIST.length>0">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th class="text-nowrap">Customer Name</th>
+                    <th class="text-nowrap">Entity Name</th>
+                    <th class="text-nowrap">Pension Scheme Name</th>
+                    <th class="text-nowrap">Creation Date</th>
+                    <th>Status</th>
+                    <th width="5%"></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="8" align="center" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_PENSION_SCHEME();">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody ng-repeat="LL in PENSION_SCHEME_LIST" on-finish-render="ngRepeatFinished">
+                <tr>
+                    <td>{{LL.CUSTOMER_NAME}}</td>
+                    <td>{{LL.ENTITY_NAME}}</td>
+                    <td>{{LL.PENSION_SCHEME_NAME}}</td>
+                    <td>{{LL.CREATED_DATE | date}}</td>
+                    <td>{{LL.ACTIVE?'Active':'Inactive'}}</td>
+                    <td>
+                        <a ng-click="EDIT_INS_UPD_PENSION_SCHEME(LL)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        <!--<a ng-click="DELETE_INS_UPD_ABSENCE_TYPE(LL)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

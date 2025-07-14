@@ -1,0 +1,102 @@
+﻿<div class="card-header">
+    <h4 class="card-title">Reports</h4>
+    <div class="row">
+        <div class="col-md-2 ml-auto">
+            <select name="BRANCH" class="custom-select text-xs"
+                    ng-options="BRL.BRANCH_ID as BRL.BRANCH_NAME for BRL in BRANCH_LIST"
+                    ng-model="DashboardSearch.BRANCH_ID"
+                    ng-change="SELECT_BRANCH(DashboardSearch.BRANCH_ID)">
+                <option value="">- Company-</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="BRANCH" class="custom-select text-xs"
+                    ng-options="BRL.BRANCH_ID as BRL.BRANCH_NAME for BRL in BRANCH_LIST"
+                    ng-model="DashboardSearch.BRANCH_ID"
+                    ng-change="SELECT_BRANCH(DashboardSearch.BRANCH_ID)">
+                <option value="">- Location -</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="BRANCH" class="custom-select text-xs"
+                    ng-options="BRL.BRANCH_ID as BRL.BRANCH_NAME for BRL in BRANCH_LIST"
+                    ng-model="DashboardSearch.BRANCH_ID"
+                    ng-change="SELECT_BRANCH(DashboardSearch.BRANCH_ID)">
+                <option value="">- Branch -</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <div id="reportrange" class="custom-select text-xs">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar mt-2"></i>&nbsp;
+                <span>Period</span><b class="caret"></b>
+            </div>
+        </div>
+        <div class="col-auto text-right">
+            <button class="btn btn-wenodo">Download Reports</button>
+        </div>
+    </div>
+</div>
+
+<div class="card-body px-0">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue text-nowrap text-nowrap">
+                <tr>
+                    <th>Date</th>
+                    <th>Source</th>
+                    <th>Description</th>
+                    <th>Reference</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                    <th>Running Balance</th>
+                    <th>Gross</th>
+                    <th>VAT</th>
+                    <th>Net</th>
+                    <th>Account Code</th>
+                    <th>Account Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01/01/2020</td>
+                    <td>Payable Invoice</td>
+                    <td>Flying Fish Seafoods Co LTD</td>
+                    <td>662924</td>
+                    <td>0.00</td>
+                    <td>283.52</td>
+                    <td>77,257.65</td>
+                    <td>283.52</td>
+                    <td>0.00</td>
+                    <td>283.52</td>
+                    <td>800</td>
+                    <td>Liability</td>
+                </tr>
+                <tr>
+                    <td>01/01/2020</td>
+                    <td>Payable Invoice</td>
+                    <td>Flying Fish Seafoods Co LTD</td>
+                    <td>662924</td>
+                    <td>0.00</td>
+                    <td>283.52</td>
+                    <td>77,257.65</td>
+                    <td>283.52</td>
+                    <td>0.00</td>
+                    <td>283.52</td>
+                    <td>800</td>
+                    <td>Liability</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="event-footer animated fadeInUp">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12 d-inline m-2 text-right">
+                <button class="btn btn-w-default btn-sm">Previous</button>
+                <button class="btn btn-w-default btn-sm">Next</button>
+            </div>
+        </div>
+    </div>
+</div>

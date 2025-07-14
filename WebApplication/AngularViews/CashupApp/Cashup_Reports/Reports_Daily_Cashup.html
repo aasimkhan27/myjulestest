@@ -1,0 +1,329 @@
+﻿<div class="container-fluid" ng-show="CASHUP_REPORTS_PRIVILEGE==true">
+    <div class="my-2 py-2 pb-3 scrollbar-wrapper d-flex">
+        <a class="btn-tabs active" href="#!/CashUpApp_Reports_Daily_Cashup">Daily Cashup</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Weekly_Cashup">Weekly Cashup</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Weekly_Sales">Weekly Sales</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Cash_Banking">Cash_Banking</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Account_Customer">Account Customer</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Cashup_Deposit">Cashup Deposit</a>
+        <a class="btn-tabs" href="#!/Reports_Petty_Cash">Petty Cash</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Voucher">Reports Voucher</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Comps">Comps</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Voids">Voids</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Float">Float</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Total_Cash">Total Cash</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Comments">Comments</a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="row g-1 resCashupHeader">
+                <div class="col-xxl-1 col-xl-1 col-md-1">
+                    <ul class="nav nav-pills">
+                        <li class="dropdown w-100">
+                            <a data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate">
+                                        {{ REVIEW_DAILY_CASHUP_Obj.SELECTED_SITE.BRANCH_NAME || 'Select' }}
+                                    </span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                <li ng-repeat="site in REPORTS_SITES_LIST"
+                                    ng-click="selectSite(site)">
+                                    <span class="truncate">{{ site.BRANCH_NAME }}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xxl-2 col-xl-2 col-md-2" ng-init="dateinputddmmyy()">
+                    <div class="date-column">
+                        <input type="text"
+                               class="dateinputddmmyy"
+                               placeholder="DD/MM/YY"
+                               name=""
+                               ng-model="REVIEW_DAILY_CASHUP_Obj.CASHUP_DATE" />
+                        <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                    <button type="button" class="btn btn-primary w-100">
+                        <i class="fa-thin fa-print"></i>
+                        Print
+                    </button>
+                </div>
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto ">
+                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+                    <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                        <li><a class="dropdown-item d-block">XLS</a></li>
+                        <li><a class="dropdown-item">CSV</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive resCashupTable">
+                <table class="table-striped">
+                    <thead>
+                        <tr>
+                            <th width="10%"></th>
+                            <th ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-center text-nowrap" ng-if="ALL_AREA_DATA.length>1"></th>
+                            <th ng-show="SESSION.SELECTED" class="text-center text-nowrap" ng-if="ALL_AREA_DATA.length>1"></th>
+                            <th ng-repeat-end class="text-center text-nowrap border-end" ng-if="ALL_AREA_DATA.length>1">{{SESSION.SESSION_NAME}} <a ng-click="TOGGLE_SESSION_VIEW(SESSION)" ng-if="ALL_AREA_DATA.length>1"><i class="fa-light ms-2 c-pointer" ng-class="{'fa-plus':SESSION.SELECTED==false,'fa-minus':SESSION.SELECTED==true}"></i></a></th>
+                            <th class="text-center text-nowrap" colspan="3">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">ePOS</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">Actual</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">Variance</td>
+                            <td class="text-end text-nowrap">ePOS</td>
+                            <td class="text-end text-nowrap">Actual</td>
+                            <td class="text-end text-nowrap">Variance</td>
+                        </tr>
+                        <tr>
+                            <td>Cash</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.CASH.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.CASH.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1" ng-class="{'text-danger': (SESSION.CASH.ACTUAL - SESSION.CASH.EPOS) < 0}">{{SESSION.CASH.ACTUAL - SESSION.CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CASH.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.CASH.ACTUAL - ALL_AREA_TOTALS.CASH.EPOS) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cards</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-if="ALL_AREA_DATA.length>1" ng-show="SESSION.SELECTED" class="text-end text-nowrap">{{SESSION.CARDS.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.CARDS.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.CARDS.ACTUAL - SESSION.CARDS.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CARDS.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CARDS.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.CARDS.ACTUAL - ALL_AREA_TOTALS.CARDS.EPOS) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Petty Cash</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-if="ALL_AREA_DATA.length>1" ng-show="SESSION.SELECTED" class="text-end text-nowrap">{{SESSION.PETTY_CASH.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" ng-if="ALL_AREA_DATA.length>1" class="text-end text-nowrap">{{SESSION.PETTY_CASH.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.PETTY_CASH.ACTUAL - SESSION.PETTY_CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.PETTY_CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.PETTY_CASH.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.PETTY_CASH.ACTUAL - ALL_AREA_TOTALS.PETTY_CASH.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Delivery</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DELIVERY.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DELIVERY.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DELIVERY.ACTUAL - SESSION.DELIVERY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DELIVERY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DELIVERY.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.DELIVERY.ACTUAL - ALL_AREA_TOTALS.DELIVERY.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Account Credit</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_CREDIT.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_CREDIT.ACTUAL - SESSION.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.ACCOUNT_CREDIT.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.ACCOUNT_CREDIT.ACTUAL - ALL_AREA_TOTALS.ACCOUNT_CREDIT.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Voucher Redeemed</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_REDEEMED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_REDEEMED.ACTUAL - SESSION.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOUCHER_REDEEMED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.VOUCHER_REDEEMED.ACTUAL - ALL_AREA_TOTALS.VOUCHER_REDEEMED.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Deposit Redeemed</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DEPOSIT_REDEEMED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DEPOSIT_REDEEMED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.DEPOSIT_REDEEMED.ACTUAL - SESSION.DEPOSIT_REDEEMED.EPOS) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DEPOSIT_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DEPOSIT_REDEEMED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.DEPOSIT_REDEEMED.ACTUAL - ALL_AREA_TOTALS.DEPOSIT_REDEEMED.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Transitory</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.TRANSITORY.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.TRANSITORY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                        </tr>
+
+                        <tr class="bg-gray">
+                            <td class="f-w-700">Total</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.EPOS_TOTAL | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACTUAL_TOTAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.ACTUAL_TOTAL - SESSION.EPOS_TOTAL)|number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_ACTUAL-ALL_AREA_TOTALS_EPOS | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Account Received</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_RECEIVED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.ACCOUNT_RECEIVED.ACTUAL - SESSION.ACCOUNT_RECEIVED.EPOS) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.ACCOUNT_RECEIVED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.ACCOUNT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.ACCOUNT_RECEIVED.ACTUAL - ALL_AREA_TOTALS.ACCOUNT_RECEIVED.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Voucher Issued</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_ISSUED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_ISSUED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.VOUCHER_ISSUED.ACTUAL - SESSION.VOUCHER_ISSUED.EPOS) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOUCHER_ISSUED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOUCHER_ISSUED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.VOUCHER_ISSUED.ACTUAL - ALL_AREA_TOTALS.VOUCHER_ISSUED.EPOS) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Deposit Received</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DEPOSIT_RECEIVED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DEPOSIT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.DEPOSIT_RECEIVED.ACTUAL - SESSION.DEPOSIT_RECEIVED.EPOS) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DEPOSIT_RECEIVED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DEPOSIT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.DEPOSIT_RECEIVED.ACTUAL - ALL_AREA_TOTALS.DEPOSIT_RECEIVED.EPOS) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td class="f-w-700">Total Incl Receivables</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.EPOS_TOTAL_RCV | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACTUAL_TOTAL_RCV | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.ACTUAL_TOTAL_RCV - SESSION.EPOS_TOTAL_RCV)|number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_EPOS_RCV | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_ACTUAL_RCV | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS_ACTUAL_RCV-ALL_AREA_TOTALS_EPOS_RCV )| number:2}}</td>
+                        </tr>
+
+                        <tr class="bg-gray">
+                            <td class="f-w-700">Total Revenue</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.EPOS_TOTAL + SESSION.EPOS_TOTAL_RCV) | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.ACTUAL_TOTAL + SESSION.ACTUAL_TOTAL_RCV) | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{((SESSION.ACTUAL_TOTAL + SESSION.ACTUAL_TOTAL_RCV) - (SESSION.EPOS_TOTAL + SESSION.EPOS_TOTAL_RCV))|number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS_EPOS + ALL_AREA_TOTALS_EPOS_RCV) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS_ACTUAL + ALL_AREA_TOTALS_ACTUAL_RCV) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{((ALL_AREA_TOTALS_ACTUAL + ALL_AREA_TOTALS_ACTUAL_RCV)-(ALL_AREA_TOTALS_EPOS + ALL_AREA_TOTALS_EPOS_RCV)) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Complimentary</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.COMPLIMENTARY.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.COMPLIMENTARY.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.COMPLIMENTARY.ACTUAL-SESSION.COMPLIMENTARY.EPOS)| number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.COMPLIMENTARY.EPOS}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.COMPLIMENTARY.ACTUAL}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.COMPLIMENTARY.ACTUAL-ALL_AREA_TOTALS.COMPLIMENTARY.EPOS)|number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Void</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOID.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOID.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.VOID.ACTUAL-SESSION.VOID.EPOS)|number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOID.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOID.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.VOID.ACTUAL-ALL_AREA_TOTALS.VOID.EPOS)|number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Covers</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                        </tr>
+                        <tr>
+                            <td>Spend</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive resCashupTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="20%">Revenue Type</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">Gross Amount</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">VAT</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">Disc.</th>
+                            <th class="text-end text-nowrap" width="20%">Net Amount</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in ALL_AREA_TOTALS.REVENUE">
+                            <td>{{item.CATEGORY_NAME}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_GROSS | number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_VAT_TAX | number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_DISC_CPN | number:2}}</td>
+                            <td class="text-end text-nowrap ">{{item.NET_TOTAL | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Service Charge (Incl.)</td>
+
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.SERVICE_CHARGE_TOTAL | number: 2}}</td>
+                        </tr>
+                        <tr>
+                            <td>House Tips</td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.HOUSE_TIPS_TOTAL | number: 2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cash Tips</td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CASH_TIPS_TOTAL | number: 2}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td class="text-end text-nowrap text-nowrap">{{(ALL_AREA_TOTALS.REVENUE | total:'TOTAL_GROSS')|number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{(ALL_AREA_TOTALS.REVENUE | total:'TOTAL_VAT_TAX')|number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap f-w-700">{{(ALL_AREA_TOTALS.REVENUE | total:'TOTAL_DISC_CPN')|number:2}}</td>
+                            <td class="text-end text-nowrap f-w-700">{{(((ALL_AREA_TOTALS | total:'NET_TOTAL') + ALL_AREA_TOTALS.SERVICE_CHARGE_TOTAL+ALL_AREA_TOTALS.HOUSE_TIPS_TOTAL+ALL_AREA_TOTALS.CASH_TIPS_TOTAL)|number:2)}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_REPORTS_PRIVILEGE==false">
+    <div class="no-record text-center">
+        <span class="d-block text-center">You do not have access to Reports. Please contact Admin for access.</span>
+    </div>
+</div>
+
+

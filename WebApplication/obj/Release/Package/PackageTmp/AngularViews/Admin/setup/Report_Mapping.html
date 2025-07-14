@@ -1,0 +1,92 @@
+﻿<form id="ReportMappingSettingForm" name="ReportMappingSettingForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="SettingSearch.CUSTOMER_ID"
+                            ng-options="EL.CUSTOMER_ID as EL.CUSTOMER_NAME for EL in CUSTOMER_LIST"
+                            ng-change="GET_ENTITY_LIST();"
+                            required
+                            ng-class="{'error':ReportMappingSettingForm.submitted && ReportMappingSettingForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer -</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="SettingSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            ng-change="GET_ROLE_LIST();"
+                            required
+                            ng-class="{'error':ReportMappingSettingForm.submitted && ReportMappingSettingForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Roles:*</label>
+                    <select class="custom-select"
+                            name="ROLE_ID"
+                            ng-model="SettingSearch.ROLE_ID"
+                            ng-options="EL.ROLE_ID as EL.ROLE_NAME for EL in ROLE_LIST"
+                            ng-change="GET_ROLE_REPORT_MAPPING();"
+                            required
+                            ng-class="{'error':ReportMappingSettingForm.submitted && ReportMappingSettingForm.ROLE_ID.$error.required}">
+                        <option value="">- Please Select Role-</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div data-ng-show="ReportMappingSettingForm.submitted && ReportMappingSettingForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group">
+                    <button ng-click="ADMIN_INS_UPD_ROLE_REPORT_MAPPING();" class="btn btn-wenodo">Save</button>
+                    <button ng-click="ResetRPTSETTING();" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center" ng-show="REPORTMAPPING_SETTING.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="REPORTMAPPING_SETTING.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>REPORT NAME</th>
+                        <th>REPORT DESCRIPTION</th>
+                        <th width="10%">ASSIGNED</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="SETTING in REPORTMAPPING_SETTING">
+                    <tr>
+                        <td>{{SETTING.REPORT_NAME}}</td>
+                        <td>{{SETTING.REPORT_DESCRIPTION}}:*</td>
+                        <td>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Assigned{{$index}}" ng-model="SETTING.ASSIGNED" ng-value="SETTING.ASSIGNED" ng-checked="SETTING.ASSIGNED==1?true:false">
+                                <label for="Assigned{{$index}}" class="custom-control-label"></label>
+                            </div>
+                            <!--<input class="custom-control custom-checkbox" type="checkbox"
+                        ng-model="SETTING.ASSIGNED"
+                        ng-value="SETTING.ASSIGNED" ng-checked="SETTING.ASSIGNED==1?true:false">-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</form>
+

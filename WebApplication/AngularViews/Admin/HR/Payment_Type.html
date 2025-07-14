@@ -1,0 +1,139 @@
+﻿<form id="PayMtForm" name="PayMtForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="PayMtSearch.CUSTOMER_ID"
+                            ng-options="CT.CUSTOMER_ID as CT.CUSTOMER_NAME for CT in CUSTOMER_LIST"
+                            required
+                            ng-change="GET_ENTITY_LIST()"
+                            ng-class="{'error':PayMtForm.submitted && PayMtForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="PayMtSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            required
+                            ng-change="ADMIN_GET_EMPLOYEE_CATEGORY()"
+                            ng-class="{'error':PayMtForm.submitted && PayMtForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Payment Type:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="PAYMENT_TYPE_NAME"
+                           ng-model="PayMtSearch.PAYMENT_TYPE_NAME"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':PayMtForm.submitted && PayMtForm.PAYMENT_TYPE_NAME.$error.required}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-inline mb-3">
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PayMtSearch.All" name="Active"
+                                   ng-value="-1"
+                                   ng-model="PayMtSearch.ACTIVE" />
+                            <label for="PayMtSearch.All" class="custom-control-label justify-content-left">ALL</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PayMtSearch.ACTIVE" name="Active"
+                                   ng-model="PayMtSearch.ACTIVE"
+                                   ng-value="1">
+                            <label for="PayMtSearch.ACTIVE" class="custom-control-label justify-content-left">Active</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="PayMtSearch.InActive" name="Active"
+                                   ng-model="PayMtSearch.ACTIVE"
+                                   ng-value="0">
+                            <label for="PayMtSearch.InActive" class="custom-control-label justify-content-left">In-Active</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--<div class="col-md-4">
+        <div class="form-group">
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="PayMtSearch.ACTIVE"
+                       ng-model="PayMtSearch.ACTIVE"
+                       ng-checked="PayMtSearch.ACTIVE">
+                <label for="PayMtSearch.ACTIVE" class="custom-control-label">Active</label>
+            </div>
+        </div>
+    </div>-->
+            <div class="col-md-12">
+                <div data-ng-show="PayMtForm.submitted && PayMtForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PayMtForm.$valid">
+                    <span class="help-block">{{InvalidUser}}</span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button ng-click="ADMIN_INS_UPD_PAYMENT_TYPE();" class="btn btn-wenodo">Save</button>
+                    <button ng-click="ADMIN_GET_PAYMENT_TYPE(1);" class="btn btn-w-default">Search</button>
+                    <button ng-click="RESET_PMTE();" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="card-body">
+    <div class="text-center" ng-show="PAYMENT_TYPE_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="PAYMENT_TYPE_LIST.length>0">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th class="text-nowrap">Customer Name</th>
+                    <th class="text-nowrap">Entity Name</th>
+                    <th class="text-nowrap">Payment Type</th>
+                    <th class="text-nowrap">Creation Date</th>
+                    <th>Status</th>
+                    <th width="5%"></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="8" align="center" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_PAYMENT_TYPE();">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody ng-repeat="LL in PAYMENT_TYPE_LIST" on-finish-render="ngRepeatFinished">
+                <tr>
+                    <td> {{LL.CUSTOMER_NAME}}</td>
+                    <td> {{LL.ENTITY_NAME}}</td>
+                    <td>{{LL.PAYMENT_TYPE_NAME}}</td>
+                    <td>{{LL.CREATED_DATE | date}}</td>
+                    <td>{{LL.ACTIVE?'Active':'Inactive'}}</td>
+                    <td>
+                        <a ng-click="EDIT_INS_UPD_PAYMENT_TYPE(LL)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        <!--<a ng-click="DELETE_INS_UPD_PAYMENT_TYPE(LL)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

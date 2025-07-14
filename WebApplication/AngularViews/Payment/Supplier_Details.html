@@ -1,0 +1,291 @@
+﻿<div class="card">
+    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+        <li class="nav-item" ng-click="TAB_CLICK_Fn(1)">
+            <a class="nav-link " ng-class="{'active':TAB_FLAG==1}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Contact Details </a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_Fn(2)">
+            <a class="nav-link " ng-class="{'active':TAB_FLAG==2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Bank Details</a>
+        </li>
+        <li class="card-tools ml-auto">
+            <ul class="nav nav-pills">
+                <li class="nav-item text-sm mt-1">
+                    <button type="button" class="btn btn-w-default ml-2" data-toggle="modal" data-target="#Add_Bank"><i class="fas fa-plus"></i> Add Bank</button>
+                    <button type="button" class="btn btn-w-default ml-2" ng-click="RESET_ENTITY_BANK_MAP_Fn()" data-toggle="modal" data-target="#Add_iBAN"><i class="fas fa-plus"></i> Bank & Entity Map.</button>
+                    <!--<button type="button" class="btn btn-w-default ml-2" data-toggle="modal" data-target="#Edit_iBAN"><i class="fas fa-pen"></i></button>-->
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="tab-content py-0" id="custom-content-below-tabContent">
+        <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+            <div class="card-body">
+                <div class="text-center" ng-show="APPROVAL_HEADERS_FOR_SUBMITTER_LIST.length==0" empty-grid></div>
+                <div class="table-responsive custom-scrollbar height-47vh">
+                    <table class="table table-head-fixed table-striped compact_table mb-0">
+
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Supplier Name</th>
+                                <th>Beneficiary Name</th>
+                                <th>Supplier Bank</th>
+                                <th>Swift Code</th>
+                                <th>Payment Currency</th>
+                                <th>Account Details</th>
+                                <th>Address</th>
+                                <th width="5%" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="_supplier in PYMNT_SUPPLIERS_LIST">
+                            <tr>
+                                <td>{{_supplier.SUPPLIER_NAME}}</td>
+                                <td>
+                                    <span ng-show="_supplier.IS_EDIT_MODE==false || _supplier.IS_EDIT_MODE==null">
+                                        {{_supplier.CONTACT_BANK_NAME}}
+                                    </span>
+                                    <input type="text"
+                                           ng-show="_supplier.IS_EDIT_MODE==true"
+                                           ng-model="_supplier.CONTACT_BANK_NAME"
+                                           required
+                                           ng-class="{'error':_supplier.submitted && (_supplier.CONTACT_BANK_NAME=='' || _supplier.CONTACT_BANK_NAME==null)}"
+                                           class="form-control" />
+                                </td>
+                                <td>
+                                    <span ng-show="_supplier.IS_EDIT_MODE==false || _supplier.IS_EDIT_MODE==null">
+                                        {{_supplier.BANK_NAME}}
+                                    </span>
+                                    <select ng-show="_supplier.IS_EDIT_MODE==true"
+                                            class="custom-select custom-select-sm "
+                                            name="ENTITY_BANK_ID"
+                                            ng-model="_supplier.BANK_ID"
+                                            ng-options="bank.ID  as bank.BANK_NAME for bank in (PYMNT_BANK_LIST)"
+                                            required
+                                            ng-class="{'error':_supplier.submitted && (_supplier.BANK_ID=='' || _supplier.BANK_ID==null)}">
+                                        <option value="">Select Bank</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span ng-show="_supplier.IS_EDIT_MODE==false || _supplier.IS_EDIT_MODE==null">
+                                        {{_supplier.CONTACT_BANK_SWIFT_CODE=="" || _supplier.CONTACT_BANK_SWIFT_CODE==null?'-':_supplier.CONTACT_BANK_SWIFT_CODE}}
+                                    </span>
+                                    <span ng-show="_supplier.IS_EDIT_MODE==true">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Type here"
+                                               name="ACCOUNT_NO"
+                                               ng-model="_supplier.CONTACT_BANK_SWIFT_CODE"
+                                               required
+                                               ng-class="{'error':_supplier.submitted && (_supplier.CONTACT_BANK_SWIFT_CODE=='' || _supplier.CONTACT_BANK_SWIFT_CODE==null)}" />
+                                    </span>
+                                </td>
+                                <td>{{_supplier.DEFAULTCURRENCY}}</td>
+                                <td>{{_supplier.BANKACCOUNTDETAILS=="" || _supplier.BANKACCOUNTDETAILS==null?'-':_supplier.BANKACCOUNTDETAILS}}</td>
+                                <td>
+                                    {{_supplier.ADDRESSLINE1}}<br />
+                                    {{_supplier.ADDRESSLINE2}}<br />
+                                    {{_supplier.ADDRESSLINE3}}<br />
+                                    {{_supplier.ADDRESSLINE4}}
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-transparent-wenodo" ng-click="SUPPLIER_BANK_MAP_Fn(_supplier)">
+                                        <i class="" ng-class="{'fas fa-pen':_supplier.IS_EDIT_MODE==false || _supplier.IS_EDIT_MODE==null, 'fas fa-save':_supplier.IS_EDIT_MODE==true}"></i>
+                                    </button>
+                                    <button type="button" ng-show="_supplier.IS_EDIT_MODE==true" class="btn btn-sm btn-transparent-wenodo" ng-click="_supplier.IS_EDIT_MODE=false"><i class="fas fa-times" ></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center table-footer-fixed" colspan="14">
+                                    <a class="btn btn-sm btn-secondary text-white" ng-show="GetData"
+                                       click-once
+                                       ng-click="LAZY_GET_PYMNT_SUPPLIERS()">{{VIEWMORERECORD}}</a>
+                                    <div class="form-inline float-right">
+                                        <label class="mr-2">Show Records</label>
+                                        <select class="custom-select custom-select-sm w-50px" name="STATUS_TYPE"
+                                                data-placeholder="Show Records"
+                                                ng-model="SchedularViewSearch.PAGE_SIZE"
+                                                ng-change="GET_PYMNT_SUPPLIERS(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)"
+                                                ng-options="PA.ID  as PA.NAME for PA in (PAGE_ARRAY_LIST)"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==2}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+            <div class="card-body">
+                <div class="row mb-3" ng-if="false">
+                    <div class="col-md-2">
+                        <label class="d-block">Branch</label>
+                        <select class="custom-select custom-select-sm" name="SELF_FALG">
+                            <option>Select Branch</option>
+                            <option>Option 01</option>
+                            <option>Option 02</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="d-block">Debit iBAN No.</label>
+                        <select class="custom-select custom-select-sm" name="SELF_FALG">
+                            <option>Select iBAN No.</option>
+                            <option>123456</option>
+                            <option>0987654</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="d-block">Customer ID</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-auto">
+                        <label class="d-block">&nbsp;</label>
+                        <button name="submit" type="submit" class="btn btn-sm btn-wenodo" click-once="" ng-click="GET_XERO_INVOICES(1, 2, false, 2)">Search</button>
+                        <button class="btn btn-sm btn-w-default" ng-click="RESET_XERO_INVOICES_FILTER(2)">Reset</button>
+
+                    </div>
+                </div>
+                <div class="table-responsive custom-scrollbar height-47vh">
+                    <div class="text-center" ng-show="PYMNT_ENTITY_BANK_MAPPING_LIST.length==0" empty-grid></div>
+                    <table class="table table-head-fixed table-striped compact_table" ng-show="PYMNT_ENTITY_BANK_MAPPING_LIST.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Branch</th>
+                                <th>Bank Name</th>
+                                <th>Debit iBAN No.</th>
+                                <th>Bank Customer ID</th>
+                                <th width="5%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="_bank in PYMNT_ENTITY_BANK_MAPPING_LIST">
+                            <tr>
+                                <td>{{_bank.BRANCH_NAME}}</td>
+                                <td>{{_bank.BANK_NAME}}</td>
+                                <td>{{_bank.ACCOUNT_NO}}</td>
+                                <td>{{_bank.BANK_CUSTOMER_ID}}</td>
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-sm btn-transparent-wenodo"
+                                            ng-click="POP_EDIT_BANK_MAPPING_Fn(_bank)">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center table-footer-fixed" colspan="13">
+                                    <a class="btn btn-sm btn-secondary text-white" ng-show="BankGetData" click-once ng-click="LAZY_GET_PYMNT_ENTITY_BANK_MAPPING()">{{VIEWMORERECORD}}</a>
+                                    <div class="form-inline float-right">
+                                        <label class="mr-2">Show Records</label>
+                                        <select class="custom-select custom-select-sm w-50px" name="STATUS_TYPE"
+                                                data-placeholder="Show Records"
+                                                ng-model="SchedularViewSearch.BANK_PAGE_NO"
+                                                ng-change="GET_PYMNT_ENTITY_BANK_MAPPING(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)"
+                                                ng-options="PA.ID  as PA.NAME for PA in (PAGE_ARRAY_LIST)"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade show" id="Add_iBAN">
+    <form novalidate name="FormEntityBankMap">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title d-flex">
+                        Add Details
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-sm">
+                    <div class="row">
+                        <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                            <div class="form-group">
+                                <label class="d-block">Branch Name</label>
+                                <select class="custom-select custom-select-sm min-w-250" name="BRN_LG"
+                                        data-placeholder="Select Branch"
+                                        ng-model="SchedularViewSearch.BRANCH_LOGIN_ID"
+                                        ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="d-block">Bank</label>
+                            <select class="custom-select custom-select-sm "
+                                    name="ENTITY_BANK_ID"
+                                    ng-model="SchedularViewSearch.ENTITY_BANK_ID"
+                                    ng-options="bank.ID  as bank.BANK_NAME for bank in (PYMNT_DEFAULT_BANK_LIST)"
+                                    required
+                                    ng-class="{'error':FormEntityBankMap.submitted && FormEntityBankMap.ENTITY_BANK_ID.$error.required}">
+                                <option value="">Select Bank</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="d-block">iBAN No.</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Type here"
+                                   name="ACCOUNT_NO"
+                                   ng-model="SchedularViewSearch.ACCOUNT_NO"
+                                   required
+                                   ng-class="{'error':FormEntityBankMap.submitted && FormEntityBankMap.ACCOUNT_NO.$error.required}" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="d-block">Bank Customer ID</label>
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="SchedularViewSearch.BANK_CUSTOMER_ID"
+                                   maxlength="15"
+                                   required
+                                   ng-class="{'error':FormEntityBankMap.submitted && FormEntityBankMap.BANK_CUSTOMER_ID.$error.required}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-wenodo" ng-click="INS_UPD_PYMNT_ENTITY_BANK_MAPPING()">Save</button>
+                    <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade show" id="Add_Bank">
+    <form novalidate name="BANKFORM">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title d-flex">
+                        Add Bank Name
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-sm">
+                    <input type="text"
+                           required
+                           autocomplete="off"
+                           name="ADD_BANK_NAME"
+                           ng-model="SchedularViewSearch.BANK_NAME"
+                           class="form-control"
+                           placeholder="Type here"
+                           ng-class="{'error':BANKFORM.submitted && BANKFORM.ADD_BANK_NAME.$error.required}" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-wenodo" ng-click="INS_UPD_PYMNT_BANK_LIST()">Save</button>
+                    <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

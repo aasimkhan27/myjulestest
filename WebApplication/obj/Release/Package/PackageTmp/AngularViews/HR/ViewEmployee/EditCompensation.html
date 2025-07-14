@@ -1,0 +1,204 @@
+﻿<div class="col-md-12">
+    <div class="row">
+        <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/HeaderDtls.html?v=2136564{{AppVersion}}">
+    </div>
+    <div class="col-md-12">
+        <form id="CustomForm" name="CustomForm" novalidate >
+            <div class="col-md-12">
+                <div class="row">
+                    <templateurl class="w-100" template-url="../AngularViews/CommonView/FormView.html?v=12312{{AppVersion}}">
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <h6 class="heading-text-2">Additional Payments/Deductions</h6>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Currency:</label>
+                                    <select class="custom-select"
+                                            name="ADDITIONALCURRENCY"
+                                            ng-model="EmpSearch_5.ADDITIONAL_CURRENCY_ID"
+                                            ng-options="CRY.CURRENCY_ID as CRY.DISPLAY_TEXT for CRY in (CURRENCY)"
+                                            disabled>
+                                        <option value="">- Please Select Additional  Currency-</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row w-100" ng-repeat="PY_LIST in  ADDITIONAL_PAY_LIST | filter:{DELETE_FLAG:'0'}" ng-init="NG_INIT_ADD_PAY_DE(PY_LIST)">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Pay Code:<span ng-show="PY_LIST.IS_MANDATORY">*</span></label>
+                                    <select class="custom-select"
+                                            name="PAY_CODE{{$index}}"
+                                            ng-model="PY_LIST.PAY_CODE_ID"
+                                            ng-disabled="!IS_MANAGER || !IS_COMPENSATION"
+                                            ng-options="PD.PAY_CODE_ID as PD.DISPLAY_TEXT for PD in (PAY_CODE)"
+                                            ng-change="ngchangeadditionpayment(PY_LIST,$index)"
+                                            ng-required="PY_LIST.IS_MANDATORY"
+                                            ng-class="{'error':CustomForm.submitted && CustomForm.PAY_CODE{{$index}}.$error.required}">
+                                        <option value="">-Select Pay Code-</option>
+                                    </select>
+
+                                 
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Frequency:<span ng-show="PY_LIST.IS_MANDATORY">*</span></label>
+                                    <select class="custom-select"
+                                            name="FREQUENCY{{$index}}"
+                                            ng-model="PY_LIST.PAY_FREQUENCY_ID"
+                                            ng-disabled="!IS_MANAGER || !IS_COMPENSATION"
+                                            ng-options="FQ.PAY_FREQUENCY_ID as FQ.PAY_FREQUENCY_NAME for FQ in (PAY_FREQUENCY)"
+                                            ng-required="PY_LIST.IS_MANDATORY"
+                                            ng-change="ngchangeadditionpayment(PY_LIST,$index)"
+                                            ng-class="{'error':CustomForm.submitted && CustomForm.FREQUENCY{{$index}}.$error.required}">
+                                        <option value="">- Select Frequency-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col" ng-if="IS_COMPENSATION && EDIT_PAGE">
+                                <div class="form-group">
+                                    <label>Amount:<span ng-show="PY_LIST.IS_MANDATORY">*</span></label>
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Enter ..."
+                                           name="AMOUNT{{$index}}"
+                                           maxlength="100"
+                                           ng-disabled="!IS_MANAGER"
+                                           only-digits
+                                           autocomplete="off"
+                                           ng-change="ngchangeadditionpayment(PY_LIST,$index)"
+                                           ng-required="PY_LIST.IS_MANDATORY"
+                                           ng-class="{'error':CustomForm.submitted && CustomForm.AMOUNT{{$index}}.$error.required}"
+                                           ng-model="PY_LIST.AMOUNT">
+                                </div>
+                            </div>
+                            <div class="col" ng-if="IS_COMPENSATION && EDIT_PAGE">
+                                <div class="form-group">
+                                    <label>Rate:</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Enter ..."
+                                           autocomplete="off"
+                                           ng-disabled="!IS_MANAGER"
+                                           name="ADDITONAL_RATE{{$index}}"
+                                           ng-change="ngchangeadditionpayment(PY_LIST,$index)"
+                                           maxlength="100"
+                                           only-digits
+                                           ng-model="PY_LIST.RATE">
+                                </div>
+                            </div>
+                            <div class="col" ng-if="!IS_COMPENSATION && IS_COMPENSATION_PAGE && EDIT_PAGE">
+                                <label>Amount:<span ng-show="PY_LIST.IS_MANDATORY">*</span></label>
+                                <div>
+                                    &nbsp;
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                </div>
+                            </div>
+                            <div class="col" ng-if="!IS_COMPENSATION && IS_COMPENSATION_PAGE && EDIT_PAGE">
+                                <label>Rate:</label>
+                                <div>
+                                    &nbsp;
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                    <span class="fa fa fa-asterisk"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="d-block">&nbsp;</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <!--<button ng-click="RemoveAddLine(PY_LIST,$index)" ng-show="!$fast && (ADDITIONAL_PAY_LIST | filter:{DELETE_FLAG:'0'}).length >1" class="btn btn-danger btn-block">Delete</button>-->
+                                        <a ng-click="RemoveAddLine(PY_LIST,$index)" ng-show="!$fast && (ADDITIONAL_PAY_LIST | filter:{DELETE_FLAG:'0'}).length >1" class="btn btn-danger" data-toggle="tooltip" data-html="true" data-original-title="Delete"><i class="far fa-trash"></i></a>
+                                        <a ng-click="ADD_ADDITIONAL_PAY()" ng-show="$last && IS_COMPENSATION" class="btn btn-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Add"><i class="far fa-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div data-ng-show="CustomForm.submitted && CustomForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                                </div>
+                                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CustomForm.$valid">
+                                    <span class="help-block">{{InvalidUser}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group">
+                                    <button click-once ng-click="POP_EMPLOYEE_STEP_FLAG()" class="btn btn-wenodo">Save</button>
+                                    <button type="button" ng-click="VIEW_TAB_CLICK(5)" class="btn btn-w-default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="EFFECTIVE_DATA">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Updates </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-400" ng-init="dateinputOpenDate('bottom')">
+                <form id="EFFECTIVEForm" name="EFFECTIVEForm" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Effective Date:*</label>
+                            <input type="text"
+                                   class="form-control dateinputOpenDate"
+                                   autocomplete="off"
+                                   name="EFFECTIVE_DATE"
+                                   readonly
+                                   placeholder="Select ..."
+                                   ng-model="EFFECTIVE_SEARCH.EFFECTIVE_DATE"
+                                   ng-value="EFFECTIVE_SEARCH.EFFECTIVE_DATE | date"
+                                   required
+                                   ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.EFFECTIVE_DATE.$error.required}" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Comments:</label>
+                            <textarea rows="8"
+                                      class="form-control "
+                                      name="COMMENTS"
+                                      ng-model="EFFECTIVE_SEARCH.COMMENTS"
+                                      placeholder="Enter ..."
+                                      ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.COMMENTS.$error.required}" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer justify-content-left">
+                <button type="button" ng-click="POP_EMPLOYEE_STEP_FLAG('VIEW',3);" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿<div class="card-body">
+    <div class="row">
+        <templateurl class="w-100" template-url="../AngularViews/HR/AddEmployee/EmpHeaderDtls.html?v=2136564{{AppVersion}}">
+    </div>
+    <div class="col-md-12" ng-show="IS_ACCESS_ADD_MORE_FEILD">
+        <button type="button" class="btn btn-wenodo add-position" ng-click="ADD_ON_FILED(6)">{{ADD_ON_TEXT}}</button>
+    </div>
+    <div class="contact-tab">
+        <form id="CustomForm" name="CustomForm" novalidate class="w-100">
+            <div class="col-md-12">
+                <templateurl class="w-100" template-url="../AngularViews/CommonView/FormView.html?v=2136564{{AppVersion}}">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div data-ng-show="CustomForm.submitted && CustomForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                        <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                    </div>
+                    <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CustomForm.$valid">
+                        <span class="help-block">{{InvalidUser}}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <button ng-click="GO_BACK(1)" class="btn btn-w-default">Go Back</button>
+                        <button ng-click="HR_INS_UPD_EMPLOYEE_STEP_2()" click-once id="return-to-top_Page" class="btn btn-wenodo">Save & continue</button>
+                        <button ng-click="HR_INS_UPD_EMPLOYEE_STEP_2(1)" click-once id="return-to-top_Page" class="btn btn-w-default">Save changes for later</button>
+                        <button type="button" ng-click="GO_BACK_TO_LIST()" class="btn btn-w-default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

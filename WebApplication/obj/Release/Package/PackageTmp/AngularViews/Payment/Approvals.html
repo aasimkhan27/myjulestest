@@ -1,0 +1,149 @@
+﻿<div class="card mb-0">
+    <div class="card-header">
+        <h5 class="heading-text-2">Approvals</h5>
+        <div class="card-tools" ng-show="false">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item mt-2">
+                    <span class="font-14 semibold">Pending:</span> <span class="badge bg-wenodo-blue text-white">50</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Ref No.</label>
+                        <input type="text"
+                               class="form-control form-control-sm"
+                               placeholder="Ref No."
+                               ng-model="InvoiceApprovalSearch.APPROVAL_HEADER_ID" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Schedule Name</label>
+                        <input type="text"
+                               class="form-control form-control-sm"
+                               placeholder="Schedule Name"
+                               ng-model="InvoiceApprovalSearch.SCHEDULE_NAME" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Schedule Date</label>
+                        <div id="reportSdhlDaterange" class="form-control form-control-sm">
+                            <i class="fa fa-calendar mt-1"></i>&nbsp;
+                            <span class="mt-1">{{InvoiceApprovalSearch.SCHEDULE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Status</label>
+                        <select class="custom-select custom-select-sm" name="STATUS_TYPE"
+                                data-placeholder="Select"
+                                ng-model="InvoiceApprovalSearch.STATUS_IDS"
+                                ng-options="IS.ID  as IS.NAME for IS in (APPROVALS_STATUS)">
+                            <option value="">- Select -</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                    <label class="d-block">Branch Name</label>
+                    <select class="custom-select custom-select-sm" name="BRN_LG"
+                            data-placeholder="Select Status"
+                            ng-model="InvoiceApprovalSearch.BRANCH_IDS"
+                            ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                </div>
+                <div class="col-auto ml-auto">
+                    <div class="form-group">
+                        <label class="d-block">&nbsp;</label>
+                        <button type="submit" 
+                                 click-once
+                                name="submit" 
+                                class="btn btn-sm btn-wenodo" 
+                                ng-click="GET_APPROVAL_HEADERS_FOR_APPROVER(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)">Search</button>
+                        <button class="btn btn-sm btn-w-default" ng-click="RESET_APPROVER_FILTER()">Reset</button>
+                        <button ng-show="false" type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel"><i class="far fa-file-excel"></i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="text-center" ng-show="HEADERS_FOR_APPROVER_LIST.length==0" empty-grid></div>
+        <div class="table-responsive custom-scrollbar height-47vh" ng-show="HEADERS_FOR_APPROVER_LIST.length>0">
+            <table class="table table-head-fixed table-striped table-hover compact_table mb-0">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th class="text-nowrap" ng-repeat="HL in HEADER_LIST" 
+                            ng-class="HL.CLASS_NAME" 
+                            ng-click="GET_APPROVAL_HEADERS_FOR_APPROVER(1,HL.ID,!SORT_ORDER_NO_ASCDESC)">
+                          <a class="text-bold">{{HL.NAME}} <i class="far " ng-show="HL.ID==SORT_COLUMN_NO" ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC,'fa-angle-up':SORT_ORDER_NO_ASCDESC}"></i> </a>   </th>
+                        <th width="2%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="HPL in HEADERS_FOR_APPROVER_LIST" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{HPL.APPROVAL_HEADER_ID}}</td>
+
+                        <td>{{HPL.SCHEDULE_NAME}}</td>
+                        <td><i class="fal fa-calendar-alt text-blue"></i> {{HPL.PAYMENT_DATE | date}}</td>
+
+                        <td>
+                            <span class="badge" ng-class="{'badge-light-green':HPL.APPROVER_STATUS_ID==37 ,'badge-danger':HPL.APPROVER_STATUS_ID==38 ,'badge-light-grey':HPL.APPROVER_STATUS_ID==39}">
+                                {{HPL.APPROVER_STATUS_NAME}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge" ng-class="{'badge-light-green':HPL.OVERALL_STATUS_ID==37 ,'badge-danger':HPL.OVERALL_STATUS_ID==38 ,'badge-light-grey':HPL.OVERALL_STATUS_ID==39}">
+                                {{HPL.OVERALL_STATUS_NAME}}
+                            </span>
+                        </td>
+                        <td>{{HPL.SUPPLIERS_COUNT}}</td>
+                        <td>{{HPL.TOTAL_INVOICES}}</td>
+                        <!--<td class="text-nowrap text-right"><span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{HPL.TOTAL_AMOUNT}}</td>-->
+                        <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                        <td class="text-nowrap text-right"> {{HPL.PAYMENT_AMOUNT | number:2}}</td>
+                       
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button type="button" ng-click="GO_TO_APPROVAL(HPL)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fa fa-eye"></i></button>
+                                <!--<button type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Delete"><i class="fas fa-edit"></i></button>-->
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <!--<tr>
+                        <td colspan="6"></td>
+                        <td class="text-bold text-right">Total</td>
+                        <td class="text-bold text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{(HEADERS_FOR_APPROVER_LIST | total:'TOTAL_AMOUNT')  | number:2}}</td>
+                        <td class="text-bold text-nowrap"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{(HEADERS_FOR_APPROVER_LIST | total:'PAYMENT_AMOUNT')  | number:2}}</td>
+                        <td></td>
+                    </tr>-->
+                    <tr>
+                        <td class="text-center table-footer-fixed" colspan="10">
+                            <a class="btn btn-sm btn-secondary text-white" ng-show="GetData" click-once ng-click="GET_APPROVAL_HEADERS_FOR_APPROVER_LAZY_LOAD()">{{VIEWMORERECORD}}</a>
+                            <div class="form-inline float-right">
+                                <label class="d-block mr-2">Show Records</label>
+                                <select class="custom-select custom-select-sm w-50px" name="STATUS_TYPE"
+                                        data-placeholder="Show Records"
+                                        ng-model="InvoiceApprovalSearch.PAGE_SIZE"
+                                        ng-change="GET_APPROVAL_HEADERS_FOR_APPROVER(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC)"
+                                        ng-options="PA.ID  as PA.NAME for PA in (PAGE_ARRAY_LIST)"></select>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <!--<div class="card-footer bg-white py-0">
+        <div class="form-group mb-0">
+            <button type="button" class="btn btn-wenodo">Approve</button>
+            <button type="button" class="btn btn-w-default">Reset</button>
+        </div>
+    </div>-->
+</div>

@@ -1,0 +1,689 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Status Details</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item" ng-show="CheckSubModuleAccess(6)">
+                    <a href="#!/Recon_Settings" class="btn btn-wenodo"> Settings</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row d-none">
+            <div class="col-md-12"><h6 class="card-title mb-3 text-blue">Transition of FnB Data</h6></div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-head-fixed compact_table">
+                    <thead class="bg-wenodo-border">
+                        <tr>
+                            <th>Effective Date</th>
+                            <th>Invoice Date</th>
+                            <th>Supplier</th>
+                            <th>Del Number</th>
+                            <th>Invoice Number</th>
+                            <th class="text-right">Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><i class="far fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                            <td><i class="far fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                            <td>Has Bean Coffee Ltd</td>
+                            <td>SO-30929</td>
+                            <td>SO-30929</td>
+                            <td class="text-right">&pound; 541.50</td>
+                            <td>Needs Marking for Export</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-12"><h6 class="card-title mb-3 text-blue">Combine Data</h6></div>
+
+            <div class="col-md-4">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-head-fixed compact_table mb-0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Head</th>
+                                <th class="text-right">Food</th>
+                                <th class="text-right">Drinks</th>
+                                <th class="text-right">Wine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Balance as Per XERO</td>
+                                <td class="text-right">&pound; 8,981.10 </td>
+                                <td class="text-right">&pound; 667.94 </td>
+                                <td class="text-right">-</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td>Missing in XERO</td>
+                                <td class="text-right">&pound; 2,771.95  </td>
+                                <td class="text-right">&pound; 541.50 </td>
+                                <td class="text-right">&pound; 353.22</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td>(-) Missing In F&B</td>
+                                <td class="text-right">&pound; 457.22 </td>
+                                <td class="text-right">&pound; 33.76 </td>
+                                <td class="text-right">-</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td>(-) Value Variance</td>
+                                <td class="text-right">&pound; (199.94) </td>
+                                <td class="text-right">&pound; 33.76 </td>
+                                <td class="text-right">-</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <th>Balance as Per F&B</th>
+                                <th class="text-right">&pound; 11,495.76 </th>
+                                <th class="text-right">&pound; 353.22</th>
+                                <th class="text-right">-</th>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td>Difference</td>
+                                <td class="text-right">&pound; 0.01</td>
+                                <td class="text-right">-</td>
+                                <td class="text-right">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                            <span id="dropdown_titleSec">Adj Name</span>
+                            <i class="fa fa-sort float-right mt-1"></i>
+                        </a>
+                        <ul ID="divNewNotificationsSec" class="dropdown-menu dropdown-menu-arrow text-xs custom-scrollbar min-w-285">
+                            <li class="sticky-top bg-white">
+                                <input type="text" class="form-control" />
+                            </li>
+                            <li class="semibold DontHideOnClick" style="text-transform:uppercase">
+                                <i class="far fa-square fa-lg" ng-class="{'fa-check-square green':Section_Week_Search.BranchSectionALL,'fa-square':!Section_Week_Search.BranchSectionALL}"></i>   ALL
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                ALLAN REEDER LTD
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                BANCROFT WINES LIMITED
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                BILLFIELDS OF LONDON LIMITED
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                BOULANGERIE DE PARIS LIMITED
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                CAPITAL SEAFOODS LTD
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                ENOTRIA WINECELLARS LTD
+                            </li>
+                            <li class="sticky-bottom bg-white">
+                                <button ng-click="ON_DEPARTMENT_SHIFT_SELECT_CLICK()" class="btn btn-xs btn-wenodo">Apply</button>
+                                <button ng-click="ON_SECTION_RESET_CLICK()" class="btn btn-xs btn-w-default">Reset</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-3">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                            <span id="dropdown_titleSec">Filter By</span>
+                            <i class="fa fa-sort float-right mt-1"></i>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu dropdown-menu-arrow text-xs custom-scrollbar min-w-285">
+                            <li class="p-3 semibold disabled-li DontHideOnClick text-blue text-uppercase font-12">
+                                Reco Head
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                Drink
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                Food
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                Wine
+                            </li>
+
+                            <li class="p-3 semibold disabled-li DontHideOnClick text-blue text-uppercase font-12">
+                                Results
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                Matched
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                Missing
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                Value Variance
+                            </li>
+                            <li class="sticky-bottom bg-white">
+                                <button ng-click="ON_DEPARTMENT_SHIFT_SELECT_CLICK()" class="btn btn-xs btn-wenodo">Apply</button>
+                                <button ng-click="ON_SECTION_RESET_CLICK()" class="btn btn-xs btn-w-default">Reset</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-2">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                            <span id="dropdown_titleSec">Source</span>
+                            <i class="fa fa-sort float-right mt-1"></i>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu dropdown-menu-arrow text-xs custom-scrollbar min-w-285">
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                FnB
+                            </li>
+                            <li class="semibold DontHideOnClick"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText" ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg fa-square" ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                Xero
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-12"><h6 class="card-title mb-3 text-blue">Vendor Wise Analysis</h6></div>
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-head-fixed compact_table">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th colspan="2"></th>
+                                <th class="text-right">Missing</th>
+                                <th class="text-right">Missing</th>
+                                <th class="text-right">Missing</th>
+                                <th class="text-right">Missing</th>
+                                <th colspan="2"></th>
+                            </tr>
+                            <tr>
+                                <th>Category</th>
+                                <th>Vendor Name</th>
+                                <th class="text-right">In Xero Amount</th>
+                                <th class="text-right">In Xero Count</th>
+                                <th class="text-right" h>In FnB Amount</th>
+                                <th class="text-right">In FnB Count</th>
+                                <th class="text-right">Total Amount </th>
+                                <th class="text-right">Total Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Drink</td>
+                                <td>Has Bean Coffee Ltd</td>
+                                <td class="text-right">&pound; 294.34 </td>
+                                <td class="text-right">1</td>
+                                <td class="text-right">&pound; 292.50</td>
+                                <td class="text-right">1</td>
+                                <td class="text-right">&pound; 586.84 </td>
+                                <td class="text-right">2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="process-wrapper">
+                <div id="progress-bar-container">
+                    <ul>
+                        <li class="step step01 active"><div class="step-inner">Upload</div></li>
+                        <li class="step step02"><div class="step-inner">Contact Mapping</div></li>
+                        <li class="step step03"><div class="step-inner">Reconcile</div></li>
+                        <li class="step step04"><div class="step-inner">Journal Voucher</div></li>
+                    </ul>
+
+                    <div id="line">
+                        <div id="line-progress"></div>
+                    </div>
+                </div>
+
+                <div id="progress-content-section">
+                    <div class="section-content discovery active">
+                        <form class="form-container" enctype='multipart/form-data'>
+                            <div class="upload-files-container">
+                                <div class="drag-file-area">
+                                    <h3 class="dynamic-message"> Drag & drop your file above </h3>
+                                    <label class="label"> 
+                                        <span class="browse-files">
+                                            <input type="file" class="default-file-input" />
+                                            <span class="browse-files-text">or <i class="far fa-upload"></i> browse file</span>
+                                            <span>from device</span>
+                                        </span> 
+                                    </label>
+                                </div>
+                                <div class="file-block">
+                                    <div class="file-info"> 
+                                        <i class="far fa-file-alt file-icon"></i> 
+                                        <span class="file-name">ABC.docx </span>
+                                    </div>
+                                    <i class="far fa-times remove-file-icon" data-toggle="tooltip" data-html="true" data-original-title="Remove"></i>
+                                </div>
+                                <button type="button" class="file-upload"> Upload </button>
+                            </div>
+                        </form>
+                        <!--<div class="col-md-12 text-center border-dashed mb-3">
+                                <span class="upload-text">Choose your file</span>
+                                <div class="input-group upload-box">
+                                    <input type="file" class="form-control" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="file-upload input-group-text">Upload</button>
+                                    </div>
+                                </div>
+                            </div>-->
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-head-fixed compact_table">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>Uploaded by</th>
+                                            <th>Uploaded Date</th>
+                                            <th>Entity</th>
+                                            <th>Branch</th>
+                                            <th width="8%" class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Mostrador @ Hart Shoreditch hotel</td>
+                                            <td><i class="far fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                                            <td>ABC</td>
+                                            <td>XYZ</td>
+                                            <td class="text-center"><button type="button" class="btn btn-sm btn-wenodo text-nowrap">Process Data</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-w-default">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="section-content strategy">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped table-head-fixed compact_table">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>Account</th>
+                                            <th>Supplier Name</th>
+                                            <th>Contact</th>
+                                            <th>Date</th>
+                                            <th>Invoice Number</th>
+                                            <th class="text-right">Net</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Mostrador @ Hart Shoreditch hotel</td>
+                                            <td>Restratech PVT LTD </td>
+                                            <td>Has Bean Coffee Ltd</td>
+                                            <td><i class="far fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                                            <td>SO-30929</td>
+                                            <td class="text-right">&pound; 541.50</td>
+                                            <td><span class="badge badge-light-green">Mapped</span></td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td>Mostrador @ Hart Shoreditch hotel</td>
+                                            <td>Restratech PVT LTD 
+                                                <span class="float-right">
+                                                    <button type="button" class="btn btn-sm btn-transparent-wenodo" data-toggle="modal" data-target="#mismatch"><i class="fas fa-people-arrows"></i></button>
+                                                </span>
+                                            </td>
+                                            <td>Bancroft Wines Ltd</td>
+                                            <td><i class="far fa-calendar-alt text-blue"></i> 17-Jul-23</td>
+                                            <td>BWIS7001</td>
+                                            <td class="text-right">&pound; 353.22</td>
+                                            <td><span class="badge badge-light-orange">Pending</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-wenodo">Next</button>
+                            <button type="button" class="btn btn-w-default">Back</button>
+                        </div>
+                    </div>
+
+                    <div class="section-content creative">
+                        <div class="col-md-12 animated fadeInUp">
+                            <div class="table-responsive custom-scrollbar height-auto">
+                                <table class="table bg-white compact_table v-align-top">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th width="15%">
+                                                <span class="d-block mb-2">Uploaded by</span>
+                                                <span class="d-block mb-2">Uploaded Date</span>
+                                                <span class="d-block mb-2" ng-show="false">Entity</span>
+                                                <span class="d-block" ng-show="false">Branch</span>
+                                            </th>
+                                            <th width="30%" class="text-normal">
+                                                <span class="d-block mb-2 text-blue semibold">Restratech PVT LTD</span>
+                                                <span class="d-block semibold mb-2"><i class="fal fa-calendar-alt text-blue"></i> 04-Jul-23</span>
+                                                <span class="d-block semibold mb-2" ng-show="false">ABC Limited, UK</span>
+                                                <span class="d-block semibold" ng-show="false">XYZ</span>
+                                            </th>
+
+                                            <th class="p-0" width="15%" colspan="2">&nbsp;</th>
+                                            <th class="text-right text-normal lh-30">
+                                                <span class="d-block"><span class="badge badge-light-orange text-100 w-70px">Probable Match</span> </span>
+                                                <span class="d-block"><span class="badge badge-success text-100 w-70px">Exact Match</span> </span>
+                                                <span class="d-block"><span class="badge badge-light-red text-100 w-70px">Mismatch</span> </span>
+                                                <span class="d-block"><span class="badge badge-light-purple text-100 w-70px">Not in Xero</span> </span>
+                                                <span class="d-block"><span class="badge badge-light-grey text-100 w-70px">Not in Uploaded</span> </span>
+                                                <span class="d-block"><span class="badge badge-danger text-100 w-70px">Value Variance</span> </span>
+                                            </th>
+                                            <th class="lh-30">
+                                                <span class="d-block text-normal font-12 text-nowrap">Supplier name and Invoice amount match.</span>
+                                                <span class="d-block text-normal font-12 text-nowrap">Complete Match</span>
+                                                <span class="d-block text-normal font-12 text-nowrap">No fields match</span>
+                                                <span class="d-block text-normal font-12 text-nowrap">Not available in Xero</span>
+                                                <span class="d-block text-normal font-12 text-nowrap">Not uploaded</span>
+                                                <span class="d-block text-normal font-12 text-nowrap">Value Mismatch</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2">
+                                                <table class="table table-font-10 table-hover compact_table bg-light-grey">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="5">Uploaded Invoices</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <thead class="bg-wenodo-border">
+                                                        <tr>
+                                                            <th>Account</th>
+                                                            <th>Contact</th>
+                                                            <th>Date</th>
+                                                            <th class="text-nowrap">Invoice Number</th>
+                                                            <th class="text-right text-nowrap">Net Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-nowrap">Purchases - Hot Beverage</td>
+                                                            <td class="text-nowrap">Has Bean Coffee Ltd</td>
+                                                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                                                            <td class="text-nowrap">SO-30929</td>
+                                                            <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL">£</span> 541.50</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-nowrap">Purchases - Hot Beverage</td>
+                                                            <td class="text-nowrap">Has Bean Coffee Ltd</td>
+                                                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                                                            <td class="text-nowrap">JO-30229</td>
+                                                            <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL">£</span> 541.50</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-nowrap">Purchases - Hot Beverage</td>
+                                                            <td class="text-nowrap">Has Bean Coffee Ltd</td>
+                                                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                                                            <td class="text-nowrap">PO-23587</td>
+                                                            <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL">£</span> 361.25</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <table class="table table-font-10 compact_table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>&nbsp;</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>&nbsp;</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <span class="badge badge-success font-12 w-70px">Exact Match</span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <span class="badge badge-light-orange font-12 w-70px">Probable Match</span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <span class="badge badge-light-red font-12 w-70px">Mismatch</span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td colspan="3">
+                                                <table class="table table-font-10 table-hover compact_table bg-light-blue">
+                                                    <thead class="bg-light-blue">
+                                                        <tr>
+                                                            <th colspan="5">Xero Invoices</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <thead class="bg-wenodo-border">
+                                                        <tr>
+                                                            <th>Account</th>
+                                                            <th>Contact</th>
+                                                            <th>Date</th>
+                                                            <th class="text-nowrap">Invoice Number</th>
+                                                            <th class="text-right text-nowrap">Net Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-nowrap">Purchases - Hot Beverage</td>
+                                                            <td class="text-nowrap">Has Bean Coffee Ltd</td>
+                                                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                                                            <td class="text-nowrap">SO-30929</td>
+                                                            <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL">£</span> 541.50</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-nowrap">Purchases - Hot Beverage</td>
+                                                            <td class="text-nowrap">Has Bean Coffee Ltd</td>
+                                                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                                                            <td class="text-nowrap">SO-30929</td>
+                                                            <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL">£</span> 541.50</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-nowrap">Wenodo PVT LTD</td>
+                                                            <td class="text-nowrap">Restratech Pvt Ltd</td>
+                                                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> 04-Jul-23</td>
+                                                            <td class="text-nowrap">GE-56825</td>
+                                                            <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL">£</span> 541.50</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-wenodo">Next</button>
+                            <button type="button" class="btn btn-w-default">Back</button>
+                        </div>
+                    </div>
+
+                    <div class="section-content production">
+                        <div class="table-responsive custom-scrollbar">
+                            <table class="table table-hover table-striped compact_table">
+                                <thead class="bg-wenodo-border">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Narration</th>
+                                        <th>Date</th>
+                                        <th>Discription</th>
+                                        <th>Account Code</th>
+                                        <th>Tax Rate</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Food</td>
+                                        <td>FnB Accrual - Jun-23</td>
+                                        <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> 30-Jul-23</td>
+                                        <td>FnB Accrual - Food - Jun-23</td>
+                                        <td>8030</td>
+                                        <td>No VAT</td>
+                                        <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL">£</span> -107.00</td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td>Drink</td>
+                                        <td>FnB Accrual - Jun-23</td>
+                                        <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> 30-Jul-23</td>
+                                        <td>FnB Accrual - Drink - Jun-23 - HAS BEAN COFFEE LIMITED - INV-30848 - 28-06-23</td>
+                                        <td>3110</td>
+                                        <td>No VAT</td>
+                                        <td class="text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL">£</span> 294.34</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-wenodo">Submit</button>
+                            <button type="button" class="btn btn-w-default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" id="mismatch">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contact ID Mapping</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <select class="custom-select">
+                                <option disabled selected>Select Supplier</option>
+                                <option>option 2</option>
+                                <option>option 3</option>
+                                <option>option 4</option>
+                                <option>option 5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-sm"><i class="fas fa-lightbulb-on text-warning"></i> Cannot be changed after mapping completed</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".step").click( function() {
+	$(this).addClass("active").prevAll().addClass("active");
+	$(this).nextAll().removeClass("active");
+});
+
+$(".step01").click( function() {
+	$("#line-progress").css("width", "0%");
+	$(".discovery").addClass("active").siblings().removeClass("active");
+});
+
+$(".step02").click( function() {
+	$("#line-progress").css("width", "33%");
+	$(".strategy").addClass("active").siblings().removeClass("active");
+});
+
+$(".step03").click( function() {
+	$("#line-progress").css("width", "66%");
+	$(".creative").addClass("active").siblings().removeClass("active");
+});
+
+$(".step04").click( function() {
+	$("#line-progress").css("width", "100%");
+	$(".production").addClass("active").siblings().removeClass("active");
+});
+</script>

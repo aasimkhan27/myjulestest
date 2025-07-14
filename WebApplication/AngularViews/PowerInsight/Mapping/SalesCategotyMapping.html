@@ -1,0 +1,124 @@
+﻿<form id="EposSalesCategotyMappingForm" name="EposSalesCategotyMappingForm" novalidate>
+    <style>
+        .overlay_loading {
+            background-image: url(/E_Content/images/loading.gif);
+            background-color: #666;
+            opacity: 0.4;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+    </style>
+    <div class="overlay_loading" id="overlay_loading" style="display:none!important"></div>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="EposSalesCategotyMappingSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            required
+                            ng-change="ADMIN_GET_BRANCH();"
+                            ng-class="{'error':EposSalesCategotyMappingForm.submitted && EposSalesCategotyMappingForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Branch:*</label>
+                    <select class="custom-select"
+                            name="BRANCH_ID"
+                            ng-model="EposSalesCategotyMappingSearch.BRANCH_ID"
+                            ng-options="EL.BRANCH_ID as EL.BRANCH_NAME for EL in BRANCH_LIST"
+                            ng-change="GET_INTEGRATION_DETAILS_BY_CUST_ENT_BRNH();"
+                            required
+                            ng-class="{'error':EposSalesCategotyMappingForm.submitted && EposSalesCategotyMappingForm.BRANCH_ID.$error.required}">
+                        <option value="">- Please Select Branch-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Integration System:*</label>
+                    <select class="custom-select"
+                            name="INTEGRATION_SYSTEM_ID"
+                            ng-model="EposSalesCategotyMappingSearch.INTEGRATION_SYSTEM_ID"
+                            ng-options="EL.INTEGRATION_SYSTEM_ID as EL.INTEGRATION_SYSTEM_NAME for EL in INTEGRATIONSYSTEM_LIST"
+                            required
+                            ng-class="{'error':EposSalesCategotyMappingForm.submitted && EposSalesCategotyMappingForm.INTEGRATION_SYSTEM_ID.$error.required}">
+                        <option value="">- Please Select Branch-</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div data-ng-show="CommonIntegrationForm.submitted && CommonIntegrationForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+            </div>
+            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CommonIntegrationForm.$valid">
+                <span class="help-block">{{InvalidUser}}</span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group">
+
+                    <button ng-click="GET_EPOS_SALES_CATEGORY_CATEGORY_MASTER_MAPPING();" class="btn btn-w-default">Search</button>
+                    <button ng-click="RESET();" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form id="EposSalesCategotyMappingListForm" name="EposSalesCategotyMappingListForm" novalidate>
+    <div class="card-body">
+        <div class="text-center" ng-show="EPOS_SALES_CATEGORY_CATEGORY_MASTER_MAPPING_LIST.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="EPOS_SALES_CATEGORY_CATEGORY_MASTER_MAPPING_LIST.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th class="text-nowrap">Category ID</th>
+                        <th class="text-nowrap">Category Code</th>
+                        <th class="text-nowrap">Category Name</th>
+                        <th class="text-nowrap">Category Mapping</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="EPOS in EPOS_SALES_CATEGORY_CATEGORY_MASTER_MAPPING_LIST" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td class="text-nowrap"> {{EPOS.CATEGORY_ID}}</td>
+                        <td class="text-nowrap"> {{EPOS.CATEGORY_CODE}}</td>
+                        <td class="text-nowrap"> {{EPOS.CATEGORY_NAME}}</td>
+                        <td>
+                            <select ng-model="EPOS.CATEGORY_MASTER_ID"
+                                    name="FIELD_TYPE{{$index}}"
+                                    class="custom-select w-90"
+                                    required
+                                    ng-options="CUSTCTRL.ID as CUSTCTRL.CATEGORY_NAME for CUSTCTRL in CATEGORY_MASTER_LIST"
+                                    ng-class="{'error':EposSalesCategotyMappingListForm.submitted && EposSalesCategotyMappingListForm.FIELD_TYPE{{$index}}.$error.required}">
+                                <option value="">- Please Select -</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-12">
+            <div class="row" ng-show="EPOS_SALES_CATEGORY_CATEGORY_MASTER_MAPPING_LIST.length>0">
+                <div class="form-group">
+                    <button ng-click="INS_UPD_EPOS_SALES_CATEGORY_CATEGORY_MASTER_MAPPING();" class="btn btn-wenodo">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+ 

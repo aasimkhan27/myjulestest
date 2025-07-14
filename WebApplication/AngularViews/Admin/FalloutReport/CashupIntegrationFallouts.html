@@ -1,0 +1,197 @@
+﻿<form id="CashupIntegrationFalloutsForm" name="CashupIntegrationFalloutsForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="CashupIntegrationFalloutsSearch.CUSTOMER_ID"
+                            ng-options="CL.CUSTOMER_ID as CL.CUSTOMER_NAME for CL in CUSTOMER_LIST "
+                            ng-change="GET_ENTITY_LIST()">
+                        <option value="">- Please Select Customer-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="CashupIntegrationFalloutsSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            ng-change="ADMIN_GET_BRANCH();">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Branch:</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="CashupIntegrationFalloutsSearch.BRANCH_ID"
+                            ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST">
+                        <option value="">- Please Select Customer-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+                    <button ng-click="ADMIN_GET_CASHUP_FALLOUT_REPORT(1);" class="btn btn-wenodo">Search</button>
+                    <button ng-click="OPEN_RE_PROCESS_POPUP();" class="btn btn-wenodo">Re-Process</button>
+                    <button ng-click="INTEGRATION_FALLOUT_RESET();" class="btn btn-w-default">Reset</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="text-center" ng-show="CASHUP_INTEGRATION_FALLOUTS_LIST.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="CASHUP_INTEGRATION_FALLOUTS_LIST.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Sr.No.</th>
+                        <!--<th class="text-nowrap">Cashup Main ID</th>-->
+                        <th class="text-nowrap">Entity</th>
+                        <th class="text-nowrap">Branch Name</th>
+                        <!--<th class="text-nowrap">Integration ID</th>-->
+                        <th class="text-nowrap">Pickup Date </th>
+                        <th class="text-nowrap">Integration Name</th>
+                        <th class="text-nowrap">Status</th>
+                        <th class="text-nowrap">Cashup Date</th>
+                        <th class="text-nowrap">Error</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="10" align="center" ng-show="GetData">
+                            <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_CASHUP_FALLOUT_REPORT()">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="EL in CASHUP_INTEGRATION_FALLOUTS_LIST" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{$index+1}}.</td>
+                        <!--<td>{{EL.CASHUP_MAIN_ID}}</td>-->
+                        <td>{{EL.ENTITY_NAME}}</td>
+                        <td>{{EL.BRANCH_NAME}}</td>
+                        <!--<td>{{EL.INTEGRATION_SYSTEM_ID}}</td>-->
+                        <td>{{EL.INTEGRATION_PICKUP_DATE |  date:'medium'}}</td>
+                        <td>{{EL.SYSTEM_NAME}}</td>
+                        <td>{{EL.STATUS }}</td>
+                        <td>{{EL.CASHUP_DATE | date}}</td>
+                        <td width="10px;">
+                            <i class="fa fa-info-circle float-left"
+                               data-toggle="tooltip" data-html="true"
+                               data-original-title="{{EL.SERVICE_ERROR}}"
+                               data-placement="right"></i>
+                        </td>
+                        <td><button ng-click="ADMIN_REPROCESS_CASHUP_MAIN(EL,$index+1);" class="btn btn-wenodo btn-sm" id={{$index+1}}>Process</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</form>
+<form id="CashupIntegrationFalloutsReprocessForm" name="CashupIntegrationFalloutsReprocessForm" novalidate>
+    <div class="modal fade" id="CASHUP_INTEGRATION_FALLOUTS">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" ng-init="$parent.dateinputOpenDate()">
+                    <h4 class="modal-title">
+                        Process
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Customer:*</label>
+                                <select class="custom-select"
+                                        name="RE_PROCESS_CUSTOMER_ID"
+                                        ng-model="CashupIntegrationFalloutsReprocessSearch.RE_PROCESS_CUSTOMER_ID"
+                                        ng-options="CL.CUSTOMER_ID as CL.CUSTOMER_NAME for CL in RE_PROCESS_CUSTOMER_LIST "
+                                        ng-change="RE_PROCESS_GET_ENTITY_LIST();"
+                                        required
+                                        ng-class="{'error':CashupIntegrationFalloutsReprocessForm.submitted && CashupIntegrationFalloutsReprocessForm.RE_PROCESS_CUSTOMER_ID.$error.required}">
+                                    <option value="">- Please Select Customer-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Entity:*</label>
+                                <select class="custom-select"
+                                        name="RE_PROCESS_ENTITY_ID"
+                                        ng-model="CashupIntegrationFalloutsReprocessSearch.RE_PROCESS_ENTITY_ID"
+                                        ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in RE_PROCESS_ENTITY_LIST"
+                                        ng-change="RE_PROCESS_ADMIN_GET_BRANCH();" required
+                                        ng-class="{'error':CashupIntegrationFalloutsReprocessForm.submitted && CashupIntegrationFalloutsReprocessForm.RE_PROCESS_ENTITY_ID.$error.required}"
+                                        >
+                                    <option value="">- Please Select Entity-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Branch:*</label>
+                                <select class="custom-select"
+                                        name="RE_PROCESS_BRANCH_ID"
+                                        ng-model="CashupIntegrationFalloutsReprocessSearch.RE_PROCESS_BRANCH_ID"
+                                        ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in RE_PROCESS_BRANCH_LIST" required
+                                        ng-class="{'error':CashupIntegrationFalloutsReprocessForm.submitted && CashupIntegrationFalloutsReprocessForm.RE_PROCESS_BRANCH_ID.$error.required}"
+                                        >
+                                    <option value="">- Please Select Customer-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" ng-init="$parent.dateinputOpenDate()">
+                                <div class="form-group">
+                                    <label>Date:*</label>
+                                    <input type="text"
+                                           class="form-control dateinputOpenDate"
+                                           name="RE_PROCESS_START_DATE"
+                                           autocomplete="off"
+                                           readonly
+                                           placeholder="Select ..."
+                                           ng-model="CashupIntegrationFalloutsReprocessSearch.RE_PROCESS_START_DATE"
+                                           ng-value="CashupIntegrationFalloutsReprocessSearch.RE_PROCESS_START_DATE | date"
+                                           required
+                                           ng-class="{'error':CashupIntegrationFalloutsReprocessForm.submitted && CashupIntegrationFalloutsReprocessForm.RE_PROCESS_START_DATE.$error.required}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <button ng-click="PROCESS_DATE_WISE_DATA();" class="btn btn-wenodo">Process</button>
+                                <button ng-click="INTEGRATION_PROCESSED_RESET();" class="btn btn-w-default">Reset</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    //Initialize Select2 Elements
+    $(".select2").select2({
+        containerCssClass: function (e) {
+            return $(e).attr('required') ? 'required' : '';
+        }
+    });
+</script>

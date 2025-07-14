@@ -1,0 +1,115 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="card-title font-18">View Statement</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item">
+                    <a href="#!/Statement" class="btn btn-sm btn-wenodo">Back to Statements</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row row-eq-height">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col">
+                        <div class="info-box bg-headers mb-0">
+                            <span class="info-box-icon"><i class="fad fa-people-carry text-blue"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Supplier Name</span>
+                                <span class="info-box-number text-nowrap">{{StatementViewSearch.STATEMENT_HEADER.SUPPLIER_NAME}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-box bg-headers mb-0">
+                            <span class="info-box-icon"><i class="fad fa-calendar-alt text-blue"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Statement Date</span>
+                                <span class="info-box-number text-nowrap">{{StatementViewSearch.STATEMENT_HEADER.STATEMENT_DATE | date}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-box bg-headers mb-0">
+                            <span class="info-box-icon"><i class="fad fa-piggy-bank text-blue"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Supplier A/C</span>
+                                <span class="info-box-number text-nowrap">{{StatementViewSearch.STATEMENT_HEADER.ACCOUNTNUMBER==null?'-':StatementViewSearch.STATEMENT_HEADER.ACCOUNTNUMBER}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-box bg-headers mb-0">
+                            <span class="info-box-icon"><i class="fad fa-sack-dollar text-blue"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Currency</span>
+                                <span class="info-box-number text-nowrap">{{StatementViewSearch.STATEMENT_HEADER.DEFAULTCURRENCY==null?'-':StatementViewSearch.STATEMENT_HEADER.DEFAULTCURRENCY}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="info-box bg-headers mb-0">
+                            <span class="info-box-icon"><i class="fad fa-thermometer-quarter text-blue"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text semibold">Status</span>
+                                <span class="info-box-number text-nowrap">{{StatementViewSearch.STATEMENT_HEADER.STATUS_NAME}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive custom-scrollbar height-70vh mt-3 ">
+                    <table class="table table-head-fixed table-striped table-hover compact_table">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th class="text-nowrap">Uploaded Date</th>
+                                <th class="text-nowrap">Invoice Date</th>
+                                <th>Number</th>
+                                <th class="text-nowrap">Due Date</th>
+                                <th class="text-right">Debit</th>
+                                <th class="text-right">Credit</th>
+                                <!--<th class="text-right text-nowrap">Balance Amt.</th>-->
+                                <th class="text-nowrap">Reconcilation Status</th>
+                                <th class="text-nowrap">Reconcilation Date</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="SL in STATEMENT_LIST">
+                            <tr>
+                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{SL.UPLOADED_DATE | date}}</td>
+                                <td class="text-nowrap"><i ng-show="SL.INVOICE_DATE!=null" class="fal fa-calendar-alt text-blue"></i> {{SL.INVOICE_DATE | date}}</td>
+                                <td>{{SL.INVOICE_NUMBER}}</td>
+                                <td class="text-nowrap"><i ng-show="SL.DUE_DATE!=null" class="fal fa-calendar-alt text-blue"></i> {{SL.DUE_DATE | date}}</td>
+                                <td class="text-nowrap text-blue text-nowrap text-right"> {{SL.DEBIT_AMOUNT | number :2}}</td>
+                                <td class="text-nowrap text-blue text-nowrap text-right"> {{SL.CREDIT_AMOUNT | number :2}}</td>
+                                <!--<td class="text-nowrap text-right"><span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{SL.BALANCE_AMOUNT | number :2}}</td>-->
+                                <td>
+                                    <span class="badge" ng-class="{'badge-secondary':SL.STATUS==47,'badge-danger':SL.STATUS==46,'badge-light-green':SL.STATUS==45,'badge-light-red':SL.STATUS==44,'badge-light-grey':SL.STATUS==43}">{{SL.STATUS_NAME}}</span>
+                                </td>
+                                <td class="text-nowrap"><i ng-show="SL.RECONSILIATION_DATE!=null" class="fal fa-calendar-alt text-blue"></i> {{SL.RECONSILIATION_DATE | date }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="text-bold text-right">Total</td>
+                                <td class="text-bold text-nowrap text-right"> <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{(STATEMENT_LIST | total:'DEBIT_AMOUNT') | number :2}}</td>
+                                <td class="text-bold text-nowrap text-right"> <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{(STATEMENT_LIST | total:'CREDIT_AMOUNT') | number :2}}</td>
+                                <!--<td class="text-bold text-nowrap text-right"><span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span> {{(STATEMENT_LIST | total:'BALANCE_AMOUNT') | number :2}}</td>-->
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                   
+                </div>
+            </div>
+            <div class="col-md-4">
+                <iframe ng-src="{{pdfUrl | trustAsResourceUrl}}" style="height:70vh ; width:100%"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!/Reconcile_Statement?STATEMENT_ID={{StatementViewSearch.STATEMENT_HEADER.STATEMENT_ID}}" class="btn btn-sm btn-wenodo">Reconcile</a>
+        <a href="#!/Statement" type="button" class="btn btn-sm btn-w-default" >Cancel</a>
+    </div>
+</div>

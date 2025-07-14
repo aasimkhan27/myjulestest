@@ -1,0 +1,448 @@
+﻿<div class="card"  ng-show="THIS_APP_PAGE_COMPONENTS_LIST.length==0 && LOAD_APP_COMPONENTS==1">
+    <div class="card-body">
+        <div empty-component></div>
+    </div>
+</div>
+<div id="PRINT" ng-show="THIS_APP_PAGE_COMPONENTS_LIST.length>0">
+    <div class="container-fluid">
+        <div class="row my-3" hidden>
+            <div class="col-md-6 border-bottom">
+                <img src="{{LOGO_PATH}}" class="Print_Logo_start" alt="" />
+            </div>
+            <div class="col-md-6 border-bottom text-end">
+                <img src="../E_Content/images/logo.png" class="Print_Logo_end" alt="" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row sticky_pi_header">
+        <div class="col d-flex text-nowrap">
+            <h4>Wastage Analysis</h4>
+            <div class="mt-1 ms-2">
+                <blockquote class="blockquote bg-light-success py-0 mb-0 rounded">
+                    <p class="mb-0 txt-dark">Week: {{Input_Model.WEEK_NO}} | {{start_date | date :'dd MMM yyyy'}} - {{end_date | date :'dd MMM yyyy'}}</p>
+                </blockquote>
+            </div>
+        </div>
+        <div class="col-2 ms-auto mobile-none print_pdf_doc">
+            <ul class="nav nav-pills" id="SITE_DDL">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{Input_Model.DISPLAY_TEXT_SITE}}
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu  scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li ng-click="SITE_All_Fn()" class="DontHideOnClick">
+                            <i class="fa-regular fa-lg"
+                               ng-class="{'fa-square-check txt-success':(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length,'fa-square':(SITE_LIST | filter:{IS_CHECK:true}).length!=SITE_LIST.length}"></i>
+                            <span class="ms-2">All</span>
+                            <span ng-show="false"> {{  IS_ALL_SITE_CHECK=(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length?true:false}}</span>
+                        </li>
+                        <li ng-repeat="site in SITE_LIST"
+                            on-finish-render="ngRepeatFinishedequalizerRender"
+                            class="DontHideOnClick d-flex" ng-click="SITE_Fn(site,2)">
+                            <i class="fa-regular fa-lg mt-2" ng-class="{'fa-square-check txt-success':site.IS_CHECK,'fa-square':!site.IS_CHECK}"></i>
+                            <span class="truncate ms-2">{{site.Value}}</span>
+                        </li>
+                        <li class="sticky-bottom bg-white">
+                            <button ng-click="Fn_BLUR_SITES()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-primary">Apply</button>
+                            <button ng-click="RESET_SITES_Fn()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-light DontHideOnClick">Reset</button>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-2 mobile-none print_pdf_doc">
+            <ul class="nav nav-pills" id="CURRENCY_DDL">
+                <li class="dropdown w-100">
+                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            <span class="truncate">{{Input_Model.DISPLAY_TEXT_CURRENCY}}</span>
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu w-100">
+                        <li ng-repeat="currency in CURRENCY_LIST" ng-click="CURRENCY_Fn(currency)">
+                            {{currency.Value}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-3 mobile-none print_pdf_doc" id="DATEPICKER">
+            <!--<label class="form-label mx-3 mt-2 text-nowrap">Week Ending</label>-->
+            <div class="input-group input-group-sm datepicker_margin" id="week-picker-wrapper">
+                <div class="input-group-prepend" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                    <button type="button" click-once class="btn btn-light week-prev px-3"><i class="fas fa-arrow-left"></i></button>
+                </div>
+                <input type="text" class="week-picker" ng-class="{'week-picker-disabled':BTN_HIDE_WEEK_PICKER==0}" readonly placeholder="Select a Week" />
+                <div class="input-group-append" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                    <button type="button" click-once class="btn btn-light week-next px-3">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-auto mt-2 print_pdf_doc" id="BUTTON_FILTER">
+            <a href="" class="text-dark" data-bs-toggle="tooltip" data-bs-trigger="hover" ng-click="PRINT_PDF_WA(1,'PRINT','Wastage_Analysis')" data-bs-placement="top" title="Print"><i class="fa-light fa-print fa-lg"></i></a>
+            <a href="" class="text-dark ms-2" data-bs-toggle="tooltip" data-bs-trigger="hover" ng-click="RESET_FILTER()" data-bs-placement="top" title="Reset Data"><i class="fa-light fa-arrows-rotate fa-lg"></i></a>
+        </div>
+        <div class="col-auto ms-auto desktop-none print_pdf_doc">
+            <!--desktop-none-->
+            <a class="text-dark c-pointer" data-bs-toggle="modal"
+               data-bs-target="#filter_popup"
+               data-bs-original-title="Filter"
+               title="Filter">
+                <i class="fa-light fa-filter fa-lg"></i>
+            </a>
+        </div>
+        <div class="col-sm-12 col-xl-12">
+            <h6 class="d-inline f-14">Selected Sites:</h6>
+            <span class="badge badge-light-primary sites-block" ng-repeat="site in SITE_LIST" ng-show="site.IS_APPLAY_CHECK">
+                {{site.Value}}
+                <span class="txt-primary"> {{site.DISPLAY_TEXT_CURRENCY}}</span>
+                <span ng-click="SITE_Fn(site,1)">
+                    <i class="fa-regular fa-times"></i>
+                </span>
+            </span>
+        </div>
+    </div>
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xxl-12 col-ed-12 col-xl-12 box-col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="header-top">
+                            <h5 class="txt-primary">{{Display_Model.CATEGORY_LIST.TITLE}}</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xxl-4 col-ed-4 col-xl-4 box-col-4" ng-repeat="CATEGORY in Display_Model.CATEGORY_LIST.CHART_OUTPUT_LIST"
+                                 on-finish-render="ngRepeatFinishedCategoryRender">
+                                <div class="card height-equal">
+                                    <div class="card-header card-no-border">
+                                        <div class="header-top">
+                                            <h6 class="txt-primary">{{CATEGORY.TITLE}} <i class="fa-regular fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-original-title="Displays the wastage by category with % denoting the wastage as a % of total sales."></i></h6>
+                                            <div class="card-header-right-icon">
+                                                <span class="badge badge-light-primary">{{CATEGORY.TITLE_VALUE}}</span>
+                                                <button class="btn px-2 w-auto"
+                                                        type="button"
+                                                        ng-click="Fn_FLIP('food_front_','food_back_',$index+1,'',6,CATEGORY)"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-trigger="hover"
+                                                        data-bs-placement="top"
+                                                        title="Flip View">
+                                                    <i class="fa-light fa-lg fa-right-left-large"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="cardFront" id="food_front_{{$index+1}}">
+                                            <div id="Category_Wastage_{{$index+1}}" ng-show="!CATEGORY.HIDE_SHOW_FLAG"></div>
+                                        </div>
+                                        <div class="cardBack" id="food_back_{{$index+1}}">
+                                            <div class="table-responsive scrollbar-wrapper" ng-if="CATEGORY.HIDE_SHOW_FLAG" style="min-height:300px;">
+                                                <table class="table table-hover consolidated-table">
+                                                    <thead class="table-header-fixed">
+                                                        <tr>
+                                                            <th>Ingredient</th>
+                                                            <th class="text-end text-nowrap">Wastage Value</th>
+                                                            <th class="text-end text-nowrap">% of Total Wastage</th>
+                                                            <th class="text-end">LW</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="DATAGRID in CATEGORY.DATAGRID_VALUES">
+                                                            <td>{{DATAGRID.Val1}}</td>
+                                                            <td class="text-end">{{DATAGRID.Val2}}</td>
+                                                            <td class="text-end">{{DATAGRID.Val3}}</td>
+                                                            <td class="text-end text-nowrap">
+                                                                <i ng-class="{'fa-arrow-up fa-rotate-danger-130 font-danger':DATAGRID.Val11>0,'fa-arrow-down fa-rotate-success-130 font-success':DATAGRID.Val11<0}"
+                                                                   class="fa-regular "></i>
+                                                                {{DATAGRID.Val4}}
+                                                                <span class="badge " ng-class="{'badge-light-success':DATAGRID.Val11<0,'badge-light-danger':DATAGRID.Val11>0,'badge-light text-dark':DATAGRID.Val11==0}">
+                                                                    {{DATAGRID.Val11}}%
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-12 col-ed-12 col-xl-12 box-col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="header-top">
+                            <h5 class="txt-primary">{{Display_Model.LAST_FOUR_WEEK_LIST.TITLE}}</h5>
+                            <div class="card-header-right-icon d-flex">
+                                <ul class="nav nav-pills" style="width:150px" ng-if="false">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label">
+                                                Select Category
+                                            </span>
+                                        </a>
+                                        <ul ID="divNewNotifications" class="dropdown-menu w-100">
+                                            <li>Category 01</li>
+                                            <li>Category 02</li>
+                                            <li>Category 03</li>
+                                            <li>Category 04</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <button class="btn px-2" type="button"
+                                        ng-click="Fn_FLIP('Four_front','Four_back',0,HIDE_SHOW_FLAG_1,1)"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-trigger="hover"
+                                        title="Flip View">
+                                    <i class="fa-light fa-lg fa-right-left-large"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="cardFront" id="Four_front">
+                            <div id="Last_Four_Weeks" ng-show="!HIDE_SHOW_FLAG_1"></div>
+                        </div>
+                        <div class="cardBack" id="Four_back">
+                            <div class="table-responsive scrollbar-wrapper" ng-if="HIDE_SHOW_FLAG_1">
+                                <table class="table table-hover consolidated-table">
+                                    <thead class="table-header-fixed" ng-if="HIDE_SHOW_FLAG_1">
+                                        <tr>
+                                            <th>Item Name</th>
+                                            <th class="text-end">% of Total Sales</th>
+                                            <th class="text-end">Wastage Value</th>
+                                            <th class="text-end">% of Total Wastage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="LAST_FOUR_WEEK in Display_Model.LAST_FOUR_WEEK_LIST.DATAGRID_VALUES" ng-class="{'t-footer':LAST_FOUR_WEEK.Val1=='Total'}">
+                                            <td>{{LAST_FOUR_WEEK.Val1}}</td>
+                                            <td class="text-end">{{LAST_FOUR_WEEK.Val2}}</td>
+                                            <td class="text-end"> {{LAST_FOUR_WEEK.Val3}}</td>
+                                            <td class="text-end">{{LAST_FOUR_WEEK.Val4}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="header-top">
+                    <h5 class="txt-primary">{{Display_Model.WASTAGE_BY_REASON_LIST.TITLE}} <i class="fa-regular fa-info-circle ms-1" data-bs-toggle="tooltip" data-bs-original-title="The wastage reasons are based on the code keyed in ePOS."></i></h5>
+                    <div class="card-header-right-icon">
+                        <button class="btn px-2"
+                                type="button"
+                                id="reason_btn"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                data-bs-trigger="hover"
+                                ng-click="Fn_FLIP('reason_front','reason_back',0,HIDE_SHOW_FLAG_2,2,'')"
+                                title="Flip View">
+                            <i class="fa-light fa-lg fa-right-left-large"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row cardFront" id="reason_front">
+                    <div class="col-xxl-6 col-ed-6 col-xl-6 box-col-6"
+                         ng-repeat="WASTAGE_BY_REASON in Display_Model.WASTAGE_BY_REASON_LIST.CHART_OUTPUT_LIST"
+                         on-finish-render="ngRepeatFinishedWastageRender">
+                        <div class="card-header card-no-border p-0">
+                            <div class="header-top">
+                                <h6 class="txt-primary">{{WASTAGE_BY_REASON.TITLE}}</h6>
+                            </div>
+                        </div>
+                        <div id="Reason_Wastage_{{$index+1}}" ng-show="!HIDE_SHOW_FLAG_2"></div>
+                    </div>
+                </div>
+                <div class="cardBack" id="reason_back">
+                    <div class="table-responsive scrollbar-wrapper" ng-if="HIDE_SHOW_FLAG_2">
+                        <table class="table table-hover consolidated-table">
+                            <thead class="table-header-fixed">
+                                <tr>
+                                    <th>Reason</th>
+                                    <th class="text-end">CW</th>
+                                    <th class="text-end">% of Total Wastage</th>
+                                    <th class="text-end">LW</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="WASTAGE_BY_REASON in Display_Model.WASTAGE_BY_REASON_LIST_DATE_TABLE.DATAGRID_VALUES" ng-class="{'t-footer':WASTAGE_BY_REASON.Val1=='Total'}">
+                                    <td>{{WASTAGE_BY_REASON.Val1}}</td>
+                                    <td class="text-end">{{WASTAGE_BY_REASON.Val2}}</td>
+                                    <td class="text-end"> {{WASTAGE_BY_REASON.Val3}}</td>
+                                    <td class="text-end">
+                                        <i ng-class="{'fa-arrow-up fa-rotate-danger-130 font-danger':WASTAGE_BY_REASON.Val11>0,'fa-arrow-down fa-rotate-success-130 font-success':WASTAGE_BY_REASON.Val11<0}"
+                                           class="fa-regular "></i> {{WASTAGE_BY_REASON.Val4}}
+                                        <span class="badge " ng-class="{'badge-light-danger':WASTAGE_BY_REASON.Val11>0,'badge-light-success':WASTAGE_BY_REASON.Val11<0,'badge-light text-dark':WASTAGE_BY_REASON.Val11==0}">{{WASTAGE_BY_REASON.Val11}} %</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xxl-12 col-ed-12 col-xl-12 box-col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="header-top">
+                            <h5 class="txt-primary">{{Display_Model.LINE_BAR_AREA_LIST.TITLE}}</h5>
+                            <div class="card-header-right-icon">
+                                <button class="btn px-2" type="button"
+                                        id="week_btn"
+                                        ng-click="Fn_FLIP('week_front','week_back',0,HIDE_SHOW_FLAG_3,3,'')"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-trigger="hover"
+                                        title="Flip View">
+                                    <i class="fa-light fa-lg fa-right-left-large"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="cardFront" id="week_front">
+                            <div id="Wastage_Summary_13" ng-show="!HIDE_SHOW_FLAG_3"></div>
+                        </div>
+                        <div class="cardBack" id="week_back">
+                            <div class="table-responsive scrollbar-wrapper" ng-if="HIDE_SHOW_FLAG_3">
+                                <table class="table table-hover consolidated-table">
+                                    <thead class="table-header-fixed">
+                                        <tr>
+                                            <th></th>
+                                            <th class="text-end">Wk-12</th>
+                                            <th class="text-end">Wk-11</th>
+                                            <th class="text-end">Wk-10</th>
+                                            <th class="text-end">Wk-9</th>
+                                            <th class="text-end">Wk-8</th>
+                                            <th class="text-end">Wk-7</th>
+                                            <th class="text-end">Wk-6</th>
+                                            <th class="text-end">Wk-5</th>
+                                            <th class="text-end">Wk-4</th>
+                                            <th class="text-end">Wk-3</th>
+                                            <th class="text-end">Wk-2</th>
+                                            <th class="text-end">Wk-1</th>
+                                            <th class="text-end">CW</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="LINE_BAR_AREA in Display_Model.LINE_BAR_AREA_LIST.DATAGRID_VALUES" ng-class="{'t-footer':LINE_BAR_AREA.Val1=='Total'}">
+                                            <td>{{LINE_BAR_AREA.Val1}}</td>
+                                            <td class="text-end" ng-repeat="x in [].constructor(13) track by $index">{{LINE_BAR_AREA.Val21[$index]}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid Ends-->
+
+
+<div class="modal fade" id="filter_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Filters</h5>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer"
+                                       data-toggle="dropdown">
+                                        <span class="select-label" id="select_label">
+                                            {{Input_Model.DISPLAY_TEXT_SITE}}
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications" class="dropdown-menu w-auto" style="min-width:100%">
+                                        <li ng-click="SITE_All_Fn()" class="DontHideOnClick">
+                                            <i class="fa-regular fa-lg"
+                                               ng-class="{'fa-square-check txt-success':(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length,'fa-square':(SITE_LIST | filter:{IS_CHECK:true}).length!=SITE_LIST.length}"></i>
+                                            <span class="fs-12">All</span>
+                                            <span ng-show="false"> {{  IS_ALL_SITE_CHECK=(SITE_LIST | filter:{IS_CHECK:true}).length==SITE_LIST.length?true:false}}</span>
+                                        </li>
+                                        <li ng-repeat="site in SITE_LIST" class="DontHideOnClick text-nowrap" ng-click="SITE_Fn(site,2)">
+                                            <i class="fa-regular fa-lg" ng-class="{'fa-square-check txt-success':site.IS_CHECK,'fa-square':!site.IS_CHECK}"></i>
+                                            <span class="fs-12">{{site.Value}}</span>
+                                        </li>
+                                        <li class="sticky-bottom bg-white float-end">
+                                            <button ng-click="Fn_BLUR_SITES()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-primary">Apply</button>
+                                            <button ng-click="RESET_SITES_Fn()" ng-show="APPLY_BTN_SHOW" class="btn btn-xs btn-light DontHideOnClick">Reset</button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                        <span class="select-label" id="select_label">
+                                            {{Input_Model.DISPLAY_TEXT_CURRENCY}}
+                                        </span>
+                                    </a>
+                                    <ul ID="divNewNotifications" class="dropdown-menu w-100">
+                                        <li ng-repeat="currency in CURRENCY_LIST" ng-click="CURRENCY_Fn(currency)">
+                                            {{currency.Value}}
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <div class="input-group input-group-sm" id="week-picker-copy-wrapper">
+                                <div class="input-group-prepend" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                                    <button type="button" click-once class="btn btn-light week-prev px-2"><i class="fas fa-arrow-left"></i></button>
+                                </div>
+                                <input type="text" class="form-control week-picker-copy" readonly placeholder="Select a Week" />
+                                <div class="input-group-append" ng-if="BTN_HIDE_WEEK_PICKER==1">
+                                    <button type="button" click-once class="btn btn-light week-next px-2">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

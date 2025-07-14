@@ -1,0 +1,364 @@
+﻿
+<div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+    <div class="right-panel">
+        <div class="card">
+            <div class="card-header">
+                <h6>Work Patterns</h6>
+            </div>
+            <div class="card-body">
+                <form name="WorkPatternsform" novalidate>
+                    <div class="row">
+                        <h6 class="headings">Edit Work Pattern</h6>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label class="d-block">Working Pattern Type</label>
+                            <input type="hidden"
+                                   name="WORK_PATTERN_TYPE"
+                                   required
+                                   ng-model="WorkPatternsSearch.WORK_PATTERN_TYPE_ID"
+                                   ng-class="{'error':WorkPatternsform.submitted && WorkPatternsform.WORK_PATTERN_TYPE.$error.required}" />
+
+                            <ul class="nav nav-pills" ng-class="{'error':WorkPatternsform.submitted && WorkPatternsform.WORK_PATTERN_TYPE.$error.required}">
+                                <li class="dropdown w-100 show">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                        <span class="select-label" id="select_label">
+                                            {{WorkPatternsSearch.CUSTOM_WORK_PATTERN_TYPE}}
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+
+                                        <li class=""
+                                            ng-repeat="_WorkPattern in WORK_PATTERN_TYPES "
+                                            ng-click="SELECTED_WORK_PATTERN_TYPE_Fn(_WorkPattern,WorkPatternsSearch)">
+                                            <span class="">{{_WorkPattern.WORK_PATTERN_TYPE}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <label>Title<span class="txt-danger">*</span></label>
+                            <input type="text"
+                                   name="TITLE"
+                                   placeholder="Default"
+                                   ng-model="WorkPatternsSearch.TITLE"
+                                   required
+                                   ng-class="{'error':WorkPatternsform.submitted && WorkPatternsform.TITLE.$error.required}" />
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <span ng-show="WorkPatternsSearch.WORK_PATTERN_TYPE_ID !=3 && WorkPatternsSearch.WORK_PATTERN_TYPE_ID !=4"><label>Total Hours</label></span>
+                            <span ng-show="WorkPatternsSearch.WORK_PATTERN_TYPE_ID ==3"><label>Total Shifts</label></span>
+                            <span ng-show="false">{{WorkPatternsSearch.TOTAL=(WorkPatternsSearch.MON*1+ WorkPatternsSearch.TUE*1 + WorkPatternsSearch.WED*1 + WorkPatternsSearch.THU*1 + WorkPatternsSearch.FRI*1 + WorkPatternsSearch.SAT*1 + WorkPatternsSearch.SUN*1)}}</span>
+
+                            <div class="" ng-class="{'total_Hours':  WorkPatternsSearch.WORK_PATTERN_TYPE_ID != 2 && WorkPatternsSearch.WORK_PATTERN_TYPE_ID != 4}">
+                                <span ng-show="WorkPatternsSearch.WORK_PATTERN_TYPE_ID != 2 && WorkPatternsSearch.WORK_PATTERN_TYPE_ID != 4">
+                                    {{ WorkPatternsSearch.TOTAL | number:2 }}
+                                </span>
+                                <span ng-if="WorkPatternsSearch.WORK_PATTERN_TYPE_ID == 2">
+                                    <input type="text"
+                                           name="TOTAL_HOURS"
+                                           only-digits
+                                           maxlength="5"
+                                           placeholder="0.00"
+                                           ng-model="WorkPatternsSearch.TOTAL_HOURS"
+                                           ng-class="{'error': WorkPatternsform.submitted && WorkPatternsform.TOTAL_HOURS.$error.required}" />
+                                </span>
+                                <!--<span ng-show="WorkPatternsSearch.WORK_PATTERN_TYPE_ID == 3">
+                                {{ WorkPatternsSearch.TOTAL }}-->
+                                <!--<input type="text"
+                                name="SHIFT_HOURS"
+                                only-digits
+                                placeholder="0.00"
+                                ng-model="WorkPatternsSearch.SHIFT_HOURS"
+                                ng-change="CALCULATE_SHIFT_DAYS_Fn(WorkPatternsSearch.SHIFT_HOURS)"
+                                ng-class="{'error': WorkPatternsform.submitted && WorkPatternsform.SHIFT_HOURS.$error.required}" />-->
+                                <!--</span>-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xxl col-md col-xl" ng-repeat="day in daysOfWeek">
+                            <div ng-if="WorkPatternsSearch.WORK_PATTERN_TYPE_ID == 1">
+                                <label>{{ day.fullName }}</label>
+                                <input type="text"
+                                       name="{{ day.day }}"
+                                       only-digits
+                                       placeholder="0.00"
+                                       maxlength="5"
+                                       ng-change="SET_HOURS_PER_DAY(WorkPatternsSearch[day.day],$index,day);"
+                                       ng-model="WorkPatternsSearch[day.day]"
+                                       ng-class="{'error': WorkPatternsform.submitted && WorkPatternsform[day.day].$error.required}" />
+                            </div>
+                            <div class="form-check form-control py-2" ng-if="WorkPatternsSearch.WORK_PATTERN_TYPE_ID == 2 || WorkPatternsSearch.WORK_PATTERN_TYPE_ID == 4">
+                                <input class="form-check-input ms-2"
+                                       id="{{ day.day }}_{{index}}"
+                                       type="checkbox"
+                                       value=""
+                                       checked=""
+                                       name="{{ day.day }}"
+                                       ng-model="WorkPatternsSearch[day.day]"
+                                       ng-class="{'error': WorkPatternsform.submitted && WorkPatternsform[day.day].$error.required}" />
+
+                                <label class="form-check-label ms-1" for="{{ day.day }}_{{index}}">{{ day.fullName }}</label>
+                            </div>
+                            <div ng-if="WorkPatternsSearch.WORK_PATTERN_TYPE_ID == 3">
+                                <label>{{ day.fullName }}</label>
+                                <input type="text"
+                                       name="{{ day.day }}"
+                                       only-digits
+                                       placeholder="0"
+                                       maxlength="3"
+                                       ng-change="CHECK_LIMIT(WorkPatternsSearch[day.day],$index,day)"
+                                       ng-model="WorkPatternsSearch[day.day]"
+                                       ng-class="{'error': WorkPatternsform.submitted && WorkPatternsform[day.day].$error.required}" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label class="d-block">Choose Holiday Calendar to apply for this work pattern <span class="txt-danger">*</span></label>
+                            <input type="hidden"
+                                   name="CALENDAR_NAME"
+                                   required
+                                   ng-model="WorkPatternsSearch.HOLIDAY_CALENDAR_ID"
+                                   ng-class="{'error':WorkPatternsform.submitted && WorkPatternsform.CALENDAR_NAME.$error.required}" />
+
+                            <ul class="nav nav-pills" ng-class="{'error':WorkPatternsform.submitted && WorkPatternsform.CALENDAR_NAME.$error.required}">
+                                <li class="dropdown w-100 show">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                        <span class="select-label" id="select_label">
+                                            <span class="truncate">{{WorkPatternsSearch.CUSTOM_CALENDAR_NAME}}</span>
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+
+                                        <li class=""
+                                            ng-repeat="_Calendar in HOLIDAY_CALENDARS_LIST"
+                                            ng-click="SELECTED_CALENDAR_Fn(_Calendar,WorkPatternsSearch)">
+                                            <span class="">{{_Calendar.CALENDAR_NAME}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label class="d-block">Pro-Rate Rule  <span class="txt-danger">*</span></label>
+                            <input type="hidden"
+                                   name="PRO_RATE_RULE_ID"
+                                   required
+                                   ng-model="WorkPatternsSearch.PRO_RATE_RULE_ID"
+                                   ng-class="{'error':WorkPatternsform.submitted && WorkPatternsform.PRO_RATE_RULE_ID.$error.required}" />
+
+                            <ul class="nav nav-pills" ng-class="{'error':WorkPatternsform.submitted && WorkPatternsform.PRO_RATE_RULE_ID.$error.required}">
+                                <li class="dropdown w-100 show">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                        <span class="select-label" id="select_label">
+                                            <span class="truncate">{{WorkPatternsSearch.CUSTOM_RATE_RULE_NAME}}</span>
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                        <li class=""
+                                            ng-show="WorkPatternsSearch.DD_DEFAULT_TEXT!=WorkPatternsSearch.CUSTOM_RATE_RULE_NAME"
+                                            ng-click="SELECTED_RATE_RULE_Fn('')">{{WorkPatternsSearch.DD_DEFAULT_TEXT}}</li>
+                                        <li class=""
+                                            ng-repeat="_rule in PRO_RATE_RULE_LIST"
+                                            ng-click="SELECTED_RATE_RULE_Fn(_rule,WorkPatternsSearch)">
+                                            <span class="">{{_rule.RATE_RULE_NAME}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4" ng-show="WorkPatternsSearch.WORK_PATTERN_TYPE_ID==3">
+                            <label class="d-block">Contractual hours per week <span class="txt-danger">*</span></label>
+                            <input type="text"
+                                   name="CONTRACTUAL"
+                                   ng-required="WorkPatternsSearch.WORK_PATTERN_TYPE_ID==3"
+                                   only-digits
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   maxlength="5"
+                                   ng-model="WorkPatternsSearch.CONTRACTUAL_HOURS_PER_WEEK"
+                                   ng-class="{'error': WorkPatternsform.submitted && WorkPatternsform.CONTRACTUAL.$error.required}" />
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4">
+                            <label class="d-block">Contractual number of days <span class="txt-danger">*</span></label>
+                            <input type="text"
+                                   name="CONTRACTUAL_NUMBER_OF_DAYS"
+                                   required
+                                   only-digits
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   maxlength="5"
+                                   
+                                   ng-model="WorkPatternsSearch.CONTRACTUAL_NUMBER_OF_DAYS"
+                                   ng-class="{'error': WorkPatternsform.submitted && WorkPatternsform.CONTRACTUAL_NUMBER_OF_DAYS.$error.required}" />
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-md-4" ng-show="WorkPatternsSearch.WORK_PATTERN_TYPE_ID==4">
+                            <label class="d-block">Contractual number of shifts <span class="txt-danger">*</span></label>
+                            <input type="text"
+                                   name="CONTRACTUAL_NUMBER_OF_SHIFTS"
+                                   ng-required="WorkPatternsSearch.WORK_PATTERN_TYPE_ID==4"
+                                   only-digits
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   maxlength="5"
+                                   ng-model="WorkPatternsSearch.CONTRACTUAL_NUMBER_OF_SHIFTS"
+                                   ng-class="{'error': WorkPatternsform.submitted && WorkPatternsform.CONTRACTUAL_NUMBER_OF_SHIFTS.$error.required}" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12" ng-show="false">
+                        <div class="alert alert-light-success alert-dismissible fadeInUp mb-3" role="alert">
+                            Successfully saved in database.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" aria-hidden="true"></button>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="col-xxl-12 col-md-12 col-xl-12 text-end">
+                        <button type="button" ng-hide="WorkPatternsSearch.WORK_PATTERN_ID > 0" click-once class="btn btn-light btn-sm" ng-click="RESET_Fn()"><i class="fa-light fa-rotate-right float-start mt-1 me-2"></i> Reset</button>
+                        <button type="button" click-once class="btn btn-light btn-sm" ng-click="HRM_INS_UPD_WORK_PATTERNS(WorkPatternsSearch)"><i class="fa-light fa-save float-start mt-1 me-2"></i> {{WorkPatternsSearch.WORK_PATTERN_ID == 0 ? 'Save Changes' : 'Update'}}</button>
+                    </div>
+
+                    <hr />
+                </form>
+                <h6 class="headings">Work Pattern Table</h6>
+
+                <div class="col-xxl-12 col-md-12 col-xl-12">
+                    <div class="no-record" ng-show="WORK_PATTERNS_LIST.length == 0">No Record Found!</div>
+                    <div class="table-responsive scrollbar-wrapper mx-height-400 min-height-200" ng-show="WORK_PATTERNS_LIST.length > 0">
+                        <table>
+                            <thead class="thead_fixed">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Total</th>
+                                    <th ng-repeat="_day in daysOfWeek">{{_day.day}}</th>
+                                    <th>Contractual Hours</th>
+                                    <th>Contractual Days</th>
+                                    <th>Contractual Shifts</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="_workPattern in WORK_PATTERNS_LIST">
+                                    <td>{{_workPattern.TITLE || "-"}}</td>
+                                    <td>{{_workPattern.WORK_PATTERN_TYPE}}</td>
+                                    <td><span ng-show="_workPattern.WORK_PATTERN_TYPE_ID!=4"> {{_workPattern.TOTAL}} {{_workPattern.UNITS}}</span><span ng-show="_workPattern.WORK_PATTERN_TYPE_ID==4">-</span></td>
+                                    <td ng-repeat="day in daysOfWeek">
+                                        <div class="form-check" ng-show="_workPattern.WORK_PATTERN_TYPE_ID == 2 || _workPattern.WORK_PATTERN_TYPE_ID== 4">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   name="{{ day.day }}"
+                                                   ng-model="_workPattern[day.day]"
+                                                   ng-checked="_workPattern[day.day] == 1"
+                                                   ng-disabled="true"
+                                                   required>
+                                        </div>
+                                        <span ng-show="_workPattern.WORK_PATTERN_TYPE_ID != 2 && _workPattern.WORK_PATTERN_TYPE_ID != 4">{{_workPattern[day.day] || "-"}}</span>
+                                    </td>
+                                    <td>{{_workPattern.WORK_PATTERN_TYPE_ID==4?'-':_workPattern.WORK_PATTERN_TYPE_ID==3?_workPattern.CONTRACTUAL_HOURS_PER_WEEK:_workPattern.TOTAL}}</td>
+                                    <td>{{_workPattern.CONTRACTUAL_NUMBER_OF_DAYS=="" || _workPattern.CONTRACTUAL_NUMBER_OF_DAYS==null?'-':_workPattern.CONTRACTUAL_NUMBER_OF_DAYS}}</td>
+                                    <td>{{_workPattern.WORK_PATTERN_TYPE_ID==4?_workPattern.CONTRACTUAL_NUMBER_OF_SHIFTS:'-'}}</td>
+                                    <td class="text-center">
+                                        <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-ellipsis"></i></button>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-item" ng-click="EDIT_WORKPATTERN_Fn(_workPattern)"><i class="fa-light fa-pen me-2"></i> Edit</li>
+                                            <li class="dropdown-item" ng-click="POP_DELETE_Fn(_workPattern)"><a><i class="fa-light fa-trash-alt me-2"></i> Delete</a></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="t_foot_fixed">
+                                <tr>
+                                    <td colspan="14" class="text-center">
+                                        <button type="button"
+                                                ng-show="GetData"
+                                                ng-click="LAZY_LOAD_HRM_GET_WORK_PATTERNS()"
+                                                click-once class="btn btn-sm btn-light btn_fixed">
+                                            Load More...
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="Delete_WorkPattern" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+
+                    <h6 class="text-center pb-2 fw-500">You are about to delete <code>{{SELECTED_WORKPATTERN.TITLE}}</code></h6>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL>0">This has been assigned to {{COUNT_VAL}} employees. Please assign a different work pattern to those employees before performing delete.</p>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL==0">Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Close</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-danger w-100"
+                                type="button"
+                                click-once
+                                data-bs-dismiss="modal" ng-disabled="COUNT_VAL>0"
+                                ng-click="DELETE_WORK_PATTERNS_Fn(SELECTED_WORKPATTERN)">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_WorkPattern2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+
+                    <h6 class="text-center pb-2 fw-500">You are about to delete <code>Work Pattern name</code> Work Pattern.</h6>
+                    <p class="text-center text-dark">It is safe to perform this operation as it hasn't been assigned to any employee. Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Close</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-danger w-100" type="button" data-bs-dismiss="modal">Delete</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('button[data-bs-dismiss="alert"]').click(function () {
+            $('.alert').show()
+        })
+    });
+</script>

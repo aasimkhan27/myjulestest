@@ -1,0 +1,1097 @@
+﻿<nav class="breadcrumb">
+    <a class="breadcrumb-item">Employee Onboarding</a>
+    <span class="breadcrumb-item txt-dark">Detail Card</span>
+</nav>
+<div class="card">
+    <div class="card-header" ng-if="false">
+        <h5 class="f-18">{{HeaderPrimaryDetails.FIRST_NAME}} {{HeaderPrimaryDetails.LAST_NAME}}</h5>
+        <div class="card-header-right-icon d-none">
+            <span class="circle_icon" data-bs-toggle="modal" data-bs-target="#History"><i class="fa-light fa-clock"></i></span>
+        </div>
+        <span>You can edit data to ready to hire.</span>
+    </div>
+    <div class="row sticky_tabs">
+        <templateurl class="w-100" template-url="../AngularViews/HumanResource/Manage_Employees/Employee/HRM_EmployeeHeader.html?v=1{{AppVersion}}">
+    </div>
+    <div class="card-header px-0 pb-0 border-0" ng-if="false">
+        <ul class="nav nav-tabs border-tab mb-0 nav-justified employee_tabs" id="bottom-tab" role="tablist" ng-show="EDIT_STEP_NO < 9">
+            <li class="nav-item ps-0">
+                <a class="nav-link tab-info active" ng-click="STEP_NO>=1?TAB_CLICK_HR_HEADER_Fn(1):''" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-primary me-1" ng-class="{'badge-primary':STEP_FLAG<=1,'badge-white ':STEP_FLAG!=1}">1</span>  Personal Details
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i></li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-click="STEP_NO>=2?TAB_CLICK_HR_HEADER_Fn(2):TAB_MESSAGE_Fn(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">2</span> Employment Info
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i></li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==3}" ng-click="STEP_NO>=3?TAB_CLICK_HR_HEADER_Fn(3):TAB_MESSAGE_Fn(3)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">3</span> Wages
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i></li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==4}" ng-click="STEP_NO>=4?TAB_CLICK_HR_HEADER_Fn(4):TAB_MESSAGE_Fn(4)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">4</span> Absences
+                </a>
+            </li>
+            <li> <i class="fa-regular fa-chevron-right mb-3"></i></li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==5}" ng-click="STEP_NO>=5?TAB_CLICK_HR_HEADER_Fn(5):TAB_MESSAGE_Fn(5)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">5</span> Access
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i> </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==6}" ng-click="STEP_NO>=6?TAB_CLICK_HR_HEADER_Fn(6):TAB_MESSAGE_Fn(6)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">6</span> Document
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i> </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==7}" ng-click="STEP_NO>=7?TAB_CLICK_HR_HEADER_Fn(7):TAB_MESSAGE_Fn(7)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">7</span> Assets
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i> </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==8}" ng-click="STEP_NO>=8?TAB_CLICK_HR_HEADER_Fn(8):TAB_MESSAGE_Fn(8)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">8</span> Qualification
+                </a>
+            </li>
+            <li> <i class="fa-regular fa-chevron-right mb-3"></i> </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==9}" ng-click="STEP_NO>=9?TAB_CLICK_HR_HEADER_Fn(9):TAB_MESSAGE_Fn(9)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">9</span> Notes
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-tabs border-tab mb-0 scrollbar-wrapper" id="bottom-tab" role="tablist" ng-if="EDIT_STEP_NO==9 ">
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':STEP_FLAG==1}" ng-click="TAB_CLICK_HR_HEADER_Fn(1)" id="">
+                    Personal Details
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':STEP_FLAG==2}" ng-click="TAB_CLICK_HR_HEADER_Fn(2)" id="">
+                    Employment Info
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':STEP_FLAG==3}" ng-click="TAB_CLICK_HR_HEADER_Fn(3)" id="bottom-inbox-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-inbox" aria-selected="false">
+                    Wages
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':STEP_FLAG==4}" ng-click="TAB_CLICK_HR_HEADER_Fn(4)" id="bottom-contact-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Absences
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==5}" ng-click="TAB_CLICK_HR_HEADER_Fn(5)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Access
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==6}" ng-click="TAB_CLICK_HR_HEADER_Fn(6)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Document
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==7}" ng-click="TAB_CLICK_HR_HEADER_Fn(7)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Assets
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==8}" ng-click="TAB_CLICK_HR_HEADER_Fn(8)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Qualification
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==9}" ng-click="TAB_CLICK_HR_HEADER_Fn(9)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Notes
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <form name="UserRoleForm" novalidate>
+            <div class="row align-items-center">
+                <div class="col-xxl col-md col-xl"><h6 class="headings mb-0">User Access</h6></div>
+                <div class="col-xxl-auto col-md-auto col-xl-auto" ng-show="EDIT_STEP_NO==9 && MY_PROFILE_FLAG==0 && false">
+                    <button type="button" ng-show="SHOW_EDIT_ACCESS" click-once class="btn btn-sm btn-light text-nowrap" ng-click="HRM_EDIT_DETAILS()" ng-class="{'btn-edit-mode':!EDIT_MODE, 'btn-light':EDIT_MODE}"><i class="fa-light fa-pen float-start mt-1 me-2"></i> Edit Data</button>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-xxl-3 col-xl-3 col-md-4">
+                    <label>Role <span class="txt-danger">*</span></label>
+                    <input type="hidden"
+                           name="STANDARD_ROLE_ID"
+                           placeholder="Add Here"
+                           ng-model="UserAccessSearch.STANDARD_ROLE_ID"
+                           required
+                           ng-class="{'error':UserRoleForm.submitted && UserRoleForm.STANDARD_ROLE_ID.$error.required}" />
+                    <ul class="nav nav-pills" ng-class="{'error':UserRoleForm.submitted && UserRoleForm.STANDARD_ROLE_ID.$error.required}">
+                        <li class="dropdown w-100 show">
+                            <a class="text-limitations cursor-pointer" ng-class="{'disabled':EDIT_MODE  }" data-toggle="dropdown" aria-expanded="true">
+                                <span class="select-label" id="select_label">
+                                    <span class="truncate">{{UserAccessSearch.CUSTOM_ROLE_NAME}}</span>
+                                </span>
+                            </a>
+                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper  w-100">
+                                <li class=""
+                                    ng-show="UserAccessSearch.DD_DEFAULT_TEXT!=UserAccessSearch.CUSTOM_ROLE_NAME"
+                                    ng-click="SELECTED_ROLE_Fn('')">{{UserAccessSearch.DD_DEFAULT_TEXT}}</li>
+                                <li class=""
+                                    ng-click="SELECTED_ROLE_Fn(_role)"
+                                    ng-repeat="_role in MODULE_ROLES_LIST">
+                                    <span class="">{{_role.ROLE_NAME}}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <p class="bottom_text" ng-show="UserAccessSearch.STANDARD_ROLE_ID!=5 && UserAccessSearch.STANDARD_ROLE_ID!=10 && UserAccessSearch.STANDARD_ROLE_ID!=15">Select standard role for this user. This will be applied for all sites associated with you.</p>
+            </div>
+            <hr />
+            <div class="row" ng-show="SUB_MODULE_BY_STANDARD_ROLE_ID.length>0">
+                <h6 class="headings">Modules</h6>
+                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                    <div class="alert alert-light-primary">
+                        <div class="row gx-0 align-items-center">
+                            <div class="col-auto"><i class="fa-light fa-circle-exclamation alert-primary-text f-20"></i></div>
+                            <div class="col">
+                                <span class="alert-primary-text"> You have been given <span class="f-w-700">{{UserAccessSearch.CUSTOM_ROLE_NAME}}.</span> You can {{MY_PROFILE_FLAG==1?'view':'edit'}}  module level access below.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xxl-12 col-md-12 col-xl-12 border b-r-6 mt-3 p-3" ng-repeat="_module in SUB_MODULE_BY_STANDARD_ROLE_ID">
+                    <span ng-show="false">  {{_module.MODULE_INDEX=$index}}</span>
+                    <div class="col-xxl-3 col-md-4 col-xl-3" ng-if="_module.SUB_MODULE_ID==10 || _module.SUB_MODULE_ID==14 || _module.SUB_MODULE_ID==6 || _module.SUB_MODULE_ID==11 || _module.SUB_MODULE_ID==12 ||  _module.SUB_MODULE_ID==8">
+                        <div class="media form-control">
+                            <label class="col-form-label m-r-10 fw-600">{{_module.SUB_MODULES_NAME}}</label>
+                            <div class="media-body switch-sm ms-auto">
+                                <label class="switch">
+                                    <input type="checkbox" ng-disabled="EDIT_MODE"
+                                           ng-checked="_module.MODULE_ACTIVE == true"
+                                           ng-model="_module.MODULE_ACTIVE">
+                                    <span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive" ng-if="_module.SUB_MODULE_ID==6 || _module.SUB_MODULE_ID==10">
+                        <table class="mb-0" ng-show="_module.MODULE_ACTIVE" ng-init="nginitStandarrole(_module);">
+                            <thead>
+                                <tr>
+                                    <th class="border-right">Sites</th>
+                                    <th class="text-center">Access</th>
+                                    <th class="text-center">Include</th>
+                                    <th class="text-center">Exclude</th>
+                                    <th class="text-center text-nowrap" ng-if="_module.SUB_MODULE_ID==6 || _module.SUB_MODULE_ID==10">Show Wage</th>
+                                    <th class="text-center text-nowrap" ng-if="_module.SUB_MODULE_ID==10">Edit Employee</th>
+                                    <th class="text-center" ng-if="_module.SUB_MODULE_ID==10">Feeds</th>
+                                    <th class="text-center text-nowrap" ng-if="_module.SUB_MODULE_ID==6">Schedule Approval</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="_site in _module.HR_BRANCH_LIST" ng-init="nginit_site(_site,_module)">
+                                    <td class="border-right bg-grey text-nowrap">{{_site.BRANCH_NAME}} <span ng-show="false">{{_site.SITE_INDEX =$index}}</span> </td>
+                                    <td class="text-center">
+                                        <div class="media d-block">
+                                            <div class="media-body switch-sm">
+                                                <label class="switch">
+                                                    <input type="checkbox" ng-disabled="EDIT_MODE"
+                                                           name="ACTIVE{{_site.SITE_INDEX}}{{_module.MODULE_INDEX}}"
+                                                           ng-change="ACTIVE_CHECK_BOX_Fn(_site)"
+                                                           ng-model="_site.ACTIVE">
+                                                    <span class="switch-state"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills mb-0">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer"
+                                                   data-bs-toggle="modal"
+                                                   ng-class="{'disabled':!_site.ACTIVE || EDIT_MODE }"
+                                                   ng-click="POP_EXCLUDE_Fn(_site,_module,_site.SITE_INDEX,'Include',_module.MODULE_INDEX)">
+                                                    <span class="select-label text-nowrap"
+                                                          id="select_label">
+                                                        <span class="truncate">{{_site.INCLUDE_COUNT=(_site.INCLUDE_DEPARTMENTS_LIST.length+_site.INCLUDE_POSITIONS_LIST.length + _site.INCLUDE_EMPLOYEES_LIST.length)}} Items Selected</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills mb-0">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer"
+                                                   ng-class="{'disabled':!_site.ACTIVE  || EDIT_MODE }"
+                                                   data-bs-toggle="modal" ng-click="POP_EXCLUDE_Fn(_site,_module,_site.SITE_INDEX,'Exclude',_module.MODULE_INDEX)">
+                                                    <span class="select-label text-nowrap" id="select_label" ng-disabled="EDIT_MODE">
+                                                        <span class="truncate">{{_site.EXCLUDE_COUNT=(_site.EXCLUDE_DEPARTMENTS_LIST.length+_site.EXCLUDE_POSITIONS_LIST.length + _site.EXCLUDE_EMPLOYEES_LIST.length)}} Items Selected</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td class="text-center" ng-click="CHECK_CLICK_Fn(_site)" ng-show="_module.SUB_MODULE_ID==6 || _module.SUB_MODULE_ID==10">
+                                        <div class="media d-block">
+                                            <div class="media-body switch-sm">
+                                                <label class="switch">
+                                                    <input type="checkbox"
+                                                           name="SHOW_WAGE{{$index}}{{_module.MODULE_INDEX}}"
+                                                           ng-disabled="!_site.ACTIVE || EDIT_MODE"
+                                                           ng-model="_site.SHOW_WAGE"
+                                                           checked=""><span class="switch-state"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" ng-click="CHECK_CLICK_Fn(_site)" ng-show="_module.SUB_MODULE_ID==6 || _module.SUB_MODULE_ID==10">
+                                        <div class="media d-block">
+                                            <div class="media-body switch-sm">
+                                                <label class="switch">
+                                                    <input type="checkbox"
+                                                           name="TIME_SHEETS{{$index}}{{_module.MODULE_INDEX}}"
+                                                           ng-disabled="!_site.ACTIVE || EDIT_MODE"
+                                                           ng-model="_site.TIME_SHEETS"
+                                                           checked=""><span class="switch-state"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" ng-click="CHECK_CLICK_Fn(_site)" ng-show="_module.SUB_MODULE_ID==10">
+                                        <div class="media d-block">
+                                            <div class="media-body switch-sm">
+                                                <label class="switch">
+                                                    <input type="checkbox"
+                                                           name="FEEDS{{$index}}{{_module.MODULE_INDEX}}"
+                                                           ng-disabled="!_site.ACTIVE || EDIT_MODE"
+                                                           ng-model="_site.FEED_ACCESS"
+                                                           checked=""><span class="switch-state"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12" ng-if=" _module.SUB_MODULE_ID==14">
+                        <table class="mb-0" ng-show="_module.MODULE_ACTIVE" ng-init="nginitStandarrole(_module);">
+                            <thead>
+                                <tr>
+                                    <th width="25%" class="border-right">Feeds</th>
+                                    <th width="15%" class="text-center">Access</th>
+                                    <th width="20%" class="text-center">Include</th>
+                                    <th width="20%" class="text-center">Exclude</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="_feed in _module.SUB_MODULE_PAGE_LIST" ng-init="nginit_site(_feed,_module)">
+                                    <td class="border-right bg-grey">{{_feed.SUB_MODULE_NAME}} <span ng-show="false">{{_feed.SITE_INDEX =$index}}</span> </td>
+                                    <td class="text-center">
+                                        <div class="media d-block">
+                                            <div class="media-body switch-sm">
+                                                <label class="switch">
+                                                    <input type="checkbox" ng-disabled="EDIT_MODE"
+                                                           name="ACTIVE{{_feed.SITE_INDEX}}{{_module.MODULE_INDEX}}"
+                                                           ng-model="_feed.ACTIVE">
+                                                    <span class="switch-state"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills mb-1">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer"
+                                                   data-bs-toggle="modal"
+                                                   ng-class="{'disabled':!_feed.ACTIVE}"
+                                                   ng-click="POP_FEED_EXCLUDE_Fn(_feed,_module,_feed.SITE_INDEX,'Include',_module.MODULE_INDEX)">
+                                                    <span class="select-label"
+                                                          id="select_label">
+                                                        {{_feed.INCLUDE_BRANCH_LIST.length+_feed.INCLUDE_DEPARTMENTS_LIST.length+_feed.INCLUDE_POSITIONS_LIST.length + _feed.INCLUDE_EMPLOYEES_LIST.length}} Items Selected
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills mb-1">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer"
+                                                   ng-class="{'disabled':!_feed.ACTIVE  }"
+                                                   data-bs-toggle="modal" ng-click="POP_FEED_EXCLUDE_Fn(_feed,_module,_feed.SITE_INDEX,'Exclude',_module.MODULE_INDEX)">
+                                                    <span class="select-label" id="select_label" ng-disabled="EDIT_MODE">
+                                                        {{_feed.EXCLUDE_BRANCH_LIST.length+_feed.EXCLUDE_DEPARTMENTS_LIST.length+_feed.EXCLUDE_POSITIONS_LIST.length + _feed.EXCLUDE_EMPLOYEES_LIST.length}} Items Selected
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12" ng-if="_module.SUB_MODULE_ID==11">
+                        <table class="mb-0" ng-show="_module.MODULE_ACTIVE">
+                            <thead>
+                                <tr>
+                                    <th width="31%" class="border-right">Sites</th>
+                                    <th width="19%" class="text-center">Access</th>
+                                    <th width="" class="text-center">Departments</th>
+                                    <th width="" class="text-center">Exclude</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border-right bg-grey">Site A</td>
+                                    <td class="text-center">
+                                        <div class="media d-block">
+                                            <div class="media-body switch-sm">
+                                                <label class="switch">
+                                                    <input type="checkbox" ng-disabled="EDIT_MODE" checked=""><span class="switch-state"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills mb-1">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer" data-bs-toggle="modal" data-bs-target="#Exclude">
+                                                    <span class="select-label" id="select_label">
+                                                        7 Items Selected
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills mb-1">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer" data-bs-toggle="modal" data-bs-target="#Exclude">
+                                                    <span class="select-label" id="select_label">
+                                                        7 Items Selected
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12" ng-show="_module.MODULE_ACTIVE">
+                        <table class="mb-0" ng-if="_module.SUB_MODULE_ID==12">
+                            <thead>
+                                <tr>
+                                    <th width="31%" class="border-right">Sites</th>
+                                    <th width="19%" class="text-center">Access</th>
+                                    <th width="" class="text-center">Departments</th>
+                                    <th width="" class="text-center">Exclude</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="_site in HR_BRANCH_LIST">
+                                    <td class="border-right bg-grey">{{_site.BRANCH_NAME}}</td>
+                                    <td class="text-center">
+                                        <div class="media d-block">
+                                            <div class="media-body switch-sm">
+                                                <label class="switch">
+                                                    <input type="checkbox" ng-disabled="EDIT_MODE  "
+                                                           ng-model="_site.ABSENCE_ACCESS"
+                                                           checked=""><span class="switch-state"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills mb-1">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer" data-bs-toggle="modal" data-bs-target="#Exclude">
+                                                    <span class="select-label" id="select_label">
+                                                        7 Items Selected
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills mb-1">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer" data-bs-toggle="modal" data-bs-target="#Exclude">
+                                                    <span class="select-label" id="select_label">
+                                                        7 Items Selected
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12" ng-show="_module.MODULE_ACTIVE"
+                         ng-init="_module.REPORTS_BY_MODULE_ID_LIST=REPORTS_BY_MODULE_ID_LIST">
+                        <div class="row" ng-if="_module.SUB_MODULE_ID==8">
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-repeat="_report in _module.REPORTS_BY_MODULE_ID_LIST" ng-init="nginit_report(_report,_module)">
+                                <div class="media form-control">
+                                    <label class="col-form-label m-r-10">{{_report.REPORT_NAME}}</label>
+                                    <div class="media-body switch-sm ms-auto">
+                                        <label class="switch">
+                                            <input type="checkbox" ng-disabled="EDIT_MODE"
+                                                   name="ACTIVE0"
+                                                   ng-checked="_report.ACTIVE"
+                                                   ng-model="_report.ACTIVE"
+                                                   ng-change="INS_UPD_CUSTOMERS_NOTIFICATIONS(_report)">
+                                            <span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+
+    </div>
+    <div class="card-footer text-end" ng-show="MY_PROFILE_FLAG==0">
+        <button type="button" class="btn btn-light" ng-show="SHOW_EDIT_ACCESS" click-once ng-click="HRM_INS_UPD_EMPLOYEE_ACCESS(1)">Save for later</button>
+        <button type="button" class="btn btn-primary" ng-show="SHOW_EDIT_ACCESS" click-once ng-click="HRM_INS_UPD_EMPLOYEE_ACCESS()">Save & Continue</button>
+    </div>
+</div>
+
+<div class="card" ng-show="false">
+    <div class="row">
+        <templateurl class="w-100" template-url="../AngularViews/HumanResource/Manage_Employees/Employee/EffectiveHistoryList.html?v={{AppVersion}}">
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="Discard_pop" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Discard</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <textarea rows="5" class="mb-0" maxlength="500" ng-model="DISCARD_COMMENTS"></textarea>
+                <span class="float-end text-gray">{{500-DISCARD_COMMENTS.length}}/500</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" ng-click="HRM_DISCARD_PENDING_UPDATES()" class="btn btn-danger">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="Process_pop" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="d-flex justify-content-center">
+                    <div class="tickIcon">
+                        <span class="badge text-bg-success-modal">
+                            <i class="fa-light fa-user-cog fa-lg"></i>
+                        </span>
+                    </div>
+                </div>
+                <h6 class="text-center pb-2 fw-500">Are you sure you want to continue this process?</h6>
+            </div>
+            <div class="modal-footer">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <button type="button" class="btn btn-light w-100" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-xxl-6 col-xl-6 col-md-6">
+                        <button type="button" ng-click="HRM_PROCESS_PENDING_UPDATES()" class="btn btn-primary w-100">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="Include" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h4 class="modal-title">{{TYPE}}</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="col-xxl-12 col-md-12 col-xl-12 badge-light-primary f-12 py-2 px-3">
+                {{SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INCLUDE_DEPARTMENTS_LIST.length+SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INCLUDE_POSITIONS_LIST.length + SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INCLUDE_EMPLOYEES_LIST.length}} Items Selected
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <h6 class="headings">
+                            Departments
+                            <span class="form-check float-end">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       prevent-double-click="1000"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-trigger="hover"
+                                       data-bs-placement="top"
+                                       title="When all department is checked all the departments + future departments will be included"
+                                       ng-change="ALL_BRANCH_Fn()"
+                                       ng-model="SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].ALL_DEPARTMENTS_INCLUDE" />
+                                <label class="form-check-label mt-1">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </span>
+                        </h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="DEPARTMENT_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_DEPARTMENTS_Fn($item,$index)"
+                                   autocomplete="off"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INIT_INCLUDE_DEPARTMENTS_EMP_LIST | filter:$viewValue"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.DEPARTMENT_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_department in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INCLUDE_DEPARTMENTS_LIST">
+                                <span class="truncate_employee">{{_department.DEPARTMENT_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-show="SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].ALL_DEPARTMENTS_INCLUDE!=true" ng-click="REMOVE_DEPARTMENTS_Fn(_department)"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <h6 class="headings">
+                            Positions
+                            <span class="form-check float-end">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       prevent-double-click="1000"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-trigger="hover"
+                                       data-bs-placement="top"
+                                       title="When all department is checked all the departments + future departments will be included"
+                                       ng-change="ALL_POSITION_Fn()"
+                                       ng-model="SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].ALL_POSITIONS_INCLUDE" />
+                                <label class="form-check-label mt-1">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </span>
+                        </h6>
+
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="POSITION_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_POSITIONS_Fn($item,$index)"
+                                   autocomplete="off"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   uib-typeahead="_position as _position.POSITION_NAME for _position in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INIT_INCLUDE_POSITIONS_EMP_LIST | filter:$viewValue"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.POSITION_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_position in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INCLUDE_POSITIONS_LIST">
+                                <span class="truncate_employee">{{_position.POSITION_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-show="SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].ALL_POSITIONS_INCLUDE!=true" ng-click="REMOVE_POSITIONS_Fn(_position)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <h6 class="headings">Employees</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="EMPLOYEES_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_EMPLOYEE_Fn($item,$index)"
+                                   autocomplete="off"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INIT_INCLUDE_EMPLOYTEE_EMP_LIST | filter:$viewValue"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.EMPLOYEES_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_employee in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INCLUDE_EMPLOYEES_LIST"
+                                 ng-init="nginit_employee(_employee)">
+                                <img ng-show="_employee.PROFILE_PIC_PATH!=null && _employee.PROFILE_PIC_PATH!=''"
+                                     src="..{{_employee.PROFILE_PIC_PATH}}"
+                                     class="img-24 rounded-circle float-start me-2" />
+                                <span class="text_avatar" ng-show="_employee.PROFILE_PIC_PATH==null ||_employee.PROFILE_PIC_PATH==''">{{_employee.SHORT_NAME}}</span>
+                                <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_EMPLOYEE_Fn(_employee)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="Exclude" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h4 class="modal-title">{{TYPE}}</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="col-xxl-12 col-md-12 col-xl-12 badge-light-primary f-12 py-2 px-3">
+                {{SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].EXCLUDE_DEPARTMENTS_LIST.length+SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].EXCLUDE_POSITIONS_LIST.length + SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].EXCLUDE_EMPLOYEES_LIST.length}} Items Selected
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <h6 class="headings">Positions</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="POSITION_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_EXCLUDE_POSITIONS_Fn($item,$index)"
+                                   autocomplete="off"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   uib-typeahead="_position as _position.POSITION_NAME for _position in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INIT_EXCLUDE_POSITIONS_EMP_LIST | filter:$viewValue"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.POSITION_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_position in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].EXCLUDE_POSITIONS_LIST">
+                                <span class="truncate_employee">{{_position.POSITION_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_EXCLUDE_POSITIONS_Fn(_position)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <h6 class="headings">Employees</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="EMPLOYEES_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_EXCLUDE_EMPLOYEE_Fn($item,$index)"
+                                   autocomplete="off"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].INIT_EXCLUDE_EMPLOYTEE_EMP_LIST | filter:$viewValue"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.EMPLOYEES_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_employee in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].HR_BRANCH_LIST[SELECTED_SITE_INDEX].EXCLUDE_EMPLOYEES_LIST" ng-init="nginit_employee(_employee)">
+                                <img ng-show="_employee.PROFILE_PIC_PATH!=null && _employee.PROFILE_PIC_PATH!=''"
+                                     src="..{{_employee.PROFILE_PIC_PATH}}"
+                                     class="img-24 rounded-circle float-start me-2" />
+                                <span class="text_avatar" ng-show="_employee.PROFILE_PIC_PATH==null || _employee.PROFILE_PIC_PATH==''">{{_employee.SHORT_NAME}}</span>
+                                <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_EXCLUDE_EMPLOYEE_Fn(_employee)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="FeedInclude" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h4 class="modal-title">{{TYPE}}</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="col-xxl-12 col-md-12 col-xl-12 badge-light-primary f-12 py-2 px-3">
+                {{SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INCLUDE_BRANCH_LIST.length+SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INCLUDE_DEPARTMENTS_LIST.length+SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INCLUDE_POSITIONS_LIST.length + SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INCLUDE_EMPLOYEES_LIST.length}} Items Selected
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-3 col-md-3 col-xl-3">
+                        <h6 class="headings">Branch</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="BRANCH_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_FEED_INCLUDE_BRANCH_Fn($item,$index)"
+                                   autocomplete="off"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   uib-typeahead="_branch as _branch.BRANCH_NAME for _branch in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INIT_INCLUDE_BRANCH_EMP_LIST | filter:$viewValue"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.BRANCH_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_branch in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INCLUDE_BRANCH_LIST">
+                                <span class="truncate_employee">{{_branch.BRANCH_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_FEED_INCLUDE_BRANCH_Fn(_branch)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-md-3 col-xl-3">
+                        <h6 class="headings">Departments</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="DEPARTMENT_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_FEED_DEPARTMENTS_Fn($item,$index)"
+                                   autocomplete="off"
+                                   uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INIT_INCLUDE_DEPARTMENTS_EMP_LIST | filter:$viewValue"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.DEPARTMENT_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_department in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INCLUDE_DEPARTMENTS_LIST">
+                                <span class="truncate_employee">{{_department.DEPARTMENT_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_FEED_DEPARTMENTS_Fn(_department)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-md-3 col-xl-3">
+                        <h6 class="headings">Positions</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="POSITION_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_FEED_POSITIONS_Fn($item,$index)"
+                                   autocomplete="off"
+                                   uib-typeahead="_position as _position.POSITION_NAME for _position in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INIT_INCLUDE_POSITIONS_EMP_LIST | filter:$viewValue"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.POSITION_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_position in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INCLUDE_POSITIONS_LIST">
+                                <span class="truncate_employee">{{_position.POSITION_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_FEED_POSITIONS_Fn(_position)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-md-3 col-xl-3">
+                        <h6 class="headings">Employees</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="EMPLOYEES_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_FEED_EMPLOYEE_Fn($item,$index)"
+                                   autocomplete="off"
+                                   uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INIT_INCLUDE_EMPLOYTEE_EMP_LIST | filter:$viewValue"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.EMPLOYEES_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_employee in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INCLUDE_EMPLOYEES_LIST" ng-init="nginit_employee(_employee)">
+                                <img ng-show="_employee.PROFILE_PIC_PATH!=null && _employee.PROFILE_PIC_PATH!=''"
+                                     src="..{{_employee.PROFILE_PIC_PATH}}"
+                                     class="img-40 rounded-circle float-start me-2" />
+                                <span class="text_avatar" ng-show="_employee.PROFILE_PIC_PATH==null || _employee.PROFILE_PIC_PATH==''">{{_employee.SHORT_NAME}}</span>
+                                <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_FEED_EMPLOYEE_Fn(_employee)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="FeedExclude" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h4 class="modal-title">{{TYPE}}</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="col-xxl-12 col-md-12 col-xl-12 badge-light-primary f-12 py-2 px-3">
+                {{SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].EXCLUDE_BRANCH_LIST.length+ SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].EXCLUDE_DEPARTMENTS_LIST.length+SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].EXCLUDE_POSITIONS_LIST.length + SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].EXCLUDE_EMPLOYEES_LIST.length}} Items Selected
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-3 col-md-3 col-xl-3">
+                        <h6 class="headings">Branch</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="BRANCH_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_FEED_EXCLUDE_BRANCH_Fn($item,$index)"
+                                   autocomplete="off"
+                                   uib-typeahead="_branch as _branch.BRANCH_NAME for _branch in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INIT_EXCLUDE_BRANCH_EMP_LIST | filter:$viewValue"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.BRANCH_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_branch in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].EXCLUDE_BRANCH_LIST">
+                                <span class="truncate_employee">{{_branch.BRANCH_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_FEED_EXCLUDE_BRANCH_Fn(_branch)"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-3 col-md-3 col-xl-3">
+                        <h6 class="headings">Departments</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="DEPARTMENT_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_FEED_EXCLUDE_DEPARTMENTS_Fn($item,$index)"
+                                   autocomplete="off"
+                                   uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INIT_EXCLUDE_DEPARTMENTS_EMP_LIST | filter:$viewValue"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.DEPARTMENT_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_department in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].EXCLUDE_DEPARTMENTS_LIST">
+                                <span class="truncate_employee">{{_department.DEPARTMENT_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_FEED_EXCLUDE_DEPARTMENTS_Fn(_department)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-md-3 col-xl-3">
+                        <h6 class="headings">Positions</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="POSITION_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_FEED_EXCLUDE_POSITIONS_Fn($item,$index)"
+                                   autocomplete="off"
+                                   uib-typeahead="_position as _position.POSITION_NAME for _position in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INIT_EXCLUDE_POSITIONS_EMP_LIST | filter:$viewValue"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.POSITION_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_position in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].EXCLUDE_POSITIONS_LIST">
+                                <span class="truncate_employee">{{_position.POSITION_NAME}}</span>
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_FEED_EXCLUDE_POSITIONS_Fn(_position)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-md-3 col-xl-3">
+                        <h6 class="headings">Employees</h6>
+                        <div class="AddCustomScroll_Contact">
+                            <input type="text"
+                                   ng-model="EMPLOYEES_NAME"
+                                   placeholder="Search & Add"
+                                   maxlength="100"
+                                   name="search"
+                                   typeahead-on-select="ADD_FEED_EXCLUDE_EMPLOYEE_Fn($item,$index)"
+                                   autocomplete="off"
+                                   uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].INIT_EXCLUDE_EMPLOYTEE_EMP_LIST | filter:$viewValue"
+                                   typeahead-focus-first="false"
+                                   typeahead-focus-trigger
+                                   typeahead-min-length="0"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   ng-focus="SET_DROPSCROLL();"
+                                   ng-class="{'error':Absenceform.submitted && Absenceform.EMPLOYEES_NAME.$error.required}" />
+                        </div>
+                        <div class="scrollbar-wrapper">
+                            <div class="tags-normal text-start my-2" ng-repeat="_employee in SUB_MODULE_BY_STANDARD_ROLE_ID[SELECTED_MODULE_INDEX].SUB_MODULE_PAGE_LIST[SELECTED_SITE_INDEX].EXCLUDE_EMPLOYEES_LIST" ng-init="nginit_employee(_employee)">
+                                <img ng-show="_employee.PROFILE_PIC_PATH!=null && _employee.PROFILE_PIC_PATH!=''"
+                                     src="..{{_employee.PROFILE_PIC_PATH}}"
+                                     class="img-24 rounded-circle float-start me-2" />
+                                <span class="text_avatar" ng-show="_employee.PROFILE_PIC_PATH==null || _employee.PROFILE_PIC_PATH==''">{{_employee.SHORT_NAME}}</span>
+                                <span class="truncate_employee">{{_employee.EMPLOYEE_NAME}}</span>
+
+
+                                <i class="fa-light fa-trash-alt" ng-click="REMOVE_FEED_EXCLUDE_EMPLOYEE_Fn(_employee)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="EffectiveDate" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">Effective On</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" ng-init="DateInputLoad()">
+                <form name="EffectiveForm" novalidate>
+                    <div class="row">
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <label class="d-block">Effective Date <span class="txt-danger">*</span></label>
+                            <div class="date-column">
+                                <input type="text"
+                                       required
+                                       name="EFFECTIVE_DATE"
+                                       class="dateinput"
+                                       readonly
+                                       autocomplete="off"
+                                       ng-model="UserAccessSearch.EFFECTIVE_DATE "
+                                       placeholder="Select Date "
+                                       ng-class="{'error':EffectiveForm.submitted && EffectiveForm.EFFECTIVE_DATE.$error.required}">
+                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <label class="d-block">Comments</label>
+                            <textarea class="mb-0"
+                                      rows="3"
+                                      ng-model="UserAccessSearch.EFFECTIVE_COMMENTS">
+                                        </textarea>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        click-once
+                        class="btn btn-light"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    Cancel
+                </button>
+                <button type="button"
+                        click-once
+                        ng-click="HRM_CLICK_EFFICTIVE_DATE(UserAccessSearch)"
+                        class="btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="Employee_Details" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Employee List ({{HRM_GET_REPORTING_EMPLOYEE_LIST_FOR_MANAGER_LIST.length}})</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <ul class="modal-img">
+                        <li> <img src="../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="f-14 pb-2 fw-500">
+                        Sorry, you cannot change the role of this employee as this is already set as manager for {{HRM_GET_REPORTING_EMPLOYEE_LIST_FOR_MANAGER_LIST.length}} employees.
+                    </h6>
+                </div>
+                <div class="table-responsive scrollbar-wrapper" ng-show="HRM_GET_REPORTING_EMPLOYEE_LIST_FOR_MANAGER_LIST.length>0">
+                    <table class="hr_table">
+                        <thead class="thead_fixed">
+                            <tr>
+                                <th>Employee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="_employee in HRM_GET_REPORTING_EMPLOYEE_LIST_FOR_MANAGER_LIST" ng-init="nginitemployee(_employee)">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img ng-show="_employee.PROFILE_PIC_PATH!=null && _employee.PROFILE_PIC_PATH!=''"
+                                             src="..{{_employee.PROFILE_PIC_PATH}}"
+                                             class="img-24 rounded-circle float-start me-2" />
+                                        <span class="text_avatar me-2" ng-show="_employee.PROFILE_PIC_PATH==null || _employee.PROFILE_PIC_PATH==''">{{_employee.SHORT_NAME}}</span>
+                                        <span class="truncate_employee"> {{_employee.EMPLOYEE_NAME}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

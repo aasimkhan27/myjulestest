@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "HrIndex";
+    Layout = "~/Views/Shared/Hr_Layout_Main.cshtml";
+}
+<link href="~/E_Scripts/Colorpicker/pick-a-color-1.2.3.min.css" rel="stylesheet" />
+<style>
+    .fc-state-highlight {
+        background-color: #99EADE !important;
+    }
+    #tree {
+        width: 100%;
+        height: 100%;
+        float: left;
+    }
+</style>
+<div id="myDiv"><ng-view></ng-view></div>
+<script type="text/javascript">var AppVersion = @System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString();</script>
+<script src="~/AngularControllers/DashBoardController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/E_Content/plugins/web-analytics/ChartJS.js"></script>
+<script src="~/E_Content/plugins/chart.js/Chart.min.js"></script>
+<script src="~/E_Scripts/angular-chart.js"></script>
+<script src="~/AngularControllers/HrController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PositionController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/EmployeeController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/Department.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PayrollController.js?@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/E_Content/plugins/moment/moment-timezone-with-data.js"></script>
+<script src="~/E_Scripts/OrgChart/OrgChart.js"></script>
+<script src="~/E_Scripts/Colorpicker/tinycolor-0.9.15.min.js"></script>
+<script src="~/E_Scripts/Colorpicker/pick-a-color-1.2.3.min.js"></script>
+

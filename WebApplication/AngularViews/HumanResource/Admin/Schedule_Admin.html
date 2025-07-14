@@ -1,0 +1,1000 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Schedule</h6>
+                </div>
+                <div class="card-header px-0 border-0">
+                    <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+                        <li class="nav-item" ng-if="false">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==1}" ng-click="SCHEDULE_TAB_CLICK_Fn(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                General
+                            </a>
+                        </li>
+                        <li class="nav-item" ng-if="false">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==2}" ng-click="SCHEDULE_TAB_CLICK_Fn(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Shift
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==3}" ng-click="SCHEDULE_TAB_CLICK_Fn(3)" id="bottom-inbox-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-inbox" aria-selected="false">
+                                Display
+                            </a>
+                        </li>
+                        <li class="nav-item" ng-if="false">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==4}" ng-click="SCHEDULE_TAB_CLICK_Fn(4)" id="bottom-contact-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                                Confirmation
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body" ng-show="TAB_ID==1">
+                    <div class="row">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Rest Time</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS_MULTIPLE()"
+                                    class="btn btn-light btn-sm mb-2">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <div class="media form-control">
+                                <label class="col-form-label m-r-10">Ensure adequate rest time between shifts</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               name="ENSURE_ADEQUATE"
+                                               ng-model="ScheduleSearch.ENSURE_ADEQUATE"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="ScheduleSearch.ENSURE_ADEQUATE">
+                            <input type="text"
+                                   name="VALUE_IN_HOURS"
+                                   placeholder="Value in hours"
+                                   ng-model="ScheduleSearch.VALUE_IN_HOURS"
+                                   maxlength="2"
+                                   only-numbers />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="ScheduleSearch.ENSURE_ADEQUATE">
+                            <div class="media form-control justify-content-between">
+                                <label class="col-form-label m-r-10">Show as warning</label>
+                                <div class="media-body switch-sm">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               checked=""
+                                               name="SHOW_AS_WARNING"
+                                               placeholder="Value in hours"
+                                               ng-model="ScheduleSearch.SHOW_AS_WARNING"
+                                               required
+                                               ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.SHOW_AS_WARNING.$error.required}" /><span class="switch-state bg-primary"></span>
+                                    </label>
+                                </div>
+                                <label class="col-form-label m-r-10">Enforce the rule</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr  ng-show="false"/>
+                    <div class="row" ng-show="false">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Scheduling Limitation</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS(ScheduleSearch.LIMIT_SCHEDULING_OVER,52)"
+                                    class="btn btn-light btn-sm">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row"  ng-show="false">
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <label>Limit Scheduling Over</label>
+                            <div class="placeholder" data-type="Weeks">
+                                <input type="text"
+                                       name="LIMIT_SCHEDULING_OVER"
+                                       placeholder="0"
+                                       only-numbers
+                                       maxlength="2"
+                                       ng-model="ScheduleSearch.LIMIT_SCHEDULING_OVER"
+                                       required
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.LIMIT_SCHEDULING_OVER.$error.required}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr ng-hide="true" />
+
+                    <h6 class="headings" ng-hide="true">Break Rule?</h6>
+                    <form name="BREAK_TYPES_FORM" novalidate ng-hide="true">
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <label>Break Name</label>
+                                <input type="text"
+                                       name="BREAK_NAME"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       ng-model="ScheduleSearch.BREAK_RULE_NAME"
+                                       required
+                                       ng-class="{'error':BREAK_TYPES_FORM.submitted && BREAK_TYPES_FORM.BREAK_NAME.$error.required}" />
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Break length</label>
+                                <!--<input type="text" id="autocomplete" placeholder="Search" />-->
+                                <div class="placeholder" data-type="Mins">
+                                    <input type="text"
+                                           name="BREAK_DURATION"
+                                           placeholder="0"
+                                           ng-model="ScheduleSearch.BREAK_DURATION"
+                                           required
+                                           maxlength="2"
+                                           only-digits
+                                           ng-class="{'error':BREAK_TYPES_FORM.submitted && BREAK_TYPES_FORM.BREAK_DURATION.$error.required}" />
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Type</label>
+                                <input type="hidden"
+                                       ng-model="ScheduleSearch.BREAK_RULE_TYPE_ID"
+                                       name="BREAK_RULE_TYPE_ID"
+                                       required
+                                       ng-class="{'error':BREAK_TYPES_FORM.submitted && BREAK_TYPES_FORM.BREAK_RULE_TYPE_ID.$error.required}" />
+                                <ul class="nav nav-pills" ng-class="{'error':BREAK_TYPES_FORM.submitted && BREAK_TYPES_FORM.BREAK_RULE_TYPE_ID.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{ScheduleSearch.CUSTOM_BREAK_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                            <li class=""
+                                                ng-show="ScheduleSearch.DD_DEFAULT_TEXT!=ScheduleSearch.CUSTOM_BREAK_NAME"
+                                                ng-click="SELECTED_BREAK_Fn('')">{{ScheduleSearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-click="SELECTED_BREAK_Fn(_break)"
+                                                ng-repeat="_break in BREAK_LIST">
+                                                <span class="">{{_break.BREAK_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <label>Shift Length</label>
+                                <div class="placeholder" data-type="Hours">
+                                    <input type="text"
+                                           name="SHIFT_DURATION"
+                                           placeholder="0"
+                                           ng-model="ScheduleSearch.SHIFT_DURATION"
+                                           only-digits
+                                           maxlength="2"
+                                           required
+                                           ng-class="{'error':BREAK_TYPES_FORM.submitted && BREAK_TYPES_FORM.SHIFT_DURATION.$error.required}" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr ng-hide="true" />
+                    <div class="row" ng-hide="true">
+                        <div class="col-xxl-12 col-md-12 col-xl-12 text-end">
+                            <button type="button" class="btn btn-light btn-sm mb-3"
+                                    ng-click="HRM_INS_UPD_BREAK_RULES()">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <h6 class="headings" ng-hide="true">Created Break Rules</h6>
+
+                    <div class="col-xxl-12 col-md-12 col-xl-12" ng-hide="true">
+
+                        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="BREAK_RULES_LIST.length == 0">
+                            <div class="no-record text-center">{{LOAD_FETCH_TEXT}}</div>
+                        </div>
+
+                        <div class="table-responsive scrollbar-wrapper mx-height-400">
+                            <table ng-show="BREAK_RULES_LIST.length > 0">
+                                <thead class="thead_fixed">
+                                    <tr>
+                                        <th>Break Name</th>
+                                        <th width="20%">Mins</th>
+                                        <th width="20%">Shift Length (Hours)</th>
+                                        <th width="20%">Type</th>
+                                        <th width="10%" class="text-center table-th-r-fixed">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="_break_rule in BREAK_RULES_LIST">
+                                        <td>{{_break_rule.BREAK_RULE_NAME}}</td>
+                                        <td>{{_break_rule.BREAK_DURATION}}</td>
+                                        <td>{{_break_rule.SHIFT_DURATION}}</td>
+                                        <td>
+                                            <span class="badge-lg badge-light-success" ng-show="_break_rule.BREAK_RULE_TYPE_ID==1">{{BREAK_LIST[_break_rule.BREAK_RULE_TYPE_ID-1].BREAK_NAME}}</span>
+                                            <span class="badge-lg badge-light-primary" ng-show="_break_rule.BREAK_RULE_TYPE_ID==2">{{BREAK_LIST[_break_rule.BREAK_RULE_TYPE_ID-1].BREAK_NAME}}</span>
+                                        </td>
+                                        <td class="text-center table-td-r-fixed">
+                                            <div class="btn-group">
+                                                <button type="button"
+                                                        ng-click="UPDATE_BREAK_RULE_Fn(_break_rule)"
+                                                        class="btn btn-sm btn-transparent"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-title="Edit">
+                                                    <i class="fa-light fa-pen fa-lg"></i>
+                                                </button>
+                                                <button type="button"
+                                                        ng-click="DELETE_BREAK_RULE_Fn(_break_rule)"
+                                                        class="btn btn-sm btn-transparent"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-title="Delete">
+                                                    <i class="fa-light fa-trash-alt fa-lg"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="t_foot_fixed" ng-show="GetData">
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <button type="button"
+                                                    ng-click="LAZY_LOAD_GET_BREAK_RULES()"
+                                                    class="btn btn-sm btn-light btn_fixed">
+                                                Load More...
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" ng-show="TAB_ID==2">
+                    <form name="SHIFT_FORM" novalidate>
+                        <div class="row">
+                            <div class="col-xxl-8 col-md-8 col-xl-9"><h6 class="headings">Shift Template</h6></div>
+                            <div class="col-xxl-4 col-md-4 col-xl-3 text-end">
+                                <button type="button"
+                                        class="btn btn-light"
+                                        ng-click="RESET_SHIFT_Fn()"
+                                        data-bs-toggle="modal">
+                                    <i class="fa-light fa-plus float-start mt-1 me-2"></i> New Template
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <label>Shift Name</label>
+                                <input name="SHIFT_NAME"
+                                       type="text"
+                                       placeholder="Shift-001"
+                                       ng-model="ShiftSearch.SHIFT_NAME"
+                                       required
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.SHIFT_NAME.$error.required}" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Start Time</label>
+                                <div class="input_time date_time">
+                                    <input name="START_TIME"
+                                           type="text"
+                                           class="timepicker_START_TIME"
+                                           placeholder="Select Time"
+                                           ng-model="ShiftSearch.START_TIME | date:'h:mm a'"
+                                           required
+                                           ng-class="{'error': SHIFT_FORM.submitted && SHIFT_FORM.START_TIME.$error.required}" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>End Time</label>
+                                <div class="input_time date_time">
+                                    <input type="text"
+                                           name="END_TIME"
+                                           class="timepicker_END_TIME"
+                                           placeholder="Select Time"
+                                           ng-model="ShiftSearch.END_TIME | date:'h:mm a'"
+                                           required
+                                           ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.END_TIME.$error.required}" />
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Shift Count</label>
+                                <input type="text"
+                                       name="SHIFT_COUNT"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       only-digits
+                                       ng-model="ShiftSearch.SHIFT_COUNT"
+                                       required
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.SHIFT_COUNT.$error.required}" />
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Break Hours</label>
+                                <input type="text"
+                                       name="BREAK_HOURS"
+                                       ng-model="ShiftSearch.BREAK_HOURS"
+                                       required
+                                       ng-disabled="ShiftSearch.IS_BREAK_RULE_APPLIED"
+                                       only-digits
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.BREAK_HOURS.$error.required}"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       class="mb-1" />
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           id="flexCheckChecked"
+                                           type="checkbox"
+                                           name="IS_BREAK_RULE_APPLIED"
+                                           ng-change="BREAK_RULE_CHECKED_Fn()"
+                                           ng-model="ShiftSearch.IS_BREAK_RULE_APPLIED"
+                                           ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.IS_BREAK_RULE_APPLIED.$error.required}" />
+                                    <label class="form-check-label" for="flexCheckChecked">Break Rule</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <div class="col-xxl-12 col-md-12 col-xl-12">
+                                    <label>Paid/Unpaid</label>
+                                    <input type="hidden"
+                                           ng-model="ShiftSearch.BREAK_TYPE_ID"
+                                           name="BREAK_TYPE_ID"
+                                           required
+                                           ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.BREAK_TYPE_ID.$error.required}" />
+                                    <ul class="nav nav-pills" ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.BREAK_TYPE_ID.$error.required}">
+                                        <li class="dropdown w-100 show">
+                                            <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true" ng-class="{'disabled': ShiftSearch.IS_BREAK_RULE_APPLIED}">
+                                                <span class="select-label" id="select_label">
+                                                    {{ShiftSearch.CUSTOM_SHIFT_BREAK_NAME}}
+                                                </span>
+                                            </a>
+                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                <li class=""
+                                                    ng-show="ShiftSearch.DD_DEFAULT_TEXT!=ShiftSearch.CUSTOM_SHIFT_BREAK_NAME"
+                                                    ng-click="SELECTED_SHIFT_BREAK_Fn('')">{{ShiftSearch.DD_DEFAULT_TEXT}}</li>
+                                                <li class=""
+                                                    ng-click="SELECTED_SHIFT_BREAK_Fn(_break)"
+                                                    ng-repeat="_break in BREAK_LIST">
+                                                    <span class="">{{_break.BREAK_NAME}}</span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-xxl-12 col-md-12 col-xl-12">
+                                    <label>Special Wage</label>
+                                    <div class="form-check form-control py-2 mb-1">
+                                        <input class="form-check-input ms-2"
+                                               id="Renew" type="checkbox"
+                                               name="SPECIAL_WAGE"
+                                               ng-model="ShiftSearch.IS_SPECIAL_WAGE"
+                                               ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.SPECIAL_WAGE.$error.required}" />
+                                        <label class="form-check-label ms-1" for="Renew">Yes</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <div class="col-xxl-12 col-md-12 col-xl-12">
+                                    <label>Note</label>
+                                    <textarea placeholder="Type here"
+                                              class="mb-1"
+                                              name="NOTE"
+                                              maxlength="500"
+                                              ng-model="ShiftSearch.NOTE"
+                                              rows="5"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-show="ShiftSearch.IS_SPECIAL_WAGE">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Wage</label>
+                                <input type="text"
+                                       name="WAGE"
+                                       only-digits
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       ng-model="ShiftSearch.WAGE"
+                                       ng-required="ShiftSearch.IS_SPECIAL_WAGE"
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.WAGE.$error.required}" />
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Wage Type</label>
+                                <input type="hidden"
+                                       ng-model="ShiftSearch.WAGE_TYPE_ID"
+                                       name="WAGE_TYPE_ID"
+                                       ng-required="ShiftSearch.IS_SPECIAL_WAGE"
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.WAGE_TYPE_ID.$error.required}" />
+                                <ul class="nav nav-pills" ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.WAGE_TYPE_ID.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{ShiftSearch.CUSTOM_WAGE_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                            <li class=""
+                                                ng-show="ShiftSearch.DD_DEFAULT_TEXT!=ShiftSearch.CUSTOM_WAGE_NAME"
+                                                ng-click="SELECTED_WAGE_Fn('')">{{ShiftSearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-click="SELECTED_WAGE_Fn(_wage)"
+                                                ng-repeat="_wage in WAGES_LIST">
+                                                <span class="">{{_wage.WAGE_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-hide="true">
+                            <h6 class="headings">Default for</h6>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Sites</h6>
+                                <input type="text"
+                                       ng-model="ShiftSearch.BranchSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-on-select="ADD_SHIFT_BRANCH_Fn($item,$index)"
+                                       autocomplete="off"
+                                       uib-typeahead="_branch as _branch.BRANCH_NAME for _branch in SHIFT_BRANCH_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults"
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.BRANCH_NAME.$error.required}" />
+
+                                <div class="tags-normal text-start my-2" ng-repeat="_branch in ADD_SHIFT_BRANCH_LIST">
+                                    {{_branch.BRANCH_NAME}}
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SHIFT_BRANCH_Fn(_branch)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Departments</h6>
+                                <input type="text"
+                                       ng-model="ShiftSearch.DepartmentSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-on-select="ADD_SHIFT_DEPARTMENTS_Fn($item,$index)"
+                                       autocomplete="off"
+                                       uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in SHIFT_DEPARTMENTS_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults"
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.DEPARTMENT_NAME.$error.required}" />
+
+                                <div class="tags-normal text-start my-2" ng-repeat="_department in ADD_SHIFT_DEPARTMENTS_LIST">
+                                    {{_department.DEPARTMENT_NAME}}
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SHIFT_DEPARTMENTS_Fn(_department)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Positions</h6>
+                                <input type="text"
+                                       ng-model="ShiftSearch.PositionSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-on-select="ADD_SHIFT_POSITIONS_Fn($item,$index)"
+                                       autocomplete="off"
+                                       uib-typeahead="_position as _position.POSITION_NAME for _position in SHIFT_POSITIONS_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults"
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.POSITION_NAME.$error.required}" />
+
+                                <div class="tags-normal text-start my-2" ng-repeat="_position in ADD_SHIFT_POSITIONS_LIST">
+                                    {{_position.POSITION_NAME}}
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SHIFT_POSITIONS_Fn(_position)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Employee</h6>
+                                <input type="text"
+                                       ng-model="ShiftSearch.EmployeeSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-on-select="ADD_SHIFT_EMPLOYEE_Fn($item,$index)"
+                                       autocomplete="off"
+                                       uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in SHIFT_EMPLOYEES_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults"
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.EMPLOYEE_NAME.$error.required}" />
+                                <div class="tags-normal text-start my-2" ng-repeat="_employee in ADD_SHIFT_EMPLOYEES_LIST">
+                                    {{_employee.EMPLOYEE_NAME}}
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_SHIFT_EMPLOYEE_Fn(_employee)"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                            <button type="button" class="btn btn-light"
+                                    ng-click="HRM_INS_UPD_SHIFT_MASTER()">
+                                Create Template
+                            </button>
+                        </div>
+                    </form>
+                    <hr />
+                    <h6 class="headings">Created Shift Templates</h6>
+
+
+
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="SHIFT_MASTER_LIST.length == 0">
+                            <div class="no-record text-center">{{LOAD_SHIFT_FETCH_TEXT}}</div>
+                        </div>
+
+                        <div class="table-responsive scrollbar-wrapper mx-height-400">
+                            <table ng-show="SHIFT_MASTER_LIST.length> 0">
+                                <thead class="thead_fixed">
+                                    <tr>
+                                        <th>Shift Name</th>
+                                        <th width="18%">Start Time</th>
+                                        <th width="18%">End Time</th>
+                                        <th width="18%">Type</th>
+                                        <th width="18%">Special Wage</th>
+                                        <th width="10%" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="Shift in SHIFT_MASTER_LIST">
+                                        <td>{{Shift.SHIFT_NAME}}</td>
+                                        <td>{{Shift.START_TIME | date}}</td>
+                                        <td>{{Shift.END_TIME | date}}</td>
+                                        <td>
+                                            <span class="badge-lg badge-light-success" ng-show="Shift.BREAK_TYPE_ID==1">Paid</span>
+                                            <span class="badge-lg badge-light-primary" ng-show="Shift.BREAK_TYPE_ID==2">Unpaid</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge-lg badge-light-success" ng-show="Shift.IS_SPECIAL_WAGE">Yes</span>
+                                            <span class="badge-lg badge-light" ng-show="!Shift.IS_SPECIAL_WAGE">No</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button"
+                                                    ng-click="HRM_GET_SHIFT_MASTER_BY_ID(Shift)"
+                                                    class="btn btn-sm btn-transparent"
+                                                    data-bs-toggle="tooltip" data-bs-title="Edit">
+                                                <i class="fa-light fa-pen fa-lg"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="t_foot_fixed" ng-show="ShiftGetData">
+                                    <tr>
+                                        <td colspan="6" class="text-center"><button type="button" ng-click="LAZY_LOAD_SHIFT_MASTER_Fn()" class="btn btn-sm btn-light btn_fixed">Load More...</button></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <label>Cross Site Scheduling</label>
+                            <div class="form-check form-control py-2">
+                                <input class="form-check-input ms-2"
+                                       id="Cross_Site"
+                                       type="checkbox"
+                                       value=""
+                                       name="CROSS_SITE_SCHEDULING"
+                                       placeholder="Search"
+                                       ng-model="ShiftSearch.CROSS_SITE_SCHEDULING"
+                                       required
+                                       ng-change="INS_UPD_CUSTOMER_SETTINGS(ShiftSearch.CROSS_SITE_SCHEDULING,53)"
+                                       ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.CROSS_SITE_SCHEDULING.$error.required}" />
+                                <label class="form-check-label ms-1" for="Cross_Site">Allow Cross Site Scheduling</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" ng-show="TAB_ID==3">
+                    <h6 class="headings">Name Display</h6>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <div class="media form-control justify-content-between">
+                            <label class="col-form-label m-r-10">Full Name</label>
+                            <div class="media-body switch-sm">
+                                <label class="switch">
+                                    <input type="checkbox"
+                                           name="FULL_NAME"
+                                           ng-model="ShiftSearch.FULL_NAME"
+                                           ng-change="INS_UPD_CUSTOMER_SETTINGS(ShiftSearch.FULL_NAME,54)"
+                                           required
+                                           ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.FULL_NAME.$error.required}"><span class="switch-state bg-primary"></span>
+                                </label>
+                            </div>
+                            <label class="col-form-label m-r-10">Known as</label>
+                        </div>
+                    </div>
+                    <hr />
+                    <h6 class="headings mb-2" ng-show="false">Shift Appearance on Calendar</h6>
+                    <p class="paragraph" ng-show="false">There are two possible versions for shift display. Day view and week view. The month view also dictates the appearance of shifts when sorting by start time in week view. Drag elements from the left side onto the desired position on the shift block preview on the right.</p>
+                    <div class="row justify-content-between mt-3" ng-show="false">
+                        <div class="col-xxl-5 col-md-5 col-xl-5">
+                            <div class="col-xxl-6 col-md-10 col-xl-6">
+                                <div class="non-dragable">Time Schedule</div>
+                            </div>
+                            <div class="col-xxl-6 col-md-10 col-xl-6">
+                                <div class="dragable">Position</div>
+                            </div>
+                            <div class="col-xxl-6 col-md-10 col-xl-6">
+                                <div class="dragable">Section</div>
+                            </div>
+                            <div class="col-xxl-6 col-md-10 col-xl-6">
+                                <div class="dragable">Tag</div>
+                            </div>
+                            <div class="col-xxl-6 col-md-10 col-xl-6">
+                                <div class="non-dragable">Site</div>
+                            </div>
+                            <div class="col-xxl-6 col-md-10 col-xl-6">
+                                <div class="non-dragable">Department</div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-5 col-md-5 col-xl-5">
+                            <div class="col-md-12">
+                                <div class="btn_toggle_grouped">
+                                    <input id="toggle-on"
+                                           class="grouped_toggle grouped-toggle-left"
+                                           name="TOGGLE_ON"
+                                           value="false"
+                                           type="radio"
+                                           checked
+                                           ng-model="TOGGLE_ON"
+                                           required
+                                           ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.TOGGLE_ON.$error.required}" />
+                                    <label for="toggle-on" class="toggle_btn">Day</label>
+                                    <input id="toggle-off"
+                                           class="grouped_toggle grouped-toggle-right"
+                                           name="TOGGLE_OFF"
+                                           value="false"
+                                           type="radio"
+                                           checked
+                                           ng-model="TOGGLE_OFF"
+                                           required
+                                           ng-class="{'error':SHIFT_FORM.submitted && SHIFT_FORM.TOGGLE_OFF.$error.required}" />
+                                    <label for="toggle-off" class="toggle_btn">Week</label>
+                                </div>
+                            </div>
+                            <div class="card bg-primary">
+                                <div class="card-body">
+                                    <div class="row gy-2">
+                                        <div class="col-xxl-12 col-md-12 col-xl-12"><span class="dragged">9:00 AM - 5:00PM</span></div>
+                                        <div class="col-xxl-12 col-md-12 col-xl-12"><span class="dragged">Site-001</span></div>
+                                        <div class="col-xxl-12 col-md-12 col-xl-12"><span class="dragged">Department-001</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-12 col-md-12 col-xl-12 mt-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="f-14 mb-0 f-w-500">Preview</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-xxl col-md col-xl">
+                                            <div class="avatar">
+                                                <span class="text_avatar_48">mw</span>
+                                                <span class="mt-1">Malik Wihowo</span>
+                                                <p>8h</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-2 col-md-3 col-xl-2 ms-auto">
+                                            <div class="user_preview">
+                                                <span class="d-block">9:00 AM - 5:00PM</span>
+                                                <span class="d-block">Site-001</span>
+                                                <span class="d-block">Department-001</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-body" ng-show="TAB_ID==4">
+                    <h6 class="headings">Employee Confirmation of Shifts</h6>
+                    <div class="col-xxl-6 col-md-8 col-xl-6">
+                        <div class="media form-control">
+                            <label class="col-form-label m-r-10">Enable employee confirmation of shifts</label>
+                            <div class="media-body switch-sm ms-auto">
+                                <label class="switch">
+                                    <input type="checkbox"
+                                           checked=""
+                                           name="ENABLE_EMPLOYEE_CONFIRM"
+                                           ng-model="ScheduleSearch.ENABLE_EMPLOYEE_CONFIRM"
+                                           ng-change="INS_UPD_CUSTOMER_SETTINGS(ScheduleSearch.ENABLE_EMPLOYEE_CONFIRM,55)" /><span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <h6 class="headings">Employee Confirmation of Schedule</h6>
+                    <div class="col-xxl-6 col-md-8 col-xl-6">
+                        <div class="media form-control">
+                            <label class="col-form-label m-r-10">Allow employee to confirm or deny their schedules</label>
+                            <div class="media-body switch-sm ms-auto">
+                                <label class="switch">
+                                    <input type="checkbox"
+                                           checked=""
+                                           name="ALLOW_EMPLOYEE_CONFIRM"
+                                           ng-model="ScheduleSearch.ALLOW_EMPLOYEE_CONFIRM"
+                                           ng-change="INS_UPD_CUSTOMER_SETTINGS(ScheduleSearch.ALLOW_EMPLOYEE_CONFIRM,56)" /><span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="New_Template" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <form name="NEW_TEMPLATE_SHIFT_FORM">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myExtraLargeModal">New Shift Template</h4>
+                    <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body scrollbar-wrapper" style="max-height:450px;">
+                    <div class="row">
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <label>Shift Name</label>
+                            <input type="text"
+                                   name="SHIFT_NAME"
+                                   placeholder="Shift-001"
+                                   ng-model="SHIFT_NAME"
+                                   required
+                                   ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.SHIFT_NAME.$error.required}" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <label>Start Time</label>
+                            <div class="input_time date_time">
+                                <input type="text"
+                                       name="START_TIME"
+                                       class="timepicker"
+                                       placeholder="Select Time"
+                                       ng-model="START_TIME"
+                                       required
+                                       ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.START_TIME.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <label>End Time</label>
+                            <div class="input_time date_time">
+                                <input type="text"
+                                       name="END_TIME"
+                                       class="timepicker"
+                                       placeholder="Select Time"
+                                       ng-model="END_TIME"
+                                       required
+                                       ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.END_TIME.$error.required}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <label>Shift Count</label>
+                            <input type="text"
+                                   name="SHIFT_COUNT"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   ng-model="SHIFT_COUNT"
+                                   required
+                                   ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.SHIFT_COUNT.$error.required}" />
+                        </div>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <label>Break Hours</label>
+                            <input type="text"
+                                   name="BREAK_HOURS"
+                                   ng-model="BREAK_HOURS"
+                                   required
+                                   ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.BREAK_HOURS.$error.required}"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   class="mb-1" />
+
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="BreakRuleCheckChecked"
+                                       type="checkbox"
+                                       name="IS_BREAK_RULE_APPLIED"
+                                       ng-model="IS_BREAK_RULE_APPLIED"
+                                       ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.IS_BREAK_RULE_APPLIED.$error.required}" />
+                                <label class="form-check-label" for="flexCheckChecked">Break Rule</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <label>Paid/Unpaid</label>
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="select-label" id="select_label">
+                                            Choose
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width: 100%;">
+                                        <li class="DontHideOnClick">
+                                            <span class="truncate">Paid </span>
+                                        </li>
+                                        <li class="DontHideOnClick">
+                                            <span class="truncate">Unpaid </span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <label>Note</label>
+                            <textarea placeholder="Type here" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <label>Special Wage</label>
+                            <div class="form-check form-control py-2">
+                                <input class="form-check-input ms-2"
+                                       id="Renew"
+                                       type="checkbox"
+                                       value=""
+                                       checked=""
+                                       name="SPECIAL_WAGE"
+                                       ng-model="SPECIAL_WAGE"
+                                       required
+                                       ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.SPECIAL_WAGE.$error.required}" />
+                                <label class="form-check-label ms-1" for="Renew">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <label>Wage</label>
+                            <input type="text"
+                                   name="WAGE"
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   ng-model="WAGE"
+                                   required
+                                   ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.WAGE.$error.required}" />
+                        </div>
+
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <label>Wage Type</label>
+                            <ul class="nav nav-pills">
+                                <li class="dropdown w-100">
+                                    <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="select-label" id="select_label">
+                                            Choose
+                                        </span>
+                                    </a>
+                                    <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width: 100%;">
+                                        <li class="DontHideOnClick">
+                                            <span class="truncate">Hourly</span>
+                                        </li>
+                                        <li class="DontHideOnClick">
+                                            <span class="truncate">Fixed Cos</span>
+                                        </li>
+                                        <li class="DontHideOnClick">
+                                            <span class="truncate">Multiplier</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <h6 class="headings">Default for</h6>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <h6 class="headings">Sites</h6>
+                            <input type="text"
+                                   name="search"
+                                   placeholder="search"
+                                   ng-model="search"
+                                   required
+                                   ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.search.$error.required}" />
+                            <div class="tags-normal text-start my-2">Sites-001 <i class="fa-light fa-trash-alt"></i></div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <h6 class="headings">Departments</h6>
+                            <input type="text"
+                                   name="search"
+                                   placeholder="Search"
+                                   ng-model="search"
+                                   required
+                                   ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.search.$error.required}" />
+                            <div class="tags-normal text-start my-2">Department-001 <i class="fa-light fa-trash-alt"></i></div>
+                            <div class="tags-normal text-start my-2">Department-002 <i class="fa-light fa-trash-alt"></i></div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <h6 class="headings">Positions</h6>
+                            <input type="text"
+                                   name="search"
+                                   placeholder="Search"
+                                   ng-model="search"
+                                   required
+                                   ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.search.$error.required}" />
+                            <div class="tags-normal text-start my-2">Position-001 <i class="fa-light fa-trash-alt"></i></div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <h6 class="headings">Employees</h6>
+                            <input type="text"
+                                   name="search"
+                                   placeholder="Search"
+                                   ng-model="search"
+                                   required
+                                   ng-class="{'error':NEW_TEMPLATE_SHIFT_FORM.submitted && NEW_TEMPLATE_SHIFT_FORM.search.$error.required}" />
+                            <div class="tags-normal text-start my-2"><span class="text_avatar">mw</span> Malik Wihowo <i class="fa-light fa-trash-alt"></i></div>
+                            <div class="tags-normal text-start my-2"><span class="text_avatar">mw</span> Malik Wihowo <i class="fa-light fa-trash-alt"></i></div>
+                            <div class="tags-normal text-start my-2"><span class="text_avatar">mw</span> Malik Wihowo <i class="fa-light fa-trash-alt"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        $('.timepicker_START_TIME').timepicker({
+            interval: 30,
+            _timeFormat: 'h:mm p',
+            _interval: 60,
+            _minTime: '10',
+            _maxTime: '6:00pm',
+            _defaultTime: '11',
+            startTime: '00:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+
+
+        });
+        $('.timepicker_END_TIME').timepicker({
+            interval: 30,
+            _timeFormat: 'h:mm p',
+            _interval: 60,
+            _minTime: '10',
+            _maxTime: '6:00pm',
+            _defaultTime: '11',
+            startTime: '00:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+
+        });
+
+    });
+</script>

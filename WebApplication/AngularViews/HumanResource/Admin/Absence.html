@@ -1,0 +1,1036 @@
+﻿
+<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header" id="absence">
+                    <h6>Absence</h6>
+                </div>
+                <div class="card-header px-0 border-0">
+                    <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info"
+                               ng-class="{'active':ABSENCE_TAB_ID==3}" ng-click="Fn_ABSENCE_TAB_CLICK(3)"
+                               id="bottom-home-tab"
+                               data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Absence Type
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info"
+                               ng-class="{'active':ABSENCE_TAB_ID==1}" ng-click="Fn_ABSENCE_TAB_CLICK(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Entitlement Plan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':ABSENCE_TAB_ID==2}" ng-click="Fn_ABSENCE_TAB_CLICK(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Settings
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body" ng-show="ABSENCE_TAB_ID==3">
+                    <form name="ABSENCE_FORM" novalidate>
+                        <div class="row mb-3">
+                            <div class="col-xxl-6 col-md-6 col-xl-6"><h6 class="headings">Absence Type</h6></div>
+                            <div class="col-xxl-6 col-md-6 col-xl-6 text-end">
+                                <button type="button"
+                                        ng-click="ABSENCE_TYPE_RESET_Fn('',1)"
+                                        class="btn btn-light btn-sm">
+                                    <i class="fa-light fa-undo float-start mt-1 me-2"></i> Reset
+                                </button>
+                                <button type="button"
+                                        ng-click="HRM_INS_UPD_ABSENCE_TYPES('',1)"
+                                        class="btn btn-light btn-sm">
+                                    <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Absence Type <span class="txt-danger">*</span></label>
+                                <input type="text"
+                                       name="ABSENCE_TYPE"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       ng-model="AbsenceSettingSearch.ABSENCE_TYPE"
+                                       required
+                                       ng-class="{'error':ABSENCE_FORM.submitted && ABSENCE_FORM.ABSENCE_TYPE.$error.required}" />
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Entitlement Plan Required</label>
+                                <div class="form-check form-control"
+                                     ng-class="{'error':ABSENCE_FORM.submitted && ABSENCE_FORM.ASSIGNMENT_REQUIRED.$error.required}">
+                                    <input class="form-check-input ms-2"
+                                           id="ASSIGNMENT_REQUIRED"
+                                           type="checkbox"
+                                           value=""
+                                           name="ASSIGNMENT_REQUIRED"
+                                           ng-model="AbsenceSettingSearch.ASSIGNMENT_REQUIRED">
+                                    <label class="form-check-label ms-2" for="ASSIGNMENT_REQUIRED">Yes</label>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Applied by Employee</label>
+                                <!--<input type="text" id="autocomplete" placeholder="Search" />-->
+                                <div class="form-check form-control"
+                                     ng-class="{'error':ABSENCE_FORM.submitted && ABSENCE_FORM.APPLY_BY_EMPLOYEE.$error.required}">
+                                    <input class="form-check-input ms-2"
+                                           id="APPLY_BY_EMPLOYEE"
+                                           type="checkbox"
+                                           value=""
+                                           name="APPLY_BY_EMPLOYEE"
+                                           ng-model="AbsenceSettingSearch.APPLY_BY_EMPLOYEE">
+                                    <label class="form-check-label ms-2" for="APPLY_BY_EMPLOYEE">Yes</label>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Applied by Manager</label>
+                                
+
+                                <div class="form-check form-control"
+                                     ng-class="{'error':ABSENCE_FORM.submitted && ABSENCE_FORM.APPLY_BY_MANAGER.$error.required}">
+                                    <input class="form-check-input ms-2"
+                                           id="APPLY_BY_MANAGER"
+                                           type="checkbox"
+                                           value=""
+                                           name="APPLY_BY_MANAGER"
+                                           ng-model="AbsenceSettingSearch.APPLY_BY_MANAGER">
+                                    <label class="form-check-label ms-2" for="APPLY_BY_MANAGER">Yes</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                    <hr />
+                    <h6 class="headings">Created Absence Type</h6>
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="ABSENCE_TYPE_LIST.length == 0">
+                            <div class="no-record text-center">{{LOAD_FETCH_TEXT}}</div>
+                        </div>
+                        <div class="table-responsive scrollbar-wrapper mx-height-400">
+                            <table ng-show="ABSENCE_TYPE_LIST.length > 0">
+                                <thead class="thead_fixed">
+                                    <tr>
+                                        <th>Absence Type</th>
+                                        <th width="20%">Applied by Employee</th>
+                                        <th width="20%">Applied by Manager</th>
+                                        <th width="20%">Entitlement Plan Required</th>
+                                        <th width="10%" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="_absence_type in ABSENCE_TYPE_LIST">
+                                        <td>{{_absence_type.ABSENCE_TYPE}}</td>
+                                        <td>
+                                            <span ng-show="!_absence_type.APPLY_BY_EMPLOYEE">-</span>
+                                            <div ng-show="_absence_type.APPLY_BY_EMPLOYEE">
+                                                <input class="form-check-input ms-2"
+                                                       id="APPLY_BY_EMPLOYEE"
+                                                       type="checkbox"
+                                                       disabled
+                                                       name="APPLY_BY_EMPLOYEE"
+                                                       ng-model="_absence_type.APPLY_BY_EMPLOYEE">
+                                            </div>
+
+                                           
+                                        </td>
+                                        <td>
+                                            <span ng-show="!_absence_type.APPLY_BY_MANAGER">-</span>
+                                            <div ng-show="_absence_type.APPLY_BY_MANAGER">
+                                                <input class="form-check-input ms-2"
+                                                       id="APPLY_BY_MANAGER"
+                                                       type="checkbox"
+                                                       disabled
+                                                       name="APPLY_BY_MANAGER"
+                                                       ng-model="_absence_type.APPLY_BY_MANAGER">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span ng-show="!_absence_type.ASSIGNMENT_REQUIRED">-</span>
+                                            <div ng-show="_absence_type.ASSIGNMENT_REQUIRED">
+                                                <input class="form-check-input ms-2"
+                                                       id="ASSIGNMENT_REQUIRED"
+                                                       type="checkbox"
+                                                       disabled
+                                                       name="ASSIGNMENT_REQUIRED"
+                                                       ng-model="_absence_type.ASSIGNMENT_REQUIRED">
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button"
+                                                        ng-show="_absence_type.CUSTOMER_ID!=null"
+                                                        ng-click="EDIT_ABSENCE_TYPE_Fn(_absence_type)"
+                                                        class="btn btn-sm btn-transparent"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-title="Edit">
+                                                    <i class="fa-light fa-pen fa-lg"></i>
+                                                </button>
+                                                <button type="button"
+                                                        ng-show="_absence_type.CUSTOMER_ID!=null"
+                                                        ng-click="DELETE_ABSENCE_TYPE_Fn(_absence_type)"
+                                                        class="btn btn-sm btn-transparent"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-title="Delete">
+                                                    <i class="fa-light fa-trash-alt fa-lg"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="card-body" ng-show="ABSENCE_TAB_ID==1">
+                    <form name="Absenceform" novalidate>
+                        <h6 class="headings">Holiday Entitlement Plan</h6>
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-12 col-xl-3">
+                                <label>Entitlement Name <span class="txt-danger">*</span></label>
+                                <input type="text"
+                                       name="ENTITLEMENT_NAME"
+                                       placeholder={{PlaceHolder}}
+                                       ng-model="AbsenceSearch.ENTITLEMENT_NAME"
+                                       required
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.ENTITLEMENT_NAME.$error.required}" />
+                            </div>
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>Initial Value <span class="txt-danger">*</span></label>
+                                <input type="text"
+                                       name="INITIAL_VALUE"
+                                       only-digits
+                                       placeholder={{PlaceHolder}}
+                                       ng-model="AbsenceSearch.INITIAL_VALUE"
+                                       maxlength="6"
+                                       required
+                                       ng-disabled="AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.INITIAL_VALUE.$error.required}" />
+                            </div>
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>Unit <span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       name="UNITS_NAME"
+                                       required
+                                       ng-model="AbsenceSearch.UNITS_ID"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.UNITS_NAME.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':Absenceform.submitted && Absenceform.UNITS_NAME.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" ng-class="{'disabled':AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true}" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{AbsenceSearch.CUSTOM_UNITS_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+
+                                            <li class=""
+                                                ng-repeat="_Unit in UNITS_LIST "
+                                                ng-click="SELECTED_UNIT_Fn(_Unit)">
+                                                <span class="">{{_Unit.UNITS_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label>FTE ({{AbsenceSearch.CUSTOM_UNITS_NAME}}) <span class="txt-danger">*</span></label>
+                                <input type="text"
+                                       name="FULL_TIME_VALUE"
+                                       placeholder={{PlaceHolder}}
+                                       only-digits
+                                       ng-model="AbsenceSearch.FULL_TIME_VALUE"
+                                       maxlength="3"
+                                       required
+                                       ng-disabled="AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.FULL_TIME_VALUE.$error.required}" />
+                            </div>
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label class="d-block">Tag to Absence Type<span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       name="ABSENCE_TYPE"
+                                       required
+                                       ng-model="AbsenceSearch.ABSENCE_TYPE_ID"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.ABSENCE_TYPE.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':Absenceform.submitted && Absenceform.ABSENCE_TYPE.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" ng-class="{'disabled':AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true}" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                <span class="truncate">{{AbsenceSearch.CUSTOM_ABSENCE_TYPE}}</span>
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                            <li class=""
+                                                ng-show="AbsenceSearch.CUSTOM_ABSENCE_TYPE!=AbsenceSearch.DD_DEFAULT_TEXT"
+                                                ng-click="SELECTED_ABSENCE_TYPE_Fn('',_calendar_Mapping,$index)">{{AbsenceSearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-repeat="_absenceType in ABSENCE_TYPE_LIST  | filter:{'ASSIGNMENT_REQUIRED':true}"
+                                                ng-click="SELECTED_ABSENCE_TYPE_Fn(_absenceType)">
+                                                <span class="">{{_absenceType.ABSENCE_TYPE}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <label class="d-block">Total Days to be used for Allowance Calculation<span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       name="CALCULATION_TYPE_ID"
+                                       required
+                                       ng-model="AbsenceSearch.CALCULATION_TYPE_ID"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.CALCULATION_TYPE_ID.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':Absenceform.submitted && Absenceform.CALCULATION_TYPE_ID.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" ng-class="{'disabled':AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true}" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                 <span class="truncate">{{AbsenceSearch.CUSTOM_CALCULATION_TYPE}}</span>
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                            <li class=""
+                                                ng-show="AbsenceSearch.CUSTOM_CALCULATION_TYPE!=AbsenceSearch.DD_DEFAULT_TEXT"
+                                                ng-click="SELECTED_CALCULATION_TYPE_Fn('')">{{AbsenceSearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-repeat="_calculationType in CALCULATION_TYPE_LIST "
+                                                ng-click="SELECTED_CALCULATION_TYPE_Fn(_calculationType)">
+                                                <span class="">{{_calculationType.CALCULATION_TYPE}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <style>
+                                    .ui-datepicker-year {
+                                        display: none;
+                                    }
+
+                                    select.ui-datepicker-year {
+                                        display: none
+                                    }
+
+                                    span.ui-datepicker-year {
+                                        display: none
+                                    }
+                                </style>
+
+
+                                <label>Reset Day (DD/MM)<span class="txt-danger">*</span></label>
+                                <!--<input type="text"
+            class="dateinput12"
+            name="RESET_DATE"
+            placeholder="dd/mm"
+            ng-model="AbsenceSearch.RESET_DATE"
+            ng-blur="validateDate(AbsenceSearch.RESET_DATE)"
+            required
+            maxlength="5"
+            ng-disabled="AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true"
+            ng-class="{'error':Absenceform.submitted && Absenceform.RESET_DATE.$error.required}">-->
+
+                                <div class="date-column">
+                                    <input type="text"
+                                           name="RESET_DATE"
+                                           ng-disabled="AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true"
+                                           class="ddmmPicker"
+                                           placeholder="DD/MM"
+                                           ng-change="DATE_FILTER_CHANGE_Fn(2)"
+                                           ng-model="AbsenceSearch.RESET_DATE"
+                                           ng-blur="validateDate(AbsenceSearch.RESET_DATE)"
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.RESET_DATE.$error.required}" />
+                                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                </div>
+
+                            </div>
+                            <!--<div class="col-xxl-6 col-md-6 col-xl-6">
+            <label>Round Up / Round Down</label>
+            <div class="media form-control justify-content-between">
+                <label class="col-form-label m-r-10">Round Up</label>
+                <div class="media-body switch-sm">
+                    <label class="switch">
+                        <input type="checkbox"
+                               name="ROUND_UP_DOWN"
+                               ng-model="AbsenceSearch.ROUND_UP_DOWN"
+                               ng-class="{'error':Absenceform.submitted && Absenceform.ROUND_UP_DOWN.$error.required}" />
+                        <span class="switch-state bg-primary"></span>
+                    </label>
+                </div>
+                <label class="col-form-label m-r-10">Round Down</label>
+            </div>
+        </div>-->
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label class="d-block">Round Up / Round Down<span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       name="ROUND_UP_DOWN"
+                                       required
+                                       ng-model="AbsenceSearch.ROUND_UP_DOWN_ID"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.ROUND_UP_DOWN.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':Absenceform.submitted && Absenceform.ROUND_UP_DOWN.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" ng-class="{'disabled':AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true}" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{AbsenceSearch.CUSTOM_ROUND_UP_DOWN}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                            <li class=""
+                                                ng-show="AbsenceSearch.CUSTOM_ROUND_UP_DOWN!=AbsenceSearch.DD_DEFAULT_TEXT"
+                                                ng-click="SELECTED_ROUND_Fn('')">{{AbsenceSearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-repeat="_round in ROUND_UP_DOWN_LIST "
+                                                ng-click="SELECTED_ROUND_Fn(_round)">
+                                                <span class="">{{_round.ROUND_UP_DOWN}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row d-none">
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <label>Input Rounding to Nearest Value</label>
+                                <input type="text"
+                                       name="INPUT_ROUNDING"
+                                       placeholder={{PlaceHolder}}
+                                       ng-model="AbsenceSearch.INPUT_ROUNDING"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.INPUT_ROUNDING.$error.required}" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label class="d-block">Is Leave Paid?</label>
+                                <div class="form-check form-control">
+                                    <input class="radio_animated ms-2"
+                                           checked=""
+                                           id="Yes"
+                                           type="radio"
+                                           name="LEAVE_PAID"
+                                           value="true"
+                                           ng-model="AbsenceSearch.LEAVE_PAID"
+                                           ng-checked="AbsenceSearch.LEAVE_PAID == true"
+                                           required
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.LEAVE_PAID.$error.required}" />
+                                    <label class="form-check-label mb-0" for="Yes">Yes </label>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-6 col-xl-3">
+                                <label class="d-block">&nbsp;</label>
+                                <div class="form-check form-control">
+                                    <input class="radio_animated ms-2"
+                                           id="No"
+                                           type="radio"
+                                           name="LEAVE_PAID"
+                                           ng-model="AbsenceSearch.LEAVE_PAID"
+                                           value="false"
+                                           ng-checked="AbsenceSearch.LEAVE_PAID == false"
+                                           required
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.LEAVE_PAID.$error.required}" />
+                                    <label class="form-check-label mb-0" for="No">No </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-12 col-xl-6">
+                                <label>How do you want the system to calculate the leave requested in hours</label>
+                                <div class="media form-control justify-content-between">
+                                    <label class="col-form-label m-r-10">Use work pattern to calculate the hours</label>
+                                    <div class="media-body switch-sm">
+                                        <label class="switch">
+                                            <input type="checkbox"
+                                                   name="USE_52_WEEK_AVG"
+                                                   ng-model="AbsenceSearch.USE_52_WEEK_AVG"
+                                                   ng-class="{'error':Absenceform.submitted && Absenceform.USE_52_WEEK_AVG.$error.required}" />
+                                            <span class="switch-state bg-primary"></span>
+                                        </label>
+                                    </div>
+                                    <label class="col-form-label ms-2">Use 52 week average to calculate the hours</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-6 col-xl-6">
+                                <div class="media form-control justify-content-between">
+                                    <label class="col-form-label m-r-10">Rollover leave balance</label>
+                                    <div class="media-body switch-sm">
+                                        <label class="switch">
+                                            <input type="checkbox"
+                                                   checked=""
+                                                   name="ROLLOVER_LEAVE_BALANCE"
+                                                   ng-model="AbsenceSearch.ROLLOVER_LEAVE_BALANCE"
+                                                   ng-class="{'error':Absenceform.submitted && Absenceform.ROLLOVER_LEAVE_BALANCE.$error.required}"><span class="switch-state bg-primary"></span>
+                                        </label>
+                                    </div>
+                                    <label class="col-form-label m-r-10">Reset leave balance</label>
+                                </div>
+                            </div>
+                            <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="AbsenceSearch.ROLLOVER_LEAVE_BALANCE != true">
+                                <div class="media form-control justify-content-between">
+                                    <label class="col-form-label m-r-10">Rollover full balance</label>
+                                    <div class="media-body switch-sm">
+                                        <label class="switch">
+                                            <input type="checkbox"
+                                                   checked=""
+                                                   name="ROLLOVER_FULL_BALANCE"
+                                                   ng-model="AbsenceSearch.ROLLOVER_FULL_BALANCE"
+                                                   ng-class="{'error':Absenceform.submitted && Absenceform.ROLLOVER_FULL_BALANCE.$error.required}"><span class="switch-state bg-primary"></span>
+                                        </label>
+                                    </div>
+                                    <label class="col-form-label m-r-10">Rollover part of balance </label>
+                                </div>
+                            </div>
+                            <div class="col-xxl-6 col-md-6 col-xl-6" ng-show="AbsenceSearch.ROLLOVER_FULL_BALANCE == true && AbsenceSearch.ROLLOVER_LEAVE_BALANCE != true">
+                                <input type="text"
+                                       name="ADD_THE_BALANCE"
+                                       only-digits
+                                       placeholder="Add the balance you want to carry over"
+                                       ng-model="AbsenceSearch.ADD_THE_BALANCE"
+                                       maxlength="4"
+                                       ng-required="AbsenceSearch.ROLLOVER_FULL_BALANCE"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.ADD_THE_BALANCE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label>How Will This Entitlement Accrue?</label>
+                            <p>Leave can accrue as employees work or front-loaded on a specific date</p>
+                            <div class="col-xxl-auto col-md-auto col-xl-auto">
+                                <div class="form-check form-control">
+                                    <input class="radio_animated ms-1" type="radio"
+                                           value="1"
+                                           id="radio1"
+                                           ng-model="AbsenceSearch.ACCURAL_METHOD"
+                                           ng-value="1"
+                                           ng-change="ACCRUAL_METHOD_Fn(1)"
+                                           name="RADIO1"
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.RADIO1.$error.required}" />
+                                    <label class="form-check-label mb-0" for="radio1">Does not accrue </label>
+                                </div>
+                            </div>
+                            <div class="col-xxl-auto col-md-auto col-xl-auto">
+                                <div class="form-check form-control">
+                                    <input class="radio_animated ms-1"
+                                           id="radio2"
+                                           ng-change="ACCRUAL_METHOD_Fn(2)"
+                                           ng-model="AbsenceSearch.ACCURAL_METHOD"
+                                           ng-value="2"
+                                           type="radio"
+                                           name="ACCURAL_METHOD"
+                                           ng-checked="AbsenceSearch.ACCURAL_METHOD == 2"
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.ACCURAL_METHOD.$error.required}" />
+                                    <label class="form-check-label mb-0" for="radio2">Hourly </label>
+                                </div>
+                            </div>
+                            <div class="col-xxl-auto col-md-auto col-xl-auto">
+                                <div class="form-check form-control">
+                                    <input class="radio_animated ms-1"
+                                           id="radio3"
+                                           ng-change="ACCRUAL_METHOD_Fn(3)"
+                                           ng-model="AbsenceSearch.ACCURAL_METHOD"
+                                           ng-value="3"
+                                           type="radio"
+                                           name="ACCURAL_METHOD"
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.ACCURAL_METHOD.$error.required}" />
+                                    <label class="form-check-label mb-0" for="radio3">Fixed </label>
+                                </div>
+                            </div>
+                            <div class="col-xxl-auto col-md-auto col-xl-auto">
+                                <div class="form-check form-control">
+                                    <input class="radio_animated ms-1"
+                                           id="regular"
+                                           ng-change="ACCRUAL_METHOD_Fn(4)"
+                                           ng-model="AbsenceSearch.ACCURAL_METHOD"
+                                           ng-value="4"
+                                           value="4"
+                                           type="radio"
+                                           name="ACCURAL_METHOD"
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.ACCURAL_METHOD.$error.required}" />
+                                    <label class="form-check-label mb-0" for="regular">Based on regular working hours </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-show="AbsenceSearch.ACCURAL_METHOD==2 || AbsenceSearch.ACCURAL_METHOD==3 || AbsenceSearch.ACCURAL_METHOD==4">
+                            <div class="col-xxl-12 col-md-12 col-xl-12">
+                                <div class="leave_section">
+                                    <div class="row" ng-show="AbsenceSearch.ACCURAL_METHOD==2">
+                                        <div class="col-xxl-3 col-md-6 col-xl-3">
+                                            <label>Leave Will Accrue at a Rate of</label>
+                                            <div class="placeholder" data-type="% of hour">
+                                                <input type="text"
+                                                       class="mb-1"
+                                                       name="LEAVE_ACCURAL_RATE"
+                                                       placeholder="0"
+                                                       only-digits
+                                                       maxlength="5"
+                                                       ng-model="AbsenceSearch.LEAVE_ACCURAL_RATE"
+                                                       ng-class="{'error':Absenceform.submitted && Absenceform.LEAVE_ACCURAL_RATE.$error.required}" />
+                                            </div>
+                                            <p class="d-block">per hour worked</p>
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col-xxl-3 col-md-6 col-xl-3 mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input"
+                                                       id="overtime"
+                                                       type="checkbox"
+                                                       value=""
+                                                       ng-checked="AbsenceSearch.ACCURE_ON_OVERTIME_HOURS == true"
+                                                       name="ACCURE_ON_OVERTIME_HOURS"
+                                                       ng-model="AbsenceSearch.ACCURE_ON_OVERTIME_HOURS"
+                                                       ng-class="{'error':Absenceform.submitted && Absenceform.ACCURE_ON_OVERTIME_HOURS.$error.required}" />
+                                                <label class="form-check-label" for="overtime">Accrue on overtime hours</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div ng-show="AbsenceSearch.ACCURAL_METHOD==3 || AbsenceSearch.ACCURAL_METHOD==4">
+                                        <div class="row">
+                                            <div class="col-xxl-3 col-md-4 col-xl-3" ng-show="AbsenceSearch.ACCURAL_METHOD==4">
+                                                <label>Percentage of entitlement</label>
+                                                <div class="placeholder" data-type="%">
+                                                    <input type="text"
+                                                           name="PERCENTAGE_OF_ENTITLEMENT"
+                                                           placeholder="5"
+                                                           maxlength="5"
+                                                           ng-model="AbsenceSearch.PERCENTAGE_OF_ENTITLEMENT"
+                                                           ng-class="{'error':Absenceform.submitted && Absenceform.PERCENTAGE_OF_ENTITLEMENT.$error.required}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xxl-3 col-md-4 col-xl-3">
+                                                <label>Will be released every</label>
+                                                <input type="hidden"
+                                                       name="RELEASE_PERIOD_NAME"
+                                                       ng-model="AbsenceSearch.RELEASE_PERIOD"
+                                                       ng-class="{'error':Absenceform.submitted && Absenceform.RELEASE_PERIOD_NAME.$error.required}" />
+
+                                                <ul class="nav nav-pills" ng-class="{'error':Absenceform.submitted && Absenceform.RELEASE_PERIOD_NAME.$error.required}">
+                                                    <li class="dropdown w-100 show">
+                                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                            <span class="select-label" id="select_label">
+                                                                {{AbsenceSearch.CUSTOM_RELEASE_PERIOD_NAME}}
+                                                            </span>
+                                                        </a>
+                                                        <ul id="divNewNotifications" class="dropdown-menu scrol lbar-wrapper w-100">
+                                                            <li class=""
+                                                                ng-repeat="_ReleasePeriod in RELEASE_PERIOD_LIST"
+                                                                ng-click="SELECTED_RELEASE_PERIOD_Fn(_ReleasePeriod)">
+                                                                <span class="">{{_ReleasePeriod.RELEASE_PERIOD_NAME}}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-xxl-3 col-md-4 col-xl-3" ng-show="false">
+                                                <label>Starting on</label>
+                                                <input type="hidden"
+                                                       name="STARTING_ON_NAME"
+                                                       ng-model="AbsenceSearch.STARTING_ON"
+                                                       ng-class="{'error':Absenceform.submitted && Absenceform.STARTING_ON_NAME.$error.required}" />
+
+                                                <ul class="nav nav-pills" ng-class="{'error':Absenceform.submitted && Absenceform.STARTING_ON.$error.required}">
+                                                    <li class="dropdown w-100 show">
+                                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                                            <span class="select-label" id="select_label">
+                                                                {{AbsenceSearch.CUSTOM_STARTING_ON_NAME || "Choose"}}
+                                                            </span>
+                                                        </a>
+                                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                                            <li class=""
+                                                                ng-repeat="_StartingOn in STARTING_ON_LIST "
+                                                                ng-click="SELECTED_STARTING_ON_Fn(_StartingOn)">
+                                                                <span class="">{{_StartingOn.STARTING_ON_NAME}}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-xxl-3 col-md-4 col-xl-3" ng-show="AbsenceSearch.STARTING_ON == 2">
+                                                <label>&nbsp;</label>
+                                                <div class="date-column">
+                                                    <input type="text"
+                                                           class="dateinput"
+                                                           placeholder={{PlaceHolder}}
+                                                           name="STARTING_ON_DATE"
+                                                           ng-model="AbsenceSearch.STARTING_ON_DATE"
+                                                           ng-class="{'error':Absenceform.submitted && Absenceform.STARTING_ON_DATE.$error.required}" />
+                                                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xxl-12 col-md-12 col-xl-12" ng-show="false">
+                                                <div class="form-check">
+                                                    <input class="form-check-input"
+                                                           id="throughout"
+                                                           type="checkbox"
+                                                           value=""
+                                                           checked=""
+                                                           name="PRO_RATE_LEAVE"
+                                                           ng-model="AbsenceSearch.PRO_RATE_LEAVE"
+                                                           ng-class="{'error':Absenceform.submitted && Absenceform.PRO_RATE_LEAVE.$error.required}" />
+                                                    <label class="form-check-label" for="throughout">Pro-rate leave entitlement for employees that join throughout the year</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-4 col-xl-3">
+                                <label>Renew Automatically</label>
+                                <div class="form-check form-control">
+                                    <input class="form-check-input ms-2"
+                                           id="Renew"
+                                           type="checkbox"
+                                           value=""
+                                           checked=""
+                                           name="RENEW_AUTO"
+                                           ng-model="AbsenceSearch.RENEW_AUTO"
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.RENEW_AUTO.$error.required}" />
+                                    <label class="form-check-label ms-1" for="Renew">Yes</label>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-4 col-xl-3" ng-show="false">
+                                <label ng-hide="AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true">Apply Automatically</label>
+                                <div class="form-check form-control" ng-hide="AbsenceSearch.DISABLE_FIELDS_ON_UPDATE == true">
+                                    <input class="form-check-input ms-2"
+                                           id="Apply"
+                                           type="checkbox"
+                                           value=""
+                                           checked=""
+                                           name="APPLY_AUTO"
+                                           ng-model="AbsenceSearch.APPLY_AUTO"
+                                           ng-class="{'error':Absenceform.submitted && Absenceform.APPLY_AUTO.$error.required}" />
+                                    <label class="form-check-label ms-1" for="Apply">Yes</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-4 col-xl-3">
+                                <label>Allow Negative Balance?</label>
+                                <div class="media form-control">
+                                    <label class="col-form-label">Allow</label>
+                                    <div class="media-body switch-sm ms-auto">
+                                        <label class="switch">
+                                            <input type="checkbox"
+                                                   checked=""
+                                                   name="ALLOW_NGTV_BAL"
+                                                   ng-model="AbsenceSearch.ALLOW_NGTV_BAL"
+                                                   ng-class="{'error':Absenceform.submitted && Absenceform.ALLOW_NGTV_BAL.$error.required}" /><span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-show="false">
+                            <h6 class="headings">Bulk Application</h6>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Departments</h6>
+                                <input type="text"
+                                       ng-model="departmentSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-on-select="ADD_DEPARTMENTS_Fn($item,$index)"
+                                       autocomplete="off"
+                                       uib-typeahead="_department as _department.DEPARTMENT_NAME for _department in DEPARTMENTS_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.DEPARTMENT_NAME.$error.required}" />
+
+                                <div class="tags-normal text-start my-2" ng-repeat="_department in ADD_DEPARTMENTS_LIST">
+                                    {{_department.DEPARTMENT_NAME}}
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_DEPARTMENTS_Fn(_department)"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Positions</h6>
+                                <input type="text"
+                                       ng-model="positionSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-on-select="ADD_POSITIONS_Fn($item,$index)"
+                                       autocomplete="off"
+                                       uib-typeahead="_position as _position.POSITION_NAME for _position in POSITIONS_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.POSITION_NAME.$error.required}" />
+
+                                <div class="tags-normal text-start my-2" ng-repeat="_position in ADD_POSITIONS_LIST">
+                                    {{_position.POSITION_NAME}}
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_POSITIONS_Fn(_position)"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <h6 class="headings">Employee</h6>
+                                <input type="text"
+                                       ng-model="employeeSearch"
+                                       placeholder="Search & Add"
+                                       maxlength="100"
+                                       name="search"
+                                       typeahead-on-select="ADD_EMPLOYEE_Fn($item,$index)"
+                                       autocomplete="off"
+                                       uib-typeahead="_employee as _employee.EMPLOYEE_NAME for _employee in EMPLOYEES_LIST | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults"
+                                       ng-class="{'error':Absenceform.submitted && Absenceform.EMPLOYEE_NAME.$error.required}" />
+
+                                <div class="tags-normal text-start my-2" ng-repeat="_employee in ADD_EMPLOYEES_LIST">
+                                    {{_employee.EMPLOYEE_NAME}}
+                                    <i class="fa-light fa-trash-alt cursor-pointer" ng-click="REMOVE_EMPLOYEE_Fn(_employee)"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-auto col-md-auto col-xl-auto" ng-if="COUNT_HOLIDAY_VAL>0">
+                            <div class="alert alert-light-danger mb-3">
+                                <div class="row gx-1 align-items-center">
+                                    <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-light fa-circle-exclamation fa-lg alert-danger-text"></i></div>
+                                    <div class="col-xxl col-md col-xl">
+                                        <span class="alert-danger-text">Sorry, this has been assigned to {{COUNT_HOLIDAY_VAL}} employees. you cannot update disabled field(s).</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xxl-12 col-md-12 col-xl-12 text-end">
+                                <button type="button"
+                                        click-once
+                                        ng-click="RESET_Fn()"
+                                        class="btn btn-light btn-sm">
+                                    <i class="fa-light fa-undo float-start mt-1 me-2"></i>Reset
+                                </button>
+                                <button type="button"
+                                        click-once
+                                        ng-click="HRM_INS_UPD_HOLIDAY_ENTITLEMENTS(AbsenceSearch)"
+                                        class="btn btn-light btn-sm">
+                                    <i class="fa-light fa-save float-start mt-1 me-2"></i> {{AbsenceSearch.HOLIDAY_ENTITLEMENT_ID > 0 ? "Update" : "Save Changes" }}
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+
+                    </form>
+                    <h6 class="headings">All Plans</h6>
+
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <div class="no-record mb-3 " ng-show="HOLIDAY_ENTITLEMENTS_LIST.length == 0">No Record Found!</div>
+                        <div class="table-responsive custom-scrollbar mx-height-400">
+                            <table ng-show="HOLIDAY_ENTITLEMENTS_LIST.length > 0">
+                                <thead class="thead_fixed">
+                                    <tr>
+                                        <th>Holiday Plan Name</th>
+                                        <th width="18%">Value</th>
+                                        <th width="18%">Unit</th>
+                                        <th width="18%">Reset Date</th>
+                                        <th width="18%">Paid</th>
+                                        <th width="10%" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="_holiday in HOLIDAY_ENTITLEMENTS_LIST">
+                                        <td>{{_holiday.ENTITLEMENT_NAME}}</td>
+                                        <td>{{_holiday.INITIAL_VALUE}}</td>
+                                        <td>{{_holiday.UNITS}}</td>
+                                        <td>{{_holiday.RESET_DATE}}</td>
+                                        <td>
+                                            <span ng-class="{'badge-lg badge-light-success':_holiday.LEAVE_PAID=='Yes','badge-lg badge-light-danger':_holiday.LEAVE_PAID=='No'}">{{_holiday.LEAVE_PAID}}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button type="button" click-once class="btn btn-sm btn-transparent" ng-click="EDIT_HOLIDAY_ENTITLEMENT_Fn(_holiday)"><i class="fa-light fa-pen fa-lg"></i></button>
+                                                <button type="button" click-once class="btn btn-sm btn-transparent" ng-click="POP_DELETE_HOLIDAY_Fn(_holiday)"><i class="fa-light fa-trash-alt fa-lg"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="t_foot_fixed">
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <button type="button"
+                                                    ng-show="GetData"
+                                                    ng-click="LAZY_LOAD_HRM_GET_HOLIDAY_ENTITLEMENTS()"
+                                                    class="btn btn-sm btn-light btn_fixed">
+                                                Load More...
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" ng-show="ABSENCE_TAB_ID==2">
+                    
+                  
+
+                    <h6 class="headings">Allow Employees to View Other Employee's Time Off and Unavailability</h6>
+                    <div class="row">
+                        <div class="col-xxl-3 col-md-6 col-xl-3">
+                            <div class="media form-control">
+                                <label class="col-form-label">Enable</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               checked=""
+                                               name="TIME_OFF"
+                                               ng-model="AbsenceSettingSearch.TIME_OFF"
+                                               ng-change="INS_UPD_CUSTOMER_SETTINGS(AbsenceSettingSearch.TIME_OFF,74)"
+                                               required
+                                               ng-class="{'error':AbsenceSettingform.submitted && AbsenceSettingform.ENABLE.$error.required}"><span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr  ng-show="false" />
+
+                    <div class="row" ng-show="false">
+                        <div class="col-xxl-9 col-md-9 col-xl-10">
+                            <h6 class="headings">How do You Want The System to Calculate The Leave Requested in Hours?</h6>
+                        </div>
+                        <!--<div class="col-xxl-3 col-md-3 col-xl-2">
+                            <button type="button" class="btn btn-light btn-sm w-100"><i class="fa-light fa-save float-start mt-1"></i> Save Changes</button>
+                        </div>-->
+
+                        <div class="col-xxl-6 col-md-10 col-xl-6">
+                            <div class="media form-control justify-content-between">
+                                <label class="col-form-label m-r-10">Use work pattern to calculate the hours</label>
+                                <div class="media-body switch-sm">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               name="WORK_PATTERN"
+                                               ng-model="AbsenceSettingSearch.WORK_PATTERN"
+                                               ng-change="INS_UPD_CUSTOMER_SETTINGS(AbsenceSettingSearch.WORK_PATTERN,75)"
+                                               required
+                                               ng-class="{'error':AbsenceSettingform.submitted && AbsenceSettingform.WORK_PATTERN.$error.required}"><span class="switch-state bg-primary"></span>
+                                    </label>
+                                </div>
+                                <label class="col-form-label ms-2">Use 52 week average to calculate the hours</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <form name="AbsenceSettingform" novalidate>
+                        <h6 class="headings">Time Off Requests Must be Submitted in Advance</h6>
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <div class="media form-control">
+                                    <label class="col-form-label">Enable</label>
+                                    <div class="media-body switch-sm ms-auto">
+                                        <label class="switch">
+                                            <input type="checkbox"
+                                                   checked=""
+                                                   name="TIME_OFF_ADV"
+                                                   ng-model="AbsenceSettingSearch.TIME_OFF_ADV"
+                                                   ng-change="INS_UPD_CUSTOMER_SETTINGS(AbsenceSettingSearch.TIME_OFF_ADV,78)"
+                                                   required
+                                                   ng-class="{'error':AbsenceSettingform.submitted && AbsenceSettingform.TIME_OFF_ADV.$error.required}"><span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_Absence" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+
+                    <h6 class="text-center pb-2 fw-500">You are about to delete "{{SELECTED_ABSENCE.ABSENCE_TYPE}}" absence</h6>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL>0">This has been assigned to {{COUNT_VAL}} employees. Please assign a different work pattern to those employees before performing delete.</p>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL==0">Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-outline w-100"
+                                type="button"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-danger w-100"
+                                type="button" ng-disabled="COUNT_VAL>0"
+                                ng-click="HRM_DELETE_ABSENCE_TYPES(SELECTED_ABSENCE,2)"
+                                data-bs-dismiss="modal">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete_HolidayEntitlement" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">You are about to delete <code>{{SELECTED_HOLIDAY.ENTITLEMENT_NAME}}</code></h6>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL>0">Sorry,This has been assigned to {{COUNT_VAL}} employees. you cannot delete this record.</p>
+                  
+
+                    <p class="text-center text-dark" ng-show="COUNT_VAL==0">Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Close</button></div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-danger w-100"
+                                type="button"
+                                click-once
+                                data-bs-dismiss="modal" ng-disabled="COUNT_VAL>0"
+                                ng-click="DELETE_HOLIDAY_ENTITLEMENT_Fn(SELECTED_HOLIDAY)">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

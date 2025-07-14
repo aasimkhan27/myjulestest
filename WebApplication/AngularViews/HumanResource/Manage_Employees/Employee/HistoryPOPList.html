@@ -1,0 +1,84 @@
+﻿<div class="card-header" ng-show="false">
+    <div class="row">
+        <div class="col-xxl-auto col-xl-auto col-md-auto" ng-click="POP_EFFECTIVE_TAB_Fn(1)">
+            <a class="btn-tabs" ng-class="{'active':POP_EFFECTIVE_TAB==1}"></a>
+        </div>
+        <div class="col-xxl-auto col-xl-auto col-md-auto" ng-click="POP_EFFECTIVE_TAB_Fn(2)">
+            <a class="btn-tabs " ng-class="{'active':POP_EFFECTIVE_TAB==2}"></a>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header"><h5> Upcoming updates</h5></div>
+    <div class="card-body p-0" ng-show="POP_EFFECTIVE_TAB==1">
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="POP_EMPLOYEE_GET_UPCOMING_UPDATES_LIST.length==0">
+            <div class="no-record text-center">{{LOAD_FETCH_TEXT}}</div>
+        </div>
+        <div class="table-responsive scrollbar-wrapper mx-height-leave" ng-show="POP_EMPLOYEE_GET_UPCOMING_UPDATES_LIST.length>0">
+            <table>
+                <thead class="thead_fixed">
+                    <tr>
+                        <th>Effective Date</th>
+                        <th>Date</th>
+                        <th>Updated by</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="_updates in POP_EMPLOYEE_GET_UPCOMING_UPDATES_LIST" on-finish-render="ngRepeatFinishedequalizerRender">
+                        <td>{{_updates.EFFECTIVE_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                        <td>{{_updates.CREATED_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                        <td>{{_updates.CREATED_BY}}</td>
+                        <td class="text-center">
+                            <a data-bs-toggle="tooltip" data-bs-title="See Upcoming details">
+                                <i data-bs-toggle="modal"
+                                   class="fa-light fa-clock-rotate-left me-2 c-pointer"
+                                   ng-click="HRM_EMPLOYEE_GET_UPCOMING_UPDATE_DETAILS(_updates)"></i>
+                            </a>
+                            <a data-bs-toggle="tooltip" data-bs-title="Process">
+                                <i class="fa-light fa-user-gear me-2 txt-primary c-pointer" ng-show="SHOW_EDIT_ACCESS" data-bs-toggle="modal" ng-click="PROCEED_POP_Fn(_updates)"></i>
+                            </a>
+                            <a data-bs-toggle="tooltip" data-bs-title="Discard">
+                                <i class="fa-light fa-trash txt-danger c-pointer" ng-show="SHOW_EDIT_ACCESS" data-bs-toggle="modal" ng-click="DISCARD_POP_Fn(_updates)"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header"><h5> History</h5></div>
+    <div class="card-body p-0">
+        <div class="col-xxl-12 col-xl-12 col-md-12" ng-show="POP_EMPLOYEE_HISTORY_HEADERS_LIST.length==0">
+            <div class="no-record text-center">{{LOAD_FETCH_TEXT}}</div>
+        </div>
+        <div class="table-responsive scrollbar-wrapper mx-height-leave" ng-show="POP_EMPLOYEE_HISTORY_HEADERS_LIST.length>0">
+            <table>
+                <thead class="thead_fixed">
+                    <tr>
+                        <th>Data Updated</th>
+                        <th>Modified Date</th>
+                        <th>Updated by</th>
+                        <th>Comment</th>
+                        <th width="5%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="_history in POP_EMPLOYEE_HISTORY_HEADERS_LIST">
+                        <td>{{_history.STEP_NAME}}</td>
+                        <td>{{_history.ARCHIVE_DATE |  date:DISPLAY_DATE_FORMAT}}</td>
+                        <td>{{_history.USER_NAME}}</td>
+                        <td>{{_history.COMMENTS==null || _history.COMMENTS==''?'-':_history.COMMENTS}}</td>
+                        <td class="text-center" data-bs-toggle="tooltip" data-bs-title="See History">
+                            <i class="fa-light fa-history c-pointer"
+                               ng-click="HRM_GET_EMPLOYEE_HISTORY_DETAILS(_history)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

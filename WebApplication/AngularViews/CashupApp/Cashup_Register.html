@@ -1,0 +1,915 @@
+﻿<div class="mx-3 mt-3">
+
+    <div class="row g-1">
+        <div class="col-xxl-2 col-xl-2 col-md-2">
+            <input type="text" name="search" placeholder="Search" />
+        </div>
+
+        <div class="col-xxl-1 col-xl-1 col-md-1">
+            <ul class="nav nav-pills">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            Site
+                        </span>
+                    </a>
+                    <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick">
+                            Site 1
+                        </li>
+                        <li class="DontHideOnClick">
+                            Site 2
+                        </li>
+                        <li class="DontHideOnClick">
+                            Site 3
+                        </li>
+                        <li class="DontHideOnClick">
+                            Site 4
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-xxl-auto col-xl-auto col-md-auto">
+            <input type="text" name="dateinput_1" class="dateinputddmmyy" placeholder="DD/MM/YY">
+        </div>
+
+        <div class="col-xxl-1 col-xl-1 col-md-1">
+            <ul class="nav nav-pills">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            Status
+                        </span>
+                    </a>
+                    <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick">
+                            Pending
+                        </li>
+                        <li class="DontHideOnClick">
+                            Draft
+                        </li>
+
+                        <li class="DontHideOnClick">
+                            Submitted
+                        </li>
+
+                        <li class="DontHideOnClick">
+                            Approved
+                        </li>
+
+                        <li class="DontHideOnClick">
+                            Returned
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+            <button class="btn btn-primary w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+            <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                <li><a class="dropdown-item d-block">XLS</a></li>
+
+            </ul>
+        </div>
+
+
+        <div class="col-xxl-auto col-xl-auto col-md-auto">
+            <a class="btn btn-primary" type="button" href="#!Cashup_Entry">
+                Cashup Entry
+            </a>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="table-responsive mx-height-100 scrollbar-wrapper mt-2 cashup_register_wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-nowrap">
+                        <span class="d-flex align-items-center">
+                            Cashup Date
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+
+                    </th>
+
+                    <th class="text-nowrap">
+                        <span class="d-flex align-items-center">
+                            Site
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+
+
+                    </th>
+                    <th class="text-nowrap">
+
+                        <span class="d-flex align-items-center">
+                            Status
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+
+                    </th>
+                    <th class="text-nowrap">
+
+                        <span class="d-flex align-items-center">
+                            Submitted By
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+                    </th>
+
+
+                    <th class="text-nowrap">
+
+                        <span class="d-flex align-items-center">
+                            Last Updated Date
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+                    </th>
+
+                    <th class="text-nowrap">
+
+                        <span class="d-flex align-items-center">
+                            Approved By
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+
+                    </th>
+
+                    <th class="text-nowrap">
+
+                        <span class="d-flex align-items-center">
+                            ePOS Value
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+                    </th>
+
+                    <th class="text-nowrap">
+
+                        <span class="d-flex align-items-center">
+                            Actual Value
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+                    </th>
+
+                    <th class="text-nowrap">
+
+                        <span class="d-flex align-items-center">
+                            Variance Value
+                            <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                        </span>
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-outline">
+                            Draft
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-outline">
+                            0
+                        </span>
+                    </td>
+
+
+                </tr>
+
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-warning">
+                            Pending
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-minus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-danger">
+                            Returned
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-success">
+                            Approved
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-outline">
+                            Draft
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-outline">
+                            0
+                        </span>
+                    </td>
+
+
+                </tr>
+
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-primary">
+                            Submitted
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-primary">
+                            Submitted
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-primary">
+                            Submitted
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-primary">
+                            Submitted
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-success">
+                            Approved
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-success">
+                            Approved
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-success">
+                            Approved
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-success">
+                            Approved
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-plus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="text-nowrap">
+                        Mon, Jun 22, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        Farm of Family
+                    </td>
+
+                    <td class="text-nowrap text-center">
+                        <span class="badge-lg badge-light-warning">
+                            Pending
+                        </span>
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">QE</span>
+                            Quintas Everett
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap">
+                        Fri, Jun 07, 2024
+                    </td>
+
+                    <td class="text-nowrap">
+                        <label class="form-check-label" for="Invited">
+                            <span class="text_avatar me-1">vh</span>
+                            Vicky Hickey
+                        </label>
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        9.03
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        2.11
+                    </td>
+
+                    <td class="text-nowrap f-w-700">
+                        <span class="badge badge-light-danger">
+                            <i class="fa-regular fa-minus txt-danger"></i>
+                            £17
+
+                        </span>
+                    </td>
+
+
+                </tr>
+
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="9" class="text-center">
+                        <a class="btn btn-light btn-sm">Load More</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+
+
+
+

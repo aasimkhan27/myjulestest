@@ -1,0 +1,121 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/HeaderDtlsNew.html?v=1{{AppVersion}}">
+    </div>
+    <div class="col-auto mn-w-250">
+        <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/Employee_Tabs.html?v={{AppVersion}}">
+    </div>
+    <div class="col">
+        <form class="w-100" id="CustomForm" name="CustomForm" novalidate>
+            <div class="col-md-12">
+                <div class="row">
+                    <templateurl class="w-100" template-url="../AngularViews/CommonView/FormView.html?v=1{{AppVersion}}">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div data-ng-show="CustomForm.submitted && CustomForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                        <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CustomForm.$valid">
+                            <span class="help-block">{{InvalidUser}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 border-top">
+                    <div class="row mt-2">
+                        <div class="form-group">
+                            <button click-once ng-click="POP_EMPLOYEE_STEP_FLAG()" class="btn btn-sm btn-sm btn-wenodo">Save</button>
+                            <button type="button" ng-click="VIEW_TAB_CLICK(3)" class="btn btn-sm btn-sm btn-w-default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="position">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Position</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <ul class="nav nav-tabs w-100 " id="custom-content-above-tab" role="tablist" ng-init="STEP_P_FLAG=1">
+                        <li class="nav-item">
+                            <a class="nav-link " ng-class="{'active':STEP_P_FLAG==1,'':STEP_P_FLAG!=1}" ng-click="STEP_P_FLAG=1" id="custom-content-above-profile-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-profile" aria-selected="true">Position Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " ng-class="{'active':STEP_P_FLAG==2,'':STEP_P_FLAG!=2}" ng-click="STEP_P_FLAG=2" id="custom-content-above-Contact-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-Contact" aria-selected="true">Employment Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " ng-class="{'active':STEP_P_FLAG==3,'':STEP_P_FLAG!=3}" ng-click="STEP_P_FLAG=3" id="custom-content-above-Contact-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-Contact" aria-selected="true">Contract Details</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="row" ng-show="STEP_P_FLAG==1">
+                    <div class="w-100" ng-repeat="LIST in [{'DATA':ViewPositionSearch_1}]" ng-include="'../AngularViews/CommonView/FormLabelView.html?v=1{{AppVersion}}'"></div>
+                </div>
+
+                <div class="row" ng-show="STEP_P_FLAG==2">
+                    <div class="w-100" ng-repeat="LIST in [{'DATA':ViewPositionSearch_2}]" ng-include="'../AngularViews/CommonView/FormLabelView.html?v=1{{AppVersion}}'"></div>
+                </div>
+                <div class="row" ng-show="STEP_P_FLAG==3">
+                    <div class="w-100" ng-repeat="LIST in [{'DATA':ViewPositionSearch_3}]" ng-include="'../AngularViews/CommonView/FormLabelView.html?v=1{{AppVersion}}'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EFFECTIVE_DATA">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Updates </h4>
+                <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-400" ng-init="dateinputOpenDate('bottom')">
+                <form id="EFFECTIVEForm" name="EFFECTIVEForm" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Effective Date:*</label>
+                            <input type="text"
+                                   class="form-control dateinputOpenDate"
+                                   autocomplete="off"
+                                   name="EFFECTIVE_DATE"
+                                   readonly
+                                   placeholder="Select ..."
+                                   ng-model="EFFECTIVE_SEARCH.EFFECTIVE_DATE"
+                                   ng-value="EFFECTIVE_SEARCH.EFFECTIVE_DATE | date"
+                                   required
+                                   ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.EFFECTIVE_DATE.$error.required}" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Comments:</label>
+                            <textarea rows="8"
+                                      class="form-control "
+                                      name="COMMENTS"
+                                      ng-model="EFFECTIVE_SEARCH.COMMENTS"
+                                      placeholder="Enter ..."
+                                      ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.COMMENTS.$error.required}" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer justify-content-left">
+                <button type="button" click-once ng-click="POP_EMPLOYEE_STEP_FLAG('VIEW',3);" class="btn btn-sm btn-wenodo">Save</button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

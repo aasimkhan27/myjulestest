@@ -1,0 +1,264 @@
+﻿<!--<div class="col-md-12">
+    <nav class="navbar navbar-expand-lg navbar-light py-2 shadow-sm">
+        <div id="navbarContent" class="collapse navbar-collapse">
+            <ul class="navbar-nav w-100">
+                <li class="nav-item heading-text">Setup HR</li>
+            </ul>
+        </div>
+    </nav>
+</div>-->
+<div class="app-suit  mt-5" ng-controller="AdminController">
+    <div class="at-grid" data-column="8">
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('HR_Cost_Center')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-sack-dollar fa-2x"></i></div>
+                <div class="at-user__name app-text">Cost Center</div>
+            </div>
+        </div>
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Employee_Category')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-users-class fa-2x"></i></div>
+                <div class="at-user__name app-text">Employee Category</div>
+            </div>
+        </div>
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Employee_Sub_Category')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-poll-people fa-2x"></i></div>
+                <div class="at-user__name app-text">Employee Sub-Category</div>
+            </div>
+        </div>
+
+
+
+        <!--<div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Nationality')">
+        <div class="at-user">
+            <div class="at-user__avatar app-text"><i class="fal fa-flag fa-2x"></i></div>
+            <div class="at-user__name">Nationality</div>
+        </div>
+    </div>-->
+
+        <div class="at-column  app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('National_ID_Type')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-id-card-alt fa-2x"></i></div>
+                <div class="at-user__name app-text">National ID Type</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('TerminationReason')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-user-slash fa-2x"></i></div>
+                <div class="at-user__name app-text">Termination Reason</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('EmergencyContactRelationship')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-phone-plus fa-2x"></i></div>
+                <div class="at-user__name app-text">Emergency Contact Relationship</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('ShiftType')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-user-clock fa-2x"></i></div>
+                <div class="at-user__name app-text">Shift Type</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Shift')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-user-headset fa-2x"></i></div>
+                <div class="at-user__name app-text">Shift</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('WorkPatternList')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-digging fa-2x"></i></div>
+                <div class="at-user__name app-text">Work Pattern</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('PensionSch')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-money-check-edit-alt fa-2x"></i></div>
+                <div class="at-user__name app-text">Pension Scheme</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Contract_Type')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-file-contract fa-2x"></i></div>
+                <div class="at-user__name app-text">Contract Type</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('AssetType')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-box-usd fa-2x"></i></div>
+                <div class="at-user__name app-text">Asset Type</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Payment_Type')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-credit-card fa-2x"></i></div>
+                <div class="at-user__name app-text">Payment Type</div>
+            </div>
+        </div>
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Units')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-boxes-alt fa-2x"></i></div>
+                <div class="at-user__name app-text">Units</div>
+            </div>
+        </div>
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Work_Permit_Type')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-file-invoice fa-2x"></i></div>
+                <div class="at-user__name app-text">Work <br />Permit Type</div>
+            </div>
+        </div>
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Document_Type')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-file-alt fa-2x"></i></div>
+                <div class="at-user__name app-text"> Document Type </div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Cource')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-graduation-cap fa-2x"></i></div>
+                <div class="at-user__name app-text">Course Type</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Pay_Frequency')" ng-if="false">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-file-invoice-dollar fa-2x"></i></div>
+                <div class="at-user__name app-text">Pay Frequency</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Absence_Type')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-users-slash fa-2x"></i></div>
+                <div class="at-user__name app-text">Absence Type</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('HolidayEntitlement')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-snowman fa-2x"></i></div>
+                <div class="at-user__name app-text">Leave Entitlement</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('NoticePeriod')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-calendar-alt fa-2x"></i></div>
+                <div class="at-user__name app-text">Notice Period</div>
+            </div>
+        </div>
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Probation')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-clipboard-list-check fa-2x"></i></div>
+                <div class="at-user__name app-text">Probation</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Hrdeclaration')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-clipboard-list-check fa-2x"></i></div>
+                <div class="at-user__name app-text">HR-Declaration</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Division')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-boxes fa-2x"></i></div>
+                <div class="at-user__name app-text">Division</div>
+            </div>
+        </div>
+        <!--<div class="at-column cursor-pointer">
+        <div class="at-user">
+            <div class="at-user__avatar app-text"><i class="fal fa-wave-square fa-2x"></i></div>
+            <div class="at-user__name"><a href="#!/Pay_Frequency">Pay Frequency</a></div>
+        </div>
+    </div>-->
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Paid_By')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-envelope-open-dollar fa-2x"></i></div>
+                <div class="at-user__name app-text">Paid By</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Paid_By_EN')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-hand-holding-usd fa-2x"></i></div>
+                <div class="at-user__name app-text"> Paid By Entity Mapping </div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Pay_Code')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-brackets fa-2x"></i></div>
+                <div class="at-user__name app-text">Pay Code</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Pay_F_EN')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-hands-usd fa-2x"></i></div>
+                <div class="at-user__name app-text"> Pay Frequency Entity Mapping </div>
+            </div>
+        </div>
+
+
+
+
+        <!--<div class="at-column cursor-pointer" ng-click="REDIRECTION_PAGE('rle_lst')">
+        <div class="at-user">
+            <div class="at-user__avatar app-text"><i class="far fa-map-marked-alt fa-2x"></i></div>
+            <div class="at-user__name">Role List</div>
+        </div>
+    </div>-->
+
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Adrl?STAG=2')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-user-tag fa-2x"></i></div>
+                <div class="at-user__name app-text">Create Role </div>
+            </div>
+        </div>
+        <div class="at-column  app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Grp')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-users-class fa-2x"></i></div>
+                <div class="at-user__name app-text">Group List</div>
+            </div>
+        </div>
+        <!--<div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Grp_Map')">
+        <div class="at-user">
+            <div class="at-user__avatar app-text"><i class="far fa-users-medical fa-2x"></i></div>
+            <div class="at-user__name">Create Group </div>
+        </div>
+    </div>-->
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Ass_Grp_lst')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-users fa-2x"></i></div>
+                <div class="at-user__name app-text">Assign Group List</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Page_Header')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-h-square fa-2x"></i></div>
+                <div class="at-user__name app-text">Setup Page Header</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Setup_Fields')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-bring-front fa-2x"></i></div>
+                <div class="at-user__name app-text">Custom Field Mapping</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Setup_NICategory')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fa-shekel-sign fa-2x"></i></div>
+                <div class="at-user__name app-text">NI Category</div>
+            </div>
+        </div>
+        <div class="at-column app-suit-inside cursor-pointer" ng-click="REDIRECTION_PAGE('Setup_NoShowReason')">
+            <div class="at-user">
+                <div class="at-user__avatar app-text"><i class="fad fas fa-toggle-on fa-2x"></i></div>
+                <div class="at-user__name app-text">No Show Reason</div>
+            </div>
+        </div>
+    </div>
+</div>

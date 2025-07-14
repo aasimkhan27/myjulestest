@@ -1,0 +1,89 @@
+﻿<div class="card shadow-none">
+    <div class="card-header"><h5 class="card-title">Cashup List</h5></div>
+    <div class="card-header pl-0">        
+        <div class="row">
+            <div class="col-md-3">
+                <div id="reportrange" class="custom-select custom-date">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                    <span></span><b class="caret"></b>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group mb-0">
+                    <select name="BRANCH" class="custom-select"
+                            ng-options="BRL.BRANCH_ID as BRL.BRANCH_NAME for BRL in BRANCH_LIST"
+                            ng-model="CashupSearch.BRANCH_ID">
+                        <option value="">- All Branches-</option>
+                    </select>
+                    
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group mb-0">
+                    <select class="custom-select" ng-model="CashupSearch.STATUS_ID">
+                        <option value="">-Select Status-</option>
+                        <option value="0">Pending</option>
+                        <option value="1">Draft</option>
+                        <option value="2">Submitted</option>
+                        <option value="3">In Approval</option>
+                        <option value="4">Approved</option>
+                        <option value="5">Returned</option>
+                    </select>
+                </div>
+            </div>
+            <button ng-click="GET_CASHUP_LIST(1);" class="btn btn-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Search">Search</button>
+        </div>
+
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th width="15%">Cashup Date</th>
+                        <th>Branch</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Last Updated Date</th>
+                        <th width="5%">Actions</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" align="center" ng-show="GetData">
+                            <a class="btn btn-secondary text-white" ng-click="LAZY_GET_CASHUP_LIST();">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr ng-repeat="CASHUP in CASHUPLIST">
+                        <td>{{CASHUP.CASHUP_DATE | date}}</td>
+                        <td>{{CASHUP.BRANCH_NAME}}</td>
+                        <td>
+                            <span class="badge badge-light-orange" ng-show="CASHUP.STATUS_ID==0">
+                                Pending
+                            </span>
+                            <span class="badge badge-light-blue" ng-show="CASHUP.STATUS_ID==1">
+                                Draft
+                            </span>
+                            <span class="badge badge-light-green" ng-show="CASHUP.STATUS_ID==3">
+                                In-Approvals
+                            </span>
+                            <span class="badge badge-success" ng-show="CASHUP.STATUS_ID==4">
+                                Approved
+                            </span>
+                            <span class="badge badge-light-red" ng-show="CASHUP.STATUS_ID==5">
+                                Returned
+                            </span>
+                        </td>
+                        <td>{{CASHUP.MODIFIED_DATE | date}}</td>
+                        <td>
+                            <i class="fad fa-edit text-green" ng-show="CASHUP.STATUS_ID!=3 && CASHUP.STATUS_ID!=4" ng-click="CashUpEntry(CASHUP)"></i>
+                            <i class="fas fa-bars" ng-show="false"></i>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

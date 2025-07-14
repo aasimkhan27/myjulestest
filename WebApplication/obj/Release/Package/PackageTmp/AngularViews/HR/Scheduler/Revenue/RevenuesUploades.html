@@ -1,0 +1,416 @@
+﻿<div class="overlay_loadingNew" id="overlay_loadingNew" style="display:{{overlay_loadingNew}}!important"></div>
+<div class="card-header">
+    <h5 class="heading-text-2">Upload </h5>
+    <div class="card-tools">
+        <ul class="nav nav-pills ml-auto">
+            <li class="nav-item">
+                <a class="btn btn-wenodo" onclick="javascript:history.back(0)"  data-toggle="tooltip" data-html="true" data-original-title="Back">Back</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<form id="RevenueForm" name="RevenueForm" novalidate>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:</label>
+                    <select class="custom-select custom-select-sm"
+                            name="ENTITY_ID"
+                            ng-model="RevenuesSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            ng-change="ADMIN_GET_BRANCH();"
+                            required
+                            ng-class="{'error':RevenueForm.submitted && RevenueForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Branch:</label>
+                    <select class="custom-select custom-select-sm"
+                            name="BRANCH_ID"
+                            required
+                            ng-model="RevenuesSearch.BRANCH_ID"
+                            ng-options="CL.BRANCH_ID as CL.BRANCH_NAME for CL in BRANCH_LIST"
+                            ng-class="{'error':RevenueForm.submitted && RevenueForm.BRANCH_ID.$error.required}">
+                        <option value="">- Please Select Branch-</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-bottom">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="d-block">Upload Sales</label>
+                    <div class="input-group d-flex">
+                        <input class="form-control form-control-sm text-xs" type="file"
+                               ng-model="RevenuesSearch.UploadedFiles"
+                               id="uploadExcel1" ng-files="GET_THE_FILES_TO_UPLOAD_REVENUES($files,5,DAILY_SALES_TYPE,1, 'uploadExcel','SALES')"
+                               ng-click="RESET_BUTTON_SETUP();"
+                               name="file" />
+                        <div class="input-group-append">
+                            <span class="input-group-text" ng-if="Uploading">
+                                <img src="../../E_Content/images/loading.gif" style="height: 16px" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <label class="d-block">&nbsp;</label>
+                <div class="form-group">
+                    <button ng-click="INS_UPD_DAILY_SALES(1)" ng-disabled="SALES_CODE_ARRY.length>0" class="btn btn-sm btn-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Upload">Upload</button>
+                    <button ng-click="RESET_SALES()" data-toggle="tooltip" data-html="true" data-original-title="Reset" class="btn btn-sm btn-w-default">Reset</button>
+                </div>
+            </div>
+            <div class="col text-right">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+
+                    <a href="{{DOWNLOAD_FILE_PATH}}" id="btn" ng-click="DOWNLOAD_OPENXML_UPLOAD('SALES')" class="btn btn-sm btn-wenodo" download=""
+                       data-toggle="tooltip" data-html="true" data-original-title="Download Sales Template" target="_blank">
+                        <i class="far fa-download"></i>{{DOWNLOAD_REPORT_NAME}}
+                    </a>
+                    <button ng-click="REDIRECTION(2,'SALES')"
+                            class="btn btn-sm btn-w-default"
+                            data-toggle="tooltip" data-html="true" data-original-title="View Uploaded Files">
+                        View Uploaded Files
+                    </button>
+                    <button ng-click="REDIRECTION(1,'SALES')"
+                            class="btn btn-sm btn-w-default"
+                            data-toggle="tooltip" data-html="true" data-original-title="View Records">
+                        View Records
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border-bottom">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="d-block">Upload Budget</label>
+                    <div class="input-group d-flex">
+                        <input class="form-control form-control-sm text-xs" type="file"
+                               ng-model="RevenuesSearch.UploadedFiles"
+                               id="uploadExcel2" ng-files="GET_THE_FILES_TO_UPLOAD_REVENUES($files,5,RevenuesSearch,2, 'uploadExcel','BUDGET')"
+                               ng-click="RESET_BUTTON_SETUP();"
+                               name="file" />
+                        <div class="input-group-append">
+                            <span class="input-group-text" ng-if="Uploading">
+                                <img src="../../E_Content/images/loading.gif" style="height: 16px" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <label class="d-block">&nbsp;</label>
+                <div class="form-group">
+                    <button ng-click="INS_UPD_BRANCH_BUDGETS(1)" ng-disabled="BUDGET_CODE_ARRY.length>0" class="btn btn-sm btn-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Upload">Upload</button>
+                    <button ng-click="RESET_BUDGET()" data-toggle="tooltip" data-html="true" data-original-title="Reset" class="btn btn-sm btn-w-default">Reset</button>
+                </div>
+            </div>
+            <div class="col text-right">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+                    <a href="{{DOWNLOAD_FILE_PATH}}" id="btn" ng-click="DOWNLOAD_OPENXML_UPLOAD('BUDGET')" class="btn btn-sm btn-wenodo"
+                       data-toggle="tooltip" data-html="true" data-original-title="Download Budget Template">
+                        <i class="far fa-download"></i>{{DOWNLOAD_REPORT_NAME}}
+                    </a>
+                    <button ng-click="REDIRECTION(2,'BUDGET')" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="View Uploaded Files">View Uploaded Files </button>
+                    <button ng-click="REDIRECTION(1,'BUDGET')" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="View Records">View Records</button>
+                </div>
+            </div>
+        </div>
+        <div class="row border-bottom">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="d-block">Upload Forecast</label>
+                    <div class="input-group d-flex">
+                        <input class="form-control form-control-sm text-xs" type="file"
+                               ng-model="RevenuesSearch.UploadedFiles"
+                               id="uploadExcel3"
+                               ng-files="GET_THE_FILES_TO_UPLOAD_REVENUES($files,5,RevenuesSearch,3, 'uploadExcel','FORCAST')"
+                               ng-click="RESET_BUTTON_SETUP(3);"
+                               name="file" />
+                        <div class="input-group-append">
+                            <span class="input-group-text" ng-if="Uploading">
+                                <img src="../../E_Content/images/loading.gif" style="height: 16px" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <label class="d-block">&nbsp;</label>
+                <div class="form-group">
+                    <button ng-click="INS_UPD_FORECASTED_REVENUE(1)" ng-disabled="FORCAST_CODE_ARRY.length>0" class="btn btn-sm btn-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Upload">Upload</button>
+                    <button ng-click="RESET_FORCAST()" data-toggle="tooltip" data-html="true" data-original-title="Reset" class="btn btn-sm btn-w-default">Reset</button>
+                </div>
+            </div>
+            <div class="col text-right">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+                    <a href="{{DOWNLOAD_FILE_PATH}}" id="btn" ng-click="DOWNLOAD_OPENXML_UPLOAD('FORCAST')" class="btn btn-sm btn-wenodo" download=""
+                       data-toggle="tooltip" data-html="true" data-original-title="Download Forecast Template" target="_blank"><i class="far fa-download"></i>{{DOWNLOAD_REPORT_NAME}}</a>
+                    <button ng-click="REDIRECTION(2,'FORECAST')" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="View Uploaded Files">View Uploaded Files </button>
+                    <button ng-click="REDIRECTION(1,'FORECAST')" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="View Records">View Records</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div data-ng-show="LocForm.submitted && LocForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+            </div>
+            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="LocForm.$valid">
+                <span class="help-block">{{InvalidUser}}</span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div  class="form-group">
+                <span class="text-danger text-sm"><i class="fas fa-lightbulb-on text-warning"></i> Note: Date Format for uploading excel template is dd/mm/yyyy.</span>
+            </div>
+          
+        </div>
+    </div>
+</form>
+<div class="card mb-0">
+    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(1)">
+            <a class="nav-link " ng-class="{'active':TAB_FLAG==1}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Sales</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(2)">
+            <a class="nav-link" ng-class="{'active':TAB_FLAG==2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Budget</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(3)">
+            <a class="nav-link" ng-class="{'active':TAB_FLAG==3}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Forecast</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="custom-content-below-tabContent">
+        <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+            <div class="card-body pt-0">
+                <div class="table-responsive custom-scrollbar height-535">
+                    <div class="text-center text-sm" ng-show="DAILY_SALES_LIST.length==0" empty-grid></div>
+                    <table class="table table-head-fixed table-striped table-hover mb-0 compact_table" ng-show="DAILY_SALES_LIST.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th width="2%">S.No</th>
+                                <th>Date</th>
+                                <th>Net Revenue</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="DSL in DAILY_SALES_LIST" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td width="2%">{{$index+1}}</td>
+                                <td class="text-nowrap" ng-class="{'error':DSL.DATE.split(':;:').length>1}">
+                                    <span ng-show="DSL.DATE.split(':;:')[0]=='BLANK'"><i class="fa fa-exclamation-triangle"></i></span><span ng-show="DSL.DATE.split(':;:')[0]!='BLANK'">{{DSL.DATE | date:DATE_FORMATE_LABEL_DD_MM_YYYY}} </span>
+                                </td>
+                                <td class="text-nowrap" ng-class="{'error':DSL.NET_REVENUE.split(':;:').length>1}">
+                                    <span ng-show="DSL.NET_REVENUE.split(':;:')[0]=='BLANK'"><i class="fa fa-exclamation-triangle"></i></span><span ng-show="DSL.DATE.split(':;:')[0]!='BLANK'"> {{(DSL.NET_REVENUE)}} </span>
+                                </td>
+                                <td>{{DSL.COMMENTS}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="notice d-flex bg-light-danger rounded border-warning border border-dashed mb-9 p-6" ng-repeat="CD in SALES_CODE_ARRY | unique:'CODE' ">
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='CODE0003'"><i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} {{CD.POSITION}} - Invalid Hyperlink: Malformed URI is embedded as a hyperlink in the document.please remove hyperlink.</span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='BLANK'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}-Please provide necessary details or remove space from empty cell.
+                            <span ng-repeat="BLN in SALES_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{BLN.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='CHECK0003'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Please provide True or False.
+                            <span ng-repeat="BOL in SALES_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{BOL.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='EMAIL0009'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Invalid Email.
+                            <span ng-repeat="EM in SALES_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{EM.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0010'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}  - Number Only.
+                            <span ng-repeat="NUMO in SALES_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NUMO.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0011'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Number/Digit Only.
+                            <span ng-repeat="NUM in SALES_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NUM.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0012'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Negative value should not allow.
+                            <span ng-repeat="NTC in SALES_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NTC.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='DDL0004'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}  {{CD.POSITION}} - Invalid spelling or either wrong input.
+                            <span ng-show="CD.Suggestion.slice(2).length>0">Please select one of the suggested values </span>
+                            <span ng-repeat="a in SALES_CODE_ARRY | unique:'D_COLUMN_NAME'"><br /> {{a.Suggestion.slice(2)}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='DATE0007'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}- Please provide 'DD/MM/YYYY' format,example:'01/01/1999'.
+                            <span ng-repeat="DAT in SALES_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{DAT.POSITION}} </span>
+                        </span>
+                    </div>
+                    <span class="help-block errormessageline" style="padding-left:0px;" ng-if="DUPLICATES.length>0">
+                        <i class="fa fa-exclamation-triangle"></i> -Duplicate record found to excel.
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==2}" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
+            <div class="card-body pt-0">
+                <div class="table-responsive custom-scrollbar height-535">
+                    <div class="text-center text-sm" ng-show="DAILY_BUDGET_LIST.length==0" empty-grid></div>
+                    <table class="table table-head-fixed table-striped table-hover mb-0 compact_table" ng-show="DAILY_BUDGET_LIST.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th width="2%">S.No</th>
+                                <th>Date</th>
+                                <th>BUDGET_CATEGORY</th>
+                                <th>BUDGET</th>
+                                <th>COVERS</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="DSL in DAILY_BUDGET_LIST" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td width="2%">{{$index+1}}</td>
+                                <td class="text-nowrap" ng-class="{'error':DSL.BUDGET_DATE.split(':;:').length>1}">
+                                    <span ng-show="DSL.BUDGET_DATE.split(':;:')[0]=='BLANK'"><i class="fa fa-exclamation-triangle"></i></span><span ng-show="DSL.BUDGET_DATE.split(':;:')[0]!='BLANK'"> {{(DSL.BUDGET_DATE) | date:DATE_FORMATE_LABEL_DD_MM_YYYY}} </span>
+                                </td>
+                                <td class="text-nowrap" ng-class="{'error':DSL.BUDGET_CATEGORY.split(':;:').length>1}">
+                                    <span ng-show="DSL.BUDGET_CATEGORY.split(':;:')[0]=='BLANK'"><i class="fa fa-exclamation-triangle"></i></span><span ng-show="DSL.BUDGET_CATEGORY.split(':;:')[0]!='BLANK'"> {{(DSL.BUDGET_CATEGORY)}} </span>
+                                </td>
+                                <td class="text-nowrap" ng-class="{'error':DSL.BUDGET.split(':;:').length>1}">
+                                    <span ng-show="DSL.BUDGET.split(':;:')[0]=='BLANK'"><i class="fa fa-exclamation-triangle"></i></span><span ng-show="DSL.BUDGET.split(':;:')[0]!='BLANK'"> {{(DSL.BUDGET)}} </span>
+                                </td>
+                                <td class="text-nowrap" ng-class="{'error':DSL.COVERS.split(':;:').length>1}">
+                                    <span ng-show="DSL.COVERS.split(':;:')[0]=='BLANK'"><i class="fa fa-exclamation-triangle"></i></span><span ng-show="DSL.COVERS.split(':;:')[0]!='BLANK'"> {{(DSL.COVERS)}} </span>
+                                </td>
+                                <td>{{DSL.COMMENTS}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="notice d-flex bg-light-danger rounded border-warning border border-dashed mb-9 p-6" ng-repeat="CD in BUDGET_CODE_ARRY | unique:'CODE' ">
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='CODE0003'"><i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} {{CD.POSITION}} - Invalid Hyperlink: Malformed URI is embedded as a hyperlink in the document.please remove hyperlink.</span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='BLANK'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}-Please provide necessary details or remove space from empty cell.
+                            <span ng-repeat="BLN in BUDGET_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{BLN.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='CHECK0003'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Please provide True or False.
+                            <span ng-repeat="BOL in BUDGET_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{BOL.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='EMAIL0009'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Invalid Email.
+                            <span ng-repeat="EM in BUDGET_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{EM.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0010'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}  - Number Only.
+                            <span ng-repeat="NUMO in BUDGET_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NUMO.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0011'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Number/Digit Only.
+                            <span ng-repeat="NUM in BUDGET_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NUM.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0012'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Negative value should not allow.
+                            <span ng-repeat="NTC in BUDGET_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NTC.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='DDL0004'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}  {{CD.POSITION}} - Invalid spelling or either wrong input.
+                            <span ng-show="CD.Suggestion.slice(2).length>0">Please select one of the suggested values </span>
+                            <span ng-repeat="a in BUDGET_CODE_ARRY | unique:'D_COLUMN_NAME'"><br /> {{a.Suggestion.slice(2)}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='DATE0007'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}- Please provide 'DD/MM/YYYY' format,example:'01/01/1999'.
+                            <span ng-repeat="DAT in BUDGET_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{DAT.POSITION}} </span>
+                        </span>
+                    </div>
+                    <span class="help-block errormessageline" style="padding-left:0px;" ng-if="DUPLICATES.length>0">
+                        <i class="fa fa-exclamation-triangle"></i> -Duplicate record found to excel.
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==3}" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
+            <div class="card-body pt-0">
+                <div class="table-responsive custom-scrollbar height-535">
+                    <div class="text-center text-sm" ng-show="DAILY_FORCAST_LIST.length==0" empty-grid></div>
+                    <table class="table table-head-fixed table-striped table-hover mb-0 compact_table" ng-show="DAILY_FORCAST_LIST.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th width="2%">S.No</th>
+                                <th>Date</th>
+                                <th>BUDGET</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="DSL in DAILY_FORCAST_LIST" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td class="text-nowrap" ng-class="{'error':DSL.BUDGET_DATE.split(':;:').length>1}">
+                                    <span ng-show="DSL.BUDGET_DATE.split(':;:')[0]=='BLANK'"><i class="fa fa-exclamation-triangle"></i></span><span ng-show="DSL.BUDGET_DATE.split(':;:')[0]!='BLANK'"> {{(DSL.BUDGET_DATE) | date:DATE_FORMATE_LABEL_DD_MM_YYYY}} </span>
+                                </td>
+                                <td class="text-nowrap" ng-class="{'error':DSL.BUDGET.split(':;:').length>1}">
+                                    <span ng-show="DSL.BUDGET.split(':;:')[0]=='BLANK'"><i class="fa fa-exclamation-triangle"></i></span><span ng-show="DSL.BUDGET.split(':;:')[0]!='BLANK'"> {{(DSL.BUDGET)}} </span>
+                                </td>
+                               
+                                <td>{{DSL.COMMENTS}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="notice d-flex bg-light-danger rounded border-warning border border-dashed mb-9 p-6" ng-repeat="CD in FORCAST_CODE_ARRY | unique:'CODE' ">
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='CODE0003'"><i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} {{CD.POSITION}} - Invalid Hyperlink: Malformed URI is embedded as a hyperlink in the document.please remove hyperlink.</span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='BLANK'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}-Please provide necessary details or remove space from empty cell.
+                            <span ng-repeat="BLN in FORCAST_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{BLN.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='CHECK0003'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Please provide True or False.
+                            <span ng-repeat="BOL in FORCAST_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{BOL.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='EMAIL0009'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Invalid Email.
+                            <span ng-repeat="EM in FORCAST_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{EM.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0010'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}  - Number Only.
+                            <span ng-repeat="NUMO in FORCAST_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NUMO.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0011'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Number/Digit Only.
+                            <span ng-repeat="NUM in FORCAST_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NUM.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='NUM0012'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}} - Negative value should not allow.
+                            <span ng-repeat="NTC in FORCAST_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{NTC.POSITION}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='DDL0004'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}  {{CD.POSITION}} - Invalid spelling or either wrong input.
+                            <span ng-show="CD.Suggestion.slice(2).length>0">Please select one of the suggested values </span>
+                            <span ng-repeat="a in FORCAST_CODE_ARRY | unique:'D_COLUMN_NAME'"><br /> {{a.Suggestion.slice(2)}} </span>
+                        </span>
+                        <span class="help-block errormessageline" style="padding-left:0px;" ng-if="CD.CODE=='DATE0007'">
+                            <i class="fa fa-exclamation-triangle"></i> {{CD.CODE}}- Please provide 'DD/MM/YYYY' format,example:'01/01/1999'.
+                            <span ng-repeat="DAT in FORCAST_CODE_ARRY | filter:{CODE:CD.CODE} "><br />{{$index+1}}:- {{DAT.POSITION}} </span>
+                        </span>
+                    </div>
+                    <span class="help-block errormessageline" style="padding-left:0px;" ng-if="DUPLICATES.length>0">
+                        <i class="fa fa-exclamation-triangle"></i> -Duplicate record found to excel.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

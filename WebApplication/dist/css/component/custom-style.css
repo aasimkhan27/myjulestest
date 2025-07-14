@@ -1,0 +1,108 @@
+
+#floatbtn{
+    background-color: #2e708a;
+    color:#fff;
+    box-shadow: 3px 5px 10px 0 rgba(97 78 255 / 30%);
+}
+.fa-plus-circle{
+    color:#2e708a;
+}
+.fa-minus-circle{
+    color:#d9534f
+}
+
+label{
+    font-weight:400 !important;
+    font-size: small;
+}
+
+
+/****************************Faisal****************************/
+
+body {
+    background-color: #f4f6f9;
+    }
+    
+    .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #2e708a;
+    color: #fff;
+    }
+    
+    .control-sidebar {
+    -webkit-box-shadow: -9px 0px 40px 0px rgba(104,110,140,1);
+    -moz-box-shadow: -9px 0px 40px 0px rgba(104,110,140,1);
+    box-shadow: -9px 0px 40px 0px rgba(104,110,140,1);
+    }
+    
+    .card-info:not(.card-outline)>.card-header {
+    background-color: #2e708a;
+    }
+    
+    select {
+    padding: 6px 0px 0px !important;
+    }
+    
+    input[type="text"] {
+    font-size: 11px;
+    width: 100%;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+    background: none;
+    }
+    
+    .hover {
+    padding: 5px 0 7px;
+    border: 1px solid transparent;
+    border-bottom-color: #ced4da;
+    transition: 0.4s;
+    width: 100%;
+    }
+    
+    .app-text {
+    color: #2e708a;
+    }
+    
+    .hover:focus {
+    padding: 5px 7px 7px;
+    transition: 0.4s;
+    border: 1px solid #80bdff;
+    outline: none;
+    }
+    
+    .btn-info {
+    color: #fff;
+    background-color: #2e708a;
+    border-color: #2e708a;
+    box-shadow: none;
+    }
+    
+    .btn-info:hover {
+    color: #fff;
+    background-color: #075461;
+    border-color: #075461;
+    }
+    
+    .app-theme-color {
+    background-color: #2e708a;
+    }
+    
+    .col-3-5 {
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+    }
+    .border {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 10px;
+    }
+    
+    label {
+    display: block !important;
+    }
+    
+    .start-up-buttons {
+    width: 200px;
+    height: 100px;
+    }
+/****************************Faisal****************************/

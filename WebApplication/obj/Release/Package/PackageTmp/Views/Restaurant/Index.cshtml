@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Main.cshtml";
+}
+<script type="text/javascript">
+
+        var AppVersion = @System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString();
+
+       // var AppVersion = 84934845;
+</script>
+<ng-view></ng-view>
+
+
+<script src="~/AngularControllers/DashBoardController.js"></script>

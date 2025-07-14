@@ -1,0 +1,291 @@
+﻿<div class="col-md-12">
+    <div class="row">
+        <templateurl class="w-100" template-url="../AngularViews/HR/ViewEmployee/HeaderDtls.html?v=2136564{{AppVersion}}">
+    </div>
+    <div class="col-md-12">
+        <form class="w-100" id="CustomForm" name="CustomForm" novalidate>
+            <div class="col-md-12">
+                <div class="row">
+                    <templateurl class="w-100" template-url="../AngularViews/CommonView/FormView.html?v=2{{AppVersion}}">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div data-ng-show="CustomForm.submitted && CustomForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                        <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CustomForm.$valid">
+                            <span class="help-block">{{InvalidUser}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="form-group">
+                            <button click-once ng-click="POP_EMPLOYEE_STEP_FLAG()" class="btn btn-wenodo">Save</button>
+                            <button type="button" ng-click="VIEW_TAB_CLICK(3)" class="btn btn-w-default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="position">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Position</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <ul class="nav nav-tabs justify-content-center " id="custom-content-above-tab" role="tablist" ng-init="STEP_P_FLAG=1">
+                        <li class="nav-item">
+                            <a class="nav-link " ng-class="{'active':STEP_P_FLAG==1,'':STEP_P_FLAG!=1}" ng-click="STEP_P_FLAG=1" id="custom-content-above-profile-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-profile" aria-selected="true">Position Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " ng-class="{'active':STEP_P_FLAG==2,'':STEP_P_FLAG!=2}" ng-click="STEP_P_FLAG=2" id="custom-content-above-Contact-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-Contact" aria-selected="true">Employment Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " ng-class="{'active':STEP_P_FLAG==3,'':STEP_P_FLAG!=3}" ng-click="STEP_P_FLAG=3" id="custom-content-above-Contact-tab" data-toggle="pill" role="tab" aria-controls="custom-content-above-Contact" aria-selected="true">Contract Details</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="row" ng-show="STEP_P_FLAG==1">
+                    <div class="w-100" ng-repeat="LIST in [{'DATA':ViewPositionSearch_1}]" ng-include="'../AngularViews/CommonView/FormLabelView.html?v=1{{AppVersion}}'"></div>
+                </div>
+
+                <div class="row" ng-show="STEP_P_FLAG==2">
+                    <div class="w-100" ng-repeat="LIST in [{'DATA':ViewPositionSearch_2}]" ng-include="'../AngularViews/CommonView/FormLabelView.html?v=1{{AppVersion}}'"></div>
+                </div>
+                <div class="row" ng-show="STEP_P_FLAG==3">
+                    <div class="w-100" ng-repeat="LIST in [{'DATA':ViewPositionSearch_3}]" ng-include="'../AngularViews/CommonView/FormLabelView.html?v=1{{AppVersion}}'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="AddDepartment">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Department</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body min-max-height-400" style="overflow:visible">
+                <form id="DepartmentForm" class="w-100" name="DepartmentForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Department Name:*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       ng-model="Departmentsearch.DEPARTMENT_NAME"
+                                       name="DEPARTMENT_NAME"
+                                       required
+                                       ng-class="{'error':DepartmentForm.submitted && DepartmentForm.DEPARTMENT_NAME.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Department Code:*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       ng-model="Departmentsearch.DEPARTMENT_CODE"
+                                       name="DEPARTMENT_CODE"
+                                       required
+                                       ng-class="{'error':DepartmentForm.submitted && DepartmentForm.DEPARTMENT_CODE.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Department Color:*</label>
+                                <div ng-init="$parent.ColorPicker(undefined,true,'pick-a-colorDepart');">
+                                    <input type="text"
+                                           class="form-control pick-a-colorDepart"
+                                           maxlength="250"
+                                           id="ids2"
+                                           autocomplete="off"
+                                           name="DEPARTMENT_COLOR"
+                                           ng-model="Departmentsearch.DEPARTMENT_COLOR">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="DepartmentForm.submitted && DepartmentForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="DepartmentForm.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button class="btn btn-wenodo" ng-click="INS_UPD_DEPARTMENT()"> Submit </button>
+                    <button class="btn btn-w-default" ng-click="DEPARTMENT_REST()"> Reset </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="AddPosition">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Position</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="PostionForm" class="w-100" name="PostionForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-12" ng-show="false">
+                            <div class="form-group">
+                                <label>Position ID:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="Positionsearch.POSITION_ID">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">Position Title:*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       ng-model="Positionsearch.POSITION_TITLE"
+                                       name="POSTION_NAME"
+                                       required
+                                       ng-class="{'error':PostionForm.submitted && PostionForm.POSTION_NAME.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <div class="custom-control custom-checkbox"
+                                     ng-class="{'error':PostionForm.submitted && PostionForm.IS_MANAGER_POSITION.$error.required}">
+                                    <input class="custom-control-input" type="checkbox"
+                                           autocomplete="off"
+                                           name="IS_MANAGER_POSITION"
+                                           ng-model="Positionsearch.IS_MANAGER_POSITION"
+                                           id="IS_MANAGER_POSITION"
+                                           ng-value="opd">
+                                    <label class="custom-control-label" for="IS_MANAGER_POSITION">Is Manager </label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <div class="custom-control custom-checkbox" ng-class="{'error':PostionForm.submitted && PostionForm.IS_ADMIN_POSITION.$error.required}">
+                                    <input class="custom-control-input" type="checkbox"
+                                           autocomplete="off"
+                                           name="IS_ADMIN_POSITION"
+                                           ng-model="Positionsearch.IS_ADMIN_POSITION"
+                                           id="IS_ADMIN_POSITION"
+                                           ng-value="opd">
+                                    <label class="custom-control-label" for="IS_ADMIN_POSITION">Is Admin</label>
+                                </div>
+                            </div>
+
+                            <!--<div class="form-group" ng-class="{'error':CustomForm.submitted && CustomForm.FIELD_NAME.$error.required}">
+                        <label>&nbsp;</label>
+                        <span class="bigcheck">
+                            <label class="bigcheck">
+                                <input type="checkbox" class="bigcheck"
+                                       autocomplete="off"
+                                       name="FIELD_NAME"
+                                       ng-model="CUSTOM_FIELD.FIELD_VALUE"
+                                       id="IS_ADMIN_POSITION"
+                                       required
+                                       ng-value="opd" />
+                                <span class="bigcheck-target"></span>
+                                <span class="bigcheck_label" for="IS_ADMIN_POSITION">Is Admin <span>*</span></span>
+                            </label>
+                        </span>
+                    </div>-->
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="PostionForm.submitted && PostionForm.$invalid"
+                                 class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PostionForm.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button class="btn btn-wenodo" ng-click="HR_INS_UPD_POSITIONS()"> Submit</button>
+                    <button class="btn btn-w-default" ng-click="POSITIONS_RESET()"> Reset</button>
+                    <button class="btn btn-w-default" ng-click="POSITIONS_CANCEL()"> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="EFFECTIVE_DATA">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Updates </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-400" style="overflow:visible" ng-init="dateinputOpenDate('bottom')">
+                <form id="EFFECTIVEForm" name="EFFECTIVEForm" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Effective Date:*</label>
+                            <input type="text"
+                                   class="form-control dateinputOpenDate"
+                                   autocomplete="off"
+                                   name="EFFECTIVE_DATE"
+                                   readonly
+                                   placeholder="Select ..."
+                                   ng-model="EFFECTIVE_SEARCH.EFFECTIVE_DATE"
+                                   ng-value="EFFECTIVE_SEARCH.EFFECTIVE_DATE | date"
+                                   required
+                                   ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.EFFECTIVE_DATE.$error.required}" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Comments:</label>
+                            <textarea rows="8"
+                                      class="form-control "
+                                      name="COMMENTS"
+                                      ng-model="EFFECTIVE_SEARCH.COMMENTS"
+                                      placeholder="Enter ..."
+                                      ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.COMMENTS.$error.required}" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer justify-content-left">
+                <button type="button" click-once ng-click="POP_EMPLOYEE_STEP_FLAG('VIEW',3);" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

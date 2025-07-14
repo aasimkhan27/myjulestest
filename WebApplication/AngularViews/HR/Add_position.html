@@ -1,0 +1,685 @@
+﻿<div class="card-header">
+    <h5 class="heading-text">
+        <img src="../../E_Content/images/position-icon.png" class="content-icon" /> Add Position
+    </h5>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-4">
+            <span class=" d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==1,'bg-wenodo-dark-blue':STEP_FLAG==2 || STEP_FLAG==3}"></span>
+            <p class="text-bold app-text mt-2">1. Position Details</p>
+        </div>
+        <div class="col-md-4">
+            <span class=" d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==2,'bg-wenodo-grey':STEP_FLAG==1,'bg-wenodo-dark-blue':STEP_FLAG==3}"></span>
+            <p class="text-bold app-text mt-2">2. Employment Details </p>
+        </div>
+        <div class="col-md-4">
+            <span class="bg-wenodo-grey d-block p-1"></span>
+            <p class="text-bold app-text mt-2">3. Contract Details </p>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="position-details" ng-show="STEP_FLAG==1">
+            <form id="PODtlsForm" name="PODtlsForm" novalidate>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Position ID(auto generated):</label>
+                                    <input type="text"
+                                   class="form-control"
+                                   name="POSITION_ID"
+                                   only-numbers
+                                   ng-disabled="true"
+                                   readonly
+                                   ng-model="PositionSearch.POSITION_TEXT" >
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Position Title:*</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Enter ..."
+                                   maxlength="500"
+                                   only-letters
+                                   name="POSITION_TITLE"
+                                   required
+                                   ng-class="{'error':PODtlsForm.submitted && PODtlsForm.POSITION_TITLE.$error.required}"
+                                   ng-model="PositionSearch.POSITION_TITLE">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Department:*</label>
+                                <select class="custom-select"
+                                        name="DEPARTMENT_ID"
+                                        ng-options="DPT.DEPARTMENT_ID as DPT.DEPARTMENT_NAME for DPT in (HR_DEPARTMENTS)"
+                                        ng-model="PositionSearch.DEPARTMENT_ID"
+                                        required
+                                        ng-class="{'error':PODtlsForm.submitted && PODtlsForm.DEPARTMENT_ID.$error.required}">
+                                    <option value="">- Please Select-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Reporting Position:</label>
+                                <select class="custom-select"
+                                        name="REPORTINGPOSITION"
+                                        ng-model="PositionSearch.REPORTING_POSITION_ID"
+                                        ng-options="POL.POSITION_ID as POL.POSITION_TITLE for POL in (POSITION_LIST)"
+                                        ng-class="{'error':PODtlsForm.submitted && PODtlsForm.REPORTINGPOSITION.$error.required}">
+                                    <option value="">- Please Select-</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Job Description:*</label>
+                                <textarea class="form-control"
+                                          rows="13"
+                                          placeholder="Enter ..."
+                                          name="JOB_DESCRIPTION"
+                                          ng-model="PositionSearch.JOB_DESCRIPTION"
+                                          maxlength="2000"
+                                          required
+                                          ng-class="{'error':PODtlsForm.submitted && PODtlsForm.JOB_DESCRIPTION.$error.required}"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-12 mt-5 p-0" ng-show="HR_POSITION_RESPONSIBILITY.length>0">
+                                <h5 class="heading-text-2">Job Responsibility</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody ng-repeat="HPR in HR_POSITION_RESPONSIBILITY" ng-show="HPR.TABLE_ID!=-1">
+                                        <tr >
+                                            <td> {{HPR.RESPONSIBILITY_NAME}}</td>
+                                            <td> {{HPR.RESPONSIBILITY_DESCRIPTION}}</td>
+                                            <td width="12%">
+                                                <i class="fal fa-eye fa-lg text-secondary" ng-show="HPR.TASK_MASTER.length>0"  ng-click="DisplayDetails(HPR)"></i>
+                                                <button type="button" class="btn-icon" ng-click="POP_ADD_RESPONSIBILITY(HPR,1,$index)"><i class="fal fa-edit fa-lg text-success"></i></button>
+                                                <a ng-click="DELETE_RESPONSIBILITY($index,HR_POSITION_RESPONSIBILITY)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="div-show-hide" ng-show="HPR.ShowDetails">
+                                            <td colspan="4" class="ng-hide-remove">
+                                                <div class="arrow_box">
+                                                    <div class="panel-body">
+                                                        <div class="card-body table-responsive p-0" ng-show="HPR.TASK_MASTER.length>0">
+                                                            <table class="table table-bordered">
+                                                                <thead class="table-light text-xs">
+                                                                    <tr>
+                                                                        <th>Task</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="panel panel-default text-xs" ng-repeat="TM in HPR.TASK_MASTER" ng-show="TM.IS_TRUE" >
+                                                                    <tr >
+                                                                        <td>{{TM.TASK_NAME}}</td>
+                                                                        <td>
+                                                                        <a ng-click="DELETE_TASK(TM)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                     
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-wenodo mt-4" ng-click="POP_ADD_RESPONSIBILITY()">Add responsibility</button>
+                            </div>
+                        </div>
+                                <div class="col-md-12">
+                                <div data-ng-show="PODtlsForm.submitted && PODtlsForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3" >
+                                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                                </div>
+                                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PODtlsForm.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                                </div>
+                                </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-wenodo" ng-click="HR_INS_UPD_POSITIONS_STEP_1()">Save & continue</button>
+                                <button type="button" class="btn btn-w-default" ng-click="HR_INS_UPD_POSITIONS_STEP_1(1)">Save changes for later</button>
+                                <button type="button" class="btn btn-w-default" ng-click="ResetStep1()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="employement-details" ng-show="STEP_FLAG==2">
+            <form id="PODtlsForm_2" name="PODtlsForm_2" novalidate>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Company*</label>
+                                <select class="custom-select"
+                                        name="COMPANY"
+                                        ng-options="DPT.ENTITY_ID as DPT.ENTITY_NAME for DPT in (ENTITIES)"
+                                        ng-model="PositionSearch_2.ENTITY_ID"
+                                        required
+                                        ng-class="{'error':PODtlsForm_2.submitted && PODtlsForm_2.COMPANY.$error.required}">
+                                    <option value="">- Please Select Company-</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                       
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Cost center*</label>
+                                <select class="custom-select"
+                                        name="COST_CENTER_ID"
+                                        ng-options="CC.COST_CENTER_ID as CC.COST_CENTER_DESCRIPTION for CC in (HR_COST_CENTER)"
+                                        ng-model="PositionSearch_2.COST_CENTER_ID"
+                                        required
+                                        ng-class="{'error':PODtlsForm_2.submitted && PODtlsForm_2.COST_CENTER_ID.$error.required}">
+                                    <option value="">- Please Select Cost center-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Location*</label>
+                                <select class="custom-select"
+                                        name="LOCATION_ID"
+                                        ng-options="DPT.LOCATION_ID as DPT.LOCATION_NAME for DPT in (LOCATION)"
+                                        ng-model="PositionSearch_2.LOCATION_ID"
+                                        required
+                                        ng-class="{'error':PODtlsForm_2.submitted && PODtlsForm_2.LOCATION_ID.$error.required}"
+                                        ng-click="GET_LOCATION_BRANCHES()">
+                                    <option value="">- Please Select Location-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Branch*</label>
+                                <select class="custom-select"
+                                        name="BRANCH_NAME"
+                                        ng-options="DPT.BRANCH_ID as DPT.BRANCH_NAME for DPT in (LOCATION_BRANCHES)"
+                                        ng-model="PositionSearch_2.BRANCH_ID"
+                                        required
+                                        ng-class="{'error':PODtlsForm_2.submitted && PODtlsForm_2.BRANCH_NAME.$error.required}">
+                                    <option value="">- Please Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Category*</label>
+                                <select class="custom-select"
+                                        name="EMP_CATEGORY_ID"
+                                        ng-options="ECT.EMPLOYEE_CATEGORY_ID as ECT.CATEGORY_NAME for ECT in (EMPLOYEE_CATEGORY)"
+                                        ng-model="PositionSearch_2.EMP_CATEGORY_ID"
+                                        required
+                                        ng-change="SUB_GET_EMPLOYEE_CATEGORY()"
+                                        ng-class="{'error':PODtlsForm_2.submitted && PODtlsForm_2.EMP_CATEGORY_ID.$error.required}">
+                                    <option value="">- Please Select Employee Category-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Sub Category*</label>
+                                <select class="custom-select"
+                                        name="EMP_SUB_CATE_ID"
+                                        ng-options="SCT.EMPLOYEE_CATEGORY_ID as SCT.CATEGORY_NAME for SCT in (SUB_EMPLOYEE_CATEGORY)"
+                                        ng-model="PositionSearch_2.EMP_SUB_CATE_ID"
+                                        required
+                                        ng-class="{'error':PODtlsForm_2.submitted && PODtlsForm_2.EMP_SUB_CATE_ID.$error.required}">
+                                    <option value="">- Please Select Employee Sub Category-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="PODtlsForm_2.submitted && PODtlsForm_2.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3" >
+                                <span class="help-block errormessageline" ><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PODtlsForm_2.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" ng-click="GO_BACK(1)" class="btn btn-w-default">Go Back</button>
+                                <button type="button" ng-click="HR_INS_UPD_POSITIONS_STEP_2()" class="btn btn-wenodo">Save & continue</button>
+                                <button type="button" ng-click="HR_INS_UPD_POSITIONS_STEP_2(1)" class="btn btn-w-default">Save changes for later</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="contract-details" ng-show="STEP_FLAG==3">
+            <form id="PODtlsForm_3" name="PODtlsForm_3" novalidate>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Contract Weekly Hours*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       maxlength="4"
+                                       only-digits
+                                       name="WEEKLY_HOURS"
+                                       required
+                                       ng-change="CAL_FTE()"
+                                       ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.WEEKLY_HOURS.$error.required}"
+                                       ng-model="PositionSearch_3.WEEKLY_HOURS">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Work Patterns*</label>
+                                <span class="float-right"><button type="button" class="btn btn-wenodo-icon" ng-click="POP_ADD_WORK_PATTERN()" ><i class="fal fa-plus"></i></button></span>
+                                <select class="custom-select"
+                                        name="PATTERN_NAME"
+                                        ng-options="DPT.WORK_PATTERN_ID as DPT.WORK_PATTERN_NAME for DPT in (WORK_PATTERNS)"
+                                        ng-model="PositionSearch_3.WORK_PATTERN_ID"
+                                        required
+                                        ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.PATTERN_NAME.$error.required}">
+                                    <option value="">- Please Select Work Patterns-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>No. of shifts per week*</label>
+                                <select class="custom-select"
+                                        name="NO_OF_SHIFTS_PER"
+                                        ng-options="DPT.ID as DPT.NAME for DPT in (NO_OF_SHIFTS_PER_LIST)"
+                                        ng-model="PositionSearch_3.NO_OF_SHIFTS_PER"
+                                        required
+                                        ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.NO_OF_SHIFTS_PER.$error.required}">
+                                    <option value="">- Please Select shifts-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Contract Type*</label>
+                                <select class="custom-select"
+                                        name="CONTRACT_TYPE_ID"
+                                        ng-options="DPT.CONTRACT_TYPE_ID as DPT.CONTRACT_TYPE for DPT in (CONTRACT_TYPE)"
+                                        ng-model="PositionSearch_3.CONTRACT_TYPE_ID"
+                                        required
+                                        ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.CONTRACT_TYPE_ID.$error.required}">
+                                    <option value="">- Please Select Contract-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Probation Period*</label>
+                                <select class="custom-select"
+                                        ng-options="DPT.PROBATION_ID as DPT.PROBATION_NAME for DPT in PROBATION_MASTER"
+                                        ng-model="PositionSearch_3.PROBATION_PERIOD_ID"
+                                        required
+                                        name="PROBATION_PERIOD12"
+                                        ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.PROBATION_PERIOD12.$error.required}">
+                                    <option value="">- Please Select Probation-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>FTE</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       maxlength="250"
+                                       name="FTE"
+                                       disabled="disabled"
+                                       required
+                                       ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.FTE.$error.required}"
+                                       ng-model="PositionSearch_3.FTE">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Overtime Eligibility*</label>
+                                <select class="custom-select"
+                                        name="OVERTIME"
+                                        ng-options="YN.ID as YN.NAME for YN in (YESNO)"
+                                        ng-model="PositionSearch_3.OVERTIME"
+                                        required
+                                        ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.OVERTIME.$error.required}">
+                                    <option value="">- Please Select Overtime-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Tronc Eligibility *</label>
+                                <select class="custom-select"
+                                        name="TRONC"
+                                        ng-options="YN.ID as YN.NAME for YN in (YESNO)"
+                                        ng-model="PositionSearch_3.TRONC"
+                                        required
+                                        ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.TRONC.$error.required}">
+                                    <option value="">- Please Select Tronc-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Holiday Entitlements*</label>
+                                <select class="custom-select"
+                                        name="HOLIDAY"
+                                        ng-options="YN.ID as YN.NAME for YN in (YESNO)"
+                                        ng-model="PositionSearch_3.HOLIDAY"
+                                        required
+                                        ng-class="{'error':PODtlsForm_3.submitted && PODtlsForm_3.HOLIDAY.$error.required}">
+                                    <option value="">- Please Select Holiday-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="PODtlsForm_3.submitted && PODtlsForm_3.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="PODtlsForm_3.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" ng-click="GO_BACK(2)" class="btn btn-w-default">Go Back</button>
+                                <button type="button" ng-click="HR_INS_UPD_POSITIONS_STEP_3()" class="btn btn-wenodo">Save & add employee</button>
+                                <button type="button" ng-click="HR_INS_UPD_POSITIONS_STEP_3(1)" class="btn btn-w-default">Save & exit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Add_Responsibility">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Responsibility</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form novalidate id="AddResform" name="AddResform">
+                <div class="modal-body custom-scrollbar height-400">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Responsibility Title:*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       required
+                                       name="TIRESPONSIBILITY_NAME"
+                                       maxlength="100"
+                                       ng-model="RESPONSIBILITY_NAME"
+                                       ng-class="{'error':AddResform.submitted && AddResform.TIRESPONSIBILITY_NAME.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Responsibility Description:*</label>
+                                <textarea class="form-control"
+                                          rows="8"
+                                          maxlength="1000"
+                                          ng-model="RESPONSIBILITY_DESCRIPTION"
+                                          required
+                                          name="RDESCRIPTION"
+                                          placeholder="Enter ..."
+                                          ng-class="{'error':AddResform.submitted && AddResform.RDESCRIPTION.$error.required}"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group" ng-repeat="TM in TASK_MASTER">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input"
+                                           type="checkbox"
+                                           ng-model="TM.IS_SELECTED"
+                                           id="Task{{$index}}"
+                                           value="Task">
+                                    <label for="Task{{$index}}"
+                                           class="custom-control-label">
+                                        {{TM.TASK_NAME}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="AddResform.submitted && AddResform.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="AddResform.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="custom-control">
+                                    <button class="btn btn-wenodo" ng-click="POP_ADD_TASK()"> Add Task</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" ng-click="ADD_RESPONSIBILITY()" class="btn btn-wenodo">Add Responsibility</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Add_Task">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Task</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="TaksForm" name="TaksForm" novalidate>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Task Name:*</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Enter ..."
+                                       ng-model="TASK_NAME"
+                                       name="TASK_NAME"
+                                       required
+                                       ng-class="{'error':TSK.submitted && TaksForm.TASK_NAME.$error.required}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="TSK.submitted && TaksForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="TaksForm.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button class="btn btn-wenodo" ng-click="HR_INS_UPD_TASK_MASTER()"> Save Task</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Add_workptn">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Work Patterns</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form id="WrkForm" name="WrkForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> Name:*</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Enter ..."
+                                           ng-model="WrkPtnSearch.WORK_PATTERN_NAME"
+                                           name="WORK_NAME"
+                                           required
+                                           ng-class="{'error':WrkForm.submitted && WrkForm.WORK_NAME.$error.required}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> Description :*</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Enter ..."
+                                           ng-model="WrkPtnSearch.WORK_PATTERN_DESC"
+                                           name="WORK_DESC"
+                                           required
+                                           ng-class="{'error':WrkForm.submitted && WrkForm.WORK_DESC.$error.required}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> Code :*</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="Enter ..."
+                                           ng-model="WrkPtnSearch.WORK_PATTERN_CODE"
+                                           name="WORK_CODE"
+                                           required
+                                           ng-class="{'error':WrkForm.submitted && WrkForm.WORK_CODE.$error.required}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Work Patterns*</label>
+                                    <select class="custom-select"
+                                            name="WORK_PATTERN_TYPE_ID"
+                                            ng-options="WPT.WORK_PATTERN_TYPE_ID as WPT.WORK_PATTERN_TYPE for WPT in (WORK_PATTERN_TYPES)"
+                                            ng-model="WrkPtnSearch.WORK_PATTERN_TYPE_ID"
+                                            required
+                                            ng-change="SELECT_SHIFT_TYPES()"
+                                            ng-class="{'error':WrkForm.submitted && WrkForm.WORK_PATTERN_TYPE_ID.$error.required}">
+                                        <option value="">- Please Select Shift-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-show="SHIFT_LIST.length>0">
+                                <table class="table table-bordered table-striped" >
+                                    <thead>
+                                        <tr>
+                                            <th style="width:10%" class="day-name">Day No</th>
+                                            <th style="width:10%" class="day-name">Shift</th>
+                                            <th style="width:10%" class="day-name">Start Date</th>
+                                            <th style="width:10%" class="day-name">End Date</th>
+                                            <th style="width:10%" class="day-name">Paid Break</th>
+                                            <th style="width:10%" class="day-name">UnPaid Break</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="CL in SHIFT_LIST">
+                                            <td>
+                                                {{CL.DAY_NO}}
+                                            </td>
+                                            <td>
+                                                <select class="custom-select"
+                                                        name="SHIFT_TITLE{{$index}}"
+                                                        ng-options="Sht.SHIFT_ID as Sht.SHIFT_TITLE for Sht in (SHIFTS)"
+                                                        ng-model="CL.SHIFT_ID"
+                                                        ng-change="NG_SHIFT_CHANGES(CL,CL.SHIFT_ID,$index)"
+                                                        required
+                                                        ng-class="{'error':WrkForm.submitted && WrkForm.SHIFT_TITLE{{$index}}.$error.required}">
+                                                    <option value="">- Please Select Holiday-</option>
+                                                </select>
+                                            </td>
+                                            <td>{{CL.START_TIME}}</td>
+                                            <td>{{CL.END_TIME}}</td>
+                                            <td>
+                                                 <input type="text" 
+                                                        maxlength="10" 
+                                                        only-numbers 
+                                                        name="PAID_BREAK{{$index}}"
+                                                        class="form-control" 
+                                                        ng-model="CL.PAID_BREAK" 
+                                                        required
+                                                        ng-class="{'error':WrkForm.submitted && WrkForm.PAID_BREAK{{$index}}.$error.required}"/>
+                                            </td>
+                                            <td>
+                                                <input type="text"  
+                                                       maxlength="10" 
+                                                       only-numbers 
+                                                       class="form-control" 
+                                                       ng-model="CL.UN_PAID_BREAK"
+                                                       name="UN_PAID_BREAK{{$index}}"
+                                                       required
+                                                       ng-class="{'error':WrkForm.submitted && WrkForm.UN_PAID_BREAK{{$index}}.$error.required}" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                                <div class="col-md-12">
+                                    <div data-ng-show="WrkForm.submitted && WrkForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                        <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                                    </div>
+                                    <div id="divInvlidUser" class="hideshowdiv" data-ng-show="WrkForm.$valid">
+                                        <span class="help-block">{{InvalidUser}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button class="btn btn-wenodo" ng-click="HR_INS_UPD_WORK_PATTERNS()"> Save Work Patterns</button>
+                                    </div>
+                                </div>
+                            </div>
+</form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.select2').select2()
+</script>

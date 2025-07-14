@@ -1,0 +1,69 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Revenue Center Sorting</h6>
+                </div>
+                <div class="card-body">
+                    <form id="ReservationMappingForm" name="ReservationMappingForm" novalidate>
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <ul class="nav nav-pills">
+                                    <li class="dropdown w-100">
+                                        <a class="text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                                            <span class="select-label" id="select_label_Branch"
+                                                  ng-if="RevenueReservationMappingSearch.DISPLAY_TEXT_BRANCH!=undefined || RevenueReservationMappingSearch.DISPLAY_TEXT_BRANCH!=null">
+                                                {{RevenueReservationMappingSearch.DISPLAY_TEXT_BRANCH}}
+                                            </span>
+                                        </a>
+                                        <ul ID="divBranch" class="dropdown-menu w-100 scrollbar-wrapper">
+                                            <li ng-repeat="BL in PW_BRANCH_LIST" ng-show="!BL.USE_EPOS_COVERS_IN_DASHBOARDS"
+                                                ng-click="BRANCH_CHANGE_Fn(BL)">
+                                                {{BL.BRANCH_NAME}}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                    <form id="ReservationMappingListForm" name="ReservationMappingListForm" novalidate>
+                        <div class="table-responsive scrollbar-wrapper height-60vh" ng-show="REVENUE_CENTER_SORTING_LIST.length>0">
+                            <table class="table table-hover consolidated-table">
+                                <thead class="table-header-fixed">
+                                    <tr>
+                                        <th class="text-nowrap">#</th>
+                                        <th class="text-nowrap">Revenue Center</th>
+                                        <th width="20%" class="text-nowrap">Sort Order </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="_revenue in REVENUE_CENTER_SORTING_LIST" on-finish-render="ngRepeatFinished">
+                                        <td class="text-nowrap"> {{$index+1}}</td>
+                                        <td class="text-nowrap">{{_revenue.EPOS_REVENUE_CENTER}}</td>
+                                        <td>
+                                            <input ng-model="_revenue.SORT_ORDER"
+                                                   type="text"
+                                                   only-numbers
+                                                   maxlength="5"
+                                                   class="" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="col-md-12 mt-2">
+                        <button type="button" class="btn btn-sm btn-primary"
+                                data-bs-toggle="tooltip"
+                                title="Save"
+                                ng-click="INS_UPD_EPOS_REVENUE_CENTER_SORTING();">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

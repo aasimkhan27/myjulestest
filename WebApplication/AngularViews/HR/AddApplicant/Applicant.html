@@ -1,0 +1,35 @@
+﻿<form id="CustomForm" name="CustomForm" novalidate>
+
+    <div class="card-header">
+        <h5 class="heading-text">
+            <img src="../../E_Content/images/department-icon.png" class="content-icon" /> {{HEADER_EDIT_ADD}} Applicant
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="col-md-12">
+            <templateurl class="w-100" template-url="../AngularViews/CommonView/FormView.html?v=3{{AppVersion}}"><templateurl>
+        </div>
+        <div class="col-md-12">
+            <div data-ng-show="CustomForm.submitted && CustomForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+            </div>
+            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CustomForm.$valid">
+                <span class="help-block">{{InvalidUser}}</span>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!--<a href="#!/Addposition" class="btn btn-wenodo" ng-click="INS_UPD_DEPARTMENT();">Save and add position</a>-->
+                <button type="button" class="btn btn-wenodo" ng-click="HR_INS_UPD_EMPLOYEE_INVITATION(1);">Invite Applicant</button>
+                <span class="app-text m-2">Or</span>
+                <!--<a href="#!/Addteam" class="btn btn-w-default"></a>-->
+                <button type="button" class="btn btn-w-default" ng-click="HR_INS_UPD_EMPLOYEE_INVITATION(2);">Invite and go back</button>
+                &nbsp;
+                <button type="button" class="btn btn-w-default" ng-click="ResetApplication();">Reset</button>
+                &nbsp;
+                <button type="button" class="btn btn-w-default" ng-click="HistoryBack();">Back</button>
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,140 @@
+﻿<form id="IntegrationMappingForm" name="IntegrationMappingForm" novalidate ng-init="">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="IntegrationMappingSearch.CUSTOMER_ID"
+                            ng-options="EL.CUSTOMER_ID as EL.CUSTOMER_NAME for EL in CUSTOMER_LIST"
+                            ng-change="GET_ENTITY_LIST()"
+                            required
+                            ng-class="{'error':IntegrationMappingForm.submitted && IntegrationMappingForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer -</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="IntegrationMappingSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST" required
+                            ng-class="{'error':IntegrationMappingForm.submitted && IntegrationMappingForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Group:*</label>
+                    <select class="custom-select"
+                            name="GROUP_ID"
+                            ng-model="IntegrationMappingSearch.GROUP_ID"
+                            ng-options="IL.ID as IL.GROUP_NAME for IL in INTEGRATION_GROUP_MASTER"
+                            ng-change=""
+                            required
+                            ng-class="{'error':IntegrationMappingForm.submitted && IntegrationMappingForm.GROUP_ID.$error.required}">
+                        <option value="">- Please Select Group -</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group">
+                    <button ng-click="INTEGRATION_MAPPING(IntegrationMappingSearch.URL);" ng-disabled="REFRESH_FLAG!=1" href="#" class="btn btn-wenodo">Connect To Xero</button>
+                    <!--<button ng-click="EXCHANGE_CODE(IntegrationMappingSearch.URL);" ng-disabled="XERO_TENANTS.length>0" href="#" class="btn btn-wenodo">Get Xero Token</button>-->
+                    <button ng-click="UPD_INTEGRATION_TOKENS();" class="btn btn-wenodo">SAVE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body mb-0" ng-show="false">
+        <div class="text-center" ng-show="XERO_TOKEN.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="XERO_TOKEN.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>ACCESS TOKEN</th>
+                        <th width="5%"></th>
+                        <th>EXPIRES IN</th>
+                        <th>TOKEN TYPE</th>
+                        <th>REFRESH TOKEN</th>
+                        <th>SCOPE</th>
+                    </tr>
+                </thead>
+                <!--<tfoot>
+                    <tr>
+                        <td colspan="8" align="center" ng-show="GetData">
+                            <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_CUSTOMER()">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>-->
+                <tbody ng-repeat="CL in XERO_TOKEN" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{CL.access_token.length>100 ? (CL.access_token | limitTo :50) +'...' : CL.access_token}}</td>
+                        <td>
+                            <i class="fa fa-info-circle float-left"
+                               ng-click="POPUP_XERO_TOKEN_COPY(CL);"
+                               data-toggle="tooltip"
+                               data-original-title="{{CL.access_token.length>100 ? CL.access_token+'..' : CL.access_token}}"
+                               data-html="true" data-placement="right"></i>
+                        </td>
+                        <!--<td>{{CL.access_token.length>100?CL.access_token.substring(0,50)+" ...":CL.access_token}}</td>-->
+                        <td>{{CL.expires_in}}</td>
+                        <td>{{CL.token_type}}</td>
+                        <td>{{CL.refresh_token}}</td>
+                        <td>{{CL.scope}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="card-body mb-0">
+        <div class="text-center" ng-show="XERO_TENANTS.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="XERO_TENANTS.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th></th>
+                        <th>TENANT NAME</th>
+
+                    </tr>
+                </thead>
+                <tbody ng-repeat="XT in XERO_TENANTS" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td><input type="radio" name="Tenant" ng-model="$parent.SELECTED_TENANT" value="{{XT.tenantId}}" /></td>
+                        <td>{{XT.tenantName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="FIELD_VALUE">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Xero Token</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" rows="8" readonly
+                              ng-model="IntegrationMappingSearch.COPY_XERO_TOKEN">
+               </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+

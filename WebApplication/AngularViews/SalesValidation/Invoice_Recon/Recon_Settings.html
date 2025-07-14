@@ -1,0 +1,481 @@
+﻿<div class="card">
+    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(1)">
+            <a class="nav-link " ng-class="{'active':TAB_FLAG==1}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Account Category Mapping</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(2)">
+            <a class="nav-link" ng-class="{'active':TAB_FLAG==2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Contact Account Category Mapping</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(3)">
+            <a class="nav-link" ng-class="{'active':TAB_FLAG==3}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Contact Mapping with Xero</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(4)">
+            <a class="nav-link" ng-class="{'active':TAB_FLAG==4}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Mapping for Accrual</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(5)">
+            <a class="nav-link" ng-class="{'active':TAB_FLAG==5}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Mapping for Pre Payment</a>
+        </li>
+        <li class="nav-item ml-auto"><button type="button" ng-click="HistoryBack()" class="btn btn-sm btn-wenodo">Back</button></li>
+    </ul>
+    <div class="card-body p-0">
+        
+        <div class="tab-content" id="custom-content-below-tabContent">
+            <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                <form id="AcctCatForm" name="AcctCatForm" novalidate>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group mb-0" ng-show="BRANCH_REC_LOGIN_LIST.length>0">
+                                    <label>Branch Name</label>
+                                    <select class="custom-select custom-select-sm"
+                                            name="BRANCH"
+                                            ng-model="ReconSettings_Search.BRANCH_ID"
+                                            ng-options="BR.BRANCH_ID as BR.BRANCH_NAME for BR in BRANCH_REC_LOGIN_LIST">
+                                        <option value="">- Select Branch-</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-header">
+                            <h5 class="card-title mt-2">Xero</h5>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><button class="btn btn-sm btn-wenodo" ng-click="ADD_MORE_ACCOUNT_FY('',16)">Add </button></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table compact_table">
+                                <thead class="bg-wenodo-border">
+                                    <tr>
+                                        <th width="30%">Account</th>
+                                        <th ng-repeat="CL in CATEGORY_MASTER_LIST">{{CL.CATEGORY_NAME}}</th>
+                                        <th width="5%" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="AC in INV_RECO_ACCOUNT_CATEGORY_MAPPING | filter :{'INTEGRATION_SYSTEM_ID':16} track by $index ">
+                                    <tr>
+                                        <td>
+                                            <span ng-show="false">{{AC.INDEX=$index}}</span>
+                                            <div class="form-group mb-0">
+                                                <select class="custom-select custom-select-sm"
+                                                        name="ACCOUNT{{AC.INDEX}}"
+                                                        ng-model="AC.ACCOUNT_ID"
+                                                        required
+                                                        ng-options="AL.TABLE_ID as  (AL.NAME+'-'+AL.CODE) for AL in XERO_ACCOUNT_CODES_LIST"
+                                                        ng-class="{'error':AcctCatForm.submitted && AcctCatForm.ACCOUNT{{AC.INDEX}}.$error.required}">
+                                                    <option value="">-Select Account-</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td ng-repeat="cat in AC.CATEGORY_LIST track by $index">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input"
+                                                       type="radio"
+                                                       ng-model="AC.IS_CAT_SELECTED"
+                                                       ng-value="cat.ID"
+                                                       value="{{cat.ID}}"
+                                                       name="Xero_{{AC.INDEX}}"
+                                                       required
+                                                       ng-class="{'error':AcctCatForm.submitted && AcctCatForm.Xero_{{AC.INDEX}}.$error.required}"
+                                                       id="Xero{{$index}}{{AC.INDEX}}">
+                                                <label for="Xero{{$index}}{{AC.INDEX}}" class="custom-control-label"></label>
+                                            </div>
+                                            <span class="bigcheck" ng-show="false">
+                                                <label class="bigcheck mb-0">
+                                                    <input type="checkbox"
+                                                           ng-model="cat.IS_CAT_SELECTED"
+                                                           class="bigcheck"
+                                                           name="item{{$index}}{{AC.INDEX}}"
+                                                           id="item{{$index}}{{AC.INDEX}}" />
+                                                    <span class="bigcheck-target"></span>
+                                                </label>
+                                            </span>
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="d-flex">
+                                                <button type="button" ng-click="DELETE_ADD_MORE_ACCOUNT_FY(AC,$index)" class="btn btn-sm btn-transparent-danger"><i class="far fa-minus-circle"></i></button>
+                                                <button type="button" ng-show="$last" ng-click="ADD_MORE_ACCOUNT_FY(AC,16)" class="btn btn-sm btn-transparent-wenodo"><i class="far fa-plus"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-12 mt-1">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2">FNB</h5>
+                                <div class="card-tools">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item"><button class="btn btn-sm btn-wenodo" ng-click="ADD_MORE_ACCOUNT_FY('',25)">Add </button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table compact_table">
+                                <thead class="bg-wenodo-border">
+                                    <tr>
+                                        <th width="30%">Account</th>
+                                        <th ng-repeat="CL in CATEGORY_MASTER_LIST">{{CL.CATEGORY_NAME}}</th>
+                                        <th width="5%" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="AC in INV_RECO_ACCOUNT_CATEGORY_MAPPING | filter :{'INTEGRATION_SYSTEM_ID':25}  track by $index ">
+                                    <tr>
+                                        <td>
+                                            <span ng-show="false">{{AC.INDEX=$index}}</span>
+                                            <div class="form-group mb-0 ">
+                                                <input type="text"
+                                                       name="XERO{{$index}}"
+                                                       ng-model="AC.ACCOUNT_NAME"
+                                                       required
+                                                       ng-class="{'error text-danger':AcctCatForm.submitted && AcctCatForm.XERO{{$index}}.$error.required}"
+                                                       class="form-control" />
+                                            </div>
+
+                                        </td>
+                                        <td ng-repeat="item in AC.CATEGORY_LIST">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input"
+                                                       type="radio"
+                                                       name="FNB_{{AC.INDEX}}"
+                                                       ng-value="item.ID"
+                                                       value="{{item.ID}}"
+                                                       ng-model="AC.IS_CAT_SELECTED"
+                                                       id="FNB_{{$index}}{{AC.INDEX}}">
+                                                <label for="FNB_{{$index}}{{AC.INDEX}}" class="custom-control-label"></label>
+                                            </div>
+                                            <span class="bigcheck" ng-show="false">
+                                                <label class="bigcheck mb-0">
+                                                    <input type="checkbox"
+                                                           ng-model="item.IS_CAT_SELECTED"
+                                                           class="bigcheck"
+                                                           id="item{{$index}}{{AC.INDEX}}" />
+                                                    <span class="bigcheck-target"></span>
+                                                </label>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <button type="button" ng-click="DELETE_ADD_MORE_ACCOUNT_FY(AC,$index)" class="btn btn-sm btn-transparent-danger"><i class="far fa-minus-circle"></i></button>
+                                                <button type="button" ng-show="$last" ng-click="ADD_MORE_ACCOUNT_FY(AC,25)" class="btn btn-sm btn-transparent-wenodo"><i class="far fa-plus"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12">
+                            <div data-ng-show="AcctCatForm.submitted && AcctCatForm.$invalid"
+                                 class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="AcctCatForm.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="button" ng-click="INS_UPD_INV_RECO_ACCOUNT_CATEGORY_MAPPING();" class="btn btn-sm btn-wenodo">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==2}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-show="BRANCH_REC_LOGIN_LIST.length>0">
+                                <label class="d-block">Branch Name</label>
+                                <select class="custom-select custom-select-sm"
+                                        name="BRANCH"
+                                        ng-model="ReconSettings_Search.BRANCH_ID"
+                                        ng-options="BR.BRANCH_ID as BR.BRANCH_NAME for BR in BRANCH_REC_LOGIN_LIST">
+                                    <option value="">- Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-auto ml-auto">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <button ng-click="CONTACT_ACCOUNT_CATEGORY_MAPPING_FY()" class="btn btn-sm btn-wenodo">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive" style="overflow:visible">
+                        <table class="table compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th width="30%">Contacts</th>
+                                    <th width="30%">Account Name</th>
+                                    <th ng-repeat="CL in CATEGORY_MASTER_LIST">{{CL.CATEGORY_NAME}}</th>
+                                    <th width="5%" class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="CL in INV_RECO_CONTACT_ACCOUNT_CATEGORY_MAPPING_LIST">
+                                <tr>
+                                    <td>
+                                        <span ng-show="false">{{CL.INDEX=$index}}</span>
+                                        <input type="text"
+                                               name="SUPPLIER_NAME_BOX"
+                                               ng-model="CL.XERO_CONTACT_NAME"
+                                               uib-typeahead="Supplier.CONTACT_NAME for Supplier in XERO_CONTACTS_LIST | filter:$viewValue"
+                                               typeahead-loading="loading" typeahead-no-results="noResults"
+                                               class="form-control" autocomplete="off"
+                                               placeholder="Type to select contact..." />
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                               name="SUPPLIER_NAME_BOX"
+                                               ng-model="CL.ACCOUNT_NAME"
+                                               uib-typeahead="ACT.ACCOUNT_NAME for ACT in INV_RECO_ACCOUNT_CATEGORY_MAPPING | filter :{'INTEGRATION_SYSTEM_ID':'!16'} | filter:$viewValue"
+                                               typeahead-loading="loading" typeahead-no-results="noResults"
+                                               class="form-control" autocomplete="off"
+                                               placeholder="Type to select contact..." />
+                                    </td>
+                                    <td ng-repeat="CAT in CL.CATEGORY_LIST">
+                                        <!--<div class="custom-control custom-radio">
+                                    <input class="custom-control-input" type="radio" id="Food" name="Categories">
+                                    <label for="Food" class="custom-control-label"></label>
+                                </div>-->
+                                        <span class="bigcheck">
+                                            <label class="bigcheck mb-0">
+                                                <input type="checkbox"
+                                                       name="CTN_{{CL.INDEX}}{{$index}}"
+                                                       class="bigcheck"
+                                                       ng-model="CAT.CTN_ACT_CAT_SELECTED_ID"
+                                                       id="CTN_{{CL.INDEX}}{{$index}}" />
+                                                <span class="bigcheck-target"></span>
+                                            </label>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex">
+                                            <button type="button" ng-click="DELETE_CONTACT_ACCOUNT_CATEGORY_MAPPING(CL,CL.INDEX)" class="btn btn-sm btn-transparent-danger"><i class="far fa-minus-circle"></i></button>
+                                            <button type="button" ng-show="$last" ng-click="CONTACT_ACCOUNT_CATEGORY_MAPPING_FY(CL,25)" class="btn btn-sm btn-transparent-wenodo"><i class="far fa-plus"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group text-right">
+                        <button type="button" ng-click="INS_UPD_INV_RECO_CONTACT_ACCOUNT_CATEGORY_MAPPING()" class="btn btn-sm btn-wenodo">Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==3}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-show="BRANCH_REC_LOGIN_LIST.length>0">
+                                <label class="d-block">Branch Name</label>
+                                <select class="custom-select custom-select-sm"
+                                        name="BRANCH"
+                                        ng-model="ReconSettings_Search.BRANCH_ID"
+                                        ng-options="BR.BRANCH_ID as BR.BRANCH_NAME for BR in BRANCH_REC_LOGIN_LIST">
+                                    <option value="">- Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-auto ml-auto">
+
+                        </div>
+                    </div>
+                    <div class="table-responsive custom-scrollbar height-47vh">
+                        <table class="table table-head-fixed table-striped table-hover compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th width="30%">Contact  Name</th>
+                                    <th>Xero Contact Name</th>
+                                    <th>Integration System Name</th>
+                                    <th>Created by</th>
+                                    <th>Created Date</th>
+                                    <th width="5%" class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="CX in INV_RECO_CONTACT_XERO_CONTACT_MAPPING_LIST">
+                                <tr>
+                                    <td>{{CX.CONTACT_NAME}}</td>
+                                    <td>{{CX.XERO_CONTACT_NAME}}</td>
+                                    <td>{{CX.INTEGRATION_SYSTEM_NAME}}</td>
+                                    <td>
+                                        {{CX.CREATED_BY_USER_NAME}}
+                                        <span class="d-block text-italic">{{CX.CREATED_BY_EMAIL}}</span>
+                                    </td>
+                                    <td>{{CX.CREATED_DATE | date}} </td>
+                                    <td class="text-center">
+                                        <button type="button"
+                                                ng-click="DEL_INV_RECO_CONTACT_XERO_CONTACT_MAPPING(CX)"
+                                                class="btn btn-sm btn-transparent-danger">
+                                            <i class="far fa-times"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==4}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                <div class="col-md-12">
+                    <form id="MapAccForm" name="MapAccForm" novalidate>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group" ng-show="BRANCH_REC_LOGIN_LIST.length>0">
+                                    <label class="d-block">Branch Name</label>
+                                    <select class="custom-select custom-select-sm"
+                                            name="BRANCH"
+                                            ng-model="ReconSettings_Search.BRANCH_ID"
+                                            ng-options="BR.BRANCH_ID as BR.BRANCH_NAME for BR in BRANCH_REC_LOGIN_LIST"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <select class="custom-select custom-select-sm"
+                                            name="CAT"
+                                            ng-model="ReconSettings_Search.ACC_CATEGORY_ID"
+                                            required
+                                            ng-options="AL.ID as  (AL.CATEGORY_NAME) for AL in CATEGORY_MASTER_LIST"
+                                            ng-class="{'error':MapAccForm.submitted && MapAccForm.CAT.$error.required}">
+                                        <option value="">-Select Category-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" id="AddCustomScroll_ACC">
+                                <div class="form-group">
+                                    <input type="text"
+                                           name="MAP_ACC_ACCOUNT_CODE"
+                                           required
+                                           ng-class="{'error':MapAccForm.submitted && MapAccForm.MAP_ACC_ACCOUNT_CODE.$error.required}"
+                                           ng-model="ReconSettings_Search.ACC_ACCOUNT_NAME"
+                                           uib-typeahead="ACT.NAME+'-'+ACT.CODE for ACT in XERO_ACCOUNT_CODES_LIST | filter :{'INTEGRATION_SYSTEM_ID':'!16'} | filter:$viewValue"
+                                           typeahead-loading="loading" typeahead-no-results="noResults"
+                                           class="form-control" autocomplete="off"
+                                           placeholder="Type to select account name..." />
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" ng-click="ADD_MAPPING_FOR_ACCURAL()" class="btn btn-sm btn-wenodo">Add</button>
+                                <button type="button" ng-click="RESET_MAPPING_FOR_ACCURAL()" class="btn btn-sm btn-w-default">Reset</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div data-ng-show="MapAccForm.submitted && MapAccForm.$invalid"
+                                 class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                            </div>
+                            <div id="divInvlidUser" class="hideshowdiv" data-ng-show="MapAccForm.$valid">
+                                <span class="help-block">{{InvalidUser}}</span>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <div class="table-responsive custom-scrollbar height-47vh">
+                        <table class="table table-head-fixed table=hover table-striped compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th width="30%">Category  Name</th>
+                                    <th>Account Name / Code</th>
+                                    <th width="5%" class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="MFA in INV_RECO_ACCOUNT_MAPPING_FOR_ACCRUAL">
+                                <tr>
+                                    <td> <span ng-show="false">{{MFA.INDEX=$index}}</span>{{MFA.CATEGORY_NAME}}</td>
+                                    <td>{{MFA.ACCOUNT_NAME}} - {{MFA.ACCOUNT_CODE}}</td>
+                                    <td class="text-center">
+                                        <button type="button" ng-click="DELETE_CMAPPING_FOR_ACCURAL(MFA,MFA.INDEX)" class="btn btn-sm btn-transparent-danger"><i class="far fa-minus-circle"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-group text-right">
+                        <button type="button" ng-disabled="INV_RECO_ACCOUNT_MAPPING_FOR_ACCRUAL.length==0" ng-click="INS_UPD_INV_RECO_ACCOUNT_MAPPING_FOR_ACCRUAL();" class="btn btn-sm btn-wenodo">Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==5}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group" ng-show="BRANCH_REC_LOGIN_LIST.length>0">
+                                <label class="d-block">Branch Name</label>
+                                <select class="custom-select custom-select-sm"
+                                        name="BRANCH"
+                                        ng-model="ReconSettings_Search.BRANCH_ID"
+                                        ng-options="BR.BRANCH_ID as BR.BRANCH_NAME for BR in BRANCH_REC_LOGIN_LIST">
+                                    <option value="">- Select Branch-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-auto ml-auto"></div>
+
+                        <div class="col-md-4" id="AddCustomScroll_PRE_ACC" ng-show="false">
+                            <input type="text"
+                                   name="SUPPLIER_ACCOUNT_CODE"
+                                   ng-model="ReconSettings_Search.PRE_PAYMENT_ACCOUNT_NAME"
+                                   uib-typeahead="ACT.NAME+'-'+ACT.CODE for ACT in XERO_ACCOUNT_CODES_LIST | filter :{'INTEGRATION_SYSTEM_ID':'!16'} | filter:$viewValue"
+                                   typeahead-loading="loading" typeahead-no-results="noResults"
+                                   class="form-control" autocomplete="off"
+                                   placeholder="Type to select account..." />
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+                            <button type="button" ng-click="ADD_MAPPING_FOR_PRE_PAYMENT()" class="btn btn-sm btn-wenodo">Add</button>
+                            <button type="button" ng-click="RESET_MAPPING_FOR_PRE_PAYMENT()" class="btn btn-sm btn-default">Reset</button>
+                        </div>
+
+                    </div>
+                    <div class="table-responsive custom-scrollbar height-47vh" style="overflow:visible">
+                        <table class="table compact_table">
+                            <thead class="bg-wenodo-border">
+                                <tr>
+                                    <th>Account Name</th>
+                                    <th width="5%" class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="CX in INV_RECO_ACCOUNT_MAPPING_FOR_PRE_PAYMENT">
+                                <tr>
+                                    <td ng-init="CX.ACCOUNT_NAME=(CX.ACCOUNT_NAME+'-'+CX.ACCOUNT_CODE)">
+                                        <div id="AddCustomScroll_PRE_ACC">
+                                            <input type="text"
+                                                   name="SUPPLIER_ACCOUNT_CODE"
+                                                   ng-model="CX.ACCOUNT_NAME"
+                                                   uib-typeahead="ACT.NAME+'-'+ACT.CODE for ACT in XERO_ACCOUNT_CODES_LIST | filter :{'INTEGRATION_SYSTEM_ID':'!16'} | filter:$viewValue"
+                                                   typeahead-loading="loading" typeahead-no-results="noResults"
+                                                   class="form-control" autocomplete="off"
+                                                   placeholder="Type to select account..." />
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <!--<button type="button" ng-click="DELETE_CMAPPING_FOR_PRE_PAYMENT(CX,$index)" class="btn btn-sm btn-danger d-block"><i class="far fa-minus-circle"></i></button>-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group text-right">
+                        <button type="button" ng-disabled="INV_RECO_ACCOUNT_MAPPING_FOR_PRE_PAYMENT.length==0" ng-click="INS_UPD_INV_RECO_ACCOUNT_MAPPING_FOR_PRE_PAYMENT();" class="btn btn-sm btn-wenodo">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

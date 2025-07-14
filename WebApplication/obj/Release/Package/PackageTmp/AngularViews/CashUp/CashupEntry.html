@@ -1,0 +1,2828 @@
+﻿<style>
+    h5 {
+        font-size: 12px;
+    }
+</style>
+
+<div class="card shadow-none">
+    <div class="idealsteps-nav">
+        <ul class="nav entry-nav-tabs" id="custom-content-below-tab" role="tablist">
+            <li ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==0, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>0}">
+                <a class="pt-1" ng-click="ShowDiv(0)" aria-controls="custom-content-below-home" aria-selected="true">Cashup Entry <!--<span class="counter">Variance {{CASHUP.STEP_NO}}{{CASHUP.ACTUAL_STEP_NO}}</span>--></a>
+            </li>
+            <li ng-if="TABLIST[1].FLAG==1 || TABLIST[1].FLAG==2" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==1, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>1}">
+                <a class="pt-1" ng-click="ShowDiv(1)" aria-controls="custom-content-below-home_float" aria-selected="true">Float <!--<span class="counter">100 </span>--></a>
+            </li>
+            <li ng-if="TABLIST[2].FLAG==1 || TABLIST[2].FLAG==2" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==2, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>2}">
+                <a class="pt-1" ng-click="ShowDiv(2)" ria-controls="custom-content-below-profile" aria-selected="false">Cash <!--<span class="counter">100 </span>--></a>
+            </li>
+            <li ng-if="TABLIST[3].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==3, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>3}">
+                <a class="pt-1" ng-click="ShowDiv(3)" aria-controls="custom-content-below-messages" aria-selected="false">Cards <!--<span class="counter">100 </span>--></a>
+            </li>
+            <li ng-if="TABLIST[4].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==4, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>4}">
+                <a class="pt-1" ng-click="ShowDiv(4)" aria-controls="custom-content-below-settings" aria-selected="false">Petty Cash <!--<span class="counter">100 </span>--></a>
+            </li>
+            <li ng-if="TABLIST[5].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==5, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>5}">
+                <a class="pt-1" ng-click="ShowDiv(5)" aria-controls="custom-content-below-messages" aria-selected="false">
+                    Delivery
+                    <!--<span class="counter">100 </span>-->
+                </a>
+            </li>
+            <li ng-if="TABLIST[6].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==6, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>6}">
+                <a class="pt-1" ng-click="ShowDiv(6)" aria-controls="custom-content-below-settings" aria-selected="false">
+                    Account Customer
+                    <!--<span class="counter">100 </span>-->
+                </a>
+            </li>
+            <li ng-if="TABLIST[7].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==7, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>7}">
+                <a class="pt-1" ng-click="ShowDiv(7)" aria-controls="custom-content-below-messages" aria-selected="false">Vouchers <!--<span class="counter">100 </span>--></a>
+            </li>
+            <li ng-if="TABLIST[8].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==8, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>8}">
+                <a class="pt-1" ng-click="ShowDiv(8)" aria-controls="custom-content-below-messages" aria-selected="false">Deposits <!--<span class="counter">100 </span>--></a>
+            </li>
+            <li ng-if="TABLIST[9].FLAG==1" ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==9, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>9}">
+                <a class="pt-1" ng-click="ShowDiv(9)" aria-controls="custom-content-below-messages" aria-selected="false">Complimentary <!--<span class="counter">100 </span>--></a>
+            </li>
+            <li ng-class="{'idealsteps-step-active':CASHUP.STEP_NO==10, 'idealsteps-step-valid':CASHUP.ACTUAL_STEP_NO>10}">
+                <a class="pt-1" ng-click="ShowDiv(10)" aria-controls="custom-content-below-messages" aria-selected="false">Review </a>
+            </li>
+        </ul>
+    </div><!-- /.idealsteps-nav -->
+
+    <div class="tab-content" id="custom-content-below-tabContent">
+        <div class="animated fadeInLeft" id="cash-entry" role="tabpanel" ng-show="CASHUP.STEP_NO==0" aria-labelledby="custom-content-below-home-tab1">
+            <div class="card shadow-none mb-0">
+                <div class="card-header">
+                    <div class="row">
+                        <!-- Row 1 Start here -->
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="session" class="m-0">Branch</label>
+                                        <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}-{{CASHUP.BRANCH_CODE}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="session" class="m-0">Area</label>
+                                        <span class="cash-up-header" ng-if="AreaList.length==1">{{AreaList[0].NAME}}</span>
+                                        <div class="form-group" ng-if="AreaList.length>1">
+                                            <select class="hover"
+                                                    ng-options="AREA.ID as AREA.NAME for AREA in (AreaList)"
+                                                    ng-model="CASHUP.AREA_ID">
+                                                <option value="">-Please Select-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="date">CashUp Date</label>
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                            <span class="cash-up-header">{{CASHUP.CASHUP_DATE |date}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="session" class="m-0">Sessions</label>
+                                <div class="row" ng-repeat="Group in SessionList | unique:'GROUP_ID'">
+                                    <div class="col-md-12">
+                                        <div class="row" ng-repeat="Session in SessionList | filter:{'GROUP_ID':Group.GROUP_ID}">
+                                            <div class="col-md-2 custom-control custom-radio mr-4" ng-show="CASHUP.COMPLETED_GROUP_ID==null || CASHUP.COMPLETED_GROUP_ID==Group.GROUP_ID">
+                                                <input class="custom-control-input" type="radio" id="SessionRadio{{Session.SESSION_MAPPING_ID}}" name="SessionRadio{{Group.GROUP_ID}}">
+                                                <label for="SessionRadio{{Session.SESSION_MAPPING_ID}}" class="custom-control-label" ng-click="SELECT_SESSION(Session, $index)">{{Session.SESSION_NAME}}</label>
+                                            </div>
+                                            <div class="col-md-2 custom-control custom-radio mr-4" ng-show="CASHUP.COMPLETED_GROUP_ID!=null && CASHUP.COMPLETED_GROUP_ID!=Group.GROUP_ID">
+                                                <label class="custom-control-label">{{Session.SESSION_NAME}}</label>
+                                            </div>
+                                            <div class="col-md-2" style="font-size: 0.79rem;">{{Session.SESSION_START}} - {{Session.SESSION_END}}  </div>
+                                            <div class="col-md-1">
+                                                <!--{{Session.STATUS_ID==0?'Pending':Session.STATUS_ID==1?'Draft':Session.STATUS_ID==2?'In-Approvals':Session.STATUS_ID==3?'Approved':'Rejected'}}-->
+                                                <span class="badge badge-light-grey mb-1" ng-show="Session.STATUS_ID==0">
+                                                    Pending
+                                                </span>
+                                                <span class="badge badge-light-blue mb-1" ng-show="Session.STATUS_ID==1">
+                                                    Draft
+                                                </span>
+                                                <span class="badge badge-light-orange mb-1" ng-show="Session.STATUS_ID==2">
+                                                    Completed
+                                                </span>
+                                                <span class="badge badge-light-red mb-1" ng-show="Session.STATUS_ID==4">
+                                                    Approved
+                                                </span>
+                                                <span class="badge badge-light-red mb-1" ng-show="Session.STATUS_ID==5">
+                                                    Rejected
+                                                </span>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-w-default btn-sm" ng-if="Session.STEP_NO !=null &&  Session.STEP_NO!=0 && CashUp_Main_STATUS_ID!=3 && CashUp_Main_STATUS_ID!=4" data-toggle="tooltip" data-html="true" data-original-title="Reset" ng-click="RESET_CASHUP_HEADER(Session, $index)"><i class="fas fa-undo"></i> Reset</button>
+                                                <!--<i class="fas fa-undo cursor-pointer" ng-if="Session.STEP_NO !=null &&  Session.STEP_NO!=0 && CashUp_Main_STATUS_ID!=3 && CashUp_Main_STATUS_ID!=4" title="Reset" ng-click="RESET_CASHUP_HEADER(Session, $index)"></i>--><!--<i class="fal fa-infinity"></i>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-center my-2 border-top border-bottom" ng-if="!$last">OR</div>
+                                </div>
+                                <div class="row" style="color:red;" ng-if="!Validation.CashupEntry.Session_Valid">Please Select Session to proceed.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-9" ng-if="false">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="session" class="m-0">Area</label>
+                                        {{AreaList[0].NAME}}
+                                        <div class="form-group" ng-if="AreaList.length>1">
+                                            <select class="hover"
+                                                    ng-options="AREA.ID as AREA.NAME for AREA in (AreaList)"
+                                                    ng-model="CASHUP.AREA_ID">
+                                                <option value="">- Please Select-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="CASHUP.AREA_ID!=null">
+                                <div class="col-md-4" ng-if="CASHUP.IS_TILL_BASED && CASHUP.IS_SESSION_BASED">
+                                    <div class="custom-control custom-radio mr-4" ng-if="CASHUP.IS_TILL_BASED">
+                                        <input class="custom-control-input" type="radio" id="customRadio1" name="customRadio" ng-model="CASHUP.TYPE" ng-value="1" ng-checked="1">
+                                        <label for="customRadio1" class="custom-control-label">Till Based Cashup</label>
+                                    </div>
+                                    <div class="custom-control custom-radio mr-4" ng-if="CASHUP.IS_SESSION_BASED">
+                                        <input class="custom-control-input" type="radio" id="customRadio2" name="customRadio" ng-model="CASHUP.TYPE" ng-value="2">
+                                        <label for="customRadio2" class="custom-control-label">Session Based Cashup</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" ng-show="CASHUP.IS_TILL_BASED && CASHUP.TYPE==1">
+                                    <div class="form-group">
+                                        <label for="session" class="m-0">Till</label>
+                                        <div class="form-group">
+                                            <select class="hover"
+                                                    ng-options="TILL.ID as TILL.TILL_NAME for TILL in (TillList |filter:{BRANCH_ID:CASHUP.BRANCH_ID, AREA_ID:CASHUP.AREA.ID})"
+                                                    ng-model="CASHUP.TILL_ID">
+                                                <option value="">- Please Select-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" ng-show="CASHUP.IS_SESSION_BASED && CASHUP.TYPE==2">
+                                    <div class="form-group">
+                                        <label for="session" class="m-0">Session</label>
+                                        <div class="form-group">
+                                            <select class="hover"
+                                                    ng-options="SESSION as SESSION.SESSION_NAME for SESSION in SessionList"
+                                                    ng-model="CASHUP.SESSION"
+                                                    ng-change="CASHUP.SESSION_ID=CASHUP.SESSION.ID;GET_CASHUP_BY_ID();">
+                                                <option value="">- Please Select-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header" ng-show="CASHUP.REVENUE_CENTERS.length>0">
+                    <h5 class="card-title">Cover Details</h5><!--&nbsp;&nbsp;&nbsp;<i class="fal fa-info-circle fa-lg"></i>-->
+                </div>
+                <div class="card-body" ng-show="CASHUP.REVENUE_CENTERS.length>0">
+                    <fieldset>
+                        <div class="custom-scrollbar height-auto">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th width="10%"></th>
+                                        <th width="26%" colspan="{{(CASHUP.REVENUE_CENTERS | unique:'REVENUECENTER').length}}" class="text-center" ng-repeat="SC in CASHUP.REVENUE_CENTERS  | unique:'SESSION_NAME'">{{SC.SESSION_NAME}}</th>
+                                        <th width="12%" class="text-center">Total</th>
+                                    </tr>
+                                    <tr class="bg-light-grey text-dark">
+                                        <th></th>
+                                        <th width="{{26/(CASHUP.REVENUE_CENTERS | unique:'REVENUECENTER').length}}%" class="text-center" ng-repeat="RC in CASHUP.REVENUE_CENTERS">{{RC.REVENUECENTER}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Covers</td>
+                                        <td width="9%" class="text-center" ng-repeat="RC in CASHUP.REVENUE_CENTERS"><input type="text" ng-model="RC.COVERS" class="form-control" only-numbers /></td>
+                                        <td class="text-center">{{(CASHUP.REVENUE_CENTERS | total:'COVERS')}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="card-header">
+                    <h5 class="card-title">ePOS Report - {{CASHUP.SESSION.SESSION_NAME}}</h5><!--&nbsp;&nbsp;&nbsp;<i class="fal fa-info-circle fa-lg"></i>-->
+                    <div class="card-tools">
+                          <button type="button" class="btn btn-tool" ng-if="CASHUP.INTEGRATION_SYSTEM_ID==5" ng-show="CASHUP.INTEGRATION_SYSTEM_ID!=0">
+                            <i class="far fa-sync-alt fa-lg" data-toggle="tooltip" data-html="true" data-original-title="Sync EPOS Data" ng-click="EPOS_REFRESH(0)"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" ng-if="CASHUP.INTEGRATION_SYSTEM_ID!=5" ng-show="CASHUP.INTEGRATION_SYSTEM_ID!=0">
+                            <i class="far fa-sync-alt fa-lg" data-toggle="tooltip" data-html="true" data-original-title="Sync EPOS Data" ng-click="EPOS_REFRESH(7)"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <fieldset>
+                        <div class="form-group" ng-show="CASHUP.INTEGRATION_SYSTEM_ID==0 || CASHUP.INTEGRATION_SYSTEM_ID==12">
+                            <div class="row" ng-if="CASHUP.UPL_ID==0">
+                                <label class="control-label text-right mt-1" for="filename">Upload Your POS Report</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <!--<input type="hidden" id="filename" name="filename" value="">-->
+                                        <!--<input type="file" id="ngexcelfile"  accept=".xls,.xlsx,.csv"  class="form-control text-xs" >-->
+                                        <!--<input type="file" id="fileUpl_EvtInfo" name="file" ng-files="getTheFilesToUpload($files, 'fileUpl_EvtInfo', 5)" class="form-control text-xs">-->
+                                        <input class="form-control text-xs" type="file" id="ngexcelfile" ng-files="getTheFilesToUpload($files, 'fileUpl_EvtInfo', 5)" name="file" />
+                                        <!--accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"-->
+                                        <div class="input-group-append">
+                                            <input type="button" value="Upload" ng-click="ReadExcelData()" class="btn btn-xs btn-upload">
+                                        </div>
+                                        <div class="input-group-append">
+                                            <img ng-if="Uploading" src="../../E_Content/images/loading.gif" style="height: 25px;margin-left:20px;" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row" ng-if="CASHUP.UPL_ID!=0">
+                                <label class="control-label text-right mt-1" for="filename">EPOS FILE: </label>
+                                <div class="col-md-6">
+                                    <a href="" target="_blank">{{CASHUP.ORIGINAL_FILE_NAME}} </a> <i class="fas fa-window-close" ng-click="DELETE_UPLOAD()"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="CASHUP.INTEGRATION_SYSTEM_ID==5">
+                            <div class="row" ng-if="EPOS_ACCOUNT_GROUPS_DATA.length==0 && ShowWait">
+                                <label class="control-label text-right mt-1" for="filename">Please wait while epos data is fetched. This may take upto 2 minutes.</label>
+
+                            </div>
+                            <div ng-if="EPOS_ACCOUNT_GROUPS_DATA.length==0 && !ShowWait"> Please click refresh to fetch the data from EPOS.</div>
+                            <table class="table table-hover table-striped" ng-if="EPOS_ACCOUNT_GROUPS_DATA.length>0">
+                                <thead>
+                                    <tr>
+                                        <th width="4%"></th>
+                                        <th width="41%">Accounting Group</th>
+                                        <th width="8%">Code</th>
+                                        <th width="5%">Quantity</th>
+                                        <th width="5%">Discounts</th>
+                                        <th width="5%">Tax</th>
+                                        <th width="15%">Total With Tax</th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="card-footer">
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2" class="text-bold">Total</td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'QUANTITY') | number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'DISCOUNT')| number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'TOTAL_TAX')| number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'TOTAL_WITH_TAX')| number:2}}    </td>
+
+                                    </tr>
+                                </tfoot>
+                                <tbody ng-repeat="EPOS_ACCOUNT_GROUP_DATA in EPOS_ACCOUNT_GROUPS_DATA" ng-init="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS=false">
+                                    <tr>
+                                        <td class="cursor-pointer" ng-click="GET_ACCOUNT_GROUP_DETAILS(EPOS_ACCOUNT_GROUP_DATA)"><i class="fas fa-chevron-down" ng-show="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS"></i><i class="fas fa-chevron-right" ng-show="!EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS"></i> </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.ACCOUNTING_GROUP}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.ACCOUNTING_GROUP_CODE}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.QUANTITY}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.DISCOUNT | number:2}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.TOTAL_TAX | number:2}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.TOTAL_WITH_TAX | number:2}}    </td>
+
+                                    </tr>
+                                    <tr ng-show="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS">
+                                        <td colspan="9" class="p-0">
+                                            <table class="table">
+                                                <!--<thead class="bg-white">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>SKU</th>
+                                    <th>Quantity</th>
+                                    <th>Gross Total</th>
+                                    <th>Discounts</th>
+                                    <th>Total Without Tax</th>
+                                    <th>Tax</th>
+                                    <th>Net Total</th>
+                                </tr>
+                            </thead>-->
+
+                                                <tr ng-repeat="EPOS_ACCOUNT_GROUP_DETAIL in EPOS_ACCOUNT_GROUP_DATA.EPOS_ACCOUNT_GROUP_DETAILS">
+                                                    <td width="4%"></td>
+                                                    <td width="40%">{{EPOS_ACCOUNT_GROUP_DETAIL.NAME}}</td>
+                                                    <td width="8%">{{EPOS_ACCOUNT_GROUP_DETAIL.SKU}} </td>
+                                                    <td width="5%">{{EPOS_ACCOUNT_GROUP_DETAIL.QUANTITY | number:2}} </td>
+                                                    <td width="5%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_WITHOUT_TAX | number:2}} </td>
+                                                    <td width="5%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_TAXES | number:2}} </td>
+                                                    <td width="15%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_WITH_TAX_LESS_DISCOUNTS | number:2}} </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--<div class="row" ng-if="CASHUP.UPL_ID==0">
+            <label class="control-label text-right mt-1" for="filename">Upload Your POS Report</label>
+
+        </div>
+
+        <div class="row  m-2" ng-if="CASHUP.UPL_ID==0">
+            <div class="col-md-2">Department Report*</div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input class="form-control text-xs" type="file" id="ngexcelfile_Deartments_Squirrel" ng-files="getTheFilesToUpload($files, 'fileUpl_EvtInfo', 5)" name="file" />
+
+                    <div class="input-group-append">
+                        <img ng-if="Uploading" src="../../E_Content/images/loading.gif" style="height: 25px;margin-left:20px;" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3 text-danger" ng-if="!DepartmentFileValid">Please select department report file.</div>
+        </div>
+        <div class="row  m-2" ng-if="CASHUP.UPL_ID==0">
+            <div class="col-md-2">Payments Report*</div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input class="form-control text-xs" type="file" id="ngexcelfile_Payments_Squirrel" ng-files="getTheFilesToUpload($files, 'fileUpl_EvtInfo', 5)" name="file" />
+
+                    <div class="input-group-append">
+                        <img ng-if="Uploading" src="../../E_Content/images/loading.gif" style="height: 25px;margin-left:20px;" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3 text-danger" ng-if="!PaymentsFileValid">Please select payments report file.</div>
+        </div>
+
+        <div class="row m-2" ng-if="CASHUP.UPL_ID==0">
+            <div class="col-md-2">Item Sales Report</div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input class="form-control text-xs" type="file" id="ngexcelfile_ItemSales_Squirrel" ng-files="getTheFilesToUpload($files, 'fileUpl_EvtInfo', 5)" name="file" />
+
+                    <div class="input-group-append">
+                        <img ng-if="Uploading" src="../../E_Content/images/loading.gif" style="height: 25px;margin-left:20px;" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 text-danger" ng-if="!ItemSalesFileValid">Please select item sales report file.</div>
+        </div>
+        <div class="row  m-2" ng-if="CASHUP.UPL_ID==0">
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="button" value="Upload" ng-click="Upload_Squirrel_Reports()" class="btn btn-wenodo btn-sm">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" ng-if="CASHUP.UPL_ID!=0">
+            <label class="control-label text-right mt-1" for="filename">EPOS FILE: </label>
+            <div class="col-md-6">
+                <a href="" target="_blank">{{CASHUP.ORIGINAL_FILE_NAME}} </a> <i class="fas fa-window-close" ng-click="DELETE_UPLOAD()"></i>
+            </div>
+        </div>-->
+                        </div>
+                        <div class="form-group" ng-show="CASHUP.INTEGRATION_SYSTEM_ID==1 || CASHUP.INTEGRATION_SYSTEM_ID==10 || CASHUP.INTEGRATION_SYSTEM_ID==11 || CASHUP.INTEGRATION_SYSTEM_ID==6 || CASHUP.INTEGRATION_SYSTEM_ID==14">
+                            <div ng-if="EPOS_ACCOUNT_GROUPS_DATA.length==0"> Please click refresh to fetch the data from EPOS.</div>
+                            <table class="table table-hover table-striped" ng-if="EPOS_ACCOUNT_GROUPS_DATA.length>0">
+                                <thead>
+                                    <tr>
+                                        <th width="4%"></th>
+                                        <th width="41%">Accounting Group</th>
+                                        <th width="5%">Code</th>
+                                        <th width="5%">Quantity</th>
+                                        <th width="10%">Gross Total</th>
+                                        <th width="5%">Discounts</th>
+                                        <th width="10%">Total Without Tax</th>
+                                        <th width="5%">Tax</th>
+                                        <th width="15%">Total With Tax</th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="card-footer">
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2" class="text-bold">Total</td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'QUANTITY') | number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'ACTUAL_TOTAL')| number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'DISCOUNT')| number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'TOTAL_LESS_TAX')| number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'TOTAL_TAX')| number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'TOTAL_WITH_TAX')| number:2}}    </td>
+
+                                    </tr>
+                                </tfoot>
+                                <tbody ng-repeat="EPOS_ACCOUNT_GROUP_DATA in EPOS_ACCOUNT_GROUPS_DATA" ng-init="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS=false">
+                                    <tr>
+                                        <td class="cursor-pointer" ng-click="GET_ACCOUNT_GROUP_DETAILS(EPOS_ACCOUNT_GROUP_DATA)"><i class="fas fa-chevron-down" ng-show="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS"></i><i class="fas fa-chevron-right" ng-show="!EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS"></i> </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.ACCOUNTING_GROUP}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.ACCOUNTING_GROUP_CODE}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.QUANTITY}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.ACTUAL_TOTAL=(EPOS_ACCOUNT_GROUP_DATA.TOTAL_WITH_TAX*1+EPOS_ACCOUNT_GROUP_DATA.DISCOUNT*1) | number:2}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.DISCOUNT | number:2}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.TOTAL_LESS_TAX | number:2}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.TOTAL_TAX | number:2}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.TOTAL_WITH_TAX | number:2}}    </td>
+
+                                    </tr>
+                                    <tr ng-show="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS">
+                                        <td colspan="9" class="p-0">
+                                            <table class="table">
+                                                <!--<thead class="bg-white">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>SKU</th>
+                                    <th>Quantity</th>
+                                    <th>Gross Total</th>
+                                    <th>Discounts</th>
+                                    <th>Total Without Tax</th>
+                                    <th>Tax</th>
+                                    <th>Net Total</th>
+                                </tr>
+                            </thead>-->
+
+                                                <tr ng-repeat="EPOS_ACCOUNT_GROUP_DETAIL in EPOS_ACCOUNT_GROUP_DATA.EPOS_ACCOUNT_GROUP_DETAILS">
+                                                    <td width="4%"></td>
+                                                    <td width="37%">{{EPOS_ACCOUNT_GROUP_DETAIL.NAME}}</td>
+                                                    <td width="5%">{{EPOS_ACCOUNT_GROUP_DETAIL.SKU}} </td>
+                                                    <td width="8%">{{EPOS_ACCOUNT_GROUP_DETAIL.QUANTITY | number:2}} </td>
+                                                    <td width="9%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_WITH_TAX_LESS_DISCOUNTS | number:2}} </td>
+                                                    <td width="8%">{{EPOS_ACCOUNT_GROUP_DETAIL.DISCOUNTS | number:2}} </td>
+                                                    <td width="10%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_WITHOUT_TAX | number:2}} </td>
+                                                    <td width="5%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_TAXES | number:2}} </td>
+                                                    <td width="14%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_WITHOUT_TAX *1 + EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_TAXES*1 | number:2}} </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group" ng-show="CASHUP.INTEGRATION_SYSTEM_ID==2">
+                            <div ng-if="EPOS_ACCOUNT_GROUPS_DATA.length==0"> No records found.</div>
+                            <table class="table table-hover table-striped" ng-if="EPOS_ACCOUNT_GROUPS_DATA.length>0">
+                                <thead>
+                                    <tr>
+                                        <th width="4%"></th>
+                                        <th>Accounting Group</th>
+                                        <th width="15%">Quantity</th>
+                                        <th width="15%">Gross Total</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td>Total Quantity</td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'QUANTITY') | number:2}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td>Total</td>
+                                        <td>{{EPOS_HEADER_DATA[0].TOTAL_SALES| number:2}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td>Total Tax</td>
+                                        <td>{{EPOS_HEADER_DATA[0].TOTAL_TAX| number:2}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td>Total Discount</td>
+                                        <td>{{EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT| number:2}}</td>
+                                    </tr>
+                                </tfoot>
+                                <tbody ng-repeat="EPOS_ACCOUNT_GROUP_DATA in EPOS_ACCOUNT_GROUPS_DATA" ng-init="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS=false">
+                                    <tr>
+                                        <td class="cursor-pointer" ng-click="GET_ACCOUNT_GROUP_DETAILS(EPOS_ACCOUNT_GROUP_DATA)"><i class="fas fa-chevron-down" ng-show="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS"></i><i class="fas fa-chevron-right" ng-show="!EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS"></i> </tdng-click="GET_ACCOUNT_GROUP_DETAILS(EPOS_ACCOUNT_GROUP_DATA)">
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.ACCOUNTING_GROUP}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.QUANTITY}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUP_DATA.TOTAL_WITH_TAX*1+EPOS_ACCOUNT_GROUP_DATA.DISCOUNT*1) | number:2}}    </td>
+
+                                    </tr>
+                                    <tr ng-show="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS">
+                                        <td colspan="4" class="p-0">
+                                            <table class="table">
+                                                <tr ng-repeat="EPOS_ACCOUNT_GROUP_DETAIL in EPOS_ACCOUNT_GROUP_DATA.EPOS_ACCOUNT_GROUP_DETAILS">
+                                                    <td width="4%"></td>
+                                                    <td>{{EPOS_ACCOUNT_GROUP_DETAIL.IIKO_DISHNAME}}</td>
+                                                    <td width="15%">{{EPOS_ACCOUNT_GROUP_DETAIL.QUANTITY}} </td>
+                                                    <td width="15%">{{EPOS_ACCOUNT_GROUP_DETAIL.IIKO_DISHSUMINT_LINE | number:2}} </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="form-group" ng-show="CASHUP.INTEGRATION_SYSTEM_ID==9">
+                            <div class="row" ng-if="EPOS_ACCOUNT_GROUPS_DATA.length==0 && ShowWait">
+                                <label class="control-label text-right mt-1" for="filename">Please wait while epos data is fetched. This may take upto 2 minutes.</label>
+
+                            </div>
+                            <div ng-if="EPOS_ACCOUNT_GROUPS_DATA.length==0 && !ShowWait"> Please click refresh to fetch the data from EPOS.</div>
+                            <table class="table table-hover table-striped" ng-if="EPOS_ACCOUNT_GROUPS_DATA.length>0">
+                                <thead>
+                                    <tr>
+                                        <th width="4%"></th>
+                                        <th width="41%">Accounting Group</th>
+                                        <th width="8%">Code</th>
+                                        <th width="5%">Quantity</th>
+                                        <th width="5%">Discounts</th>
+                                        <th width="5%">Tax</th>
+                                        <th width="15%">Total With Tax</th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="card-footer">
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2" class="text-bold">Total</td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'QUANTITY') | number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'DISCOUNT')| number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'TOTAL_TAX')| number:2}}    </td>
+                                        <td>{{(EPOS_ACCOUNT_GROUPS_DATA | total:'TOTAL_WITH_TAX')| number:2}}    </td>
+                                    </tr>
+                                </tfoot>
+                                <tbody ng-repeat="EPOS_ACCOUNT_GROUP_DATA in EPOS_ACCOUNT_GROUPS_DATA" ng-init="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS=false">
+                                    <tr>
+                                        <td class="cursor-pointer" ng-click="GET_ACCOUNT_GROUP_DETAILS(EPOS_ACCOUNT_GROUP_DATA)"><i class="fas fa-chevron-down" ng-show="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS"></i><i class="fas fa-chevron-right" ng-show="!EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS"></i> </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.ACCOUNTING_GROUP}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.ACCOUNTING_GROUP_CODE}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.QUANTITY}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.DISCOUNT | number:2}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.TOTAL_TAX | number:2}}    </td>
+                                        <td>{{EPOS_ACCOUNT_GROUP_DATA.TOTAL_WITH_TAX | number:2}}    </td>
+                                    </tr>
+                                    <tr ng-show="EPOS_ACCOUNT_GROUP_DATA.SHOWDETAILS">
+                                        <td colspan="9" class="p-0">
+                                            <table class="table">
+                                                <tr ng-repeat="EPOS_ACCOUNT_GROUP_DETAIL in EPOS_ACCOUNT_GROUP_DATA.EPOS_ACCOUNT_GROUP_DETAILS">
+                                                    <td width="4%"></td>
+                                                    <td width="40%">{{EPOS_ACCOUNT_GROUP_DETAIL.NAME}}</td>
+                                                    <td width="8%">{{EPOS_ACCOUNT_GROUP_DETAIL.SKU}} </td>
+                                                    <td width="5%">{{EPOS_ACCOUNT_GROUP_DETAIL.QUANTITY | number:2}} </td>
+                                                    <td width="5%">{{EPOS_ACCOUNT_GROUP_DETAIL.DISCOUNT | number:2}} </td>
+                                                    <td width="5%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_TAX | number:2}} </td>
+                                                    <td width="15%">{{EPOS_ACCOUNT_GROUP_DETAIL.TOTAL_WITH_TAX | number:2}} </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <div class="animated fadeInLeft" id="Floatcash" role="tabpanel" ng-show="CASHUP.STEP_NO==1" aria-labelledby="custom-content-below-home-tab2">
+            <div class="card-header">
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto  mt-0">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">Initial: <span class="cash-up-header" style="text-decoration:line-through">0.00</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{ CASHUP.TOTAL_FLOAT |number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Variance: <span class="cash-up-header" style="text-decoration:line-through">0.00</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped" ng-if="TABLIST[1].FLAG==1">
+                        <thead>
+                            <tr>
+                                <th style="width:10%"></th>
+                                <th style="width:5%"></th>
+                                <th width="10%">Quantity</th>
+                                <th style="width:5%"></th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="FLOAT in DECLERATION_MASTER | filter:{DECLARATION_TYPE_ID:1}" ng-init="init_decleration_details(FLOAT)">
+                                <td class="text-center" ng-if="!FLOAT.IS_PRECISION"> <span ng-bind-html="FLOAT.SYMBOL"></span>&nbsp;{{FLOAT.VALUE}}</td>
+                                <td class="text-center" ng-if="FLOAT.IS_PRECISION">{{FLOAT.VALUE}}&nbsp;{{(FLOAT.PRECISION_SYMBOL | customSplitString)[1]}}</td>
+                                <td class="text-center">x</td>
+                                <td><input type="text" class="form-control" ng-model="FLOAT.QUANTITY" only-numbers></td>
+                                <td class="text-center">=</td>
+                                <td>{{FLOAT.AMOUNT=FLOAT.VALUE*FLOAT.QUANTITY*FLOAT.MULTIPLICATION_FACTOR | number:2}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="card-footer">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><h6 class="text-bold">Total</h6></td>
+                                <td><h6 class="text-bold">{{ CASHUP.TOTAL_FLOAT=((DECLERATION_MASTER | filter:{DECLARATION_TYPE_ID:1}) | total:'AMOUNT')| number:2 }}</h6></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="col-md-12  p-5" ng-show="TABLIST[1].FLAG==2">
+                        <div class="form-group">
+                            <label for="noteLayout" class="m-0">Total Float:</label>
+                            <input type="text" class="form-control" ng-model="CASHUP.TOTAL_FLOAT" only-digits>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="noteLayout" class="m-0">Notes :</label>
+                        <textarea class="form-control d-block" rows="4" id="noteLayout" name="text" ng-model="CASHUP.FLOAT_NOTES"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="animated fadeInLeft" id="CashM" role="tabpanel" ng-show="CASHUP.STEP_NO==2" aria-labelledby="custom-content-below-messages-tab">
+            <div class="card-header">
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item radius-50 border ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item radius-50 border ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto mt-0">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Cash"})[0].SALES_AMT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{ CASHUP.TOTAL_CASH |number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_CASH!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_CASH=(CASHUP.EPOS_DATA | filter:{"MEDIA":"Cash"})[0].SALES_AMT - CASHUP.TOTAL_CASH |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped" ng-if="TABLIST[2].FLAG==1">
+                        <thead>
+                            <tr>
+                                <th style="width:10%"></th>
+                                <th style="width:5%"></th>
+                                <th width="10%">Quantity</th>
+                                <th style="width:5%"></th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="FLOAT in DECLERATION_MASTER | filter:{DECLARATION_TYPE_ID:2}" ng-init="init_decleration_details(FLOAT)">
+                                <td class="text-center" ng-if="!FLOAT.IS_PRECISION"><span ng-bind-html="FLOAT.SYMBOL"></span>&nbsp;{{FLOAT.VALUE}}</td>
+                                <td class="text-center" ng-if="FLOAT.IS_PRECISION">{{FLOAT.VALUE}}&nbsp;{{(FLOAT.PRECISION_SYMBOL | customSplitString)[1]}}</td>
+                                <td class="text-center">x</td>
+                                <td><input type="text" class="form-control" ng-model="FLOAT.QUANTITY" only-numbers></td>
+                                <td class="text-center">=</td>
+                                <td>{{FLOAT.AMOUNT=FLOAT.VALUE*FLOAT.QUANTITY*FLOAT.MULTIPLICATION_FACTOR | number:2}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="card-footer">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><h6 class="text-bold">Total</h6></td>
+                                <td><h6 class="text-bold">{{ CASHUP.TOTAL_CASH=((DECLERATION_MASTER | filter:{DECLARATION_TYPE_ID:2}) | total:'AMOUNT')| number:2 }}</h6></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="col-md-12 p-5" ng-show="TABLIST[2].FLAG==2">
+                        <div class="form-group">
+                            <label for="noteLayout" class="m-0">Total Cash:</label>
+                            <input type="text" class="form-control" ng-model="CASHUP.TOTAL_CASH" only-digits>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="noteLayout" class="m-0">Notes :</label>
+                        <textarea class="form-control d-block" rows="4" id="noteLayout" name="text" ng-model="CASHUP.CASH_NOTES"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="animated fadeInLeft" id="CardsManual" role="tabpanel" ng-show="CASHUP.STEP_NO==3" aria-labelledby="custom-content-below-settings-tab">
+            <div class="card-header">
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Card"})[0].SALES_AMT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.TOTAL_CARD | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_CARD!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_CARD=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Card"})[0].SALES_AMT*1-CASHUP.TOTAL_CARD*1)  |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <form action="" class="input_cards_value mt-3">
+                    <div class="row">
+
+                        <div class="col-lg-2">
+                            <label for="amount">PDQ Terminal #</label>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="amount">Location</label>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label for="amount">Amount</label>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label for="Acode">Auth. Code</label>
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="amex">Amex</label>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label for="visa">Visa</label>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <label for="mastercard" class="text-nowrap">Mastercard</label>
+                        </div>
+
+
+                        <div class="col-lg-1">
+                            <label for="dinner">Others</label>
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="dinner">Uploads</label>
+                        </div>
+                        <!--
+                                               <div class="col-lg-1  ">
+                                                   <label for="Switch">Switch</label>
+                                               </div>-->
+
+                        <div class="col-lg-1">
+                            <label for="note">Actions</label>
+                        </div>
+
+                    </div>
+                    <div class="row" ng-repeat="Card in CardList" ng-init="initcasdList(Card)">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <select class="custom-select text-xs"
+                                        ng-options="PDQ.ID as PDQ.PDQ_CODE for PDQ in Card.PDQList"
+                                        ng-model="Card.PDQ_ID">
+                                    <option value="">Manual</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <select class="custom-select text-xs"
+                                        ng-options="AREA.ID as AREA.NAME for AREA in (AreaList)"
+                                        ng-model="Card.AREA_ID"></select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <input id="amount" type="text" class="form-control" ng-disabled="true" formatted-decimal ng-model="Card.AMOUNT" ng-value="Card.AMOUNT=Card.VISA*1+Card.MASTERCARD*1+Card.AMEX*1+Card.DINNER*1 | number:2" value="{{Card.AMOUNT | number:2}}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <input id="Acode" type="text" class="form-control" ng-model="Card.AUTH_CODE">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <input id="amex" type="text" class="form-control" only-digits ng-model="Card.AMEX">
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <input id="visa" type="text" class="form-control" only-digits ng-model="Card.VISA">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <input id="mastercard" type="text" class="form-control" only-digits ng-model="Card.MASTERCARD">
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <input id="dinner" type="text" class="form-control" only-digits ng-model="Card.DINNER">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="CardFile{{$index}}" class="btn btn-upload text-nowrap" ng-show="Card.UploadedFiles==null || Card.UploadedFiles.length==0">
+                                    <i class="fal fa-upload text-white"></i>
+                                </label>
+                                <span class="hidden-input">
+                                    <input id="CardFile{{$index}}" ng-files="getTheFilesToUploadCards($files, 'CardFile', 5,Card,11,$index)" name="file" type="file" />
+                                </span>
+                                <span class="d-block" ng-repeat="upls in Card.UploadedFiles">
+                                    <br ng-if="$index!=0" />
+                                    <span ng-if="$index!=0" />
+                                    <a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">  <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>
+                                    <span> <i ng-click="DELETE_UPLOAD_CARD_ALL(Card,upls,$index)" class="fa fa-times text-danger fa-sm mt-1 float-right cursor-pointer"></i> </span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!--<div class="col-lg-1  ">
+                            <div class="form-group">
+                                <input id="Switch" type="text" class="form-control" only-digits ng-model="Card.SWITCH">
+                            </div>
+                        </div>-->
+
+                        <div class="col-lg-1">
+                            <div class="d-flex">
+                                <a class="add_dreceived_button" ng-click="AddCardLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                                <a class="add_dreceived_button" ng-click="DeleteLine(CardList, $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer text-right">
+                        <h6> Total: {{ CASHUP.TOTAL_CARD=(CardList | total:'AMOUNT')| number:2 }}</h6>
+                    </div>
+                </form>
+                <hr />
+                <div class="form-group">
+                    <label for="noteLayout" class="m-0">Notes:</label>
+                    <textarea class="form-control" rows="4" id="noteLayout" name="text" ng-model="CASHUP.CARD_NOTES"></textarea>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="" id="PettyCash" role="tabpanel" ng-show="CASHUP.STEP_NO==4" aria-labelledby="custom-content-below-settings-tab">
+            <div class="card-header">
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header" style="text-decoration:line-through">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"PETTY CASH"})[0].SALES_AMT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.TOTAL_TOTAL_VAL |number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Variance: <span class="cash-up-header" style="text-decoration:line-through">0.00</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-lg-1">
+                        <label for="Check">Vendor</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label>Cost Category*</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label for="Account">Goods</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label for="Account">Gross*</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label>Approver*</label>
+                    </div>
+
+                    <!--<div class="col-lg-2">
+                        <label for="Amount" class="text-nowrap">VAT Type</label>
+
+                    </div>-->
+
+                    <div class=" col-lg-1">
+                        <label for="note">VAT Amount</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="note">Net Amount</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="Amount" class="text-nowrap">Upload</label>
+                    </div>
+
+                </div>
+
+                <div class="row" ng-repeat="Pcash in PettyCashList" ng-init="initcasdList(Pcash)">
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="Pcash.PAID_TO">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select class="custom-select text-xs"
+                                    ng-options="CL.ID as CL.CATEGORY_NAME for CL in Pcash.CategoryList"
+                                    ng-model="Pcash.PETTY_CASH_CATEGORY_ID" ng-class="{'error':!Pcash.PETTY_CASH_CATEGORY_VALID}">
+                                <option value="">- Please Select-</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="Pcash.ITEM">
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" only-digits ng-model="Pcash.TOTAL_VALUE" ng-class="{'error':!Pcash.TOTAL_VALUE_VALID}">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select class="custom-select text-xs"
+                                    ng-options="CL.ID as CL.NAME for CL in Pcash.StaffList"
+                                    ng-model="Pcash.AUTHORIZED_BY_ID" ng-class="{'error':!Pcash.AUTHORIZED_BY_ID_VALID}">
+                                <option value="">- Please Select-</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <input type="text" class="form-control" only-digits ng-model="Pcash.VAT_AMOUNT">
+                    </div>
+
+                    <div class="col-lg-2">
+                        <input type="text" class="form-control" ng-disabled="true" ng-model="Pcash.NET_AMOUNT" ng-value="Pcash.NET_AMOUNT=((Pcash.TOTAL_VALUE*1-Pcash.VAT_AMOUNT*1) | number:2)">
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="PcashFile{{$index}}" class="btn btn-upload text-nowrap" ng-show="Pcash.UploadedFiles==null || Pcash.UploadedFiles.length==0">
+                                <i class="fal fa-upload text-white"></i>
+                            </label>
+                            <span class="hidden-input">
+                                <input id="PcashFile{{$index}}" ng-files="getTheFilesToUploadPcash($files, 'PcashFile', 5,Pcash,13,$index)" name="file" type="file" />
+                            </span>
+                            <span class="d-block" ng-repeat="upls in Pcash.UploadedFiles">
+                                <br ng-if="$index!=0" />
+                                <span ng-if="$index!=0" />
+                                <a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">  <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>
+                                <span> <i ng-click="DELETE_UPLOAD_CARD_ALL(Pcash,upls,$index)" class="fa fa-times text-danger fa-sm mt-1 float-right cursor-pointer"></i> </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="d-flex">
+                            <a class="add_dreceived_button" ng-click="AddPCashLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                            <a class="add_dreceived_button" ng-click="DeleteLine(PettyCashList, $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-1 offset-3">
+                            <h6 class="app-text text-bold">Total</h6>
+                        </div>
+
+                        <div class="col-md-2">
+                            <h6 class="app-text text-bold">{{ CASHUP.TOTAL_TOTAL_VAL=(PettyCashList | total:'TOTAL_VALUE')| number:2 }}</h6>
+                        </div>
+
+                        <div class="col-md-1 offset-1">
+                            <h6 class="app-text text-bold">{{ CASHUP.TOTAL_VAT_AMOUNT=(PettyCashList | total:'VAT_AMOUNT')| number:2 }}</h6>
+                        </div>
+
+                        <div class="col-md-2">
+                            <h6 class="app-text text-bold">{{ CASHUP.TOTAL_PETTY_CASH=(PettyCashList | total:'NET_AMOUNT')| number:2 }}</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <hr ng-show="!CASHUP.PETTYCASHVALID" />
+                <div class="form-group text-red p-3" ng-show="!CASHUP.PETTYCASHVALID">
+                    Please fill the mandatory fields marked in red.
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label for="noteLayout" class="m-0">Notes:</label>
+                    <textarea class="form-control" rows="4" id="noteLayout" name="text" ng-model="CASHUP.PCASH_NOTES"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="animated fadeInLeft" id="chequePaidAccount" role="tabpanel" ng-show="CASHUP.STEP_NO==5" aria-labelledby="custom-content-below-settings-tab">
+            <div class="card-header">
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Delivery"})[0].SALES_AMT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{ CASHUP.TOTAL_CHEQUE | number:2 }}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_CHEQUE!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_CHEQUE=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Delivery"})[0].SALES_AMT*1-CASHUP.TOTAL_CHEQUE *1) |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="check">
+                            Delivery Partner
+                        </label>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="check">Units</label>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="date">Date:</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="check">Payment Method</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="value">Amount</label>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="note">Note</label>
+                    </div>
+                </div>
+                <div class="row" ng-repeat="Cheque in ChequeList" on-finish-render="ngRepeatFinished">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="Cheque.NAME" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" only-digits ng-model="Cheque.PAID_BY_TYPE">
+                            <!--<select class="form-control select2 text-xs" style="width: 100%;" ng-model="Cheque.PAID_BY_TYPE">
+                                <option value="">Select</option>
+                                <option value="Account">Account</option>
+                                <option value="Function">Function</option>
+                                <option value="Others">Others</option>
+                            </select>-->
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input class="form-control" id="datecontrol" type="text" style="padding: 0rem 0.25rem;"
+                                       readonly="readonly" ng-model="Cheque.DATE" ng-value="Cheque.DATE=(CASHUP.CASHUP_DATE |date)" />
+                                <!--<input class="form-control date_hover datetimepicker-input" id="datecontrol{{$index}}" name="datecontrol" placeholder="Mon Date, Year" type="text"
+                                       readonly="readonly" ng-model="Cheque.DATE" ng-value="Cheque.DATE |date" />-->
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" ng-model="Cheque.TRANSFER_TYPE">
+                                <option value="">Select</option>
+                                <option value="2">Bank Transfer</option>
+                                <option value="1">Others</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" only-digits ng-model="Cheque.AMOUNT">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" ng-model="Cheque.NOTE">
+                            <a class="add_dreceived_button" ng-click="AddChequeLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                            <a class="add_dreceived_button" ng-click="DeleteLine(ChequeList, $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.TOTAL_CHEQUE=(ChequeList | total:'AMOUNT')| number:2 }}</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="animated fadeInLeft" id="AccountCustomer" role="tabpanel" ng-show="CASHUP.STEP_NO==6" aria-labelledby="custom-content-below-settings-tab">
+            <div class="card-header">
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account"})[0].SALES_AMT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.ACCOUNT_TOTAL |number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_ACCOUNT!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_ACCOUNT=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Account"}).length>0?(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account"})[0].SALES_AMT*1-CASHUP.ACCOUNT_TOTAL*1:CASHUP.ACCOUNT_TOTAL) |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="check">Invoice #</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="namehost">Customer Name</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="accountcompany">Company</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label for="amount">Amount</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label>Payment Method</label>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="note">Note</label>
+                    </div>
+                </div>
+                <div class="row" ng-repeat="Cust in AccCustomerList">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="Cust.CHECK_NO">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="Cust.NAME">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="Cust.ACCOUNT">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" only-digits ng-model="Cust.AMOUNT">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" ng-model="Cust.MODE">
+                                <option value="">Select</option>
+                                <option>Cash</option>
+                                <option>Card</option>
+                                <option>Credit</option>
+                                <option>Bank Transfer</option>
+                                <option>E-payment</option>
+<option ng-show="CASHUP.ENTITY_ID==45">Account Customer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class=" col-lg-3">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" ng-model="Cust.NOTE">
+                            <a class="add_dreceived_button" ng-click="AddCustomerLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                            <a class="add_dreceived_button" ng-click="DeleteLine(AccCustomerList, $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.ACCOUNT_TOTAL=(AccCustomerList | total:'AMOUNT')| number:2 }}</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="animated fadeInLeft" id="Vouchers" role="tabpanel" ng-show="CASHUP.STEP_NO==7" aria-labelledby="custom-content-below-settings-tab">
+            <div class="card-header">
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{EPOS_HEADER_DATA[0].GIFT_CERT_TOTAL |number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.ISSUE_TOTAL |number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <sapn class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_ISSUE!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_ISSUE=(EPOS_HEADER_DATA[0].GIFT_CERT_TOTAL*1-CASHUP.ISSUE_TOTAL*1) |number:2}}</span></sapn>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <label>Voucher Type</label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="cheque">Voucher #</label>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label for="cheque">Amount</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label for="date">Validity</label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="cheque">Sold To</label>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label>Payment Method</label>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label for="cheque">Invoice #</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="note">Note</label>
+                    </div>
+                </div>
+                <div class="row" ng-repeat="VISS in VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:1}" on-finish-render="ngRepeatFinished">
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" ng-model="VISS.VOUCHER_TYPE" ng-change="SetVoucherValues_basisType(VISS)">
+                                <option value="Pre-Defined">Pre-defined</option>
+                                <option value="Open Voucher">Open Voucher</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <select class="custom-select text-xs" ng-show="VISS.vouchernumbervisible"
+                                    ng-options="CL.ID as CL.CODE for CL in MasterEntryList | filter:{ENTRY_TYPE_ID:1}"
+                                    ng-model="VISS.ENTRY_TYPE_DETAIL_ID" ng-change="SetVoucherValues(VISS)">
+                                <option value="">- Please Select-</option>
+                            </select>
+                            <input class="form-control" type="text" ng-show="!VISS.vouchernumbervisible" ng-model="VISS.CODE">
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group mb-0">
+                            <input class="form-control" type="text" only-digits ng-model="VISS.VALUE" ng-blur="CheckDecimal(VISS)">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input class="form-control date_hover datetimepicker-input" id="datecontrol{{$index}}" name="datecontrol" placeholder="Mon Date, Year" type="text"
+                                       readonly="readonly" ng-model="VISS.VALIDITY_DATE" ng-value="VISS.VALIDITY_DATE | date" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <input class="form-control" type="text" ng-model="VISS.CUSTOMER_NAME">
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" style="width: 100%;" ng-model="VISS.MODE">
+                                <option value="">Select</option>
+                                <option>Cash</option>
+                                <option>Card</option>
+                                <option>E-payment</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group mb-0">
+                            <input class="form-control" type="text" ng-model="VISS.CHECK_NO">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="d-flex">
+                            <input type="text" id="note" class="form-control" ng-model="VISS.NOTE">
+                            <a class="add_dreceived_button" ng-click="VoucherIssueLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                            <a class="add_dreceived_button" ng-click="DeleteLine((VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:1}), $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.ISSUE_TOTAL=((VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:1}) | total:'VALUE')| number:2 }}</h6>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="card-header">
+                <h5 class="card-title">Vouchers Redeemeed</h5>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Gift"})[0].SALES_AMT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.REDEEMED_TOTAL |number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_REDEEMED!=0}">Variance: 
+                            <span class="cash-up-header">{{ CASHUP.VARIANCE_REDEEMED=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Gift"}).length>0?(CASHUP.EPOS_DATA | filter:{"MEDIA":"Gift"})[0].SALES_AMT*1-CASHUP.REDEEMED_TOTAL:0) |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <label for="cheque">Voucher #</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group mb-0">
+                            <label for="cheque">Amount</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="date">Validity</label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <label for="cheque">Redeemed By</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label>Payment Method</label>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group mb-0">
+                            <label for="cheque">Invoice #</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="note">Note</label>
+                    </div>
+                </div>
+                <div class="row" ng-repeat="VISS in VoucherIssuedList | filter:{IS_REDEEMED:true}| filter:{ENTRY_TYPE_ID:1}">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" name="CategorySearchBox"
+                                   ng-model="VISS.CODE"
+                                   ng-blur="SetValues(VISS,$index)"
+                                   uib-typeahead="VISS.CODE for VISS in MasterEntryList_Redeemed | filter:{ENTRY_TYPE_ID:1}  | filter:{IS_REDEEMED:false} | limitTo : 15"
+                                   typeahead-loading="loading" typeahead-no-results="noResults"
+                                   class="form-control input-sm" autocomplete="off"
+                                   placeholder="Type to select voucher#..." />
+                            <!--typeahead-on-select="selectTypeAhead($item)"-->
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group mb-0">
+                            <input class="form-control" type="text" only-digits ng-model="VISS.VALUE" ng-blur="CheckDecimal(VISS)">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group mb-0">
+                            <!--<input class="form-control" type="text" ng-disabled="true" ng-model="VISS.VALIDITY_DATE" ng-value="VISS.VALIDITY_DATE |date">-->
+                            <input class="form-control date_hover datetimepicker-input" id="datecontrolres{{$index}}" name="datecontrol" placeholder="Mon Date, Year" type="text"
+                                   readonly="readonly" ng-model="VISS.VALIDITY_DATE" ng-value="VISS.VALIDITY_DATE | date" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <input class="form-control" type="text" ng-model="VISS.CUSTOMER_NAME">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" style="width: 100%;" ng-model="VISS.MODE">
+                                <option value="">Select</option>
+                                <option>Cash</option>
+                                <option>Card</option>
+                                <option>E-payment</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group mb-0">
+                            <input class="form-control" type="text" ng-model="VISS.CHECK_NO">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="d-flex">
+                            <input type="text" id="note" class="form-control" ng-model="VISS.NOTE">
+                            <a class="add_dreceived_button" ng-click="VoucherRedeemLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                            <a class="add_dreceived_button" ng-click="DeleteVoucherLine(VoucherIssuedList , $index, true, 1)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.REDEEMED_TOTAL=((VoucherIssuedList | filter:{IS_REDEEMED:true}| filter:{ENTRY_TYPE_ID:1}) | total:'VALUE')| number:2 }}</h6>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="animated fadeInLeft" id="deposits" role="tabpanel" ng-show="CASHUP.STEP_NO==8" aria-labelledby="custom-content-below-settings-tab">
+            <div class="card-header">
+
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">0.00</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.DEPOSIT_TOTAL | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_DEPOSIT!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_DEPOSIT=(0-CASHUP.DEPOSIT_TOTAL*1) |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <label for="check">Invoice #</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="deposit">Deposit Reference <i class="fas fa-info-circle"></i></label>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="value">Amount</label>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="date">Date</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label>Payment Method</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="nameofpayee">Name Of Payee</label>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="note">Note</label>
+                    </div>
+
+                </div>
+                <div class="row" ng-repeat="VISS in VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:3}" on-finish-render="ngRepeatFinished">
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input class="form-control" type="text" ng-model="VISS.CHECK_NO">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input class="form-control" type="text" ng-model="VISS.CODE">
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input class="form-control" type="text" only-digits ng-model="VISS.VALUE" ng-blur="CheckDecimal(VISS)">
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input class="form-control date_hover datetimepicker-input" id="datecontrol{{$index}}" name="datecontrol" placeholder="Mon Date, Year" type="text"
+                                       readonly="readonly" ng-model="VISS.VALIDITY_DATE" ng-value="VISS.VALIDITY_DATE |date" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" style="width: 100%;" ng-model="VISS.MODE">
+                                <option value="">Select</option>
+                                <option>Cash</option>
+                                <option>Card</option>
+                                <option>E-payment</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input class="form-control" type="text" ng-model="VISS.CUSTOMER_NAME">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" ng-model="VISS.NOTE">
+                            <a class="add_dreceived_button" ng-click="DepositRecievedLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                            <a class="add_dreceived_button" ng-click="DeleteLine((VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:3}), $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.DEPOSIT_TOTAL=((VoucherIssuedList | filter:{IS_REDEEMED:false}| filter:{ENTRY_TYPE_ID:3}) | total:'VALUE')| number:2 }}</h6>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="card-header">
+                <h5 class="card-title">Deposit Redeemed</h5>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.DEPOSIT_REDEEMED_TOTAL | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_DEPOSIT_REDEEMED!=0}">Variance: 
+                                <span class="cash-up-header">{{ CASHUP.VARIANCE_DEPOSIT_REDEEMED=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT -CASHUP.DEPOSIT_REDEEMED_TOTAL*1) |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-lg-1">
+                        <label for="check">Invoice #</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="deposit">Deposit Reference</label>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="value">Amount</label>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="date">Date</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label>Payment Method</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="nameofpayee">Name Of Payee</label>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="note">Note</label>
+                    </div>
+                </div>
+                <div class="row" ng-repeat="VISS in VoucherIssuedList | filter:{IS_REDEEMED:true}| filter:{ENTRY_TYPE_ID:3}" on-finish-render="ngRepeatFinished">
+                    <div class=" col-lg-1">
+                        <div class="form-group">
+                            <input class="form-control" type="text" ng-model="VISS.CHECK_NO">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="text" name="CategorySearchBox"
+                                   ng-model="VISS.CODE"
+                                   autocomplete="off"
+                                   placeholder="Type to select deposit..."
+                                   ng-blur="SetValues_Deposit(VISS,$index)"
+                                   uib-typeahead="client.CODE for client in DepositsList | filter:{IS_REDEEMED:false} | limitTo : 15"
+                                   typeahead-loading="loading" typeahead-no-results="noResults"
+                                   class="form-control input-sm" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input class="form-control" type="text" only-digits ng-model="VISS.VALUE" ng-blur="CheckDecimal(VISS)">
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input class="form-control" type="text" ng-disabled="true" ng-model="VISS.VALIDITY_DATE" ng-value="VISS.VALIDITY_DATE |date">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" style="width: 100%;" ng-model="VISS.MODE">
+                                <option value="">Select</option>
+                                <option>Cash</option>
+                                <option>Card</option>
+                                <option>E-payment</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input class="form-control" type="text" ng-model="VISS.CUSTOMER_NAME">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" ng-model="VISS.NOTE">
+                            <a class="add_dreceived_button" ng-click="DepositRedeemLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                            <a class="add_dreceived_button" ng-click="DeleteLine(VoucherIssuedList , $index, true, 3)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.DEPOSIT_REDEEMED_TOTAL=((VoucherIssuedList | filter:{IS_REDEEMED:true}| filter:{ENTRY_TYPE_ID:3}) | total:'VALUE')| number:2 }}</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="animated fadeInLeft" id="complimentary" role="tabpanel" ng-show="CASHUP.STEP_NO==9" aria-labelledby="custom-content-below-settings-tab">
+            <div class="card-header">
+
+                <ul class="nav nav-pills float-left">
+                    <li class="nav-item border radius-50">
+                        <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                    </li>
+                    <li class="nav-item border radius-50 ml-2">
+                        <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+                    </li>
+                </ul>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.VOID_TOTAL | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_VOID!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_VOID=(EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT*1-CASHUP.VOID_TOTAL*1) |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Void Type</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="check">Number</label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="check">Amount</label>
+                    </div>
+                </div>
+
+                <div class="row" ng-repeat="Void in VoidList" ng-init="Void.VALUE=null">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="font-12 text-normal">{{Void.CODE}}</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="Void.CHECK_NO">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" only-digits ng-model="Void.VALUE">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.VOID_TOTAL=(VoidList | total:'VALUE')| number:2 }}</h6>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="card-header">
+                <h5 class="card-title">Complimentary</h5>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.COMP_TOTAL | number:2}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_COMP!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_COMP=(EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT*1-CASHUP.COMP_TOTAL*1) |number:2}}</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <label>Authorised By</label>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="amount">Check #</label>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="namehost">Table #</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label>Reason of Comp.</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label for="amount">No. of Covers</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label for="amount">Time</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label for="amount">Amount*</label>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <label for="deposit">Total</label>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="note">Note</label>
+                    </div>
+                </div>
+                <div class="row" ng-repeat="COMP in ComplimentaryList " ng-init="ValidControls(COMP)">
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" ng-class="{'error':!COMP.AUTHORIZED_BY_VALID}"
+                                    ng-options="CL.ID as CL.NAME for CL in StaffList"
+                                    ng-model="COMP.AUTHORIZED_BY">
+                                <option value="">- Please Select-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="COMP.CHECK_NO">
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="COMP.VOUCHER_TYPE">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <select class="custom-select text-xs" ng-model="COMP.CUSTOMER_NAME" ng-options="CL.DISPLAY_TEXT as CL.REASON for CL in COMP_REASONS" ng-class="{'error':!COMP.REASON_VALID}">
+                                <option value="">Select</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" only-digits ng-model="COMP.CODE">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="COMP.MODE">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" only-digits ng-model="COMP.DISCOUNT" ng-class="{'error':!COMP.DISCOUNT_VALID}">
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <p>{{COMP.VALUE=COMP.DISCOUNT*1 |number:2}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="d-flex">
+                            <input type="text" id="note" class="form-control" ng-model="COMP.NOTE">
+                            <a class="add_dreceived_button" ng-click="ComplimentaryLine()" ng-show="$last"><i class="fas fa-plus-circle ml-2"></i></a>
+                            <a class="add_dreceived_button" ng-click="DeleteLine(ComplimentaryList, $index)" ng-show="$last && !$first"><i class="fas fa-minus-circle ml-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <h6 class="app-text text-bold">Total: {{ CASHUP.COMP_TOTAL=(ComplimentaryList | total:'VALUE')| number:2 }}</h6>
+                </div>
+                <hr ng-show="!CASHUP.COMPLEMENTARYVALID" />
+                <div class="form-group text-red p-3" ng-show="!CASHUP.COMPLEMENTARYVALID">
+                    Please fill the mandatory fields marked in red.
+                </div>
+                <hr />
+                <div class="form-group mt-3">
+                    <label for="noteLayout" class="m-0">Notes:</label>
+                    <textarea class="form-control d-block" rows="4" id="noteLayout" name="text" ng-model="CASHUP.COMP_NOTES"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="Review" role="tabpanel" class="animated fadeInLeft" ng-show="CASHUP.STEP_NO==10" aria-labelledby="custom-content-below-settings-tab">
+            <div class="card-header">
+                <h5 class="card-title">Cash Summary</h5>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item border radius-50">
+                            <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+                        </li>
+                        <li class="nav-item border radius-50 ml-2">
+                            <span class="font-12 text-bold">Area: <span class="cash-up-header">{{AreaList[0].NAME}}</span></span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" ng-repeat="Session in SessionList">
+                        <a class="nav-link" ng-class="{'active':Session.SELECTED}" id="custom-content-below-home-tab" data-toggle="pill"
+                           ng-click="SELECT_SESSION(Session, $index)" role="tab"
+                           aria-controls="custom-content-below-home" aria-selected="true">{{Session.SESSION_NAME}}</a>
+                    </li>
+                    <li class="nav-item" ng-show="false">
+                        <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
+                           ng-click="GET_CASHUP_EPOS_COMPARISON();"
+                           role="tab"
+                           aria-controls="custom-content-below-settings" aria-selected="false">TOTAL</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade p-3" ng-class="{'show active':RTab==0, '':RTab!=0}" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead class="text-align-right">
+                                            <tr>
+                                                <th></th>
+                                                <th>ePOS</th>
+                                                <th>Actual</th>
+                                                <th>Variance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+
+                                            <tr ng-if="TABLIST[2].FLAG==1  || TABLIST[2].FLAG==2">
+                                                <td>Cash</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Cash"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_CASH | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_CASH *-1 | number:2 }}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Petty Cash</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"PETTY CASH"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_TOTAL_VAL | number:2}}</td>
+                                                <td class="text-align-right">{{(CASHUP.VARIANCE_PETTY_CASH=(CASHUP.EPOS_DATA | filter:{"MEDIA":"PETTY CASH"})[0].SALES_AMT-CASHUP.TOTAL_TOTAL_VAL) *-1  | number:2}}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Delivery</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Delivery"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_CHEQUE | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_CHEQUE *-1 | number:2}}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Cards</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Card"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_CARD | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_CARD *-1 | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[7].FLAG==1">
+                                                <td>Voucher Redeemed</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Gift"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.REDEEMED_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_REDEEMED *-1 | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[6].FLAG==1">
+                                                <td>Account</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.ACCOUNT_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_ACCOUNT *-1 | number:2}}</td>
+
+                                            </tr>
+
+                                            <tr ng-if="TABLIST[8].FLAG==1">
+                                                <td>Deposit Redeemed</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Deposit Redeemed"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.DEPOSIT_REDEEMED_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{ CASHUP.VARIANCE_DEPOSIT_REDEEMED*-1 | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[7].FLAG==1">
+                                                <td>Voucher Issued</td>
+                                                <td class="text-align-right">{{EPOS_HEADER_DATA[0].GIFT_CERT_TOTAL |number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.ISSUE_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">-</td><!--{{CASHUP.VARIANCE_ISSUE *-1 | number:2}}-->
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[8].FLAG==1">
+                                                <td>Deposit Received</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{CASHUP.DEPOSIT_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.DEPOSIT_TOTAL*-1 | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="false" ng-repeat="MEDIA in CASHUP.MEDIA_DATA | filter:{'SALES_AMT':'!0'}:true | filter:{'MEDIA':'!Cash'} | filter:{'MEDIA':'!Gift'} | filter:{'MEDIA':'!Account'}">
+                                                <td>{{MEDIA.MEDIA}}</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{MEDIA:MEDIA.MEDIA}).length>0?(CASHUP.EPOS_DATA | filter:{MEDIA:MEDIA.MEDIA})[0].SALES_AMT:0|number:2}}</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">-</td>
+                                            </tr>
+                                            <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                <td>Transitory</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">0.00</td>
+
+                                            </tr>
+                                            <tr class="card-footer">
+                                                <td><h6 class="text-bold">Total</h6></td>
+                                                <td class="text-align-right"><h6 class="text-bold">{{(CASHUP.EPOS_DATA | total:'SALES_AMT') | number:2}}</h6></td>
+                                                <td class="text-align-right"><h6 class="text-bold">{{CASHUP.REV_CASHUP_TOTAL+(CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT | number:2}}</h6></td>
+                                                <td class="text-align-right"><h6 class="text-bold">{{CASHUP.VARIANCE_TOTAL *-1 | number:2}}</h6></td>
+                                            </tr>
+                                            <tr ng-if="TABLIST[1].FLAG==1 || TABLIST[1].FLAG==2">
+                                                <td>Float</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_FLOAT | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==10">
+                                                <td colspan="2">EPOS Difference(Payments vs Line Level)</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-((CASHUP.EPOS_DATA | total:'SALES_AMT')-EPOS_HEADER_DATA[0].HOUSE_TIPS) | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+                                            </tr>
+                                            <!--<tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                <td>Carried Over</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT-((CASHUP.m | total:'TOTAL_GROSS')-EPOS_TOTAL) | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                <td>Carried Forward</td>
+                                                <td class="text-align-right">{{((CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL) - ((CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT -((CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL)) | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>-->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Revenue Type</th>
+                                                <th class="text-align-right">Gross Exc. Disc.</th>
+                                                <th class="text-align-right">Disc.</th>
+                                                <th class="text-align-right">Vat</th>
+                                                <th class="text-align-right">Net Exc. Disc.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+                                            <tr ng-repeat="Catdata in CASHUP.EPOS_CAT_DATA">
+                                                <td>{{Catdata.CATEGORY_NAME}}</td>
+                                                <td class="text-align-right">{{Catdata.TOTAL_GROSS | number:2}}</td>
+                                                <td class="text-align-right">{{Catdata.TOTAL_DISC_CPN | number:2}}</td>
+                                                <td class="text-align-right">{{Catdata.TOTAL_VAT_TAX | number:2}}</td>
+                                                <td class="text-align-right">{{Catdata.NET_TOTAL | number:2}}</td>
+                                            </tr>
+
+
+                                            <tr class="card-footer text-white">
+                                                <th>Total</th>
+                                                <th class="text-align-right">{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')| number:2 }}</th>
+                                                <th class="text-align-right">{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_DISC_CPN')| number:2 }}</th>
+                                                <th class="text-align-right">{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_VAT_TAX')| number:2 }}</th>
+                                                <th class="text-align-right">{{(CASHUP.EPOS_CAT_DATA | total:'NET_TOTAL') | number:2}}</th>
+                                            </tr>
+
+                                          
+                                            <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID!=10">
+                                                <td colspan="4">Service Charge(Incl.)</td>
+                                                <td class="text-align-right">{{EPOS_HEADER_DATA[0].OPT_SVC_CH | number:2}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">House Tips</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{EPOS_HEADER_DATA[0].HOUSE_TIPS | number:2}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-hover table-striped">
+                                        <thead class="text-align-right">
+                                            <tr>
+                                                <th></th>
+                                                <th>ePOS</th>
+                                                <th>Actual</th>
+                                                <th>Variance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+                                            <tr>
+                                                <td>Void</td>
+                                                <td class="text-align-right">{{EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VOID_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{-1*(EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT*1-CASHUP.VOID_TOTAL*1) | number:2}}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Complimentary</td>
+                                                <td class="text-align-right">{{EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.COMP_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{-1*(EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT*1-CASHUP.COMP_TOTAL*1) | number:2}}</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade p-3" ng-class="{'show active':RTab==1, '':RTab!=1}" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>ePOS</th>
+                                                <th>Actual</th>
+                                                <th>Variance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+
+                                            <tr ng-if="TABLIST[2].FLAG==1  || TABLIST[2].FLAG==2">
+                                                <td>Cash</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Cash"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_CASH | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_CASH | number:2 }}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Petty Cash</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_TOTAL_VAL | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Delivery</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Delivery"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_CHEQUE | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_CHEQUE | number:2}}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Cards</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Card"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_CARD | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_CARD | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[7].FLAG==1">
+                                                <td>Voucher Redeemed</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Gift"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.REDEEMED_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_REDEEMED | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[6].FLAG==1">
+                                                <td>Account</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.ACCOUNT_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_ACCOUNT | number:2}}</td>
+
+                                            </tr>
+
+                                            <tr ng-if="TABLIST[8].FLAG==1">
+                                                <td>Deposit Redeemed</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{CASHUP.DEPOSIT_REDEEMED_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[7].FLAG==1">
+                                                <td>Voucher Issued</td>
+                                                <td class="text-align-right">{{EPOS_HEADER_DATA[0].GIFT_CERT_TOTAL |number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.ISSUE_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{CASHUP.VARIANCE_ISSUE | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[8].FLAG==1">
+                                                <td>Deposit Received</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{CASHUP.DEPOSIT_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr ng-repeat="MEDIA in CASHUP.MEDIA_DATA | filter:{'MEDIA':'!Cash'} | filter:{'MEDIA':'!Account'}">
+                                                <td>{{MEDIA.MEDIA}}</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{MEDIA:MEDIA.MEDIA}).length>0?(CASHUP.EPOS_DATA | filter:{MEDIA:MEDIA.MEDIA})[0].SALES_AMT:0|number:2}}</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">-</td>
+                                            </tr>
+                                            <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                <td>Transitory</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">0.00</td>
+
+                                            </tr>
+
+
+                                            <tr class="card-footer">
+                                                <td><h6 class="text-bold">Total</h6></td>
+                                                <td class="text-align-right"><h6 class="text-bold">{{(CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS') | number:2}}</h6></td>
+                                                <td class="text-align-right"><h6 class="text-bold">{{CASHUP.REV_CASHUP_TOTAL | number:2}}</h6></td>
+                                                <td class="text-align-right"><h6 class="text-bold">{{CASHUP.VARIANCE_TOTAL | number:2}}</h6></td>
+                                            </tr>
+                                            <tr ng-if="TABLIST[1].FLAG==1 || TABLIST[1].FLAG==2">
+                                                <td>Float</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{CASHUP.TOTAL_FLOAT | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                <td>Carried Over</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT-((CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL) | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                <td>Carried Forward</td>
+                                                <td class="text-align-right">{{((CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL) - ((CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT -((CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL)) | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Revenue Type</th>
+                                                <th>Gross Exc. Disc.</th>
+                                                <th>Disc.</th>
+                                                <th>Vat</th>
+                                                <th>Net Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+                                            <tr ng-repeat="Catdata in CASHUP.EPOS_CAT_DATA">
+                                                <td>{{Catdata.CATEGORY_NAME}}</td>
+                                                <td>{{Catdata.TOTAL_GROSS | number:2}}</td>
+                                                <td>{{Catdata.TOTAL_DISC_CPN | number:2}}</td>
+                                                <td>{{Catdata.TOTAL_VAT_TAX | number:2}}</td>
+                                                <td>{{Catdata.NET_TOTAL | number:2}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Total</th>
+                                                <th>{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')| number:2 }}</th>
+                                                <th>{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_DISC_CPN')| number:2 }}</th>
+                                                <th>{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_VAT_TAX')| number:2 }}</th>
+                                                <th>{{(CASHUP.EPOS_CAT_DATA | total:'NET_TOTAL')+EPOS_HEADER_DATA[0].HOUSE_TIPS*1+EPOS_HEADER_DATA[0].OPT_SVC_CH*1 | number:2}}</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Service Charge(Incl.)</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>{{EPOS_HEADER_DATA[0].OPT_SVC_CH | number:2}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>House Tips</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>{{EPOS_HEADER_DATA[0].HOUSE_TIPS | number:2}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>ePOS</th>
+                                                <th>Actual</th>
+                                                <th>Variance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+
+                                            <tr>
+                                                <td>Void</td>
+                                                <td>{{EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT | number:2}}</td>
+                                                <td>{{CASHUP.VOID_TOTAL | number:2}}</td>
+                                                <td>{{EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT*1-CASHUP.VOID_TOTAL*1 | number:2}}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Complimentary</td>
+                                                <td>{{EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT | number:2}}</td>
+                                                <td>{{CASHUP.COMP_TOTAL | number:2}}</td>
+                                                <td>{{(EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT*1-CASHUP.COMP_TOTAL*1) | number:2}}</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade p-3" ng-class="{'show active':RTab==2, '':RTab!=2}" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>ePOS</th>
+                                                    <th>Actual</th>
+                                                    <th>Variance</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="Right_Align">
+
+                                                <tr ng-if="TABLIST[2].FLAG==1  || TABLIST[2].FLAG==2">
+                                                    <td>Cash</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Cash"})[0].SALES_AMT | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.TOTAL_CASH | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.VARIANCE_CASH | number:2 }}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Petty Cash</td>
+                                                    <td class="text-align-right">-</td>
+                                                    <td class="text-align-right">{{CASHUP.TOTAL_TOTAL_VAL | number:2}}</td>
+                                                    <td class="text-align-right">-</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Delivery</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Delivery"})[0].SALES_AMT | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.TOTAL_CHEQUE | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.VARIANCE_CHEQUE | number:2}}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Cards</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Card"})[0].SALES_AMT | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.TOTAL_CARD | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.VARIANCE_CARD | number:2}}</td>
+
+                                                </tr>
+                                                <tr ng-if="TABLIST[7].FLAG==1">
+                                                    <td>Voucher Redeemed</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Gift"})[0].SALES_AMT | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.REDEEMED_TOTAL | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.VARIANCE_REDEEMED | number:2}}</td>
+
+                                                </tr>
+                                                <tr ng-if="TABLIST[6].FLAG==1">
+                                                    <td>Account</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account"})[0].SALES_AMT | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.ACCOUNT_TOTAL | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.VARIANCE_ACCOUNT | number:2}}</td>
+
+                                                </tr>
+
+                                                <tr ng-if="TABLIST[8].FLAG==1">
+                                                    <td>Deposit Redeemed</td>
+                                                    <td class="text-align-right">-</td>
+                                                    <td class="text-align-right">{{CASHUP.DEPOSIT_REDEEMED_TOTAL | number:2}}</td>
+                                                    <td class="text-align-right">-</td>
+
+                                                </tr>
+                                                <tr ng-if="TABLIST[7].FLAG==1">
+                                                    <td>Voucher Issued</td>
+                                                    <td class="text-align-right">{{EPOS_HEADER_DATA[0].GIFT_CERT_TOTAL |number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.ISSUE_TOTAL | number:2}}</td>
+                                                    <td class="text-align-right">{{CASHUP.VARIANCE_ISSUE | number:2}}</td>
+
+                                                </tr>
+                                                <tr ng-if="TABLIST[8].FLAG==1">
+                                                    <td>Deposit Received</td>
+                                                    <td class="text-align-right">-</td>
+                                                    <td class="text-align-right">{{CASHUP.DEPOSIT_TOTAL | number:2}}</td>
+                                                    <td class="text-align-right">-</td>
+
+                                                </tr>
+                                                <tr ng-repeat="MEDIA in CASHUP.MEDIA_DATA | filter:{'MEDIA':'!Cash'} | filter:{'MEDIA':'!Account'}">
+                                                    <td>{{MEDIA.MEDIA}}</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{MEDIA:MEDIA.MEDIA}).length>0?(CASHUP.EPOS_DATA | filter:{MEDIA:MEDIA.MEDIA})[0].SALES_AMT:0|number:2}}</td>
+                                                    <td class="text-align-right">-</td>
+                                                    <td class="text-align-right">-</td>
+                                                </tr>
+                                                <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                    <td>Transitory</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL | number:2}}</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL | number:2}}</td>
+                                                    <td class="text-align-right">0.00</td>
+
+                                                </tr>
+
+
+                                                <tr class="card-footer">
+                                                    <td><h6 class="text-bold">Total</h6></td>
+                                                    <td class="text-align-right"><h6 class="text-bold">{{(CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS') | number:2}}</h6></td>
+                                                    <td class="text-align-right"><h6 class="text-bold">{{CASHUP.REV_CASHUP_TOTAL | number:2}}</h6></td>
+                                                    <td class="text-align-right"><h6 class="text-bold">{{CASHUP.VARIANCE_TOTAL | number:2}}</h6></td>
+                                                </tr>
+                                                <tr ng-if="TABLIST[1].FLAG==1 || TABLIST[1].FLAG==2">
+                                                    <td>Float</td>
+                                                    <td class="text-align-right">-</td>
+                                                    <td class="text-align-right">{{CASHUP.TOTAL_FLOAT | number:2}}</td>
+                                                    <td class="text-align-right">-</td>
+
+                                                </tr>
+                                                <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                    <td>Carried Over</td>
+                                                    <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT-((CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL) | number:2}}</td>
+                                                    <td class="text-align-right">-</td>
+                                                    <td class="text-align-right">-</td>
+
+                                                </tr>
+                                                <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                    <td>Carried Forward</td>
+                                                    <td class="text-align-right">{{((CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL) - ((CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT -((CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')-EPOS_TOTAL)) | number:2}}</td>
+                                                    <td class="text-align-right">-</td>
+                                                    <td class="text-align-right">-</td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Revenue Type</th>
+                                                <th>Gross Exc. Disc.</th>
+                                                <th>Disc.</th>
+                                                <th>Vat</th>
+                                                <th>Net Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+                                            <tr ng-repeat="Catdata in CASHUP.EPOS_CAT_DATA">
+                                                <td>{{Catdata.CATEGORY_NAME}}</td>
+                                                <td>{{Catdata.TOTAL_GROSS | number:2}}</td>
+                                                <td>{{Catdata.TOTAL_DISC_CPN | number:2}}</td>
+                                                <td>{{Catdata.TOTAL_VAT_TAX | number:2}}</td>
+                                                <td>{{Catdata.NET_TOTAL | number:2}}</td>
+                                            </tr>
+
+                                            <tr class="card-footer">
+                                                <td>Total</td>
+                                                <td>{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_GROSS')| number:2 }}</td>
+                                                <td>{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_DISC_CPN')| number:2 }}</td>
+                                                <td>{{ (CASHUP.EPOS_CAT_DATA | total:'TOTAL_VAT_TAX')| number:2 }}</td>
+                                                <td>{{(CASHUP.EPOS_CAT_DATA | total:'NET_TOTAL')+EPOS_HEADER_DATA[0].HOUSE_TIPS*1+EPOS_HEADER_DATA[0].OPT_SVC_CH*1 | number:2}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Service Charge(Incl.)</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>{{EPOS_HEADER_DATA[0].OPT_SVC_CH | number:2}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>House Tips</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>{{EPOS_HEADER_DATA[0].HOUSE_TIPS | number:2}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>ePOS</th>
+                                                <th>Actual</th>
+                                                <th>Variance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+
+                                            <tr>
+                                                <td>Void</td>
+                                                <td>{{EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT | number:2}}</td>
+                                                <td>{{CASHUP.VOID_TOTAL | number:2}}</td>
+                                                <td>{{EPOS_HEADER_DATA[0].VOID_TOTAL_AMOUNT*1-CASHUP.VOID_TOTAL*1 | number:2}}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Complimentary</td>
+                                                <td>{{EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT | number:2}}</td>
+                                                <td>{{CASHUP.COMP_TOTAL | number:2}}</td>
+                                                <td>{{(EPOS_HEADER_DATA[0].DISCOUNT_TOTAL_AMOUNT*1-CASHUP.COMP_TOTAL*1) | number:2}}</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade p-3" ng-class="{'show active':RTab==4, '':RTab!=4}" role="tabpanel" aria-labelledby="custom-content-below-settings-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="text-align-right">
+                                            <tr>
+                                                <th></th>
+                                                <th>ePOS</th>
+                                                <th>Actual</th>
+                                                <th>Variance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+
+                                            <tr ng-if="TABLIST[2].FLAG==1  || TABLIST[2].FLAG==2">
+
+                                                <td>Cash</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.CASH_TOTAL=((TOTAL_EPOS_LIST | filter:{"MEDIA":"Cash"})[0].SALES_AMT) | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.CASH_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.CASH_TOTAL-TOTAL_DATA_CASHUP.ACTUAL.CASH_TOTAL | number:2 }}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Petty Cash</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.PETTY_CASH | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Delivery</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.CHEQUE=((TOTAL_EPOS_LIST | filter:{"MEDIA":"Delivery"})[0].SALES_AMT) | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.CHEQUE | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.CHEQUE-TOTAL_DATA_CASHUP.ACTUAL.CHEQUE | number:2}}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Cards</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.CARDS_TOTAL=((TOTAL_EPOS_LIST | filter:{"MEDIA":"Card"})[0].SALES_AMT) | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.CARDS_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.CARDS_TOTAL-TOTAL_DATA_CASHUP.ACTUAL.CARDS_TOTAL | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[7].FLAG==1">
+                                                <td>Voucher Redeemed</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.VOUCHER_REDEEMED_TOTAL=((TOTAL_EPOS_LIST | filter:{"MEDIA":"Gift"})[0].SALES_AMT) | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.VOUCHER_REDEEMED_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.VOUCHER_REDEEMED_TOTAL-TOTAL_DATA_CASHUP.ACTUAL.VOUCHER_REDEEMED_TOTAL | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[6].FLAG==1">
+                                                <td>Account</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.ACCOUNT_TOTAL=((TOTAL_EPOS_LIST | filter:{"MEDIA":"Account"})[0].SALES_AMT) | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.ACCOUNT_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.ACCOUNT_TOTAL-TOTAL_DATA_CASHUP.ACTUAL.ACCOUNT_TOTAL  | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-repeat="MEDIA in MEDIANAMES | filter:{'MEDIA':'!Cash'} | filter:{'MEDIA':'!Gift'} | filter:{'MEDIA':'!Account'}" ">
+                                                <td>{{MEDIA.MEDIA}}</td>
+                                                <td class="text-align-right">{{(TOTAL_EPOS_LIST | filter:{MEDIA:MEDIA.MEDIA}).length>0?(TOTAL_EPOS_LIST | filter:{MEDIA:MEDIA.MEDIA})[0].SALES_AMT:0|number:2}}</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">-</td>
+                                            </tr>
+                                            <tr ng-if="CASHUP.INTEGRATION_SYSTEM_ID==1">
+                                                <td>Transitory</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT | number:2}}</td>
+                                                <td class="text-align-right">0.00</td>
+                                                <td class="text-align-right">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Transitory"})[0].SALES_AMT | number:2}}</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[8].FLAG==1">
+                                                <td>Deposit Redeemed</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.DEPOSIT_REDEEMED_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[7].FLAG==1">
+                                                <td>Voucher Issued</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.VOUCHER_ISSUED_TOTAL |number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.VOUCHER_ISSUED_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[8].FLAG==1">
+                                                <td>Deposit Received</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.DEPOSIT_RECEIVED_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+
+                                            <tr class="card-footer text-white">
+                                                <th>Total</th>
+                                                <th class="text-align-right">{{TOTAL_DATA_CASHUP.REV_TOTAL_EPOS | number:2}}</th>
+                                                <th class="text-align-right">{{TOTAL_DATA_CASHUP.REV_TOTAL_CASHUP | number:2}}</th>
+                                                <th class="text-align-right">{{TOTAL_DATA_CASHUP.REV_TOTAL_EPOS-TOTAL_DATA_CASHUP.REV_TOTAL_CASHUP | number:2}}</th>
+
+                                            </tr>
+                                            <tr ng-if="TABLIST[1].FLAG==1 || TABLIST[1].FLAG==2">
+                                                <td>Float</td>
+                                                <td class="text-align-right">-</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.FLOAT_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">-</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Revenue Type</th>
+                                                <th class="text-align-right">Gross Exc. Disc.</th>
+                                                <th class="text-align-right">Disc.</th>
+                                                <th class="text-align-right">Vat</th>
+                                                <th class="text-align-right">Net Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="Catdata in TOTAL_EPOS_CAT_DATA">
+                                                <td>{{Catdata.CATEGORY_NAME}}</td>
+                                                <td class="text-align-right">{{Catdata.TOTAL_GROSS | number:2}}</td>
+                                                <td class="text-align-right">{{Catdata.TOTAL_DISC_CPN | number:2}}</td>
+                                                <td class="text-align-right">{{Catdata.TOTAL_VAT_TAX | number:2}}</td>
+                                                <td class="text-align-right">{{Catdata.NET_TOTAL | number:2}}</td>
+                                            </tr>
+
+                                            <tr class="card-footer">
+                                                <td>Total</td>
+                                                <td class="text-align-right">{{ (TOTAL_EPOS_CAT_DATA | total:'TOTAL_GROSS')| number:2 }}</td>
+                                                <td class="text-align-right">{{ (TOTAL_EPOS_CAT_DATA | total:'TOTAL_DISC_CPN')| number:2 }}</td>
+                                                <td class="text-align-right">{{ (TOTAL_EPOS_CAT_DATA | total:'TOTAL_VAT_TAX')| number:2 }}</td>
+                                                <td class="text-align-right">{{(TOTAL_EPOS_CAT_DATA | total:'NET_TOTAL') | number:2}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Service Charge(Incl.)</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td class="text-align-right">{{EPOS_HEADER_DATA[0].OPT_SVC_CH | number:2}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>House Tips</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td class="text-align-right">{{EPOS_HEADER_DATA[0].HOUSE_TIPS | number:2}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-hover table-striped">
+                                        <thead class="text-align-right">
+                                            <tr>
+                                                <th></th>
+                                                <th>ePOS</th>
+                                                <th>Actual</th>
+                                                <th>Variance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="Right_Align">
+
+
+                                            <tr>
+                                                <td>Void</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.VOID_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.VOID_TOTAL  | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.VOID_TOTAL*1-TOTAL_DATA_CASHUP.ACTUAL.VOID_TOTAL *1 | number:2}}</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Complimentary</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.EPOS.COMPLIMENTARY_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{TOTAL_DATA_CASHUP.ACTUAL.COMPLIMENTARY_TOTAL | number:2}}</td>
+                                                <td class="text-align-right">{{(TOTAL_DATA_CASHUP.EPOS.COMPLIMENTARY_TOTAL*1-TOTAL_DATA_CASHUP.ACTUAL.COMPLIMENTARY_TOTAL*1) | number:2}}</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="noteLayout" class="m-0">Notes:</label>
+                    <textarea class="form-control d-block" rows="4" id="noteLayout" name="text" ng-model="CASHUP.REV_NOTES"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="event-footer animated fadeInUp">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12 d-inline m-2 text-right">
+                <button class="btn btn-w-default btn-sm" ng-click="ShowDiv(GetPreviousStep())" ng-show="CASHUP.STEP_NO!=0"><i class="fa fa-angle-double-left"></i> Previous</button>
+                <!--<button class="btn btn-wenodo btn-sm" ng-click="SkipStep()" ng-show="CASHUP.STEP_NO!=10"><i class="fa fa-angle-double-right"></i> Skip</button>-->
+                <button class="btn btn-wenodo btn-sm" ng-click="NextButtonClick()" ng-show="CASHUP.STEP_NO!=10"><i class="fa fa-angle-double-right"></i> Next</button>
+                <button class="btn btn-wenodo btn-sm" ng-click="UPD_CASHUP_HEADER_SUBMIT()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==0 || CashUp_Main_STATUS_ID==1 || CashUp_Main_STATUS_ID==5)"><i class="fa fa-angle-double-right"></i> Submit</button>
+                <button class="btn btn-wenodo btn-sm" ng-click="APP_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Approve</button>
+                <button class="btn btn-danger btn-sm" ng-click="REJ_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Return</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+

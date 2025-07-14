@@ -1,0 +1,883 @@
+﻿<div class="row">
+    <div class="col-xxl-10 col-md-10 col-xl-10 side_content ms-auto">
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Payroll</h6>
+                </div>
+                <div class="card-header px-0 border-0">
+                    <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+                        <li class="nav-item ms-2">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==1}" ng-click="PAY_ROLL_TAB_CLICK(1)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Pay Codes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==2}" ng-click="PAY_ROLL_TAB_CLICK(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Pay Schedule
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==3}" ng-click="PAY_ROLL_TAB_CLICK(3)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Calculation
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-border tab-info" ng-class="{'active':TAB_ID==4}" ng-click="PAY_ROLL_TAB_CLICK(4)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                                Date Lock
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body" ng-show="TAB_ID==1">
+                    <div class="row" ng-show="SHOW_WARNING_MESSAGE_FOR_PAYCODE">
+                        <div class="col-xxl-auto col-md-auto col-xl-auto">
+                            <div class="alert alert-light-warning mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-auto"><i class="fa-light fa-circle-exclamation txt-orange fa-lg"></i></div>
+                                    <div class="col">
+                                        <p class="txt-orange">You are about to edit a pay code that is <span class="txt-orange f-w-700">assigned to {{MAPPED_EMPLOYEE_PAYCODE_COUNT}} employees</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-7 col-md-7 col-xl-7"><h6 class="headings">Pay Code</h6></div>
+                        <div class="col-xxl-5 col-md-5 col-xl-5 text-end">
+                            <button type="button"
+                                    class="btn btn-light btn-sm"
+                                    click-once
+                                    ng-click="RESET_Fn()">
+                                <i class="fa-light fa-undo float-start mt-1 me-2"></i>Reset
+                            </button>
+                            <button type="button"
+                                    class="btn btn-light btn-sm"
+                                    click-once
+                                    ng-click="HRM_INS_UPD_PAYCODES()">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    <form name="PAYROLL_FORM" novalidate>
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Code <span class="txt-danger">*</span></label>
+                                <input type="text"
+                                       name="CODE"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       ng-model="payrollsearch.CODE"
+                                       required
+                                       ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.CODE.$error.required}" />
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Title <span class="txt-danger">*</span></label>
+                                <input type="text"
+                                       name="TITLE"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       ng-model="payrollsearch.TITLE"
+                                       required
+                                       ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.TITLE.$error.required}" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Type <span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       ng-model="payrollsearch.TYPE_ID"
+                                       name="TYPE_ID"
+                                       required
+                                       ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.TYPE_ID.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.TYPE_ID.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{payrollsearch.CUSTOM_TYPE_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper  w-100">
+                                            <li class=""
+                                                ng-show="payrollsearch.CUSTOM_TYPE_NAME!=payrollsearch.DD_DEFAULT_TEXT"
+                                                ng-click="SELECTED_TYPE_Fn('')">{{payrollsearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-click="SELECTED_TYPE_Fn(_addition)"
+                                                ng-repeat="_addition in ADDITION_TYPE">
+                                                <span class="">{{_addition.TYPE_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Calculation <span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       ng-model="payrollsearch.CALCULATION_ID"
+                                       name="CALCULATION"
+                                       required
+                                       ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.CALCULATION.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.CALCULATION.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{payrollsearch.CUSTOM_CALCULATION_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper  w-100">
+                                            <li class=""
+                                                ng-show="payrollsearch.CUSTOM_CALCULATION_NAME!=payrollsearch.DD_DEFAULT_TEXT"
+                                                ng-click="SELECTED_CALCULATION_Fn('')">{{payrollsearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-click="SELECTED_CALCULATION_Fn(_calulation)"
+                                                ng-repeat="_calulation in CALCULATION_LIST">
+                                                <span class="">{{_calulation.CALCULATION_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Default Value (Optional) </label>
+                                <!--//<div class="placeholder_pound" data-type="£">-->
+                                <div class="placeholder" data-type="">
+                                    <input type="text"
+                                           name="DEFAULT_VALUES"
+                                           placeholder="0"
+                                           maxlength="9"
+                                           ng-model="payrollsearch.DEFAULT_VALUES"
+                                           only-digits>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Recurring</label>
+                                <div class="form-check form-control py-2" ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.RECURRING.$error.required}">
+                                    <input class="form-check-input ms-2"
+                                           id="Recurring"
+                                           type="checkbox"
+                                           value=""
+                                           checked=""
+                                           name="RECURRING"
+                                           ng-model="payrollsearch.RECURRING">
+                                    <label class="form-check-label ms-2" for="Recurring">Yes</label>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>NI</label>
+                                <div class="form-check form-control py-2"
+                                     ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.NI.$error.required}">
+                                    <input class="form-check-input ms-2"
+                                           id="NI"
+                                           type="checkbox"
+                                           value=""
+                                           name="NI"
+                                           ng-model="payrollsearch.NI">
+                                    <label class="form-check-label ms-2" for="NI">Yes</label>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Tax</label>
+                                <div class="form-check form-control py-2" ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.TAX.$error.required}">
+                                    <input class="form-check-input ms-2"
+                                           id="Tax"
+                                           type="checkbox"
+                                           value=""
+                                           name="TAX"
+                                           ng-model="payrollsearch.TAX">
+                                    <label class="form-check-label ms-2" for="Tax">Yes</label>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Pension</label>
+                                <div class="form-check form-control py-2" ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.PENSION.$error.required}">
+                                    <input class="form-check-input ms-2"
+                                           type="checkbox"
+                                           id="Pension"
+                                           value=""
+                                           name="PENSION"
+                                           ng-model="payrollsearch.PENSION">
+                                    <label class="form-check-label ms-2" for="Pension">Yes</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    </form>
+                    <div class="row">
+                        <h6 class="headings">Created Pay Codes</h6>
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                            <div class="no-record" ng-show="PAYCODES_LIST.length==0">No records yet</div>
+                            <div class="table-responsive scrollbar-wrapper mx-height-400" ng-show="PAYCODES_LIST.length>0">
+                                <table>
+                                    <thead class="thead_fixed">
+                                        <tr>
+                                            <th>Title</th>
+                                            <th width="12%">Code</th>
+                                            <th width="12%">Type</th>
+                                            <th width="12%">Calculation</th>
+                                            <th width="10%">Multiplier</th>
+                                            <th width="8%">Recurring</th>
+                                            <th width="8%">NI</th>
+                                            <th width="8%">Tax</th>
+                                            <th width="8%">Pension</th>
+                                            <th width="10%" class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="_paycode in PAYCODES_LIST">
+                                            <td>{{_paycode.TITLE}}</td>
+                                            <td>{{_paycode.CODE}}</td>
+                                            <td>{{_paycode.TYPE_NAME}}</td>
+                                            <td>{{_paycode.CALCULATION_NAME}}</td>
+                                            <td>{{_paycode.DEFAULT_VALUES}}</td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input"
+                                                           id="RECURRING"
+                                                           type="checkbox"
+                                                           value=""
+                                                           disabled
+                                                           name="RECURRING{{$index}}"
+                                                           ng-model="_paycode.RECURRING"
+                                                           ng-checked="_paycode.RECURRING"
+                                                           ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.RECURRING{{$index}}.$error.required}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           value=""
+                                                           disabled
+                                                           name="NI{{$index}}"
+                                                           ng-model="_paycode.NI"
+                                                           ng-checked="_paycode.NI"
+                                                           ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.NI{{$index}}.$error.required}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           value=""
+                                                           checked=""
+                                                           disabled
+                                                           name="TAX{{$index}}"
+                                                           ng-model="_paycode.TAX"
+                                                           ng-checked="_paycode.TAX"
+                                                           ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.TAX{{$index}}.$error.required}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           value=""
+                                                           checked=""
+                                                           disabled
+                                                           name="PENSION{{$index}}"
+                                                           ng-model="_paycode.PENSION"
+                                                           ng-class="{'error':PAYROLL_FORM.submitted && PAYROLL_FORM.PENSION{{$index}}.$error.required}">
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <button type="button"
+                                                            ng-click="EDIT_PAY_CODE_Fn(_paycode,$index)"
+                                                            class="btn btn-sm btn-transparent"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-title="Edit">
+                                                        <i class="fa-light fa-pen fa-lg"></i>
+                                                    </button>
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-transparent"
+                                                            data-bs-toggle="tooltip"
+                                                            ng-click="POP_DELETE_PAY_CODE(_paycode,index)"
+                                                            data-bs-title="Delete">
+                                                        <i class="fa-light fa-trash-alt fa-lg"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot class="t_foot_fixed" ng-show="GetData">
+                                        <tr>
+                                            <td colspan="12" class="text-center">
+                                                <button type="button"
+                                                        ng-click="LAZY_LOAD_HRM_GET_PAYCODES()"
+                                                        click-once
+                                                        class="btn btn-sm btn-light btn_fixed">
+                                                    Load More...
+                                                </button>
+
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body" ng-show="TAB_ID==2">
+                    <div class="row">
+                        <div class="col-xxl-7 col-md-7 col-xl-7"><h6 class="headings">Pay Schedule</h6></div>
+                        <div class="col-xxl-5 col-md-5 col-xl-5 text-end">
+                            <button type="button"
+                                    class="btn btn-sm btn-light"
+                                    data-bs-toggle="modal"
+                                    ng-click="RESET_PRIVIEW_Fn()">
+                                <i class="fa-light fa-undo  float-start mt-1 me-2"></i> Reset
+                            </button>
+                            <button type="button"
+                                    class="btn btn-sm btn-light"
+                                    data-bs-toggle="modal"
+                                    ng-click="POP_PRIVIEW_SAVE_Fn()">
+                                <i class="fa-light fa-save  float-start mt-1 me-2"></i>
+                                {{payschedulesearch.FREQUENCY!=4?'Preview & Save':'Save'}}
+                            </button>
+                        </div>
+                    </div>
+                    <form name="PAY_SCHEDULEFORM" novalidate>
+                        <div class="row mt-2">
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Name <span class="txt-danger">*</span></label>
+                                <input type="text"
+                                       name="NAME"
+                                       placeholder="{{PLACE_HOLDER}}"
+                                       ng-model="payschedulesearch.NAME"
+                                       autocomplete="off"
+                                       aria-autocomplete="none"
+                                       required
+                                       ng-class="{'error':PAY_SCHEDULEFORM.submitted && PAY_SCHEDULEFORM.NAME.$error.required}" />
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3">
+                                <label>Frequency <span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       ng-model="payschedulesearch.FREQUENCY"
+                                       name="TYPE_ID"
+                                       required
+                                       ng-class="{'error':PAY_SCHEDULEFORM.submitted && PAY_SCHEDULEFORM.TYPE_ID.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':PAY_SCHEDULEFORM.submitted && PAY_SCHEDULEFORM.TYPE_ID.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                {{payschedulesearch.CUSTOM_FREQUENCY_NAME}}
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper  w-100">
+                                            <li class=""
+                                                ng-show="payschedulesearch.DD_DEFAULT_TEXT!=payschedulesearch.CUSTOM_FREQUENCY_NAME"
+                                                ng-click="SELECTED_FREQUENCY_Fn('')">{{payschedulesearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-click="SELECTED_FREQUENCY_Fn(_frequency)"
+                                                ng-repeat="_frequency in FREQUENCY_LIST">
+                                                <span class="">{{_frequency.FREQUENCY_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-show="payschedulesearch.FREQUENCY!=4">
+                                <label>Select Holiday Calendar <span class="txt-danger">*</span></label>
+                                <input type="hidden"
+                                       ng-model="payschedulesearch.HOLIDAY_CALENDAR_ID"
+                                       name="HOLIDAY_CALENDAR"
+                                       ng-required="payschedulesearch.FREQUENCY!=4"
+                                       ng-class="{'error':PAY_SCHEDULEFORM.submitted && PAY_SCHEDULEFORM.HOLIDAY_CALENDAR.$error.required}" />
+
+                                <ul class="nav nav-pills" ng-class="{'error':PAY_SCHEDULEFORM.submitted && PAY_SCHEDULEFORM.HOLIDAY_CALENDAR.$error.required}">
+                                    <li class="dropdown w-100 show">
+                                        <a class="text-limitations cursor-pointer" data-toggle="dropdown" aria-expanded="true">
+                                            <span class="select-label" id="select_label">
+                                                <span class="truncate">{{payschedulesearch.CUSTOM_CALENDAR_NAME}}</span>
+                                            </span>
+                                        </a>
+                                        <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-100">
+                                            <li class=""
+                                                ng-show="payschedulesearch.DD_DEFAULT_TEXT!=payschedulesearch.CUSTOM_CALENDAR_NAME"
+                                                ng-click="SELECTED_CALENDAR_Fn('')">{{payschedulesearch.DD_DEFAULT_TEXT}}</li>
+                                            <li class=""
+                                                ng-click="SELECTED_CALENDAR_Fn(_holiday)"
+                                                ng-repeat="_holiday in HOLIDAY_CALENDARS_LIST">
+                                                <span class="">{{_holiday.CALENDAR_NAME}}</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="row" ng-show="payschedulesearch.FREQUENCY!=4">
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-init="DATE_INPUT_LOAD('OPEN_ALL',0)">
+                                <label>Start Date <span class="txt-danger">*</span></label>
+                                <div class="date-column">
+                                    <input type="text"
+                                           class="dateinputOpen"
+                                           name="START_DATE"
+                                           placeholder="Select date"
+                                           ng-model="payschedulesearch.START_DATE"
+                                           autocomplete="off"
+                                           aria-autocomplete="none"
+                                           ng-required="payschedulesearch.FREQUENCY!=4"
+                                           ng-change="CHECK_DATE_END_Fn()"
+                                           ng-class="{'error':PAY_SCHEDULEFORM.submitted && PAY_SCHEDULEFORM.START_DATE.$error.required}" />
+                                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-init="DATE_INPUT_LOAD('OPEN_ALL',0)">
+                                <label>End Date <span class="txt-danger">*</span></label>
+                                <div class="date-column">
+                                    <input type="text"
+                                           name="END_DATE"
+                                           class="dateinputOpen"
+                                           placeholder="Select date"
+                                           ng-model="payschedulesearch.END_DATE"
+                                           autocomplete="off"
+                                           aria-autocomplete="none"
+                                           ng-required="payschedulesearch.FREQUENCY!=4"
+                                           ng-change="CHECK_DATE_END_Fn();DATE_DAY_CAL();"
+                                           ng-class="{'error':PAY_SCHEDULEFORM.submitted && PAY_SCHEDULEFORM.END_DATE.$error.required}" />
+                                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                </div>
+                                <span class="text-danger" ng-show="END_DATE_FLAG==1">End date can not be earlier than Start date.</span>
+                            </div>
+                            <div class="col-xxl-3 col-md-3 col-xl-3" ng-init="DATE_INPUT_LOAD('OPEN_ALL',0)">
+                                <label>First Day Pay <span class="txt-danger">*</span></label>
+                                <div class="date-column">
+                                    <input type="text"
+                                           class="dateinputOpen"
+                                           name="FIRST_PAYDAY"
+                                           placeholder="Select date"
+                                           ng-model="payschedulesearch.FIRST_PAYDAY"
+                                           autocomplete="off"
+                                           aria-autocomplete="none"
+                                           ng-required="payschedulesearch.FREQUENCY!=4"
+                                           ng-change="CHECK_DATE_FIRSTPAY_Fn()"
+                                           ng-class="{'error':PAY_SCHEDULEFORM.submitted && PAY_SCHEDULEFORM.FIRST_PAYDAY.$error.required}" />
+                                    <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                </div>
+                                <span class="text-danger" ng-show="FIRST_PAY_DATE_FLAG==1">First pay date can not be less than Start date.</span>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+
+                    <h6 class="headings">Pay Calendars</h6>
+                    <div class="no-record" ng-show="PAYSCHEDULES_LIST.length==0">No records yet</div>
+                    <div class="col-xxl-12 col-md-12 col-xl-12" ng-show="PAYSCHEDULES_LIST.length>0">
+
+                        <div class="table-responsive scrollbar-wrapper mx-height-400 mb-3">
+                            <table>
+                                <thead class="thead_fixed">
+                                    <tr>
+                                        <th>Schedule Name</th>
+                                        <th>Holiday Calendar</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Users</th>
+                                        <th>Frequency</th>
+                                        <th>Next Pay Day</th>
+                                        <th class="text-center table-th-r-fixed">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="_payschedule in PAYSCHEDULES_LIST">
+                                        <td>{{_payschedule.PAYSCHEDULE_NAME}}</td>
+                                        <td>{{_payschedule.CALENDAR_NAME==null?'-':_payschedule.CALENDAR_NAME}}</td>
+                                        <td>{{_payschedule.START_DATE==null?'-':_payschedule.START_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                                        <td>{{_payschedule.END_DATE==null?'-':_payschedule.END_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                                        <td>{{_payschedule.USERS}}</td>
+                                        <td>{{_payschedule.FREQUENCY_NAME= FREQUENCY_LIST[_payschedule.FREQUENCY-1].FREQUENCY_NAME}}</td>
+                                        <td>{{_payschedule.NEXT_PAY_DAY==null?'-':_payschedule.NEXT_PAY_DAY| date:DISPLAY_DATE_FORMAT}}</td>
+                                        <td class="text-center">
+                                            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-ellipsis"></i></button>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown-item" ng-click="EDIT_PAY_SCHEDULES_Fn(_payschedule,$index)"><a class="text-dark"><i class="fa-light fa-pen me-2"></i> Edit</a></li>
+                                                <li class="dropdown-item" ng-click="DELETE_PAY_SCHEDULES_Fn(_payschedule,$index)"><a><i class="fa-light fa-trash-alt me-2"></i> Delete</a></li>
+                                                <li class="dropdown-item" ng-click="VIEW_PAY_SCHEDULES_Fn(_payschedule,$index)">
+                                                    <a><i class="fa-light fa-calendar me-2"></i> View Calendar</a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-show="PayscheduleGetData">
+                                    <tr>
+                                        <td colspan="12" class="text-center">
+                                            <button type="button"
+                                                    ng-click="LAZY_LOAD_HRM_GET_PAYSCHEDULES()"
+                                                    click-once
+                                                    class="btn btn-sm btn-light btn_fixed">
+                                                Load More...
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row" ng-show="false">
+                        <h6 class="headings">Lock Payroll Period</h6>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <div class="media form-control">
+                                <label class="col-form-label m-r-10">Enable</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               ng-checked="payschedulesearch.LOCK_PAYROLL_PERIOD"
+                                               name="LOCK_PAYROLL_PERIOD"
+                                               ng-model="payschedulesearch.LOCK_PAYROLL_PERIOD"
+                                               ng-change="INS_UPD_CUSTOMER_SETTINGS(payschedulesearch.LOCK_PAYROLL_PERIOD,79)">
+                                        <span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="card-body" ng-show="TAB_ID==3">
+                    <div class="row">
+                        <div class="col-xxl-8 col-md-8 col-xl-8"><h6 class="headings">Default Values</h6></div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                            <button type="button"
+                                    class="btn btn-sm btn-light mb-2"
+                                    data-bs-toggle="modal"
+                                    ng-click="INS_UPD_CUSTOMER_SETTINGS_CALCULATION()">
+                                <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-ed-auto col-xl-auto">
+                            <div class="alert alert-light-primary mb-3">
+                                <div class="row gx-0 align-items-center">
+                                    <div class="col-auto"><i class="fa-light fa-circle-exclamation alert-primary-text"></i></div>
+                                    <div class="col-auto">
+                                        <span class="alert-primary-text">Following default values will be used for staff calculation in case no NI or Pension values are recieved from payroll system</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xxl-3 col-md-4 col-xl-3">
+                            <label>Employers NI %</label>
+                            <input type="text"
+                                   ng-model="PayCalculationsearch.EMPLOYERS_NI"
+                                   only-digits
+                                   maxlength="5"
+                                   placeholder="{{PLACE_HOLDER}}" />
+                        </div>
+                        <div class="col-xxl-3 col-md-4 col-xl-3">
+                            <label>Employers Pension %</label>
+                            <input type="text"
+                                   only-digits
+                                   maxlength="5"
+                                   ng-model="PayCalculationsearch.EMPLOYERS_PENSION"
+                                   placeholder="{{PLACE_HOLDER}}" />
+                        </div>
+
+                        <div class="col-xxl-3 col-md-4 col-xl-3">
+                            <label>Holiday Accrual %</label>
+                            <input type="text"
+                                   only-digits
+                                   placeholder="{{PLACE_HOLDER}}"
+                                   maxlength="5"
+                                   ng-model="PayCalculationsearch.HOLIDAY_ACCRUEL" />
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-xxl-6 col-md-6 col-xl-6">
+                            <div class="media form-control">
+                                <label class="col-form-label m-r-10">Exclude Salaried from Holiday Accrual</label>
+                                <div class="media-body switch-sm ms-auto">
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                               ng-checked="PayCalculationsearch.ENABLE_EMPLOYEE_CONFIRM"
+                                               name="ENABLE_EMPLOYEE_CONFIRM"
+                                               ng-model="PayCalculationsearch.ENABLE_EMPLOYEE_CONFIRM"
+                                               ng-change="INS_UPD_CUSTOMER_SETTINGS(PayCalculationsearch.ENABLE_EMPLOYEE_CONFIRM,87)">
+                                        <span class="switch-state"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body" ng-show="TAB_ID==4">
+                    <form name="LockDatefrom" novalidate>
+                        <div class="row mb-2">
+                            <div class="col-xxl-8 col-md-8 col-xl-8">
+                                <h6 class="headings">Date Lock</h6>
+                            </div>
+                            <div class="col-xxl-4 col-md-4 col-xl-4 text-end">
+                                <button type="button"
+                                        class="btn btn-light btn-sm"
+                                        ng-click="HRM_INS_UPD_LOCK_DATE_BRANCH_SETTING()">
+                                    <i class="fa-light fa-save float-start mt-1 me-2"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12 col-md-12 col-xl-12">
+                            <div class="table-responsive">
+                                <div class="col-xxl-12 col-md-12 col-xl-12">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Sites</th>
+                                                <th>Date Lock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="_branch in HRM_LOCK_DATE_LIST"
+                                                ng-init="nginit_datelock(_branch,$last)">
+                                                <td>{{_branch.BRANCH_NAME}}</td>
+                                                <td>
+                                                    <input type="text"
+                                                           class="dateinputOpen"
+                                                           name="LOCK_DATE_{{$index}}"
+                                                           ng-model="_branch.LOCK_DATE"
+                                                           required
+                                                           ng-class="{'error':LockDatefrom.submitted && LockDatefrom.LOCK_DATE_{{$index}}.$error.required}" />
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="View_Calendar" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">Pay Schedule Details</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-between badge-light-primary f-12 py-2 px-3">
+                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                    <span class="f-w-700">Schdule Name:</span> {{payschedulesearch.VIEW_NAME}}
+                </div>
+                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                    <span class="f-w-700">Frequency:</span>  {{payschedulesearch.VIEW_CUSTOM_FREQUENCY_NAME}}
+                </div>
+                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                    <span class="f-w-700">Holiday Calendar:</span> {{payschedulesearch.VIEW_CUSTOM_CALENDAR_NAME}}
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="col-xxl-12 col-md-12 col-xl-12">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Pay Day</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="_pay_sch_date in  PAYSCHEDULE_BY_ID_LIST">
+                                    <td>{{_pay_sch_date.START_DATE | date}}</td>
+                                    <td>{{_pay_sch_date.END_DATE | date}}</td>
+                                    <td>{{_pay_sch_date.PAY_DATE | date}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="Preview_Pay_Schedule" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">Preview</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-between badge-light-primary f-12 py-2 px-3">
+                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                    <span class="f-w-700">Schdule Name:</span> {{payschedulesearch.NAME}}
+                </div>
+                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                    <span class="f-w-700">Frequency:</span>  {{payschedulesearch.CUSTOM_FREQUENCY_NAME}}
+                </div>
+                <div class="col-xxl-auto col-md-auto col-xl-auto">
+                    <span class="f-w-700">Holiday Calendar:</span> {{payschedulesearch.CUSTOM_CALENDAR_NAME}}
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="col-xxl-12 col-md-12 col-xl-12">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Pay Day</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="_pay_sch_date in  PAYSCHEDULE_DATES_LIST">
+                                    <td>{{_pay_sch_date.START_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                                    <td>{{_pay_sch_date.END_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                                    <td>{{_pay_sch_date.PAY_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        ng-click="HRM_INS_UPD_PAYSCHEDULE();"
+                        class="btn btn-light">
+                    <i class="fa-light fa-save me-1"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="Duplicate_Schedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Duplicate Schedule Name</h6>
+                    <p class="text-center text-dark">Schedule names have to be unique so that they are easily identifiable while assigning to employees.</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-12 col-md-12 col-xl-12"><button class="btn btn-outline w-100" type="button" data-bs-dismiss="modal">Ok</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="Deletepaycode" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Delete "{{SELECTED_PAYCODE.TITLE}}-{{SELECTED_PAYCODE.CODE}} " from pay code?</h6>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL>0">This has been assigned to {{COUNT_VAL}} employees. Please assign a different work pattern to those employees before performing delete.</p>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL==0">Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-outline w-100"
+                                type="button"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-danger w-100"
+                                type="button"
+                                data-bs-dismiss="modal" ng-disabled="COUNT_VAL>0"
+                                ng-click="DELETE_PAYCODES(SELECTED_DOCUMENT,0,2)">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Deletepayschedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <ul class="modal-img">
+                        <li> <img src="../../../E_Content/images/HR/exclaimation_circle.svg" class="pb-2" alt="error"></li>
+                    </ul>
+                    <h6 class="text-center pb-2 fw-500">Delete "{{SELECTED_PAYSCHEDULE.PAYSCHEDULE_NAME}} " from pay code?</h6>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL>0">This has been assigned to {{COUNT_VAL}} employees. Please assign a different work pattern to those employees before performing delete.</p>
+                    <p class="text-center text-dark" ng-show="COUNT_VAL==0">Do you want to proceed?</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-outline w-100"
+                                type="button"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-xl-6">
+                        <button class="btn btn-danger w-100"
+                                type="button"
+                                data-bs-dismiss="modal" ng-disabled="COUNT_VAL>0"
+                                ng-click="DELETE_PAY_SCHEDULE(SELECTED_PAYSCHEDULE)">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

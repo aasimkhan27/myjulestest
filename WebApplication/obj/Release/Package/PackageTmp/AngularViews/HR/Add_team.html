@@ -1,0 +1,216 @@
+﻿<div class="card-header text-center"><h5 class="text-center heading-text">What would you like to add?</h5></div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="col-md-12 text-center">
+                <img src="../../E_Content/images/add-department.png" class="img-fluid add-team-icon" />
+            </div>
+            <div class="col-md-12 mt-4">
+                <div class="team-heading">Department</div>
+                <span class="d-block mt-2">
+                    <a href="#!/Adddepartment" ng-if="CHECK_MODULE_ACCESS(1,2) && !IS_DEPARTMENT_FLAG" class="btn btn-wenodo btn-sm">Add</a>
+                    <a href="#!/Dpt_Lst"  ng-if="CHECK_MODULE_ACCESS(1,1) || CheckSubModuleAccess(46)" class="btn btn-w-default btn-sm">View</a>
+                </span>
+                <div class="col-md-12 text-center mt-2" >
+                    <div class="form-group" ng-show="CHECK_MODULE_ACCESS(1,5) && !IS_DEPARTMENT_FLAG">
+                        <button class="btn btn-w-default btn-sm btn-custom" ng-click="DOWNLOAD_POP_FY(16)"><i class="fas fa-upload"></i> Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="col-md-12 text-center"><img src="../../E_Content/images/add-position.png" class="img-fluid add-team-icon" /> </div>
+            <div class="col-md-12 mt-4">
+                <div class="team-heading">Position</div>
+                <span class="d-block mt-2">
+                    <a href="#!/Addposition" ng-show="CHECK_MODULE_ACCESS(2,2) && !IS_POSITION_FLAG" class="btn btn-wenodo btn-sm">Add</a>
+                    <a href="#!/Pst_Lst" ng-if="CHECK_MODULE_ACCESS(2,1) || CheckSubModuleAccess(47)" class="btn btn-w-default btn-sm">View</a>
+                </span>
+                <div class="col-md-12 text-center mt-2">
+                    <div class="form-group"  ng-show="CHECK_MODULE_ACCESS(2,5) && !IS_POSITION_FLAG">
+                        <button class="btn btn-w-default btn-sm btn-custom" ng-click="DOWNLOAD_POP_FY(17)"><i class="fas fa-upload"></i> Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <div class="col-md-12 text-center"><img src="../../E_Content/images/add-employee.png" class="img-fluid add-team-icon" /> </div>
+            <div class="col-md-12 mt-4">
+                <div class="team-heading">Employee</div>
+                <span class="d-block mt-2">
+                    <a href="#!/Addemployee" ng-if="CHECK_MODULE_ACCESS(3,2)" class="btn btn-wenodo btn-sm">Add</a>
+                    <a href="#!/team?FLG=1"  ng-if="CHECK_MODULE_ACCESS(3,1) ||  CheckSubModuleAccess(48)" class="btn btn-w-default btn-sm">View</a>
+                </span>
+                <div class="col-md-12 text-center mt-2"  >
+                    <div class="form-group" ng-show="CHECK_MODULE_ACCESS(3,5)">
+                        <button class="btn btn-w-default btn-sm btn-custom" ng-click="DOWNLOAD_POP_FY(19)"><i class="fas fa-upload"></i> Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 text-center" ng-if="CHECK_MODULE_ACCESS(2, 3) && !IS_POSITION_FLAG">
+            <button type="button" ng-click="GET_PNDNG_POSITIONS(1)" class="btn btn-default mt-5" data-toggle="modal" data-target="#New_Position">
+                You have {{POSITION_COUNT_LIST.POSITION_COUNT}} positions that need completing.
+            </button>
+        </div>
+        <div class="col-md-12 text-center">
+            <button type="button" ng-click="HR_GET_PNDNG_EMP(1)" class="btn btn-default mt-2" data-toggle="modal" data-target="#New_Employee">
+                You have {{POSITION_COUNT_LIST.EMP_COUNT}} employee that need completing.
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade show" id="New_Position" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Completing Position</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-400">
+                <div class="text-center" ng-show="PNDNG_POSITIONS_LIST.length==0" empty-grid>
+                </div>
+                <div class="table-responsive" ng-show="PNDNG_POSITIONS_LIST.length>0">
+                    <table class="table mb-0 table-striped">
+                        <thead class="bg-wenodo-dark-blue">
+                            <tr>
+                                <th>Position ID</th>
+                                <th>Position Title</th>
+                                <th>Date</th>
+                                <th align="right"></th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" align="center" ng-show="GetData">
+                                    <a class="btn btn-secondary text-white" ng-click="GET_POSITION_LAZY_LOAD()">{{VIEWMORERECORD}}</a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        <tbody ng-repeat="PPL in PNDNG_POSITIONS_LIST">
+                            <tr>
+                                <td>{{PPL.POSITION_ID_TEXT}}</td>
+                                <td>{{PPL.POSITION_TITLE}}</td>
+                                <td>{{ PPL.CREATED_DATE | date}}</td>
+                                <td align="right"><a ng-if="CHECK_MODULE_ACCESS(2,3)" data-dismiss="modal" ng-click="RedirectiononPosition(PPL.POSITION_ID,PPL.STEP_NO)" class="btn btn-wenodo btn-wenodo-sm close">Complete</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" id="New_Employee" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Completing Employee</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-400">
+                <div class="text-center" ng-show="PNDNG_EMP_LIST.length==0" empty-grid></div>
+
+                <div class="table-responsive" ng-show="PNDNG_EMP_LIST.length>0">
+                    <table class="table mb-0 table-striped">
+                        <thead class="bg-wenodo-dark-blue">
+                            <tr>
+                                <th>First Name</th>
+                                <th>Middle Name</th>
+                                <th>Last Name</th>
+                                <th align="right"></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="PPL in PNDNG_EMP_LIST">
+                            <tr>
+                                <td>{{PPL.FIRST_NAME}}</td>
+                                <td>{{PPL.MIDDLE_NAME}}</td>
+                                <td>{{PPL.LAST_NAME}}</td>
+                                <td align="right"><a ng-show="CHECK_MODULE_ACCESS(3,3)" data-dismiss="modal" ng-click="RedirectiononEmp(PPL)" class="btn btn-wenodo btn-wenodo-sm">Complete</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" id="bulk_document">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Upload your 
+                <span ng-show="DOWNLOAD_FLAG==1">Department</span>
+                    <span ng-show="DOWNLOAD_FLAG==2">Position</span>
+                    <span ng-show="DOWNLOAD_FLAG==3">Employee</span>
+                 document</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="input-group d-flex">
+                            <input class="form-control text-xs" type="file" id="ngexcelfile_Deartments_HR" ng-files="getTheFilesToUpload($files, 'fileUpl_EvtInfo', 5)" name="file" />
+                            <div class="input-group-append">
+                                <span class="input-group-text" ng-if="Uploading">
+                                    <img src="../../E_Content/images/loading.gif" style="height: 22px" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="button" value="Upload"
+                                   ng-disabled="$parent.Files==null || $parent.Files.length==0"
+                                   ng-click="UPLOAD_HR_BULK_UPLOAD()"
+                                   ng-class="{'cursor-pointer':$parent.Files==null || $parent.Files.length==0,'':$parent.Files.length>0}"
+                                   class="btn btn-wenodo">
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <div data-ng-show="IS_VALID_COUNT>0" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                    </div>
+                    <div class="table-responsive custom-scrollbar height-auto">
+                        <table class="table table-striped">
+                            <tr>
+                                <th ng-repeat="(key, value) in DATA_UPLOAD_LIST[0]">{{key}}</th>
+                            </tr>
+                            <tbody ng-repeat="ex in DATA_UPLOAD_LIST"  >
+                                <tr>
+                                    <td ng-repeat="(key, value) in ex" ng-init="obj= ngintvalue(key,value)" >
+                                        <span ng-show="false">{{value}}</span>
+                                        <span ng-class="{'border-red':obj.IS_VALID}">
+                                            <span ng-show="obj.IS_VALID"><i class="fa fa-exclamation-triangle text-danger"></i></span>
+                                            {{obj.DISPLAY_TEXT}}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="GET_DATA_FOR_TEMPLATE_DOWNLOADS(1)" class="btn btn-wenodo">Download</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

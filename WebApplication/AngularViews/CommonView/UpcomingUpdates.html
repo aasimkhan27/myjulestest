@@ -1,0 +1,96 @@
+﻿    <div class="card-header bg-transparent"><h6 class="heading-text-2">Upcoming Updates </h6></div>
+    <div class="text-center" ng-show="EFFECTIVE_DATA_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="EFFECTIVE_DATA_LIST.length>0">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th class="text-nowrap">Effective Date</th>
+                    <th class="text-nowrap">Comments</th>
+                    <th class="text-nowrap">Modify By/Email</th>
+                    <th class="headcol-right-header"></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="PPL in EFFECTIVE_DATA_LIST" ng-init="PPL.index=$index">
+                <tr>
+                    <td>{{PPL.EFFECTIVE_DATE | date}}</td>
+                    <td>{{PPL.COMMENTS}}</td>
+                    <td>{{PPL.USER_NAME}}<br />({{PPL.EMAIL}})</td>
+                    <td class="headcol-right">
+                    <a ng-click="POP_UPD_EFFECTIVE_CHANGES(PPL)"><i class="far fa-money-check-edit"></i></a>
+                        <span ng-show="EmpSearch_HEADER.ACTIVE">
+                            <a ng-show="IS_COMPENSATION_PAGE && IS_EDIT_COMPENSATION" title="Discard" ng-click="POP_DISCARD_CHANGES(PPL,1,1)"><i class="far fa-times text-danger"></i></a>
+                            <a ng-show="IS_COMPENSATION_PAGE && IS_EDIT_COMPENSATION" title="Process" ng-click="POP_DISCARD_CHANGES(PPL,2,1)"><i class="far fa-cogs text-green"></i></a>
+                        </span>
+                        <a ng-show="!IS_COMPENSATION_PAGE" title="Discard" ng-click="POP_DISCARD_CHANGES(PPL,1,1)"><i class="far fa-times text-danger"></i></a>
+                        <a ng-show="!IS_COMPENSATION_PAGE" title="Process" ng-click="POP_DISCARD_CHANGES(PPL,2,1)"><i class="far fa-cogs text-green"></i></a>
+
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8" align="center" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" ng-click="GET_POSITION_LAZY_LOAD()">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+<div class="modal fade" id="EFFECTIVE_DATA_VIEW">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Updates Details
+                    <span class="d-block font-12"> Changes will be updated on {{EFFECTIVE_LINE.EFFECTIVE_DATE | date}}</span>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-400">
+                <div class="w-100" ng-repeat="LIST in [{'DATA':ViewEffEmpSearch_1}]" ng-include="'../AngularViews/CommonView/FormLabelUpdatesView.html?v=1212314{{AppVersion}}'">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-left">
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="DISCARD">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{EFFECTIVE_LINE.DISPLAY_TEXT}} Details
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-400">
+                <form id="EFFECTIVEForm" name="EFFECTIVEForm" novalidate>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Comments:*</label>
+                            <textarea rows="8"
+                                      class="form-control "
+                                      name="COMMENTS"
+                                      ng-model="EFFECTIVE_LINE.DISCARD_COMMENTS"
+                                      placeholder="Enter ..."
+                                      required
+                                      ng-class="{'error':EFFECTIVEForm.submitted && EFFECTIVEForm.COMMENTS.$error.required}" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-left">
+                <button type="button" click-once ng-click="SAVE_UPCOMING_UPDATES(EFFECTIVE_LINE,EFFECTIVE_LINE.FLAG_NO,1);" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

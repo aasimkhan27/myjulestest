@@ -1,0 +1,130 @@
+﻿<form id="TerminationForm" name="TerminationForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="TerminationReasonSearch.CUSTOMER_ID"
+                            ng-options="CT.CUSTOMER_ID as CT.CUSTOMER_NAME for CT in CUSTOMER_LIST"
+                            ng-class="{'error':TerminationForm.submitted && TerminationForm.CUSTOMER_ID.$error.required}">
+                        <option value="">-Select Customer-</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Termination Reason:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="TERMINATION_REASONS_NAME"
+                           ng-model="TerminationReasonSearch.TERMINATION_REASONS_NAME"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':TerminationForm.submitted && TerminationForm.TERMINATION_REASONS_NAME.$error.required}" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Termination Code:*</label>
+                    <input type="text"
+                           class="form-control"
+                           maxlength="250"
+                           name="TERMINATION_REASONS_CODE"
+                           ng-model="TerminationReasonSearch.TERMINATION_REASONS_CODE"
+                           placeholder="Enter ..."
+                           required
+                           ng-class="{'error':TerminationForm.submitted && TerminationForm.TERMINATION_REASONS_CODE.$error.required}" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-inline mb-2">
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="TerminationReasonSearch.ACTIVE" name="grp"
+                                   ng-model="TerminationReasonSearch.ACTIVE"
+                                   ng-value="1">
+                            <label for="TerminationReasonSearch.ACTIVE" class="custom-control-label justify-content-left">Active</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="TerminationReasonSearch.InActive" name="grp"
+                                   ng-model="TerminationReasonSearch.ACTIVE"
+                                   ng-value="0">
+                            <label for="TerminationReasonSearch.InActive" class="custom-control-label justify-content-left">In-Active</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="TerminationReasonSearch.All" name="grp"
+                                   ng-value="-1"
+                                   ng-model="TerminationReasonSearch.ACTIVE" />
+                            <label for="TerminationReasonSearch.All" class="custom-control-label justify-content-left">ALL</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+            <div class="col-md-12">
+                <div data-ng-show="TerminationForm.submitted && TerminationForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="TerminationForm.$valid">
+                    <span class="help-block">{{InvalidUser}}</span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button ng-click="ADMIN_INS_UPD_TERMINATION_REASONS();" class="btn btn-wenodo">Save</button>
+                    <button ng-click="ADMIN_GET_TERMINATION_REASONS(1);" class="btn btn-w-default">Search</button>
+                    <button ng-click="RESET_TERMINATION();" class="btn btn-w-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="card-body">
+    <div class="text-center" ng-show="TERMINATION_REASON_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-auto" ng-show="TERMINATION_REASON_LIST.length>0">
+        <table class="table table-striped">
+            <thead class="bg-wenodo-dark-blue">
+                <tr>
+                    <th class="text-nowrap">Customer Name</th>
+                    <th width="20%">Termination Reason</th>
+                    <th width="20%">Termination Code</th>
+                    <th width="15%">Creation Date</th>
+                    <th width="20%">Status</th>
+                    <th width="5%"></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="8" align="center" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_TERMINATION_REASONS();">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody ng-repeat="CL in TERMINATION_REASON_LIST" on-finish-render="ngRepeatFinished">
+                <tr>
+                    <td>{{CL.CUSTOMER_NAME}}</td>
+                    <td>{{CL.TERMINATION_REASONS_NAME}}</td>
+                    <td>{{CL.TERMINATION_REASONS_CODE}}</td>
+                    <td>{{CL.CREATED_DATE | date}}</td>
+                    <td>{{CL.ACTIVE?'Active':'Inactive'}}</td>
+                    <td>
+                        <a ng-click="EDIT_INS_UPD_TERMINATION_REASONS(CL)" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                        <!--<a ng-click="DELETE_INS_UPD_WORK_PERMIT_TYPE(WPT)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

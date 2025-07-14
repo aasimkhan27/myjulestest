@@ -1,0 +1,610 @@
+﻿<style>
+    .clear::-ms-clear {
+        display: none;
+    }
+</style>
+<nav class="breadcrumb">
+    <a class="breadcrumb-item">Employee Onboarding</a>
+    <span class="breadcrumb-item txt-dark">Detail Card</span>
+</nav>
+
+<div class="card mb-0">
+    <div class="card-header" ng-if="false">
+        <h5 class="f-18">{{HeaderPrimaryDetails.FIRST_NAME}} {{HeaderPrimaryDetails.LAST_NAME}}</h5>
+        <div class="card-header-right-icon d-none">
+            <span class="circle_icon" data-bs-toggle="modal" data-bs-target="#History"><i class="fa-light fa-clock"></i></span>
+        </div>
+        <span>You can edit data to ready to hire.</span>
+    </div>
+    <div class="row sticky_tabs">
+        <templateurl class="w-100" template-url="../AngularViews/HumanResource/Manage_Employees/Employee/HRM_EmployeeHeader.html?v=1{{AppVersion}}">
+    </div>
+    <div class="card-header px-0 pb-0 border-0" ng-if="false">
+        <ul class="nav nav-tabs border-tab mb-0 nav-justified employee_tabs" id="bottom-tab" role="tablist" ng-show="EDIT_STEP_NO < 9">
+            <li class="nav-item ps-0">
+                <a class="nav-link tab-info active" ng-click="STEP_NO>=1?TAB_CLICK_HR_HEADER_Fn(1):''" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-primary me-1" ng-class="{'badge-primary':STEP_FLAG<=1,'badge-white ':STEP_FLAG!=1}">1</span>  Personal Details
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i></li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-click="STEP_NO>=2?TAB_CLICK_HR_HEADER_Fn(2):TAB_MESSAGE_Fn(2)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">2</span> Employment Info
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i></li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==3}" ng-click="STEP_NO>=3?TAB_CLICK_HR_HEADER_Fn(3):TAB_MESSAGE_Fn(3)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">3</span> Wages
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i></li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==4}" ng-click="STEP_NO>=4?TAB_CLICK_HR_HEADER_Fn(4):TAB_MESSAGE_Fn(4)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">4</span> Absences
+                </a>
+            </li>
+            <li> <i class="fa-regular fa-chevron-right mb-3"></i></li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==5}" ng-click="STEP_NO>=5?TAB_CLICK_HR_HEADER_Fn(5):TAB_MESSAGE_Fn(5)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">5</span> Access
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i> </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==6}" ng-click="STEP_NO>=6?TAB_CLICK_HR_HEADER_Fn(6):TAB_MESSAGE_Fn(6)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">6</span> Document
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i> </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==7}" ng-click="STEP_NO>=7?TAB_CLICK_HR_HEADER_Fn(7):TAB_MESSAGE_Fn(7)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">7</span> Assets
+                </a>
+            </li>
+            <li><i class="fa-regular fa-chevron-right mb-3"></i> </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==8}" ng-click="STEP_NO>=8?TAB_CLICK_HR_HEADER_Fn(8):TAB_MESSAGE_Fn(8)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">8</span> Qualification
+                </a>
+            </li>
+            <li> <i class="fa-regular fa-chevron-right mb-3"></i> </li>
+            <li class="nav-item">
+                <a class="nav-link tab-info" ng-class="{'active':TAB_ID==9}" ng-click="STEP_NO>=9?TAB_CLICK_HR_HEADER_Fn(9):TAB_MESSAGE_Fn(9)" id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                    <span class="badge badge-white me-1">9</span> Notes
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-tabs border-tab mb-0 scrollbar-wrapper" id="bottom-tab" role="tablist" ng-if="EDIT_STEP_NO==9 ">
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':STEP_FLAG==1}" ng-click="TAB_CLICK_HR_HEADER_Fn(1)" id="">
+                    Personal Details
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':STEP_FLAG==2}" ng-click="TAB_CLICK_HR_HEADER_Fn(2)" id="">
+                    Employment Info
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':STEP_FLAG==3}" ng-click="TAB_CLICK_HR_HEADER_Fn(3)" id="bottom-inbox-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-inbox" aria-selected="false">
+                    Wages
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" ng-class="{'active':STEP_FLAG==4}" ng-click="TAB_CLICK_HR_HEADER_Fn(4)" id="bottom-contact-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Absences
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==5}" ng-click="TAB_CLICK_HR_HEADER_Fn(5)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Access
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==6}" ng-click="TAB_CLICK_HR_HEADER_Fn(6)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Document
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==7}" ng-click="TAB_CLICK_HR_HEADER_Fn(7)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Assets
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==8}" ng-click="TAB_CLICK_HR_HEADER_Fn(8)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Qualification
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-border tab-info" id="bottom-contact-tab" ng-class="{'active':STEP_FLAG==9}" ng-click="TAB_CLICK_HR_HEADER_Fn(9)" data-bs-toggle="tab" role="tab" aria-controls="bottom-contact" aria-selected="false">
+                    Notes
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-xxl col-md col-xl">
+                <h6 class="headings mb-0">Company Assets</h6>
+                <p class="mb-0">Attachments should be in pdf, jpeg or png format.</p>
+            </div>
+            <div class="col-xxl-auto col-md-auto col-xl-auto" ng-show="EDIT_STEP_NO==9 && MY_PROFILE_FLAG==0 && false">
+                <button type="button" ng-show="SHOW_EDIT_ACCESS" click-once class="btn btn-sm btn-light text-nowrap" ng-click="HRM_EDIT_DETAILS()" ng-class="{'btn-edit-mode':!EDIT_MODE, 'btn-light':EDIT_MODE}"><i class="fa-light fa-pen float-start mt-1 me-2"></i> Edit Data</button>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <label class="desktop_label">Asset Type <span class="txt-danger">*</span></label>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <label class="desktop_label">Issue Date <span class="txt-danger">*</span> {{DATE_FORMATE_LABEL}}</label>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <label class="desktop_label">Return Date  {{DATE_FORMATE_LABEL}}</label>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <label class="desktop_label">Upload </label>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-md-2">
+                <label class="desktop_label">Notes</label>
+            </div>
+        </div>
+        <form name="AssetForm" novalidate>
+            <div class="row" ng-repeat="_asset in EMPLOYEE_ASSETS_LIST" ng-init="nginit_asset(_asset,$index)">
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <label class="resp_label">Asset Type <span class="txt-danger">*</span></label>
+                    <div class="dropdown">
+                        <button class="select-label"
+                                type="button"
+                                id="searchableEmployeeTypeButton"
+                                ng-class="{'error':AssetForm.submitted && AssetForm.ASSET_ID{{$index}}.$error.required,'disabled':EDIT_MODE}"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <span class="truncate">{{_asset.CUSTOM_ASSET_NAME}}</span>
+                        </button>
+                        <div class="dropdown-menu w-100" aria-labelledby="searchableEmployeeTypeButton">
+                            <input type="hidden"
+                                   ng-model="_asset.ASSET_ID"
+                                   name="ASSET_ID{{$index}}"
+                                   required
+                                   ng-class="{'error':AssetForm.submitted && AssetForm.ASSET_ID{{$index}}.$error.required}" />
+                            <ul id="dropdownList" class="list-unstyled mb-0 scrollbar-wrapper">
+                                <li class=""
+                                    ng-show="AssetSearch.DD_DEFAULT_TEXT!=_asset.CUSTOM_ASSET_NAME"
+                                    ng-click="SELECTED_ASSET_Fn('',_asset)">
+                                    {{AssetSearch.DD_DEFAULT_TEXT}}
+                                </li>
+                                <li class=""
+                                    ng-click="SELECTED_ASSET_Fn(_asset_type,_asset)"
+                                    ng-repeat="_asset_type in ASSET_TYPE_LIST">
+                                    <span class="">{{_asset_type.ASSET_NAME}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-2 col-xl-2 col-md-2" ng-init="DATE_INPUT_LOAD('OPEN_ALL',0)">
+                    <label class="resp_label">Issue Date <span class="txt-danger">*</span></label>
+                    <div class="date-column">
+                        <input type="text"
+                               class="dateinputOpen"
+                               name="ISSUE_DATE{{$index}}"
+                               id="ISSUE_DATE{{$index}}"
+                               ng-disabled="EDIT_MODE"
+                               ng-model="_asset.ISSUE_DATE"
+                               required
+                               ng-change="CHECK_DATE_ISSUE_RETURN_Fn(_asset)"
+                               autocomplete="off"
+                               aria-autocomplete="none"
+                               placeholder="Select Date "
+                               ng-class="{'error':AssetForm.submitted && AssetForm.ISSUE_DATE{{$index}}.$error.required}" />
+                        <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                    </div>
+                    <span class="text-danger" ng-show="_asset.ISSUE_HRING_DATE_FLAG==1">Issue date is not less than hiring date ({{HIRING_DATE|date}}).</span>
+                </div>
+                <div class="col-xxl-2 col-xl-2 col-md-2" ng-init="DATE_INPUT_LOAD('OPEN_ALL',0)">
+                    <label class="resp_label">Return Date </label>
+                    <div class="date-column">
+                        <input type="text"
+                               class="dateinputOpen"
+                               ng-disabled="EDIT_MODE"
+                               name="RETURN_DATE{{$index}}"
+                               id="RETURN_DATE{{$index}} "
+                               ng-model="_asset.RETURN_DATE"
+                               autocomplete="off"
+                               ng-change="CHECK_DATE_ISSUE_RETURN_Fn(_asset)"
+                               aria-autocomplete="none"
+                               placeholder="Select Date " />
+                        <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                    </div>
+                    <span class="text-danger" ng-show="_asset.RETURN_DATE_FLAG==1">The Return Date should be greater than or equal to the Issue Date.</span>
+                </div>
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <label class="resp_label">Upload </label>
+                    <div class="upload-btn-wrapper w-100" ng-hide="_asset.UploadedFiles.length>0">
+                        <button class="btn btn-light-blue w-100" ng-class="{'disabled':EDIT_MODE}">
+                            <span class="file_text"><i class="fa-light fa-file-plus me-2"></i>  Choose a file</span>
+                            <span class="file_size_text">10 MB max</span>
+                        </button>
+                        <input type="file"
+                               id="Asset{{$index}}" ng-disabled="EDIT_MODE"
+                               ng-files="getTheFilesToUploadAsset($files, 'Asset', 10,_asset,42,$index)"
+                               class="filepreviewprofile">
+                    </div>
+                    <!--<a href="javascript:;" class="btn btn-light-blue w-100">
+                        <input type="file"
+                               id="Asset{{$index}}"
+                               class="filepreviewprofile"
+                               ng-files="getTheFilesToUploadAsset($files, 'Asset', 10,_asset,42,$index)">
+                        <span class="file_text"><i class="fa-light fa-file-plus me-2"></i>  Choose a file</span>
+                        <span class="file_size_text">10 MB max</span>
+                    </a>-->
+                    <div class="col-xxl-12 col-xl-12 col-md-12" ng-repeat="_upls in _asset.UploadedFiles">
+                        <span class="form-control py-2 d-flex align-items-center">
+                            <i class="fa-light fa-download mx-2"></i>
+                            <a class="truncate" download="{{_upls.SERVER_FILE_NAME}}" href="../Uploads/{{_upls.FILE_PATH}}{{_upls.SERVER_FILE_NAME}}"> {{_upls.ORIGINAL_FILE_NAME}}</a>
+                            <span class="txt-danger c-pointer ms-auto" ng-show="MY_PROFILE_FLAG==0 && !EDIT_MODE" ng-disabled="EDIT_MODE"
+                                  ng-click="DELETE_UPLOAD_ASSET_Fn(_asset,_upls,$index)"><i class="fa-light fa-xmark"></i></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-xl-3 col-md-3">
+                    <label class="resp_label">Notes <span class="txt-danger">*</span></label>
+                    <textarea
+                           placeholder="{{PLACE_HOLDER}}"
+                           rows="3"
+                           ng-readonly="EDIT_MODE"
+                           name="NOTES{{$index}}"
+                           ng-model="_asset.NOTES"
+                           autocomplete="off"
+                           aria-autocomplete="none"
+                           ng-class="{'error':AssetForm.submitted && AssetForm.NOTES{{$index}}.$error.required,'focus_off bg-grey':EDIT_MODE} " />
+                </div>
+                <div class="col-xxl-auto col-xl-auto col-md-auto" ng-show="!EDIT_MODE">
+                    <button type="button"
+                            ng-click="REMOVE_ASSETS_LINE_Fn(_asset,$index)"
+                            class="btn btn-transparent mt-1">
+                        <i class="fa-light fa-trash-alt txt-danger"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row" ng-show="!EDIT_MODE">
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <button type="button"
+                            ng-click="ADD_MORE_ASSET_Fn()"
+                            class="btn btn-light w-100">
+                        <i class="fa-light fa-plus me-3"></i> Add more assets
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-end" ng-show="MY_PROFILE_FLAG==0">
+        <button type="button" class="btn btn-transparent txt-primary mx-2" ng-show="!EDIT_MODE && EDIT_STEP_NO!=9 && SHOW_EDIT_ACCESS" ng-click="HRM_INS_UPD_EMPLOYEE_ASSETS(2)">Skip</button>
+        <button type="button" class="btn btn-light" ng-show="SHOW_EDIT_ACCESS" click-once ng-click="HRM_INS_UPD_EMPLOYEE_ASSETS(1)">Save for later</button>
+        <button type="button" class="btn btn-primary" ng-show="SHOW_EDIT_ACCESS" click-once ng-click="HRM_INS_UPD_EMPLOYEE_ASSETS()">Save & Continue</button>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="Exclude" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h4 class="modal-title">Add Notes for this Employee</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="col-xxl-12 col-md-12 col-xl-12 badge-light-primary f-12 py-2 px-3">
+                7 Items Selected
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <h6 class="headings">Departments</h6>
+                        <input type="text" name="search" placeholder="Search">
+                        <div class="tags-normal text-start my-2">Department-001 <i class="fa-light fa-trash-alt"></i></div>
+                        <div class="tags-normal text-start my-2">Department-002 <i class="fa-light fa-trash-alt"></i></div>
+                    </div>
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <h6 class="headings">Positions</h6>
+                        <input type="text" name="search" placeholder="Search">
+                        <div class="tags-normal text-start my-2">Position-001 <i class="fa-light fa-trash-alt"></i></div>
+                        <div class="tags-normal text-start my-2">Position-002 <i class="fa-light fa-trash-alt"></i></div>
+                    </div>
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <h6 class="headings">Employees</h6>
+                        <input type="text" name="search" placeholder="Search">
+                        <div class="tags-normal text-start my-2"><span class="text_avatar">mw</span> Malik Wihowo <i class="fa-light fa-trash-alt"></i></div>
+                        <div class="tags-normal text-start my-2"><span class="text_avatar">mw</span> Malik Wihowo <i class="fa-light fa-trash-alt"></i></div>
+                        <div class="tags-normal text-start my-2"><span class="text_avatar">mw</span> Malik Wihowo <i class="fa-light fa-trash-alt"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade cropImageModal" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="modal-header-bg"></div>
+                <div class="up-photo-title">
+                    <h3 class="modal-title">Update Profile Photo</h3>
+                </div>
+                <div class="up-photo-content pb-5">
+                    <div id="upload-demo" class="center-block">
+                        <h5><i class="fas fa-arrows-alt mr-1"></i> Drag and move your image as required</h5>
+                    </div>
+                    <div class="upload-action-btn text-center px-2">
+                        <button type="button" id="cropImageBtn" class="btn btn-primary">Save Photo</button>
+                        <button type="button" class="btn btn-default btn-light">Replace Photo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="Add_Notes" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h4 class="modal-title">Add Notes for this Employee</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-0">
+                <textarea rows="5"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="Addition_Deduction" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign Pay Codes</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Code</label>
+                        <ul class="nav nav-pills mb-0">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer"
+                                   data-toggle="dropdown">
+                                    <span class="select-label" id="select_label">
+                                        Choose
+                                    </span>
+                                </a>
+                                <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Code-001</span>
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Code-002</span>
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Code-003</span>
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Code-004</span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Title</label>
+                        <input type="text" placeholder="-" disabled />
+                    </div>
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Type</label>
+                        <ul class="nav nav-pills mb-0 ">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations disabled" data-toggle="dropdown">
+                                    <span class="select-label" id="select_label">
+                                        Addition
+                                    </span>
+                                </a>
+                                <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Addition</span>
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Deduction</span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Calculation</label>
+                        <ul class="nav nav-pills mb-0 ">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations disabled" data-toggle="dropdown">
+                                    <span class="select-label" id="select_label">
+                                        Fixed Period Amount
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Fixed Period Amount</span>
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Multiplier Day Rate</span>
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Multiplier Hourly Rate</span>
+                                    </li>
+                                    <li class="DontHideOnClick">
+                                        <span class="truncate">Multiplier Shift Rate</span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Default Value (Optional)</label>
+                        <div class="placeholder_pound" data-type="£">
+                            <input type="text" placeholder="0" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Recurring</label>
+                        <div class="form-check form-control py-2">
+                            <input class="form-check-input ms-2" id="Recurring" type="checkbox" value="" checked="" disabled>
+                            <label class="form-check-label ms-2" for="Recurring">Yes</label>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>NI</label>
+                        <div class="form-check form-control py-2">
+                            <input class="form-check-input ms-2" id="NI" type="checkbox" value="" disabled>
+                            <label class="form-check-label ms-2" for="NI">Yes</label>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Tax</label>
+                        <div class="form-check form-control py-2">
+                            <input class="form-check-input ms-2" id="Tax" type="checkbox" value="" disabled>
+                            <label class="form-check-label ms-2" for="Tax">Yes</label>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-4 col-md-4 col-xl-4">
+                        <label>Pension</label>
+                        <div class="form-check form-control py-2">
+                            <input class="form-check-input ms-2" id="Pension" type="checkbox" value="" disabled>
+                            <label class="form-check-label ms-2" for="Pension">Yes</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="History" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">History</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="row">
+                    <div class="col-xxl-12 col-md-12 col-xl-12">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Data Updated</th>
+                                    <th>Modified Date</th>
+                                    <th>Updated by</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="Preview_Pay_Dates" role="dialog" aria-labelledby="myExtraLargeModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myExtraLargeModal">Pay Schedule Details</h4>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row badge-light-primary f-12 py-2 px-3">
+                <div class="col-xxl-4 col-md-4 col-xl-4">
+                    <span class="f-w-700">Schdule Name:</span> Lorem Ipsum
+                </div>
+                <div class="col-xxl-3 col-md-3 col-xl-3">
+                    <span class="f-w-700">Frequency:</span> Monthly
+                </div>
+                <div class="col-xxl-2 col-md-2 col-xl-2">
+                    <span class="f-w-700">Site:</span> Site-001
+                </div>
+                <div class="col-xxl-3 col-md-3 col-xl-3">
+                    <span class="f-w-700">Year:</span> 2024
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="col-xxl-12 col-md-12 col-xl-12">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Pay Day</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>01/04/2024</td>
+                                    <td>31/4/2025</td>
+                                    <td>25/4/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>01/04/2024</td>
+                                    <td>31/4/2025</td>
+                                    <td>25/4/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>01/04/2024</td>
+                                    <td>31/4/2025</td>
+                                    <td>25/4/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>01/04/2024</td>
+                                    <td>31/4/2025</td>
+                                    <td>25/4/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>01/04/2024</td>
+                                    <td>31/4/2025</td>
+                                    <td>25/4/2024</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

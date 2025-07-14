@@ -1,0 +1,160 @@
+﻿<div class="container-fluid" ng-show="CASHUP_REPORTS_PRIVILEGE==true">
+    <div class="my-2 py-2 pb-3 scrollbar-wrapper d-flex">
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Daily_Cashup">Daily Cashup</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Weekly_Cashup">Weekly Cashup</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Weekly_Sales">Weekly Sales</a>
+        <a class="btn-tabs active" href="#!/CashUpApp_Reports_Cash_Banking">Cash_Banking</a>
+        <a class="btn-tabs " href="#!/CashUpApp_Reports_Account_Customer">Account Customer</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Cashup_Deposit">Cashup Deposit</a>
+        <a class="btn-tabs" href="#!/Reports_Petty_Cash">Petty Cash</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Voucher">Reports Voucher</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Comps">Comps</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Voids">Voids</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Float">Float</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Total_Cash">Total Cash</a>
+        <a class="btn-tabs" href="#!/CashUpApp_Reports_Comments">Comments</a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="row g-1 resCashupHeader">
+                <div class="col-xxl-2 col-xl-2 col-md-2">
+                    <input type="text" name="search" placeholder="Search Bank Slip" class="mb-0" />
+                </div>
+                <div class="col-xxl-1 col-xl-1 col-md-1">
+                    <ul class="nav nav-pills mb-0">
+                        <li class="dropdown w-100">
+                            <a class="text-limitations cursor-pointer"
+                               data-toggle="dropdown">
+                                <span class="select-label" id="select_label">
+                                    Site
+                                </span>
+                            </a>
+                            <ul ID="divNewNotifications"
+                                class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto"
+                                style="min-width:100%">
+                                <li class="DontHideOnClick">
+                                    Site 1
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Site 2
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Site 3
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Site 4
+                                </li>
+                                <li class="DontHideOnClick">
+                                    Site 5
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xxl-1 col-xl-1 col-md-1 min-w-140">
+                    <div class="date-column">
+                        <input type="text" class="dateinputddmmyy mb-0" placeholder="DD/MM/YY" name="" ng-model="DATE_FILTER" required="">
+                        <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+
+                <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                    <button type="button" class="btn btn-primary">
+                        <i class="fa-thin fa-print"></i>
+                        Print
+                    </button>
+                </div>
+                <div class="col-xxl-auto col-xl-auto col-md-auto ">
+                    <button class="btn btn-primary w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+                    <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                        <li><a class="dropdown-item d-block">XLS</a></li>
+                        <li><a class="dropdown-item">CSV</a></li>
+                        <li><a class="dropdown-item">PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive resCashupTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="16.666%" class="text-nowrap text-center">Entry Date</th>
+                            <th width="16.666%" class="text-nowrap text-center">Site</th>
+                            <th width="16.666%" class="text-nowrap text-end">Banked Amount</th>
+                            <th width="16.666%" class="text-nowrap text-center">Deposit Date</th>
+                            <th width="16.666%" class="text-nowrap text-center">Bank Slip</th>
+                            <th class="notes">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">Wenodo</td>
+                            <td class="text-nowrap text-end">£ 50</td>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">123456</td>
+                            <td>Your Cash Banking Notes</td>
+                        </tr>
+                        <tr>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">Wenodo</td>
+                            <td class="text-nowrap text-end">£ 50</td>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">123456</td>
+                            <td>Your Cash Banking Notes</td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">Wenodo</td>
+                            <td class="text-nowrap text-end">£ 50</td>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">123456</td>
+                            <td>Your Cash Banking Notes</td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">Wenodo</td>
+                            <td class="text-nowrap text-end">£ 50</td>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">123456</td>
+                            <td>Your Cash Banking Notes</td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">Wenodo</td>
+                            <td class="text-nowrap text-end">£ 50</td>
+                            <td class="text-nowrap text-center">25 Jun 2024</td>
+                            <td class="text-nowrap text-center">123456</td>
+                            <td>Your Cash Banking Notes</td>
+                        </tr>
+
+
+                    </tbody>
+
+                    <tfoot>
+                        <tr class="bg-gray">
+                            <td class="text-center">Total</td>
+                            <td class="text-center"></td>
+                            <td class="text-nowrap text-end">£ 300</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_REPORTS_PRIVILEGE==false">
+    <div class="no-record text-center">
+        <span class="d-block text-center">You do not have access to Reports. Please contact Admin for access.</span>
+    </div>
+</div>

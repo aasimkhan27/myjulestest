@@ -1,0 +1,1158 @@
+﻿<script type="text/javascript">
+    $('.select2').select2()
+</script>
+<div class="card-header">
+    <h5 class="heading-text">
+        <img src="../../E_Content/images/employee-icon.png" class="content-icon" /> View Employee
+    </h5>
+</div>
+<div class="card-body">
+    <div class="row seven-cols">
+        <div class="col-md-1">
+            <a ng-click="TAB_CLICK(1)" >
+                <span class="d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==1,'bg-wenodo-dark-blue':STEP_FLAG>1}"></span>
+                <p class="text-bold app-text mt-2">1. Personal</p>
+            </a>
+        </div>
+        <div class="col-md-1">
+            <a ng-click="TAB_CLICK(2)">
+                <span class=" d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==2 ,'bg-wenodo-grey':STEP_FLAG<2,'bg-wenodo-dark-blue':STEP_FLAG>2}"></span>
+                <p class="text-bold app-text mt-2">2. Contact</p>
+                </a>
+</div>
+        <div class="col-md-1">
+            <a ng-click="TAB_CLICK(3)">
+                <span class=" d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==3,'bg-wenodo-grey':STEP_FLAG<3,'bg-wenodo-dark-blue':STEP_FLAG>3}"></span>
+                <p class="text-bold app-text mt-2">3. Employment</p>
+                </a>
+
+</div>
+        <div class="col-md-1">
+            <a ng-click="TAB_CLICK(4)">
+                <span class=" d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==4,'bg-wenodo-grey':STEP_FLAG<4,'bg-wenodo-dark-blue':STEP_FLAG>4}"></span>
+                <p class="text-bold app-text mt-2">4. Qualifications</p>
+                </a>
+</div>
+        <div class="col-md-1">
+            <a ng-click="TAB_CLICK(5)">
+                <span class="d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==5,'bg-wenodo-grey':STEP_FLAG<5,'bg-wenodo-dark-blue':STEP_FLAG>5}"></span>
+                <p class="text-bold app-text mt-2">5. Compensation</p>
+                </a>
+</div>
+        <div class="col-md-1">
+            <a ng-click="TAB_CLICK(6)">
+                <span class=" d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==6,'bg-wenodo-grey':STEP_FLAG<6,'bg-wenodo-dark-blue':STEP_FLAG>6}"></span>
+                <p class="text-bold app-text mt-2">6. Leave</p>
+                </a>
+</div>
+        <div class="col-md-1">
+            <a ng-click="TAB_CLICK(7)">
+                <span class=" d-block p-1" ng-class="{'bg-wenodo-blue':STEP_FLAG==7,'bg-wenodo-grey':STEP_FLAG<7,'bg-wenodo-dark-blue':STEP_FLAG>=7}"></span>
+                <p class="text-bold app-text mt-2">7. Documents</p>
+                </a>
+</div>
+    </div>
+
+    <div class="personal-tab" ng-show="STEP_FLAG==1">
+        <form id="EmpDtlsForm_1" name="EmpDtlsForm_1" novalidate>
+            <div class="col-md-12">
+                <div class="col-md-4 pl-0">
+                    <div class="form-group">
+                        <label>Title:</label>
+                    </div>
+                    {{EmpSearch_1.TITLE}}
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>First Name:</label>
+                            <span class="form-content">{{EmpSearch_1.FIRST_NAME}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Middle Name:</label>
+                            <span class="form-content">{{EmpSearch_1.MIDDLE_NAME==''?'-':EmpSearch_1.MIDDLE_NAME}}</span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Last Name:</label>
+                            <span class="form-content">{{EmpSearch_1.LAST_NAME}}</span>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Known As:</label>
+                            <span class="form-content">{{EmpSearch_1.KNOWN_AS==null|| EmpSearch_1.KNOWN_AS==''?'-':EmpSearch_1.KNOWN_AS}}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Gender:</label>
+                            <span class="form-content">{{(GENDER_LIST | filter :{ID:EmpSearch_1.GENDER_ID})[0].NAME }}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Nationality:</label>
+                            <span class="form-content">{{EmpSearch_1.NATIONALITY_NAME}}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Date of Birth:</label>
+                            <div class="input-group input-group-sm ">
+                                <span class="form-content">{{EmpSearch_1.DATE_OF_BIRTH | date}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Maritial Status:</label>
+                            <span class="form-content">
+                                {{(MARITIAL_STATUS_LIST | filter :{ID:EmpSearch_1.MARITAL_STATUS_ID})[0].NAME }}
+                                </span>
+</div>
+                    </div>
+
+                    <div class="col-md-4"></div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>National ID type:</label>
+                            <span class="form-content">
+                                {{EmpSearch_1.NATIONAL_TYPE_NAME}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="border-bottom"></div>
+                    <div class="col-md-12 mt-1">
+                        <h5>Partner's Information</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Partner's First Name:</label>
+                            <span class="form-content">
+                                {{EmpSearch_1.PARTNERS_FIRST_NAME==null|| EmpSearch_1.PARTNERS_FIRST_NAME==''?'-':EmpSearch_1.PARTNERS_FIRST_NAME}}
+                            </span>
+                          
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Partner's Middle Name:</label>
+                            <span class="form-content">
+                                {{EmpSearch_1.PARTNERS_MIDDLE_NAME==null|| EmpSearch_1.PARTNERS_MIDDLE_NAME==''?'-':EmpSearch_1.PARTNERS_MIDDLE_NAME}}
+                            </span>
+                          
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Partner's Last Name:</label>
+                            <span class="form-content">
+                                {{EmpSearch_1.PARTNERS_LAST_NAME==null|| EmpSearch_1.PARTNERS_LAST_NAME==''?'-':EmpSearch_1.PARTNERS_LAST_NAME}}
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Partner's National Insurance Number:</label>
+                            <span class="form-content">
+                                {{EmpSearch_1.PARTNERS_NATIONAL_INSURANCE==null|| EmpSearch_1.PARTNERS_NATIONAL_INSURANCE==''?'-':EmpSearch_1.PARTNERS_NATIONAL_INSURANCE}}
+                            </span>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <div class="form-group">
+                            <!--href="#!/team"-->
+                            <button ng-click="TAB_CLICK(2)" class="btn btn-wenodo">Next</button>
+                            <button type="button" ng-click="GO_BACK_TO_LIST()" class="btn btn-wenodo">{{BACKTOTEAM}}</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="contact-tab" ng-show="STEP_FLAG==2">
+        <form id="EmpDtlsForm_2" name="EmpDtlsForm_2" novalidate>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Telephone Number:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.TELEPHONE_NO==''?'-':EmpSearch_2.TELEPHONE_NO}}
+                            </span>
+                      
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Mobile Number:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.MOBILE_NO==''?'-':EmpSearch_2.MOBILE_NO}}
+                            </span>
+                            
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Business Email:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.BUSINESS_EMAIL}}
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Personal Email:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.PERSONAL_EMAIL==''?'-':EmpSearch_2.PERSONAL_EMAIL}}
+                            </span>
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Country:</label>
+                           
+                            <span class="form-content">
+                                {{EmpSearch_2.Country_Name==''?'-':EmpSearch_2.Country_Name}}
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Address Line 1:</label>
+                          
+                            <span class="form-content">
+                                {{EmpSearch_2.ADDRESS_LINE_1==''?'-':EmpSearch_2.ADDRESS_LINE_1}}
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Address Line 2:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.ADDRESS_LINE_2==''?'-':EmpSearch_2.ADDRESS_LINE_2}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>City:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.CITY==''?'-':EmpSearch_2.CITY}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>County:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.COUNTY==''?'-':EmpSearch_2.COUNTY}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Post Code:</label>
+                             <span class="form-content">
+                            {{EmpSearch_2.POST_CODE==''?'-':EmpSearch_2.POST_CODE}}
+                                 </span>
+                        </div>
+                    </div>
+                    <div class="border-bottom"></div>
+                    <div class="col-md-12 mt-1">
+                        <h5>Emergency Contact Information</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Emergency Contact Name:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.EMR_CONTACT_NAME==''?'-':EmpSearch_2.EMR_CONTACT_NAME}}
+                                </span>
+</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Emergency Contact Relationship:</label>
+                            <!--<select class="custom-select"
+                                    name="EMR_RELATIONSHIP_ID"
+                                    ng-model="EmpSearch_2.EMR_RELATIONSHIP_ID"
+                                    ng-options="TL.ID as TL.NAME for TL in (RELATIONSHIP)">
+                                <option value="">- Please Select Relationship-</option>
+                            </select>-->
+                            <span class="form-content" ng-show="(RELATIONSHIP | filter :{ID:EmpSearch_2.EMR_RELATIONSHIP_ID}).length>0">
+                            {{(RELATIONSHIP | filter :{ID:EmpSearch_2.EMR_RELATIONSHIP_ID})[0].NAME }}
+                                </span>
+                            <span ng-show="(RELATIONSHIP | filter :{ID:EmpSearch_2.EMR_RELATIONSHIP_ID}).length==0">
+                                                -
+                            </span>
+</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Emergency Contact Number:</label>
+                            <span class="form-content">
+                                {{EmpSearch_2.EMR_CONTACT_NUMBER==''?'-':EmpSearch_2.EMR_CONTACT_NUMBER}}
+                            </span>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button ng-click="GO_BACK(1)" class="btn btn-w-default">Go Back</button>
+                            <button ng-click="TAB_CLICK(3)" class="btn btn-wenodo">Next</button>
+                            <button type="button" ng-click="GO_BACK_TO_LIST()" class="btn btn-wenodo">{{BACKTOTEAM}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="employment-tab " ng-show="STEP_FLAG==3">
+        <form id="EmpDtlsForm_3" name="EmpDtlsForm_3" novalidate>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Start Date:</label>
+                            <span class="form-content">
+                                {{EmpSearch_3.START_DATE | date}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Probation End Date:</label>
+                            <span class="form-content">
+                                {{EmpSearch_3.PROBATION_END_DATE | date}}
+                            </span>
+                           
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Other Date:</label>
+                            <span class="form-content">
+                                {{EmpSearch_3.OTHER_DATE | date}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Right to Work:</label>
+                            <!--<select class="custom-select"
+                                    name=".RIGHT_TO"
+                                    ng-model="EmpSearch_3.RIGHT_TO_WORK_ID"
+                                    ng-options="RTW.ID as RTW.NAME for RTW in (RIGHT_TO_WORK)"
+                                    required
+                                    ng-class="{'error':EmpDtlsForm_3.submitted && EmpDtlsForm_3.RIGHT_TO.$error.required}">
+                                <option value="">- Please Select Right to Work-</option>
+                            </select>-->
+                            <span class="form-content" ng-show="(RIGHT_TO_WORK | filter :{ID:EmpSearch_3.RIGHT_TO_WORK_ID}).length>0">
+                                     {{(RIGHT_TO_WORK | filter :{ID:EmpSearch_3.EMR_RELATIONSHIP_ID})[0].NAME }}
+                                </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Position ID:</label>
+                            <span class="form-content">
+                                {{EmpSearch_3.POSITION_TITLE}}
+                            </span>
+                            
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Reporting Manager</label>
+                            <span class="form-content">
+                                {{EmpSearch_3.POSITION_TITLE}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 pl-0">
+                    <div class="col-md-4 pl-0">
+                        <div class="form-group">
+                            <div class="col-md-12" ng-show="EmpSearch_3.EMP_OVERSEAS_EMP">
+                                <label><i class="fas fa-check fa-lg text-wenodo-light-blue"></i>Employee is seconded from an overseas employer</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-12" ng-show="EmpSearch_3.CIS_SUBCONTRACTOR">
+                                <label><i class="fas fa-check fa-lg text-wenodo-light-blue"></i>CIS Subcontractor</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-12" ng-show="EmpSearch_3.IS_APPRENTICE">
+                                <label><i class="fas fa-check fa-lg text-wenodo-light-blue"></i> Is an Apprentice</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-12" ng-show="EmpSearch_3.IS_FURLOUGH">
+                                <label><i class="fas fa-check fa-lg text-wenodo-light-blue"></i> Is on furlough</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 pl-0">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-md-12" ng-show="EmpSearch_3.IS_DIRECTOR">
+                                    <label><i class="fas fa-check fa-lg text-wenodo-light-blue"></i> Employee is/was a director during the tax year</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pl-0">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="col-md-12" ng-show="EmpSearch_3.RIGHT_TO_WORK_ID==1">
+                                    <label><i class="fas fa-check fa-lg text-wenodo-light-blue"></i> Right to work has been checked</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button ng-click="GO_BACK(2)" class="btn btn-w-default">Go Back</button>
+                            <button ng-click="TAB_CLICK(4)" class="btn btn-wenodo">Next</button>
+                            <button type="button" ng-click="GO_BACK_TO_LIST()" class="btn btn-wenodo">{{BACKTOTEAM}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="Qualification-tab" ng-show="STEP_FLAG==4">
+        <form id="EmpDtlsForm_4" name="EmpDtlsForm_4" novalidate>
+            <div class="col-md-12"  ng-show="CourseList.length==0" empty-grid></div>
+            <div class="col-md-12" >
+                <div class="row" ng-repeat="CRS in CourseList" ng-show="CourseList.length>0">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Course Name:</label>
+                            <span class="form-content">
+                                {{CRS.COURSE_NAME}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Expiry Date:</label>
+                                    <span class="form-content">
+                                        {{CRS.EXPIRY_DATE | date" }}
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span ng-repeat="upls in CRS.UploadedFiles">{{upls.ORIGINAL_FILE_NAME}}</span>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <button ng-click="GO_BACK(3)" class="btn btn-w-default">Go Back</button>
+                        <button ng-click="TAB_CLICK(5)" class="btn btn-wenodo">Next</button>
+                        <button type="button" ng-click="GO_BACK_TO_LIST()" class="btn btn-wenodo">{{BACKTOTEAM}}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="compensation-tab" ng-show="STEP_FLAG==5">
+        <form id="EmpDtlsForm_5" name="EmpDtlsForm_5" novalidate>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="text-bold">Pay Options</h5>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <h6 class="text-bold">Regular Payments</h6>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pay Frequency:</label>
+                            <span class="form-content">
+                                {{EmpSearch_5.PAY_FREQUENCY_NAME}}
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Annual Salary:</label>
+                          
+                            <span class="form-content">
+                                {{EmpSearch_5.ANNUAL_SALARY}}
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Paid by:</label>
+                            <span class="form-content">
+                                {{EmpSearch_5.PAID_BY_NAME}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Rate:</label>
+                            <span class="form-content">
+                                {{EmpSearch_5.RATE}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Currency:</label>
+                            
+                            <span class="form-content">
+                                {{EmpSearch_5.PAYMENT_CURRENCY_NAME}}
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-3">
+                        <h6 class="text-bold">Additional Payments/Deductions</h6>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pay Code:</label>
+
+                            <span class="form-content">
+                                {{EmpSearch_5.PAY_CODE_NAME}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Unit:</label>
+                            <span class="form-content">
+                                {{EmpSearch_5.UNIT_NAME}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Rate:</label>
+                            <span class="form-content">
+                                {{EmpSearch_5.RATE}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Amount:</label>
+                            <span class="form-content">
+                                {{EmpSearch_5.AMOUNT}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Frequency:</label>
+                           
+                            <span class="form-content">
+                                {{EmpSearch_5.FREQUENCY}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Additional Currency:</label>
+                            <span class="form-content">
+                                {{EmpSearch_5.ADDITIONAL_CURRENCY_NAME}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-3 mb-3">
+                        <h6 class="text-bold">P11d</h6>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6 pl-0">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="Assets"
+                                                   value="Assets"
+                                                   ng-model="EmpSearch_5.ASSESTS_TRANSFERRED"
+                                                   ng-disabled="true">
+                                            <label for="Assets" class="custom-control-label"><span class="mr-3">A</span> Assets transferred (cars, property, goods, or other assets)</label>
+                                        </div>
+                                       
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="Payments"
+                                                   value="Payments"
+                                                    ng-disabled="true"
+                                                   ng-model="EmpSearch_5.PAYMENT_BEHALF_EMP">
+                                            <label for="Payments" class="custom-control-label"><span class="mr-3">B</span> Payments made on behalf of employee</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="Vouchers"
+                                                    ng-disabled="true"
+                                                   value="Vouchers"
+                                                   ng-model="EmpSearch_5.VOUCHER_CREDIT_CARD">
+                                            <label for="Vouchers" class="custom-control-label"><span class="mr-3">C</span> Vouchers and credit cards</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="accommodation" ng-disabled="true"
+                                                   value="accommodation"
+                                                   ng-model="EmpSearch_5.LIVING_ACCOMMODATION">
+                                            <label for="accommodation" class="custom-control-label"><span class="mr-3">D</span> Living accommodation</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="allowance"  ng-disabled="true"
+                                                   value="allowance"
+                                                   ng-model="EmpSearch_5.MILEAGE_ALLOWANCE_PAYMENT">
+                                            <label for="allowance" class="custom-control-label"><span class="mr-3">E</span> Mileage allowance payments not taxed at source</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="carfuel"
+                                                   value="carfuel"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.CARS_AND_CAR_FUEL">
+                                            <label for="carfuel" class="custom-control-label"><span class="mr-3">F</span> Cars and car fuel</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="vanfuel"
+                                                   value="vanfuel"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.VANS_AND_VAN_FUEL">
+                                            <label for="vanfuel" class="custom-control-label"><span class="mr-3">G</span> Vans and van fuel</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="loans"
+                                                   value="loans"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.INTEREST_FREE_LOAN">
+                                            <label for="loans" class="custom-control-label"><span class="mr-3">H</span> Interest-free and low interest loans</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="insurance"
+                                                   value="insurance"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.PRIVATE_MEDICAL_INSURANCE">
+                                            <label for="insurance" class="custom-control-label"><span class="mr-3">I</span> Private medical treatment or insurance</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="benefits"
+                                                   value="benefits"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.QUALIFICATION_RELOCATION_EXPENSES">
+                                            <label for="benefits" class="custom-control-label"><span class="mr-3">J</span> Qualifying relocation expenses payments and benefits</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="Services"
+                                                   value="Services"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.SERVICES_SUPPLIED">
+                                            <label for="Services" class="custom-control-label"><span class="mr-3">K</span> Services supplied </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="disposal"
+                                                   value="disposal"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.ASSESTS_PLACED_EMPLOYEE">
+                                            <label for="disposal" class="custom-control-label"><span class="mr-3">L</span> Assets placed at the employee’s disposal </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="subscriptions"
+                                                   value="subscriptions"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.OTHER_ITEMS">
+                                            <label for="subscriptions" class="custom-control-label"><span class="mr-3">M</span> Other items (including subscriptions and professional fees) </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="Travel"
+                                                   value="Travel"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.TRAVEL">
+                                            <label for="Travel" class="custom-control-label"><span class="mr-3">N</span> Travel </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="Entertainment"
+                                                   value="Entertainment"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.ENTERTAINMENT">
+                                            <label for="Entertainment" class="custom-control-label"><span class="mr-3">O</span> Entertainment </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="Telephone"
+                                                   value="Telephone"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.TELEPHONE">
+                                            <label for="Telephone" class="custom-control-label"><span class="mr-3">P</span> Telephone </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="Expenses"
+                                                   value="Expenses"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.NON_QUALIFIYING_RELOCATION">
+                                            <label for="Expenses" class="custom-control-label"><span class="mr-3">Q</span> Non Qualifying Relocation Expenses </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input"
+                                                   type="checkbox"
+                                                   id="OtherExpenses"
+                                                   value="OtherExpenses"  ng-disabled="true"
+                                                   ng-model="EmpSearch_5.OTHER_EXPENSES">
+                                            <label for="OtherExpenses" class="custom-control-label"><span class="mr-3">R</span> Other Expenses </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-3 mb-3">
+                                <h6 class="text-bold">Send payslip by email:</h6>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input"
+                                               type="checkbox"
+                                               id="Yes"
+                                               value="Yes"  ng-disabled="true"
+                                               ng-model="EmpSearch_5.PAYSLIP_BY_EMAIL">
+                                        <label for="Yes" class="custom-control-label">Yes </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input"
+                                               type="checkbox"
+                                               id="protected"
+                                               value="protected"  ng-disabled="true"
+                                               ng-model="EmpSearch_5.PASSWORD_PROTECTED">
+                                        <label for="protected" class="custom-control-label">Password protected </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                 
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-3 mb-3">
+                                <h6 class="text-bold">Payment Details</h6>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Account Holder Name:</label>
+                                   
+                                    <span class="form-content">
+                                        {{EmpSearch_5.ACCOUNT_HOLDER_NAME==null?'-':EmpSearch_5.ACCOUNT_HOLDER_NAME}}
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Bank:</label>
+                                    
+                                    <span class="form-content">
+                                        {{EmpSearch_5.BANK==null?'-':EmpSearch_5.BANK}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4"></div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Sort Code:</label>
+                                    <div class="row d-flex">
+                                        <span class="form-content">
+                                            {{EmpSearch_5.SORT_CODE_1}}-{{EmpSearch_5.SORT_CODE_2}}-{{EmpSearch_5.SORT_CODE_3}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Account Number:</label>
+                                    
+                                    <span class="form-content">
+                                        {{EmpSearch_5.ACCOUNT_NUMBER==null?'-':EmpSearch_5.ACCOUNT_NUMBER}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Payment Type</label>
+                                    <span class="form-content">
+                                        {{EmpSearch_5.PAYMENT_TYPE_NAME==null?'-':EmpSearch_5.PAYMENT_TYPE_NAME}}
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-3 mb-3">
+                                <h6 class="text-bold">Payroll Information</h6>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Employee Tax Code:</label>
+                                    <span class="form-content">
+                                        {{EmpSearch_5.EMPLOYEE_TAX_CODE==null?'-':EmpSearch_5.EMPLOYEE_TAX_CODE}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>NI Category:</label>
+                                    <span class="form-content">
+                                        {{EmpSearch_5.NI_CATEGORY==null?'-':EmpSearch_5.NI_CATEGORY}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Pension Scheme:</label>
+                                    <span class="form-content">
+                                        {{EmpSearch_5.PENSION_SCHEME==null?'-':EmpSearch_5.PENSION_SCHEME}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>EE Contribution:</label>
+                                    <span class="form-content">
+                                        {{EmpSearch_5.EE_CONTRIBUTION==null?'-':EmpSearch_5.EE_CONTRIBUTION}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>ER Contribution:</label>
+                                    <span class="form-content">
+                                        {{EmpSearch_5.ER_CONTRIBUTION==null?'-':EmpSearch_5.ER_CONTRIBUTION}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Payslip:</label>
+                                    <span class="form-content">
+                                        {{EmpSearch_5.PAYSLIP==null?'-':EmpSearch_5.PAYSLIP}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>P60:</label>
+                                    <span class="form-content">
+                                        {{EmpSearch_5.P60==null?'-':EmpSearch_5.P60}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button ng-click="GO_BACK(4)" class="btn btn-w-default">Go Back</button>
+                                    <button ng-click="TAB_CLICK(6)" class="btn btn-wenodo">Next</button>
+                                    <button type="button" ng-click="GO_BACK_TO_LIST()" class="btn btn-wenodo">{{BACKTOTEAM}}</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="leave-tab" ng-show="STEP_FLAG==6">
+        <form id="EmpDtlsForm_6" name="EmpDtlsForm_6" novalidate>
+            <div class="row">
+                <div class="col-md-12 mt-3 mb-3">
+                    <h5 class="text-bold">Leave Entitlement</h5>
+                </div>
+                <div class="row" ng-repeat="LL in LeaveList">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Absence type:</label>
+                            <span class="form-content">
+                                {{LL.ABSENCE_TYPE_NAME }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Units:</label>
+                            <span class="form-content">
+                                {{LL.UNIT_NAME }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Allocation (Days):</label>
+                            <span class="form-content">
+                                {{LL.ALLOCATION_DAYS }}
+                            </span>
+
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <button ng-click="GO_BACK(5)" class="btn btn-w-default">Go Back</button>
+                        <button ng-click="TAB_CLICK(7)" class="btn btn-wenodo">Next</button>
+                        <button type="button" ng-click="GO_BACK_TO_LIST()" class="btn btn-wenodo">{{BACKTOTEAM}}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="documents-tab " ng-show="STEP_FLAG==7">
+        <form id="EmpDtlsForm_7" name="EmpDtlsForm_7" novalidate>
+            <div class="row">
+                <div class="col-md-12 mt-3 mb-3">
+                    <h5 class="text-bold">Work Permit</h5>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Work permit type:</label>
+                        <span class="form-content">
+                            {{EmpSearch_7.WORK_PERMIT_TYPE_NAME }}
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Document type:</label>
+                        <span class="form-content">
+                            {{EmpSearch_7.DOCUMENT_TYPE_NAME }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Expiry Date:</label>
+                        <span class="form-content">
+                            {{EmpSearch_7.EXPIRY_DATE | date }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-12"  ng-show="Work_Permit.length>0">
+                    <div class="form-group">
+                        <span ng-repeat="upls in Work_Permit">{{upls.ORIGINAL_FILE_NAME}}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-2"  ng-show="Work_Permit.length>0">
+                    <h5 class="text-bold">Contracts</h5>
+                </div>
+
+                <div class="col-md-12" ng-show="ContractsUpd.length>0">
+                    <div class="input-group-prepend">
+                        <label for="contracts" class="btn btn-w-default btn-wenodo-sm">
+                            <i class="fal fa-upload"></i> Upload Contracts
+                        </label>
+                    </div>
+                    <span ng-repeat="upls in ContractsUpd">{{upls.ORIGINAL_FILE_NAME}}</span>
+                </div>
+
+                <div class="col-md-12 mt-3" ng-show="othdocuments.length>0">
+                    <h5 class="text-bold">Other Documents</h5>
+                </div>
+                <div class="col-md-12" ng-show="othdocuments.length>0">
+                    <div class="input-group-prepend">
+                        <label for="documents" class="btn btn-w-default btn-wenodo-sm">
+                            <i class="fal fa-upload"></i> Upload Documents
+                        </label>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>File Name</td>
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="upls in othdocuments">
+                                <td>{{upls.ORIGINAL_FILE_NAME}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group mt-3">
+                        <button ng-click="GO_BACK(6)" class="btn btn-w-default">Go Back</button>
+                        <button ng-click="HR_INS_UPD_EMPLOYEE_STEP_7()" class="btn btn-wenodo">Save </button>
+                        <button type="button" ng-click="GO_BACK_TO_LIST()" class="btn btn-wenodo">{{BACKTOTEAM}}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

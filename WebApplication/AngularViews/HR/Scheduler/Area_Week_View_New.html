@@ -1,0 +1,2665 @@
+﻿<div class="overlay_loading_rota" style="display:{{overlay_loading_rota}}!important"></div>
+<div class="card mb-0" id="print">
+    <div class="card-header pl-2 pr-0 pb-2 border-0">
+        <div class="row" ng-show="REVENUE_SETTING==1 && REVENUE_SETTING_PRIVILAGE && !IS_EMPLOYEE ">
+            <div class="col px-0">
+                <a class="btn btn-sm btn-w-default btn-block"
+                   ng-click="HIDE_SHOW_REVENUE_FY()"
+                   style="z-index:9">
+                    <span>{{REVENUE_SEARCH.HIDE_SHOW?'Hide Details':'Show Details'}}</span>
+                    <i class="fas text-blue" ng-class="{'fa-minus-square':REVENUE_SEARCH.HIDE_SHOW==true,'fa-plus-square':REVENUE_SEARCH.HIDE_SHOW==null || REVENUE_SEARCH.HIDE_SHOW==false}">
+                        <!--<span ng-show="REVENUE_SEARCH.HIDE_SHOW==true" ng-click="PRINT_PDF_BUDGETREVENUE();"><i class="fas fa-file-pdf"></i></span>-->
+                    </i>
+                </a>
+            </div>
+            <div class="col-auto">
+                <div class="form-group">
+                    <div class="custom-control custom-switch d-flex">
+                        <span style="color:#213A4D; font-weight:600; font-size:12px; margin-right:2.8rem;" data-toggle="tooltip" data-html="true" data-original-title="Show approved shift wages">Approved</span>
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               ng-model="Section_Week_Search.SHOW_HIDE_WAGE_CAST"
+                               ng-change="SHOW_HIDE_AREA_WAGE_CAST()"
+                               id="customSwitch3">
+                        <label class="custom-control-label font-12" for="customSwitch3" data-toggle="tooltip" data-html="true" data-original-title="Show wages for all shifts excluding no show">Show All</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto ml-auto pr-0" data-toggle="tooltip" data-html="true" data-original-title="Actions" ng-show="REVENUE_SETTING==1 && !IS_EMPLOYEE">
+                <button type="button" class="btn btn-sm btn-w-default btn-short-padding dropdown-toggle" data-toggle="dropdown">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm" aria-haspopup="true" aria-expanded="false">
+                    <a class="dropdown-item semibold" href="#!/RevenuesUploades">Revenue Settings</a>
+                    <a class="dropdown-item" ng-click="PRINT_PDF_BUDGETREVENUE();">Download Revenue PDF</a>
+                </div>
+            </div>
+        </div>
+        <div class="animated" ng-show="REVENUE_SETTING==1 && REVENUE_SETTING_PRIVILAGE && !IS_EMPLOYEE">
+            <div class="row a-week-view revenue-column" ng-show="REVENUE_SEARCH.WAGE_SETTING.DAY!==0">
+                <div class="col-md-1 d-flex align-items-center border font-13 bg-light-highlighted-transparent semibold">Wage Target % </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end bg-light-highlighted-transparent border font-10 text-right text-nowrap">
+                    <!--<span class="semibold mr-1" ng-bind-html="CURRENCY_SYMBOL"></span>-->
+                    <span class="text-bold ml-1">{{(WAGE_TARGET_LIST | total :'REVENUE') | number:2 }}</span>
+                </div>
+                <div class="col border font-10 text-right bg-light-highlighted text-box-padding" ng-repeat="WTL in WAGE_TARGET_LIST track by $index">
+                    <input type="text" class="hidden-border text-right" only-digits ng-model="WTL.REVENUE" placeholder="0.00">
+                </div>
+            </div>
+            <div class="row a-week-view revenue-column revenue-column-disabled">
+                <div class="col-md-1 border semibold font-13 bg-light-grey">
+                    Revenue
+                    <!--<a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1" class="float-right text-blue cursor-pointer"
+                    ng-click="SHOWALL_REVENUE_FY()"><i class="far fa-plus"></i></a>-->
+                </div>
+                <div class="col-md-1 border semibold font-13 text-right bg-light-grey justify-content-end">Total</div>
+                <div class="col border semibold font-13 text-right bg-light-grey" ng-repeat="DL in DAYOFWEEKNAMES track by $index">
+                    {{DL.NewDate | date:'EEE'}} {{DL.Days}}
+                </div>
+            </div>
+            <div class="row a-week-view revenue-column">
+                <div class="col-md-1 border semibold font-10">
+                    Last Year
+                    <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1"
+                       class="float-right text-blue cursor-pointer"
+                       ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_ICON_LAST_YEAR');">
+                        <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_ICON_LAST_YEAR==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_ICON_LAST_YEAR==null || REVENUE_SEARCH.PLUS_MINUS_ICON_LAST_YEAR==false}"></i>
+                    </a>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="text-bold ml-1">{{(DAYOFWEEKNAMES | total :'LAST_YEAR_TOTAL') | number:2 }}</span>
+                </div>
+                <div class="col border font-10 text-right" ng-repeat="AV in DAYOFWEEKNAMES track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="semibold ml-1">{{AV.LAST_YEAR_TOTAL=((LAST_YEAR | filter: {'START_DATE': AV.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </div>
+            </div>
+            <div class="PLUS_MINUS_ICON_LAST_YEAR" style="display:none;">
+                <div class="row a-week-view revenue-column " ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                    <div class="col-md-1 border semibold font-10">{{Branch.BRANCH_NAME}} </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="text-bold ml-1">{{(LAST_YEAR | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE'  | number :2 }}</span>
+                    </div>
+                    <div class="col border font-10 text-right text-box-padding" ng-repeat="RVN in LAST_YEAR | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="ml-1 semibold">{{RVN.REVENUE  | number:2}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row a-week-view revenue-column">
+                <div class="col-md-1 border semibold font-10">
+                    Last Week Sales
+                    <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1" class="float-right text-blue cursor-pointer"
+                       ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_ICON_LAST_WEEK_SALES');">
+                        <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_ICON_LAST_WEEK_SALES==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_ICON_LAST_WEEK_SALES==null || REVENUE_SEARCH.PLUS_MINUS_ICON_LAST_WEEK_SALES==false}"></i>
+                    </a>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="text-bold ml-1">{{(DAYOFWEEKNAMES | total :'LAST_WEEK_REVENUE_TOTAL') | number:2 }}</span>
+                </div>
+                <div class="col border font-10 text-right" ng-repeat="DL in DAYOFWEEKNAMES track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="semibold ml-1">{{DL.LAST_WEEK_REVENUE_TOTAL=((LAST_WEEK_SALES| filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </div>
+            </div>
+            <div class="PLUS_MINUS_ICON_LAST_WEEK_SALES" style="display:none;">
+                <div class="row a-week-view revenue-column" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                    <div class="col-md-1 border semibold font-10">{{Branch.BRANCH_NAME}} </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="text-bold ml-1">{{(LAST_WEEK_SALES | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE'  | number :2 }}</span>
+                    </div>
+                    <div class="col border font-10 text-right text-box-padding" ng-repeat="RVN in LAST_WEEK_SALES | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="semibold ml-1">{{RVN.REVENUE  | number:2}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row a-week-view revenue-column bg-light-green" ng-show="REVENUE_SEARCH.HIDE_SHOW">
+                <div class="col-md-1 d-flex align-items-center border font-10 semibold">
+                    Budget Revenue
+                    <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1"
+                       class="float-right text-blue cursor-pointer"
+                       ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_ICON_BUDGET_REVENUE');">
+                        <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_ICON_BUDGET_REVENUE==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_ICON_BUDGET_REVENUE==null || REVENUE_SEARCH.PLUS_MINUS_ICON_BUDGET_REVENUE==false}"></i>
+                    </a>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+
+                    <span class="text-bold ml-1">{{BUDGET_REVENUE_TOTAL=(DAYOFWEEKNAMES | total :'BUDGET_REVENUE_TOTAL') | number:2 }}</span>
+                </div>
+                <div class="col border font-10 text-right" ng-repeat="DL in DAYOFWEEKNAMES track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="semibold ml-1">{{DL.BUDGET_REVENUE_TOTAL=((BUDGET_REVENUE_LIST| filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </div>
+            </div>
+            <div class="PLUS_MINUS_ICON_BUDGET_REVENUE" style="display:none;" ng-show="REVENUE_SEARCH.HIDE_SHOW">
+                <div class="row a-week-view revenue-column bg-light-green" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                    <div class="col-md-1 border semibold font-10">{{Branch.BRANCH_NAME}} </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="text-bold ml-1">{{(BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE'  | number :2 }}</span>
+                    </div>
+                    <div class="col border font-10 text-right text-box-padding" ng-repeat="RVN in BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="text-bold ml-1">{{RVN.REVENUE  | number:2}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="REVENUE_SEARCH.BRANCH_LIST.length==1 && REVENUE_SEARCH.HIDE_SHOW">
+                <div class="row a-week-view revenue-column bg-light-blue" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                    <div class="col-md-1 d-flex align-items-center border font-10 semibold">Forecast Revenue </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="text-bold ml-1">{{((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE') | number:2 }}</span>
+                    </div>
+                    <div class="col border font-10 text-right text-box-padding" ng-repeat="RVN in FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true">
+                        <span ng-show="!REVENUE_SETTING_PRIVILAGE_EDIT">{{RVN.REVENUE}}</span>
+                        <span ng-show="REVENUE_SETTING_PRIVILAGE_EDIT">
+                            <input type="text" class="hidden-border text-right"
+                                   only-digits
+                                   ng-model="RVN.REVENUE">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1 && REVENUE_SEARCH.HIDE_SHOW">
+                <div class="row a-week-view revenue-column bg-light-blue">
+                    <div class="col-md-1 d-flex align-items-center border font-10 semibold">
+                        Forecast Revenue
+                        <a class="float-right text-blue cursor-pointer" ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_ICON_FORECAST_REVENUE');">
+                            <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_ICON_FORECAST_REVENUE==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_ICON_FORECAST_REVENUE==null || REVENUE_SEARCH.PLUS_MINUS_ICON_FORECAST_REVENUE==false}"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="text-bold ml-1">{{FORECAST_REVENUE_TOTAL=(DAYOFWEEKNAMES | total :'FORECAST_REVENUE_TOTAL') | number:2 }}</span>
+                    </div>
+                    <div class="col border semibold font-10 text-right"
+                         ng-repeat="DL in DAYOFWEEKNAMES track by $index">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="semibold ml-1">{{DL.FORECAST_REVENUE_TOTAL=((FORECAST_REVENUE_LIST | filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                    </div>
+                </div>
+                <div class="PLUS_MINUS_ICON_FORECAST_REVENUE" style="display:none;">
+                    <div class="row a-week-view revenue-column bg-light-blue" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                        <div class="col-md-1 border semibold font-10">{{Branch.BRANCH_NAME}}</div>
+                        <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                            <span class="text-bold ml-1">{{((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE') | number:2 }}</span>
+                        </div>
+                        <div class="col border font-10 text-right text-box-padding" ng-repeat="RVN in FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true">
+                            <input type="text"
+                                   only-digits
+                                   class="hidden-border text-right"
+                                   ng-model="RVN.REVENUE">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row a-week-view revenue-column bg-light-red" ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1">
+                <div class="col-md-1 d-flex align-items-center border font-10 semibold">
+                    Actual Revenue
+                    <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1" class="float-right text-blue cursor-pointer"
+                       ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_ICON_ACTUAL_REVENUE');">
+                        <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_ICON_ACTUAL_REVENUE==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_ICON_ACTUAL_REVENUE==null || REVENUE_SEARCH.PLUS_MINUS_ICON_ACTUAL_REVENUE==false}"></i>
+                    </a>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end  font-10 text-right text-nowrap">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="text-bold ml-1">{{(DAYOFWEEKNAMES  | total :'ACTUAL_REVENUE_TOTAL') | number:2 }}</span>
+                </div>
+                <div class="col border font-10 text-right" ng-repeat="DL in DAYOFWEEKNAMES track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="semibold ml-1">{{DL.ACTUAL_REVENUE_TOTAL=((ACTUAL_REVENUE_LIST | filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </div>
+            </div>
+            <div ng-show="REVENUE_SEARCH.BRANCH_LIST.length==1">
+                <div class="row a-week-view revenue-column bg-light-red" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                    <div class="col-md-1 d-flex align-items-center border font-10 semibold">
+                        Actual Revenue
+                        <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1" class="float-right text-blue cursor-pointer"
+                           ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_ICON_ACTUAL_REVENUE');">
+                            <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_ICON_ACTUAL_REVENUE==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_ICON_ACTUAL_REVENUE==null || REVENUE_SEARCH.PLUS_MINUS_ICON_ACTUAL_REVENUE==false}"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end font-10 text-right text-nowrap">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="text-bold ml-1">{{(DAYOFWEEKNAMES  | total :'ACTUAL_REVENUE_TOTAL') | number:2 }}</span>
+                    </div>
+                    <div class="col border font-10 text-right text-box-padding" ng-repeat="RVN in ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true">
+                        <span class="semibold ml-1" ng-show="Branch.INTEGRATION_EXISTS==1">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                            {{RVN.REVENUE  | number:2 }}
+                        </span>
+                        <span ng-show="Branch.INTEGRATION_EXISTS==0" class="w-100">
+                            <input type="text"
+                                   class="hidden-border text-right"
+                                   only-digits
+                                   ng-model="RVN.REVENUE">
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <!--<div ng-show="false">
+                <div class="col border font-10 text-right" ng-repeat="DL in DAYOFWEEKNAMES track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="semibold ml-1">{{DL.ACTUAL_REVENUE_TOTAL=((ACTUAL_REVENUE_LIST | filter: {'START_DATE': DL.DateAsString})  | total :'REVENUE') | number:2 }}</span>
+                </div>
+            </div>-->
+
+
+            <div class="PLUS_MINUS_ICON_ACTUAL_REVENUE" style="display:none;">
+                <div class="row a-week-view revenue-column bg-light-red" ng-repeat="ARL in REVENUE_SEARCH.BRANCH_LIST" 
+                     on-finish-render="ngRepeatFinishedRender">
+                    <div class="col-md-1 border semibold font-10">{{ARL.BRANCH_NAME}} </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                        <span class="text-bold ml-1">{{(ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': ARL.BRANCH_ID})  | total :'REVENUE'  | number:2  }}</span>
+                    </div>
+                    <div class="col border font-10 text-right" ng-repeat="RVN in ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': ARL.BRANCH_ID}">
+                        <span class="semibold ml-1" ng-show="ARL.INTEGRATION_EXISTS==1">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                            {{RVN.REVENUE  | number:2 }}
+                        </span>
+                        <span ng-show="ARL.INTEGRATION_EXISTS==0" class="w-100">
+                            <input type="text"
+                                   class="hidden-border text-right"
+                                   only-digits
+                                   ng-model="RVN.REVENUE">
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row a-week-view revenue-column" ng-show="REVENUE_SEARCH.WAGE_SETTING.DAY!==0">
+                <div class="col-md-1 border semibold font-10">Wage Target Cost </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="text-bold ml-1">{{(WAGE_TARGET_LIST | total :'WAGE_TARGET_COST') | number:2 }}</span>
+                </div>
+                <div class="col border font-10 text-right" ng-repeat="WTL in WAGE_TARGET_LIST track by $index">
+                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                    <span class="semibold ml-1">{{WTL.WAGE_TARGET_COST =(WTL.REVENUE * ((DAYOFWEEKNAMES | filter: {'DateAsString': WTL.START_DATE})  | total :'BUDGET_REVENUE_TOTAL')/100) | number:2}}</span>
+                </div>
+            </div>
+            <div class="row a-week-view revenue-column">
+                <div class="col-md-1 border  font-10 text-bold">
+                    Wage Cost
+                    <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1"
+                       class="float-right text-blue cursor-pointer"
+                       ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_WAGE_COST');"
+                       id="show9">
+                        <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_WAGE_COST==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_WAGE_COST==null || REVENUE_SEARCH.PLUS_MINUS_WAGE_COST==false}"></i>
+                    </a>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                    <span ng-show="false">{{TOTAL_WEEK_COST=(DAYOFWEEKNAMES | total :'WAGE_COST_TOTAL') | number:2 }}</span>
+                    <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==1 && (TOTAL_WEEK_COST>0 || TOTAL_WEEK_COST<0)"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{TOTAL_WEEK_COST | number:2 }}</span>
+                    <span class="text-bold ml-1" ng-show="TOTAL_WEEK_COST==0 || TOTAL_WEEK_COST==null">-</span>
+                    <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                </div>
+                <div class="col border font-10 text-right " ng-repeat="DL in DAYOFWEEKNAMES">
+                    <span class=" ml-1 semibold" ng-show="Section_Week_Search.COSE_PRIVILEGE==1">
+                        <span ng-show="false">{{DL.WAGE_COST_TOTAL}}</span>
+                        <span class="ml-1" ng-show=" (DL.WAGE_COST_TOTAL>0 || DL.WAGE_COST_TOTAL<0)">
+                            <span ng-show="Section_Week_Search.COSE_PRIVILEGE==1"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{DL.WAGE_COST_TOTAL | number:2 }}</span>
+                            <span ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                        </span>
+                        <span class="text-bold ml-1" ng-show="DL.WAGE_COST_TOTAL==0 || DL.WAGE_COST_TOTAL==null">-</span>
+                    </span>
+                    <span class=" ml-1 semibold text-bold" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">
+                        <span ng-bind-html="CURRENCY_SYMBOL"></span>{{ASTRIC}}
+                    </span>
+                </div>
+            </div>
+            <div class="menu9" style="display:none;">
+                <div class="row a-week-view revenue-column"
+                     ng-repeat="ARL in REVENUE_SEARCH.BRANCH_LIST"
+                     on-finish-render="ngRepeatFinishedRender">
+                    <div class="col-md-1 border semibold font-10">{{ARL.BRANCH_NAME}} </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                        <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==1 ">
+                            <span ng-bind-html="CURRENCY_SYMBOL"></span>{{(WAGE_COST_LIST | filter: {'BRANCH_ID': ARL.BRANCH_ID}:true)  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL'  | number:2  }}
+                        </span>
+                        <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                    </div>
+                    <div class="col border font-10 text-right" ng-repeat="WCL in WAGE_COST_LIST  | filter: {'BRANCH_ID': ARL.BRANCH_ID}:true">
+                        <span ng-show="Section_Week_Search.COSE_PRIVILEGE==1 ">
+                            <span class="semibold ml-1" ng-show="WCL.WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL >0 || WCL.WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL <0">
+                                <span ng-bind-html="CURRENCY_SYMBOL"></span>{{WCL.WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL | number:2 }}
+                            </span>
+                            <span class="semibold ml-1" ng-show="WCL.WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL==0 || WCL.WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL==null">-</span>
+                        </span>
+                        <span class=" ml-1 semibold text-bold" ng-show="Section_Week_Search.COSE_PRIVILEGE==0 ">{{ASTRIC}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row a-week-view revenue-column bg-light-green" ng-show="REVENUE_SEARCH.HIDE_SHOW">
+                <div class="col-md-1 border semibold font-10">
+                    Wage Cost vs Budget %
+                    <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1"
+                       ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_WAGE_COST_VS_BUDGET');"
+                       class="float-right text-blue cursor-pointer"
+                       id="SHOW_WAGE_COST_VS_BUDGET">
+                        <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_BUDGET==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_BUDGET==null || REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_BUDGET==false}"></i>
+                    </a>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                    <span class="text-bold ml-1">
+                        <span ng-show="false">
+                            {{WAGE_COST_VS_BUDGET_TOTAL=(DAYOFWEEKNAMES | total :'WAGE_COST_VS_BUDGET')}}
+                            {{WAGE_COST_VS_BUDGET=(TOTAL_WEEK_COST*1/(BUDGET_REVENUE_TOTAL*1))*100}}
+                        </span>
+                        <span ng-show="WAGE_COST_VS_BUDGET_TOTAL==0 && Section_Week_Search.COSE_PRIVILEGE==1">-</span>
+                        <span ng-show="WAGE_COST_VS_BUDGET_TOTAL>0 && Section_Week_Search.COSE_PRIVILEGE==1">
+                            <span ng-show="WAGE_COST_VS_BUDGET==0 || WAGE_COST_VS_BUDGET==null">-</span>
+                            <span ng-show="WAGE_COST_VS_BUDGET>0 || WAGE_COST_VS_BUDGET<0">{{WAGE_COST_VS_BUDGET | number:2}}  %</span>
+                        </span>
+                        <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                    </span>
+                </div>
+                <div class="col border font-10 text-right" ng-repeat="DL in DAYOFWEEKNAMES">
+                    <span ng-show="(DL.WAGE_COST_VS_BUDGET>0 || DL.WAGE_COST_VS_BUDGET<0) && Section_Week_Search.COSE_PRIVILEGE==1 " class="semibold ml-1">
+                        {{DL.WAGE_COST_VS_BUDGET | number :2}}  %
+                    </span>
+                    <span ng-show="(DL.WAGE_COST_VS_BUDGET==0 || DL.WAGE_COST_VS_BUDGET=='0.00') && Section_Week_Search.COSE_PRIVILEGE==1">-</span>
+                    <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                </div>
+            </div>
+
+
+            <div class="PLUS_MINUS_WAGE_COST_VS_BUDGET" style="display:none;" ng-show="REVENUE_SEARCH.HIDE_SHOW">
+                <div class="row a-week-view revenue-column bg-light-green" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                    <div class="col-md-1 border semibold font-10">{{Branch.BRANCH_NAME}} </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap"
+                         ng-init="Branch.DAYOFWEEKNAMES=DAYOFWEEKNAMES">
+                        <span ng-show="false">{{Branch.TOT_REV=((BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' )}}</span>
+                        <span class="text-bold ml-1">
+                            {{Branch.TOT_REV==0?'-':  (((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/Branch.TOT_REV | number:2) + '%'}}
+                        </span>
+                    </div>
+                    <div class="col border font-10 text-right" ng-repeat="DL in Branch.DAYOFWEEKNAMES track by $index">
+                        <span class="semibold ml-1">
+                            <span ng-show="((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')==0 || ((BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')==0">-</span>
+                            <span ng-show="!((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')==0 && !((BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')==0">
+                                {{DL.WAGE_COST_VS_BUDGET_PER=((((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL') *100)/((BUDGET_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')) | number:2}}  %
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row a-week-view revenue-column bg-light-blue" ng-show="REVENUE_SEARCH.HIDE_SHOW">
+                <div class="col-md-1 border semibold font-10">
+                    Wage Cost vs Forecast %
+                    <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1"
+                       class="float-right text-blue cursor-pointer"
+                       ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_WAGE_COST_VS_FORECAST');"
+                       id="SHOW_WAGE_COST_VS_FORECAST">
+                        <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_FORECAST==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_FORECAST==null || REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_FORECAST==false}"></i>
+                    </a>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                    <span class="text-bold ml-1">
+                        <span ng-show="false">
+                            {{WAGE_COST_VS_FORECAST_TOTAL=(DAYOFWEEKNAMES | total :'WAGE_COST_VS_FORECAST')}}
+                            {{WAGE_COST_VS_FORECAST=(TOTAL_WEEK_COST*1/(FORECAST_REVENUE_TOTAL*1)*100)}}
+                        </span>
+
+                        <span ng-show="WAGE_COST_VS_FORECAST_TOTAL==0 && Section_Week_Search.COSE_PRIVILEGE==1">-</span>
+                        <span ng-show="WAGE_COST_VS_FORECAST_TOTAL>0 && Section_Week_Search.COSE_PRIVILEGE==1">
+                            <span ng-show="WAGE_COST_VS_FORECAST==0 || WAGE_COST_VS_FORECAST==null">-</span>
+                            <span ng-show="WAGE_COST_VS_FORECAST>0 || WAGE_COST_VS_FORECAST<0"> {{WAGE_COST_VS_FORECAST | number:2}} %</span>
+                        </span>
+                        <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                    </span>
+                </div>
+                <div class="col border font-10 text-right" ng-repeat="DL in DAYOFWEEKNAMES">
+                    <span ng-show="(DL.WAGE_COST_VS_FORECAST>0 || DL.WAGE_COST_VS_FORECAST<0) && Section_Week_Search.COSE_PRIVILEGE==1">
+                        <span class="semibold ml-1">{{DL.WAGE_COST_VS_FORECAST | number :2}}%</span>
+                    </span>
+                    <span ng-show="(DL.WAGE_COST_VS_FORECAST==0 || DL.WAGE_COST_VS_FORECAST=='0.00') && Section_Week_Search.COSE_PRIVILEGE==1">-</span>
+                    <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                </div>
+            </div>
+            <div class="PLUS_MINUS_WAGE_COST_VS_FORECAST" style="display:none;" ng-show="REVENUE_SEARCH.HIDE_SHOW">
+                <div class="row a-week-view revenue-column bg-light-blue" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                    <div class="col-md-1 border semibold font-10">{{Branch.BRANCH_NAME}}</div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap"
+                         ng-init="Branch.DAYOFWEEKNAMES=DAYOFWEEKNAMES">
+                        <span ng-show="false">
+                            {{Branch.TOT_FORECAST_REVENUE=((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' )}}
+                        </span>
+                        <span class="text-bold ml-1">
+                            {{Branch.TOT_FORECAST_REVENUE==0?'-':(((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/Branch.TOT_FORECAST_REVENUE | number:2) +' % '}}
+                        </span>
+                    </div>
+                    <div class="col border font-10 text-right" ng-repeat="DL in Branch.DAYOFWEEKNAMES track by $index">
+                        <span class="semibold ml-1">
+                            <span ng-show="((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')==0 || ((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')==0">-</span>
+                            <span ng-show="!((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')==0 && !((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')==0">
+                                {{((((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL') *100)/((FORECAST_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}) | total :'REVENUE')) | number:2}}%
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row a-week-view revenue-column bg-light-red">
+                <div class="col-md-1 border semibold font-10">
+                    Wage Cost vs Actual %
+                    <a ng-show="REVENUE_SEARCH.BRANCH_LIST.length>1"
+                       class="float-right text-blue cursor-pointer"
+                       ng-click="CHANGE_PLUS_MINUS_ICON('PLUS_MINUS_WAGE_COST_VS_ACTUAL');"
+                       id="SHOW_WAGE_COST_VS_ACTUAL">
+                        <i ng-class="{'far fa-minus':REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_ACTUAL==true,'far fa-plus':REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_ACTUAL==null || REVENUE_SEARCH.PLUS_MINUS_WAGE_COST_VS_ACTUAL==false}">
+                        </i>
+                    </a>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap">
+                    <span class="text-bold ml-1">
+                        <span ng-show="false">
+                            {{WAGE_COST_VS_ACTUAL_TOTAL=(DAYOFWEEKNAMES | total :'ACTUAL_REVENUE_TOTAL') }}
+                            {{WAGE_COST_VS_ACTUAL=(TOTAL_WEEK_COST*1/(WAGE_COST_VS_ACTUAL_TOTAL*1))*100}}
+                        </span>
+                        <span ng-show="WAGE_COST_VS_ACTUAL_TOTAL==0 && Section_Week_Search.COSE_PRIVILEGE==1">-</span>
+                        <span ng-show="(WAGE_COST_VS_ACTUAL_TOTAL>0 || WAGE_COST_VS_ACTUAL_TOTAL<0) && Section_Week_Search.COSE_PRIVILEGE==1">
+                            <span ng-show="WAGE_COST_VS_ACTUAL==0 || WAGE_COST_VS_ACTUAL==null">-</span>
+                            <span ng-show="WAGE_COST_VS_ACTUAL>0 || WAGE_COST_VS_ACTUAL<0"> {{WAGE_COST_VS_ACTUAL | number:2}} %</span>
+                        </span>
+                        <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                    </span>
+                </div>
+                <div class="col border font-10 text-right" ng-repeat="DL in DAYOFWEEKNAMES">
+                    <span ng-show="(DL.WAGE_COST_VS_ACTUAL>0 || DL.WAGE_COST_VS_ACTUAL<0) && Section_Week_Search.COSE_PRIVILEGE==1">
+                        <span class="semibold ml-1">{{DL.WAGE_COST_VS_ACTUAL | number :2}} %</span>
+                    </span>
+                    <span ng-show="(DL.WAGE_COST_VS_ACTUAL==0 || DL.WAGE_COST_VS_ACTUAL=='0.00') && Section_Week_Search.COSE_PRIVILEGE==1">-</span>
+                    <span class="text-bold ml-1" ng-show="Section_Week_Search.COSE_PRIVILEGE==0">{{ASTRIC}}</span>
+                </div>
+            </div>
+
+            <div class="PLUS_MINUS_WAGE_COST_VS_ACTUAL" style="display:none;">
+                <div class="row a-week-view revenue-column bg-light-red" ng-repeat="Branch in REVENUE_SEARCH.BRANCH_LIST">
+                    <div class="col-md-1 border semibold font-10">{{Branch.BRANCH_NAME}} </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-end border font-10 text-right text-nowrap"
+                         ng-init="Branch.DAYOFWEEKNAMES=DAYOFWEEKNAMES">
+                        <span ng-show="false">{{Branch.TOT_ACTUAL_REVENUE=((ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'REVENUE' )}}</span>
+                        <span class="text-bold ml-1">
+                            {{Branch.TOT_ACTUAL_REVENUE==0?'-':(((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true)  | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/Branch.TOT_ACTUAL_REVENUE | number:2) + ' % '}}
+                        </span>
+                    </div>
+                    <div class="col border font-10 text-right" ng-repeat="DL in Branch.DAYOFWEEKNAMES track by $index">
+                        <span class="semibold ml-1">
+                            <span ng-show="false">
+                                {{DL.REV = (ACTUAL_REVENUE_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true| filter: {'START_DATE': DL.DateAsString})[0].REVENUE}}
+                            </span>
+                            <span class="semibold ml-1">
+                                {{DL.WCA=(DL.REV==0?'-': (((WAGE_COST_LIST | filter: {'BRANCH_ID': Branch.BRANCH_ID}:true | filter: {'START_DATE': DL.DateAsString}:true) | total :'WAGE_COST_INCLUDING_HOLIDAY_ACCRUAL')*100/DL.REV | number:2 ) +' % ')}}
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center" ng-show="REVENUE_SETTING==1 && !IS_EMPLOYEE">
+            <button type="button" class="btn btn-sm btn-wenodo my-2" ng-show="CHECK_MODULE_ACCESS(119,3)" ng-click="UPD_WAGE_COST_FORECASTING()">Save</button>
+        </div>
+        <div class="row mt-2 bg-light-grey pt-2" ng-if="!IS_EMPLOYEE">
+            <div class="col d-flex custom-scrollbar auto-width bg-light-grey">
+                <div class="col-auto ml-auto-first icon-hover" ng-repeat="SL in SHIFT_MASTER_LIST| filter: Section_Week_Search.Shift_searchText" ng-click="ON_SELECT_SHIFT_CLICK(SL);" style="z-index:9">
+                    <div class="form-inline mb-2" x-lvl-draggable="true" ng-attr-id="{{ 'object-' + $index }}" data-id>
+                        <button type="button" class="btn btn-w-default btn-sm text-nowrap mw-60" data-id style="z-index:-1;padding: 0.25rem 0.5rem;">{{SL.SHIFT_TITLE}}</button>
+                        <button type="button" class="btn btn-default btn-sm bs-icon font-10" ng-click="EDIT_SHIFT_CLICK(SL)"><i class="far fa-edit text-green"></i></button>
+                        <!--<button type="button" ng-click="DELETE_SHIFT_CLICK(SL)" class="btn btn-default btn-sm bs-icon trash"><i class="far fa-trash text-danger"></i></button>-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-wenodo btn-sm" style="padding: 0.2rem 1rem;" data-toggle="tooltip" data-html="true" data-original-title="Create New Shift" ng-click="openNav6()" ng-if="!IS_EMPLOYEE">
+                    <i class="far fa-alarm-clock"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-0 px-2">
+        <div class="row">
+            <div class="col-md-1 bg-light-blue py-1">
+                <ul class="nav nav-pills" ng-if="!IS_EMPLOYEE">
+                    <li class="dropdown w-100">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer" ng-class="{'c-form-control':SHOW_BTN}" data-toggle="dropdown">
+                            <span id="dropdown_title">{{Section_Week_Search.DDL_BRANCH_TEXT}}</span>
+                            <i class="fa fa-sort float-right mt-1" ng-show="false"></i>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu dropdown-menu-arrow text-xs custom-scrollbar min-w-285">
+                            <li class="sticky-top bg-white">
+                                <input type="text" class="form-control" ng-model="Section_Week_Search.searchBranchText" />
+                            </li>
+                            <li class="pl-4 py-2 DontHideOnClick" ng-click="ON_BRANCH_ALL_CLICK()">
+                                <i class="far fa-lg" ng-class="{'fa-check-square green':Section_Week_Search.BRANCHALL,'fa-square':!Section_Week_Search.BRANCHALL}"></i>
+                                <span class="font-12 ml-2">Select All</span>
+                            </li>
+                            <li class="pl-4 py-2 DontHideOnClick"
+                                ng-click="ON_BRANCH_LINE_CLICK(DPT)"
+                                ng-repeat="DPT in BRANCH_ROTA_LIST | filter:{DISPLAY_TEXT:Section_Week_Search.searchBRANCHText}">
+                                <i class="far fa-lg" ng-class="{'fa-check-square green':DPT.IS_CHECK_BRANCH,'fa-square':!DPT.IS_CHECK_BRANCH}"></i>
+                                <span class="font-12 ml-2">{{DPT.BRANCH_NAME}}</span>
+                            </li>
+                            <li class="sticky-bottom bg-white">
+                                <button ng-click="ON_BRANCH_APPLY_CLICK()" class="btn btn-xs btn-wenodo">Apply</button>
+                                <button ng-click="ON_BRANCH_RESET_CLICK()" class="btn btn-xs btn-w-default">Reset</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-1 bg-light-blue py-1">
+                <ul class="nav nav-pills" ng-if="!IS_EMPLOYEE">
+                    <li class="dropdown w-100 max-w-200">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer " ng-class="{'c-form-control':SHOW_BTN}" data-toggle="dropdown">
+                            <span id="dropdown_title">{{Section_Week_Search.DDL_DEPARTMENT_TEXT}}</span>
+                            <i class="fa fa-sort float-right mt-1" ng-show="false"></i>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu dropdown-menu-arrow text-xs custom-scrollbar min-w-285">
+                            <li class="sticky-top bg-white">
+                                <input type="text" class="form-control" ng-model="Section_Week_Search.searchDepartmentText" />
+                            </li>
+                            <li class="pl-4 py-2 DontHideOnClick" ng-click="ON_DEPARTMENT_ALL_CLICK()">
+                                <i class="far fa-lg" ng-class="{'fa-check-square green':Section_Week_Search.DepartmentALL,'fa-square':!Section_Week_Search.DepartmentALL}"></i>
+                                <span class="font-12 ml-2">Select All</span>
+                            </li>
+                            <li class="pl-4 py-2 DontHideOnClick"
+                                ng-click="ON_DEPARTMENT_LINE_CLICK(DPT)"
+                                ng-repeat="DPT in DEPARTMENT_ROTA_LIST | filter:{DISPLAY_TEXT:Section_Week_Search.searchDepartmentText}">
+                                <i class="far fa-lg" ng-class="{'fa-check-square green':DPT.IS_CHECK_DEPT,'fa-square':!DPT.IS_CHECK_DEPT}"></i>
+                                <span class="font-12 ml-2">{{DPT.DEPARTMENT_NAME}}</span>
+                            </li>
+                            <li class="sticky-bottom bg-white">
+                                <button ng-click="ON_DEPARTMENT_APPLY_CLICK()" class="btn btn-xs btn-wenodo">Apply</button>
+                                <button ng-click="ON_DEPARTMENT_RESET_CLICK()" class="btn btn-xs btn-w-default">Reset</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-auto py-1 border-left" ng-if="!IS_EMPLOYEE">
+                <button type="button" class="btn pos-relative btn-wenodo" ng-click="SIDE_FILTER()" data-toggle="tooltip" data-html="true" data-original-title="Filter">
+                    <i class="fas fa-filter"></i>
+                    <span class="badge bg-warning" ng-show="FILTER_COUNT>0"><i class="far fa-check"></i></span>
+                </button>
+            </div>
+            <div class="col py-1" ng-if="!IS_EMPLOYEE">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer" style="max-width:275px;" ng-class="{'c-form-control':SHOW_BTN}" data-toggle="dropdown">
+                            <span id="dropdown_title">{{Section_Week_Search.DDL_DEPARTMENT_SHIFT_TEXT}}</span>
+                            <!--<i class="fa fa-sort float-right mt-1"></i>-->
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu dropdown-menu-arrow text-xs custom-scrollbar min-w-285">
+                            <li class="sticky-top bg-white">
+                                <input type="text" class="form-control" ng-model="Section_Week_Search.searchShiftDepartmentText" />
+                            </li>
+                            <li class="pl-4 py-2 DontHideOnClick" ng-click="ON_DEPARTMENT_SHIFT_ALL_CLICK()">
+                                <i class="far fa-lg" ng-class="{'fa-check-square green':Section_Week_Search.DepartmentShiftALL,'fa-square':!Section_Week_Search.DepartmentShiftALL}"></i>
+                                <span class="font-12 ml-2">Select All</span>
+                            </li>
+                            <li class="pl-4 py-2 DontHideOnClick"
+                                ng-click="ON_DEPARTMENT_SHIFT_LINE_CLICK(DPT)"
+                                ng-repeat="DPT in DEPARTMENT_SHIFT_ROTA_LIST | filter:{DISPLAY_TEXT:Section_Week_Search.searchShiftDepartmentText}">
+                                <i class="far  fa-lg" ng-class="{'fa-check-square green':DPT.IS_CHECK_DEPT_SHIFT,'fa-square':!DPT.IS_CHECK_DEPT_SHIFT}"></i>
+                                <span class="font-12 ml-2">{{DPT.DEPARTMENT_NAME}}</span>
+                            </li>
+                            <li class="sticky-bottom bg-white">
+                                <button ng-click="ON_DEPARTMENT_SHIFT_APPLY_CLICK()" class="btn btn-xs btn-wenodo">Apply</button>
+                                <button ng-click="ON_DEPARTMENT_SHIFT_RESET_CLICK()" class="btn btn-xs btn-w-default">Reset</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col py-1">
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                            <span id="dropdown_title">Section | Week </span><i class="fa fa-sort float-right mt-1"></i>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-xs">
+                            <li class="min-max-300 disabled-li">View by Section</li>
+                            <li ng-if="false" class="min-max-300 p-0 cursor-pointer" ng-click="DDL_VIEW_CLCIK(1)"><span class="d-block pl-4 pr-2 py-2">Day </span></li>
+                            <li class="min-max-300 p-0 cursor-pointer" ng-click="DDL_VIEW_CLCIK(2)"><span class="d-block pl-4 pr-2 py-2 cursor-pointer">Week</span></li>
+                            <li ng-if="false" class="min-max-300 p-0 cursor-pointer" ng-click="DDL_VIEW_CLCIK(3)"><span class="d-block pl-4 pr-2 py-2">2 Weeks</span></li>
+                            <li ng-if="false" class="min-max-300 p-0 cursor-pointer" ng-click="DDL_VIEW_CLCIK(4)"><span class="d-block pl-4 pr-2 py-2">Month</span></li>
+                            <li class="min-max-300 disabled-li">View by Employee</li>
+                            <li ng-if="false" class="min-max-300 p-0 cursor-pointer" ng-click="DDL_VIEW_CLCIK(5)"><span class="d-block px-3 py-2">Day </span></li>
+                            <li class="min-max-300 p-0 cursor-pointer" ng-click="DDL_VIEW_CLCIK(6)"><span class="d-block pl-4 pr-2 py-2">Week</span></li>
+                            <!--<li class="min-max-300 p-0 cursor-pointer" ng-show="!IS_EMPLOYEE" ng-click="DDL_VIEW_CLCIK(9)"><span class="d-block pl-4 pr-2 py-2 ">Weekly Compact</span></li>-->
+                            <li ng-if="false" class="min-max-300 p-0 cursor-pointer" ng-click="DDL_VIEW_CLCIK(7)"><span class="d-block pl-4 pr-2 py-2">2 Weeks</span></li>
+                            <li ng-if="false" class="min-max-300 p-0 cursor-pointer" ng-click="DDL_VIEW_CLCIK(8)"><span class="d-block pl-4 pr-2 py-2">Month</span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col py-1">
+                <div class="input-group input-group-sm" style="display:flex" id="week-picker-wrapper">
+                    <div class="input-group-prepend">
+                        <button type="button" class="btn input-group-text week-prev">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <input type="text" class="form-control week-picker font-11" readonly placeholder="Select a Week" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn input-group-text week-next">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col py-1">
+                <ul class="nav nav-pills" ng-show="!IS_EMPLOYEE">
+                    <li class="dropdown w-100 max-w-200">
+                        <a class="form-control text-limitations custom-dropdown cursor-pointer" data-toggle="dropdown">
+                            <span id="dropdown_titleSec">{{Section_Week_Search.DISPLAY_TEXT}}</span>
+                            <i class="fa fa-sort float-right mt-1"></i>
+                        </a>
+                        <ul ID="divNewNotificationsSec" class="dropdown-menu dropdown-menu-arrow text-xs custom-scrollbar min-w-285">
+                            <li class="sticky-top bg-white">
+                                <input type="text" class="form-control" ng-model="Section_Week_Search.searchText" />
+                            </li>
+                            <li class="pl-4 py-2 text-blue" ng-show="!IS_EMPLOYEE" ng-click="openNav5()">
+                                <i class="fas fa-plus "></i>Add Section
+                            </li>
+                            <li class="p-3 semibold DontHideOnClick" ng-click="ON_SECTION_ALL_CLICK((BRANCH_LIST | filter:{IS_CHECK_BRH_SHIFT:true}).length)">
+                                <span ng-show="(BRANCH_LIST | filter:{IS_CHECK_BRH_SHIFT:true}).length==BRANCH_LIST.length">Deselect</span>
+                                <span ng-show="(BRANCH_LIST | filter:{IS_CHECK_BRH_SHIFT:true}).length!=BRANCH_LIST.length">Select</span>  All
+                            </li>
+                            <li class="p-3 semibold DontHideOnClick"
+                                style="text-transform:uppercase"
+                                ng-repeat-start="BRL in BRANCH_LIST | filter:Section_Week_Search.searchText"
+                                ng-click="ON_SECTION_BRANCH_SELECT_CLICK(BRL,1);">
+                                <i class="far fa-lg"
+                                   ng-class="{'fa-check-square green':BRL.IS_CHECK_BRH_SHIFT,'fa-square':!BRL.IS_CHECK_BRH_SHIFT}"></i>
+                                {{BRL.BRANCH_NAME}}
+                            </li>
+                            <li class="pl-4 py-2 DontHideOnClick"
+                                ng-repeat-end
+                                ng-repeat="Section in SECTIONS_LIST | filter:Section_Week_Search.searchText | filter:{BRANCH_ID:BRL.BRANCH_ID}"
+                                ng-click="ON_SECTION_LINE_CLICK(Section,BRL);">
+                                <i class="far fa-lg" ng-class="{'fa-check-square green':Section.IS_CHECK_SECTION_SHIFT,'fa-square':!Section.IS_CHECK_SECTION_SHIFT}"></i>
+                                {{Section.DISPLAY_TEXT}}
+                            </li>
+                            <li class="sticky-bottom bg-white">
+                                <button ng-click="ON_SECTION_BRANCH_SHIFT_APPLY_CLICK()" class="btn btn-xs btn-wenodo">Apply</button>
+                                <button ng-click="ON_SECTION_RESET_CLICK()" class="btn btn-xs btn-w-default">Reset</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-auto py-1" ng-show="false">
+                <i class="far fa-lg"
+                   ng-click="SHOW_ALL_DETIAL_FILTER_FY()"
+                   ng-class="{'fa-check-square green':SHOW_ALL_DETIAL_FILTER,'fa-square':!SHOW_ALL_DETIAL_FILTER}"></i>
+            </div>
+            <div class="col-auto py-1" ng-show="false">
+                <a href="#!/C_Week_View" class="btn btn-wenodo btn-square" data-toggle="tooltip" data-html="true" data-original-title="Compact View">
+                    <i class="far fa-th-list"></i>
+                </a>
+            </div>
+
+            <div class="col-auto py-1" ng-if="!IS_EMPLOYEE">
+                <div class="row">
+                    <div class="col-auto" ng-show="!IS_EMPLOYEE && false">
+                        <a href="#!/AC_Week_View" class="btn btn-wenodo btn-square" data-toggle="tooltip" data-html="true" data-original-title="Compact View">
+                            <i class="far fa-th-list"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto ml-auto" ng-show="false">
+                        <button type="button" class="btn btn-w-default btn-short-padding dropdown-toggle" data-toggle="dropdown">
+                            <i class="fas fa-layer-group"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm" aria-haspopup="true" aria-expanded="false">
+                            <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="FILTER_SWTICH()" ng-if="false">Create New</a>
+                            <a class="dropdown-item" ng-show="CheckSubModuleAccess(112)" ng-class="FILTER_SWTICH_ON_OFF_1?'btn-active':''" ng-click="ROTA_GET_TEMPLATES(2,1);">Save as Template</a>
+                            <!--FILTER_SWTICH_ON_OFF_1=true-->
+                            <a class="dropdown-item" ng-show="CheckSubModuleAccess(114)" ng-class="FILTER_SWTICH_ON_OFF_2?'btn-active':''" ng-click="ROTA_GET_TEMPLATES(2,2);">Delete Template</a>
+                            <!--FILTER_SWTICH_ON_OFF_2=true-->
+                            <a class="dropdown-item" ng-show="CheckSubModuleAccess(113)" ng-class="FILTER_SWTICH_ON_OFF_3?'btn-active':''" ng-click="ROTA_GET_TEMPLATES(2,3)">Apply Template</a>
+                            <!--<a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="ROTA_CREATE_SHIFTS_BY_WORKPATTERN('AREA_VIEW');">Apply Work Pattern</a>
+                            <a class="dropdown-item" ng-click="COPY_WEEK_POP()">Copy week</a>
+                            <a class="dropdown-item" ng-click="PRINT_PDF()">PDF</a>-->
+                        </div>
+                    </div>
+                    <div class="col-auto" data-toggle="tooltip" data-html="true" data-original-title="Actions">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="btn btn-w-default btn-short-padding dropdown-toggle" data-toggle="dropdown"> <i class="fas fa-cogs"></i> </a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li class="p-0"><a class="dropdown-item text-sm" data-toggle="modal" data-target="#Approve_Multiple_Shifts" ng-if="false">Approve multiple shifts</a></li>
+                                    <li class="p-0" ng-show="IS_DELETE_PRIVILAGE" ng-click="ROTA_OPTIONS_FY(4,null,null,'AREA_VIEW');"><a class="dropdown-item text-sm">Delete This Week</a></li>
+                                    <li class="p-0" ng-click="openNav5()"><a class="dropdown-item text-sm">Add Section</a></li>
+                                    <li class="p-0"><a class="dropdown-item text-sm" ng-if="false">Export schedule (CSV)</a></li>
+                                    <li class="p-0" ng-if="WORK_PATTERN_REQUIRED==1" ng-click="ROTA_CREATE_SHIFTS_BY_WORKPATTERN_POP(1,2,'AREA_VIEW');"><a class="dropdown-item text-sm" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''">Apply Work Pattern</a></li>
+                                    <li class="p-0" ng-show="IS_ADD_PRIVILAGE" ng-click="COPY_WEEK_POP(2)"><a class="dropdown-item text-sm">Copy Week</a></li>
+                                    <li class="p-0" ng-click="PRINT_PDF_POP()"><a class="dropdown-item text-sm">Download PDF</a></li>
+                                    <li class="p-0"><a class="dropdown-item text-sm" ng-click="saveAsXlsx()">Download Excel</a></li>
+                                    <li class="p-0"><a class="dropdown-item text-sm" ng-click="INS_UPD_USER_FILTERS_FY()">Save Filter</a></li>
+                                    <li class="p-0"><a class="dropdown-item text-sm" ng-click="WEEK_PRINT()" ng-if="false">Print Rota</a></li>
+                                    <li class="p-0" ng-show="CheckSubModuleAccess(112) || CheckSubModuleAccess(114) || CheckSubModuleAccess(113)">
+                                        <a class="dropdown-item dropdown-toggle text-sm"> Templates </a>
+                                        <ul class="submenu submenu-left dropdown-menu second_Level">
+                                            <li class="p-0"><a class="dropdown-item text-sm" ng-show="CheckSubModuleAccess(112)" ng-class="FILTER_SWTICH_ON_OFF_1?'btn-active':''" ng-click="ROTA_GET_TEMPLATES(2,1);">Save as Template</a></li>
+                                            <li class="p-0"><a class="dropdown-item text-sm" ng-show="CheckSubModuleAccess(114)" ng-class="FILTER_SWTICH_ON_OFF_2?'btn-active':''" ng-click="ROTA_GET_TEMPLATES(2,2);">Delete Template</a></li>
+                                            <li class="p-0"><a class="dropdown-item text-sm" ng-show="CheckSubModuleAccess(113)" ng-class="FILTER_SWTICH_ON_OFF_3?'btn-active':''" ng-click="ROTA_GET_TEMPLATES(2,3)">Apply Template</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="mega-menu dropdown-menu-arrow" ng-if="FILTER_SWTICH_ON_OFF">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Create Template</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <span class="d-block semibold font-14">Length</span>
+                                            <div class="custom-control custom-radio mt-2">
+                                                <input class="custom-control-input" type="radio" id="Week" name="customRadio">
+                                                <label for="Week" class="custom-control-label">Week</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <span class="d-block semibold font-14">&nbsp;</span>
+                                            <div class="custom-control custom-radio mt-2">
+                                                <input class="custom-control-input" type="radio" id="Day" name="customRadio">
+                                                <label for="Day" class="custom-control-label">Day</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-0">
+                                            <button type="button" class="btn btn-wenodo">Save</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mega-menu dropdown-menu-arrow" ng-if="FILTER_SWTICH_ON_OFF_1">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">
+                                    Save this schedule for Restaurant as a template <br />
+                                    {{SHIFT_CELDER_START_DATE | date:"MMM d"}}  - {{SHIFT_CELDER_END_DATE | date:"MMM d"}}
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="WHOISWORKING"
+                                           autocomplete="off"
+                                           ng-model="Section_Week_Search.TEMPLATE_NAME"
+                                           uib-typeahead="EL as EL.TEMPLATE_NAME for EL in ROTA_TEMPLATES | filter:{TEMPLATE_NAME:$viewValue}"
+                                           typeahead-show-hint="true"
+                                           required
+                                           typeahead-on-select="selectTemplateTypeAhead($item)"
+                                           typeahead-min-length="0">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-0">
+                                            <button type="button" ng-click="ROTA_INS_UPD_TEMPLATE_FROM_SCHEDULED_SHIFTS(2,0,0);" class="btn btn-wenodo">Save</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_FY(1)">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mega-menu dropdown-menu-arrow" ng-if="FILTER_SWTICH_ON_OFF_2">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Delete Template</h5>
+                            </div>
+                            <div class="card-body pt-0 custom-scrollbar">
+                                <div class="row">
+                                    <ul class="todo-list w-100">
+                                        <li class="border-bottom" ng-repeat="EL in ROTA_TEMPLATES">
+                                            <span class="text font-14 max-width-90">
+                                                <span class="template-name-limit" ng-if="!EL.EDIT">  {{EL.TEMPLATE_NAME}}</span>
+                                                <span ng-if="EL.EDIT">
+                                                    <input type="text" class="form-control" ng-model="EL.TEMPLATE_NAME" />
+                                                </span>
+                                            </span>
+                                            <div class="tools float-right">
+                                                <!--<i class="fas fa-edit fa-sm" ng-click="EL.EDIT=true" ng-show="!EL.EDIT"></i>-->
+                                                <i class="fas fa-save fa-sm text-success" ng-click="ROTA_UPD_TEMPLATE_FROM_SCHEDULED_SHIFTS(EL,0,1,2)" ng-if="EL.EDIT"></i>
+                                                <i class="fas fa-trash fa-sm text-danger" ng-click="ROTA_DELETE_TEMPLATE_FROM_SCHEDULED_SHIFTS(EL,1,0,2);FILTER_SWTICH_ON_OFF_2=false;"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-3">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_FY(2)">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mega-menu dropdown-menu-arrow" ng-if="FILTER_SWTICH_ON_OFF_3">
+                            <div class="card-header">
+                                <h5 class="card-title mt-2 d-inline">Apply Template</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" ng-show="ROTA_TEMPLATES.length==0">
+                                            <span class="text-sm">There are no templates saved. Please add new templates.</span>
+                                            <a class="d-block cursor-pointer text-blue text-sm" ng-class="FILTER_SWTICH_ON_OFF_1?'btn-active':''" ng-click="ROTA_GET_TEMPLATES(2,1);">Add Templates</a>
+                                        </div>
+                                        <div class="form-group mb-0" ng-show="ROTA_TEMPLATES.length>0">
+                                            <select class="custom-select"
+                                                    ng-options="RT.ROTA_TEMPLATE_ID as RT.TEMPLATE_NAME for RT in ROTA_TEMPLATES"
+                                                    ng-model="Section_Week_Search.ROTA_TEMPLATE_ID"
+                                                    required
+                                                    ng-class="{'error':Section_Week_Search.TEMPLATE_NAME.length!='' && Section_Week_Search.TEMPLATE_NAME.$error.required}">
+                                                <option value="">-Select Template-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3" ng-show="ROTA_TEMPLATES.length>0">
+                                        <div class="form-group mb-0">
+                                            <button type="button" class="btn btn-wenodo" ng-click="ROTA_CREATE_SHIFTS_BY_TEMPLATE_POP(1,2,'AREA_VIEW');">Apply</button>
+                                            <button type="button" class="btn btn-w-default" ng-click="FILTER_SWTICH_ON_OFF_FY(3)">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto" data-toggle="tooltip" data-html="true" data-original-title="Actions" ng-show="false">
+                        <button type="button" class="btn btn-w-default btn-short-padding dropdown-toggle" data-toggle="dropdown">
+                            <i class="fas fa-cogs"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm" aria-haspopup="true" aria-expanded="false">
+                            <a class="dropdown-item" data-toggle="modal" data-target="#Approve_Multiple_Shifts" ng-if="false">Approve multiple shifts</a>
+                            <a class="dropdown-item" ng-show="IS_DELETE_PRIVILAGE" ng-click="ROTA_OPTIONS_FY(4,null,null,'AREA_VIEW');">Delete This Week</a>
+                            <a class="dropdown-item" ng-click="openNav5()">Add Section</a>
+                            <a class="dropdown-item" ng-if="false">Export schedule (CSV)</a>
+
+                            <!--<a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="ROTA_CREATE_SHIFTS_BY_WORKPATTERN('AREA_VIEW');">Apply Work Pattern</a>-->
+                            <a class="dropdown-item" ng-class="FILTER_SWTICH_ON_OFF?'btn-active':''" ng-if="WORK_PATTERN_REQUIRED==1" ng-click="ROTA_CREATE_SHIFTS_BY_WORKPATTERN_POP(1,2,'AREA_VIEW');">Apply Work Pattern</a>
+                            <a class="dropdown-item" ng-show="IS_ADD_PRIVILAGE" ng-click="COPY_WEEK_POP()">Copy Week</a>
+                            <a class="dropdown-item" ng-click="PRINT_PDF_POP()">Download PDF</a>
+                            <a class="dropdown-item" ng-click="saveAsXlsx()">Download Excel</a>
+                            <a class="dropdown-item" ng-click="WEEK_PRINT()" ng-if="false">Print Rota</a>
+                            <!--<a class="dropdown-item" ng-click="WEEK_PRINT()">Download Excel</a>-->
+                        </div>
+                    </div>
+                    <div class="col-auto" ng-if="false">
+                        <button type="button" class="btn btn-wenodo text-nowrap mt-1" ng-click="openNav3()" data-toggle="tooltip" data-html="true" data-original-title="Settings"><i class="fas fa-tools"></i></button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" ng-class="UNPUBLISHED_COUNT==0 && PUBLISH_SHIFTS!='No Shifts'?'btn-success':'btn-wenodo'" class="btn text-nowrap font-10 btn-custom-padding" ng-click="PUBLISH_SHIFTS_POP('AREA_VIEW');">
+                            {{PUBLISH_SHIFTS}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 p-0 bg-light-blue">
+                <div class="card-header p-1 shadow-sm min-height-76">
+                    <div class="btn-group btn-group-sm pt-3 btn-block" ng-if="!IS_EMPLOYEE">
+                        <input type="text" class="form-control" ng-model="Section_Week_Search.EMP_SEARCH" placeholder="Search" ng-change="EMPLOYEE_FILTER();">
+                        <!--<button type="button" ng-click="" class="btn btn-w-default px-2"><i class="fa fa-search"></i></button>-->
+                        <button type="button" class="btn btn-w-default px-2" data-toggle="dropdown"><i class="far fa-chevron-down"></i></button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm custom-scrollbar" aria-haspopup="true" aria-expanded="false">
+                            <a class="dropdown-item"
+                               ng-repeat="SOL in SORT_ORDER_LIST "
+                               ng-class="SOL.IS_ACTIVE?'dropdown-active':''"
+                               ng-click="CLICK_SORT_ORDER(SOL)">
+                                {{SOL.NAME}}
+                                <i class="fa float-right" ng-class="{'fa-sort-amount-down-alt':SOL.IS_ACTIVE && SOL.ASC,'fa-sort-amount-up-alt':SOL.IS_ACTIVE && !SOL.ASC,'':!SOL.IS_ACTIVE && !SOL.ASC}"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 custom-scrollbar bg-light-blue" ng-class="{'area-view-employee-revenue':REVENUE_SETTING==1,'area-view-employee-height':REVENUE_SETTING!=1}">
+                    <div class="row py-2 align-items-center short-border-bottom"
+                         ng-repeat="EL in EMPLOYEE_LIST track by $index">
+                        <div class="col-auto">
+                            <span class="name-badge bg-wenodo-dark-blue" ng-if="EL.EMP_PRS_ID==-1 || EL.EMP_PRS_ID==-2">
+                                <i ng-if="EL.EMP_PRS_ID==-1" class="fal fa-dot-circle fa-lg"></i>
+                                <i ng-if="EL.EMP_PRS_ID==-2" class="fal fa-box-open fa-lg"></i>
+                            </span>
+                            <span class="name-badge" ng-if="EL.IMAGE_PATH==null && EL.EMP_PRS_ID!=-1 && EL.EMP_PRS_ID!=-2">{{EL.INITIALS}}</span>
+                            <img class="profile-pic" ng-if="EL.IMAGE_PATH!=null" ng-src="{{EL.IMAGE_PATH}}" />
+
+                        </div>
+                        <div class="col" x-lvl-draggable ng-attr-id="{{ 'objects-' + EL.EMP_PRS_ID }}" data-id>
+                            <div class="text-sm">
+                                <span class="employee-name-limit semibold">{{EL.EMPLOYEE_NAME}}</span>
+                                <button type="button" class="btn btn-tool float-right mt-2 py-0" data-toggle="dropdown" ng-if="EL.EMP_PRS_ID!=-1 && EL.EMP_PRS_ID!=-2">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-haspopup="true" aria-expanded="false">
+                                    <a class="dropdown-item text-sm" ng-click="ROTA_EMP_SET_ALL_HIGHLIGHT_SHIFTS(EL)" ng-if="!HIGHLIGHTED && EL.NO_OF_SHIFTS>0">Highlight shifts</a>
+                                    <a class="dropdown-item text-sm" ng-click="ROTA_EMP_UNHIGHLIGHT_SHIFTS(EL)" ng-if="HIGHLIGHTED && EL.NO_OF_SHIFTS>0">Remove Highlights</a>
+                                    <a class="dropdown-item text-sm" ng-click="ROTA_EMP_SET_ALL_JUMPTO_NEXT_SHIFTS(EL);" ng-if="false">Jump to next shift</a>
+                                    <a class="dropdown-item text-sm semibold" target="_blank" href="../DashBoard/hrIndex#!/EditProfile?EmpID={{EL.EMP_PRS_ID}}" ng-show="EL.IS_REPORTEE==1 || IS_EMPLOYEE">View profile</a>
+                                    <a class="dropdown-item text-sm" ng-click="ROTA_EMP_SET_ALL_SHIFT_TO_OPEN(EL)" ng-if="!IS_EMPLOYEE">Turn all shifts to 'Open'</a>
+                                </div>
+                                <span class="d-block moz-font font-10">
+                                    <span class="badge font-10 badge-light-green" ng-if="EL.EMP_PRS_ID!=-1 && EL.EMP_PRS_ID!=-2">
+                                        <span ng-show="EL.APPROVED_DURATION_IN_MINS==null">({{0.00}})</span>
+                                        <span ng-show="EL.APPROVED_DURATION_IN_MINS!=null">({{EL.APPROVED_DURATION_IN_MINS/60 | number :2}})</span>
+
+                                    </span>
+                                    {{EL.NO_OF_SHIFTS}} Shift | {{EL.SHIFT_DURATION/60 | number :2}}  Hrs.
+                                    <span class="text-nowrap d-block" ng-show="EL.EMP_PRS_ID!=-1 && EL.EMP_PRS_ID!=-2">
+                                        <span ng-show="Section_Week_Search.COSE_PRIVILEGE==1 && SHOW_INDIVIDUAL_COST_IN_SCHEDULE==1"> ( <span ng-bind-html="CURRENCY_SYMBOL"></span> {{EL.COST | number:2}} )</span>
+                                        <span ng-show="Section_Week_Search.COSE_PRIVILEGE==0 && SHOW_INDIVIDUAL_COST_IN_SCHEDULE==0"> ( <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{ASTRIC}} )</span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 px-2 py-0 custom-scrollbar" id="divShift" ng-class="{'area-week-view-revenue':REVENUE_SETTING==1,'height-77vh':REVENUE_SETTING!=1}">
+                <div class="row stick-top row-eq-height a-week-view">
+                    <div ng-class="{'col text-center text-nowrap border semibold font-13': DL.TODAY===null,
+                         'col text-center text-nowrap border semibold text-blue font-13': DL.TODAY=='Today'}"
+                         ng-repeat="DL in DAYOFWEEKNAMES track by $index">
+                        <span ng-if="DL.TODAY=='Today'">
+                            {{DL.NewDate | date:'EEE'}} {{DL.Days}}
+                        </span>
+                        <span ng-if="DL.TODAY==null">{{DL.NewDate | date:'EEE'}} {{DL.Days}}</span>
+                        <i ng-show="DL.IS_LOCK" data-toggle="tooltip" data-html="true" data-original-title="Rota Lock" class="fas fa-lock text-danger font-11"></i>
+                        <i class="fas fa-minus-square text-blue font-16 cursor-pointer" ng-if="DL.SHIFT_COUNT>0 && DL.MINUS_SQUARE && !DL.IS_LOCK"
+                           ng-click="CHECK_UNCHECK_ALL_DATE_WISE('HEADER',1,DL,'');"></i>
+                        <div class="custom-control custom-checkbox d-inline" ng-if="SHIFT_COUNT>0 && DL.HEADER_SHOW_CHECKBOX && !DL.IS_LOCK">
+                            <input class="custom-control-input" type="checkbox"
+                                   id="Header_Check{{$index}}"
+                                   ng-model="DL.DATE_CHECKBOX_IS_SELECTED"
+                                   ng-change="CHECK_UNCHECK_ALL_DATE_WISE('HEADER','',DL,'');">
+                            <label for="Header_Check{{$index}}" class="custom-control-label top-0"></label>
+                        </div>
+                        <small ng-if="DL.OFF_DAY==true" class="badge badge-light-grey d-inline font-9">{{DAY_OFF}}</small>
+                        <span class="d-block text-xs font-11">
+                            {{DL.DATEWISE_SHIFT_COUNT_WEB }} Shifts | {{(DL.DATEWISE_SHIFT_DURATION_IN_MIN)/60 | number : 2 }} Hrs.
+                        </span>
+                        <span class="d-block text-xs text-normal font-11">
+                            <span ng-show="DL.DATEWISE_COST >=0 && Section_Week_Search.COSE_PRIVILEGE==1 && SHOW_INDIVIDUAL_COST_IN_SCHEDULE==1">
+                                <span ng-show="(DL.DATEWISE_COST>0 || DL.DATEWISE_COST==0)">
+                                    (
+                                </span>
+                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                {{(DL.DATEWISE_COST==null?DL.DATEWISE_COST=0:DL.DATEWISE_COST) | number:2}} )
+                            </span>
+                            <span ng-show="DL.DATEWISE_COST <0 && Section_Week_Search.COSE_PRIVILEGE==0 && SHOW_INDIVIDUAL_COST_IN_SCHEDULE==0">( <span ng-bind-html="CURRENCY_SYMBOL"></span> {{ASTRIC}} )</span>
+                        </span>
+                    </div>
+                </div>
+                <!--Center section show shift-->
+                <div class="col-md-12 py-5 text-center" ng-show="SECTIONS_LIST.length==0">Please add section to start Rota <br />(Click on top right action icon to add new section)</div>
+                <div class="accordion" id="accordion1{{$index}}" 
+                     ng-repeat="DPT in AREA_SECTIONS" 
+                     ng-show="(AREA_SECTIONS.length>0 &&  DPT.ACTIVE) || (DPT.SECTIONWISE_SHIFT_COUNT_WEB!=0  && !DPT.ACTIVE)"
+                     on-finish-render="ngRepeatFinishedRender">
+                    <div class="row border py-1 bg-light-grey">
+                        <div class="col-md-12" id="headingOne">
+                            <i class="fas fa-square fa-sm" style="color:#{{DPT.SECTION_COLOR}}"></i> <span class="font-11">{{DPT.DEPARTMENT_NAME  | uppercase}} : {{DPT.DISPLAY_TEXT | uppercase}}</span>
+                            <small ng-if="DPT.SECTIONWISE_SHIFT_COUNT_WEB>0" class="font-10">{{DPT.SECTIONWISE_SHIFT_COUNT_WEB}}  Shifts | Duration : {{DPT.SECTIONWISE_SHIFT_DURATION_IN_MIN / 60 | number : 2}} Hrs. <span ng-show="DPT.SECTIONWISE_COST>0 || DPT.SECTIONWISE_COST==0"> ( <span ng-bind-html="CURRENCY_SYMBOL"></span> {{DPT.SECTIONWISE_COST | number:2}} )</span> </small>
+                            <small ng-if="DPT.SECTIONWISE_SHIFT_COUNT_WEB==0" class="font-10">0 Shifts | Duration:00:00 Hrs.</small>
+                            <span class="float-right">
+                                <i class="fas fa-exclamation-triangle text-danger" ng-show="!DPT.ACTIVE" data-toggle="tooltip" data-html="true" data-original-title="This section is not active"></i>
+                                <a class="cursor-pointer ml-1" ng-click="openNav5()" ng-show="!IS_EMPLOYEE">
+                                    <i class="fad fa-edit text-success" data-toggle="tooltip" data-html="true" data-original-title="Edit" ng-show="DPT.DEPARTMENT_ID !=0" ng-click="EDIT_SECTION_CLICK(DPT,DPT.SECTIONWISE_SHIFT_COUNT_WEB);"></i>
+                                </a>
+                                <a class="cursor-pointer" data-toggle="collapse" data-target="#collapseOne{{$index}}" aria-expanded="true" aria-controls="collapseOne{{$index}}" ng-click="CEN_KIT=!CEN_KIT">
+                                    <i class="fas fa-chevron-down ml-1" data-toggle="tooltip" data-html="true" data-original-title="Hide Column" ng-show="!CEN_KIT"></i>
+                                    <i class="fas fa-chevron-up ml-1" data-toggle="tooltip" data-html="true" data-original-title="Show Column" ng-show="CEN_KIT"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="collapseOne{{$index}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion1{{$index}}">
+                        <div class="row row-eq-height a-week-view icon-hover">
+                            <div class="col border p-1 text-center"
+                                 ng-repeat="Shift in DPT.DAYOFWEEKNAMES track by $index"
+                                 x-lvl-drop-target="true"
+                                 x-on-drop="dropped(dragEl, dropEl,DPT,Shift,'AREA_VIEW')">
+                                <div class="col-md-12 d-block"
+                                     ng-show="DPT.ACTIVE && Shift.IS_LOCK">
+                                    <i class="fas fa-plus-square text-blue shadow-sm cursor-pointer" ng-show="!IS_EMPLOYEE" ng-click="ADD_NEW_SHIFT_POP(DPT,Shift)"></i>
+                                    <i class="far fa-paste bs-icon text-gray mt-1" title="Paste here"
+                                       ng-if="IS_COPY_SHIFT==true"
+                                       ng-click="PASTE_SHIFT(DPT,Shift,Shift,'AREA_VIEW');"></i>
+                                </div>
+                                <div class="col-md-12 text-left mt-1 max-height-76 py-1 border-radius-3 mb-3 {{EMP.STATUS_ID==23 ? 'bg-success' : 'bg-light-green'}}"
+                                     ng-class="{'bg-wenodo-blue text-white':HIGHLIGHT_EMPLOYEE_ID==EMP.EMP_PRS_ID,'border-blue':EMP.IS_UPDATED,'border-red':EMP.IS_OVER_LAP}"
+                                     ng-repeat="EMP in Shift.TOTAL_SHIFT track by $index" 
+                                     id="div{{EMP.EMP_PRS_ID}}"
+                                     on-finish-render="ngRepeatFinished"
+                                     ng-init="nginitShiftweek(DPT,Shift,EMP)">
+                                    <div class="break"
+                                         ng-if="!IS_EMPLOYEE && EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null && EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null && Shift.IS_LOCK "
+                                         ng-click="ROTA_INS_SHIFT_BREAKS_POP_FY(EMP,EMP,Shift,'AREA_VIEW',SHIFT_BREAKS_FORM)">
+                                        <i class="fas fa-mug-hot cursor-pointer" ng-class="{'text-success':EMP.ON_BREAK_TABLE_ID==0,'text-danger':EMP.ON_BREAK_TABLE_ID>1}">
+
+                                        </i>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-9 col-lg-9">
+                                            <span class="font-10 text-nowrap {{FILTER_COUNT>0?EMP.FILTER_SELECTED?'text-grey':'':''}}">
+                                                {{EMP.START_TIME | date:"HH:mm"}} - {{EMP.END_TIME | date:"HH:mm"}}
+                                                <i class="fas fa-exclamation-triangle text-danger font-9" ng-show="!DPT.ACTIVE" data-toggle="tooltip" data-html="true" data-original-title="NO SECTION"></i>
+                                                <span data-toggle="tooltip"
+                                                      data-html="true" title="Shift Overlap"
+                                                      class="d-block text-danger"
+                                                      ng-show="EMP.IS_OVER_LAP"><i class="fas fa-layer-group"></i></span>
+                                                <span class="semibold font-10" data-toggle="tooltip" data-html="true"
+                                                      data-original-title="Shift Count">
+                                                    <i class="fas fa-alarm-clock text-blue"
+                                                       ng-class="EMP.STATUS_ID==23 || HIGHLIGHT_EMPLOYEE_ID==EMP.EMP_PRS_ID?'text-white':''"></i> {{EMP.INS_SHIFT_COUNT_WEB}}
+                                                </span>
+                                            </span>
+                                            <span class="font-12 employee-name-limit max-width-90 d-block semibold text-nowrap {{FILTER_COUNT>0?EMP.FILTER_SELECTED?'text-grey':'':''}}"
+                                                  data-toggle="tooltip" data-html="true"
+                                                  data-original-title="{{EMP.EMPTY_OPEN_FLAG ==-1?'Empty Shift':(EMP.EMPTY_OPEN_FLAG ==-2?'Open Shift': EMP.EMPLOYEE_NAME) | uppercase }}">
+                                                {{EMP.EMPTY_OPEN_FLAG ==-1?'Empty Shift':(EMP.EMPTY_OPEN_FLAG ==-2?'Open Shift': EMP.EMPLOYEE_NAME) | uppercase }}
+                                            </span>
+                                            <span class="d-flex" ng-show="SHOW_ALL_DETIAL_FILTER">
+                                                <small class="d-block text-nowrap pt-2" ng-if="EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null && EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null">
+                                                    <i class="far fa-clock m-0"></i>
+                                                    <span class="text-uppercase mr-1 moz-font">
+                                                        Clocked in {{EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE | date:'HH:mm'}}
+                                                    </span>
+                                                </small>
+                                                <small class="d-block text-nowrap pt-2 {{FILTER_COUNT>0?EMP.FILTER_SELECTED?'text-grey':'':''}}"
+                                                       ng-class="EMP.CLOCKIN_ASSIGNED_DIFF_FLAG==1 && EMP.STATUS_ID!=23?'text-danger':''"
+                                                       ng-if="EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null && EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE!=null">
+                                                    <i class="far fa-clock m-0"></i>
+                                                    <span class="text-uppercase mr-1">{{EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE | date:'HH:mm'}} - {{EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE | date:'HH:mm'}}</span>
+                                                    <span class="mr-1" data-original-title=" {{EMP.CLOCKIN_ASSIGNED_DIFF_FLAG==1?'Reduced/Exceeded ':''}} shift Hrs." data-toggle="tooltip" data-html="true"
+                                                          ng-class="EMP.CLOCKIN_ASSIGNED_DIFF_FLAG==1 && EMP.STATUS_ID!=23?'text-danger':''">
+                                                        <span ng-show="EMP.STATUS_ID!=23">({{EMP.CLOCKIN_SHIFT_DURATION_IN_MINS*1/60 | number :2}})</span>
+                                                        <span ng-show="EMP.STATUS_ID==23">({{EMP.APPROVED_SHIFT_DURATION_IN_MINS*1/60 | number :2}})</span>
+                                                    </span>
+                                                </small>
+
+                                                <i class="fas fa-exclamation-triangle text-danger font-10 mt-2" ng-class="EMP.STATUS_ID==23?'fontawesome_border':''" data-toggle="tooltip" data-html="true" ng-show="EMP.WARNING_FLAG==1" data-original-title="Clock-In Missing"></i>
+                                                <i class="fas fa-exclamation-triangle text-orange font-10 mt-2" ng-class="EMP.STATUS_ID==23?'fontawesome_border':''" data-toggle="tooltip" data-html="true" ng-show="EMP.WARNING_FLAG==2" data-original-title="Early Clock-In"></i>
+                                                <i class="fas fa-exclamation-triangle text-danger  font-10 mt-2" ng-class="EMP.STATUS_ID==23?'fontawesome_border':''" data-toggle="tooltip" data-html="true" ng-show="EMP.WARNING_FLAG==3" data-original-title="Late Clock-In"></i>
+                                                <i class="fas fa-exclamation-triangle text-danger font-10 mt-2" data-toggle="tooltip" ng-class="EMP.STATUS_ID==23?'fontawesome_border':''" data-html="true" ng-show="EMP.WARNING_FLAG==4" data-original-title="Clockout Missing"></i>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 text-right">
+                                            <i class="fas fa-ellipsis-v fa-xs icon-rounded-white cursor-pointer" data-toggle="dropdown"></i>
+                                            <div ng-if="IS_EMPLOYEE " class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item text-xs" ng-click="EDIT_SHIFT_POP(EMP,EMP,'',Shift)">View Shift Details</a>
+                                            </div>
+                                            <div ng-if="!Shift.IS_LOCK" class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item text-xs" ng-click="EDIT_SHIFT_POP(EMP,EMP,'',Shift,'AREA_VIEW',true)">View Shift Details</a>
+                                            </div>
+                                            <div ng-if="!IS_EMPLOYEE && Shift.IS_LOCK" class="dropdown-menu dropdown-menu-right z-index-997">
+                                                <a class="dropdown-item text-xs"
+                                                   ng-show="(EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null || EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE!=null)"
+                                                   ng-click="EDIT_SHIFT_POP(EMP,EMP,'',Shift,'AREA_VIEW',true)">View Shift Details</a>
+
+                                                <a class="dropdown-item text-xs"
+                                                   ng-class="EMP.FILTER_SWTICH_ON_OFF_4?'btn-active':''"
+                                                   ng-click="LOGIN_SHIFT_POP(EMP,EMP,'AREA_VIEW',EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE==null?0:1,Shift);"
+                                                   ng-show="(EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE==null || EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null) && Shift.NewDate<=TODAY_DATE && EMP.EMPTY_OPEN_FLAG !=-2 && EMP.EMPTY_OPEN_FLAG !=-1 && EMP.STATUS_ID==22 && IS_EDIT_PRIVILAGE">
+                                                    <span ng-show="EMP.LOGIN_LOGOUT_DETAILS==null || EMP.LOGIN_LOGOUT_DETAILS.length==0"> Clock-In</span>
+                                                    <span ng-show="EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null && EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null && EMP.DEPARTMENT_ID!=null">  Clock-Out</span>
+                                                </a>
+                                                <a class="dropdown-item text-xs"
+                                                   ng-show="EMP.EMPTY_OPEN_FLAG !=-2 && EMP.EMPTY_OPEN_FLAG !=-1 && EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null &&
+                                                   EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE!=null && EMP.STATUS_ID!=23 || APPROVE_SHIFTS_WITHOUT_CLOCK_IN_AND_CLOCK_OUT==1 && EMP.STATUS_ID==22"
+                                                   ng-click="EDIT_SHIFT_POP(EMP,EMP,1,Shift)">Approve Shift</a>
+                                                <a class="dropdown-item text-xs"
+                                                   ng-show="IS_EDIT_PRIVILAGE"
+                                                   ng-if="EMP.STATUS_ID==23"
+                                                   ng-click="ROTA_REVERT_SHIFT_APPROVAL_POP(EMP,EMP)">Revert Approval</a>
+
+                                                <a class="dropdown-item text-xs"
+                                                   ng-click="EDIT_SHIFT_POP(EMP,EMP,'',Shift)"
+                                                   ng-if="EMP.STATUS_ID!=23 && EMP.STATUS_ID!=24 && IS_EDIT_PRIVILAGE">Edit Shift</a>
+
+                                                <a class="dropdown-item text-xs"
+                                                   ng-show="IS_ADD_PRIVILAGE"
+                                                   ng-click="COPY_SHIFT(EMP,EMP,2)">Copy Shift</a>
+
+                                                <a class="dropdown-item text-xs"
+                                                   ng-show="IS_EDIT_PRIVILAGE"
+                                                   ng-class="Shift.FILTER_SWTICH_ON_OFF?'btn-active':''"
+                                                   ng-click="APPLY_SHIFT_TYPE_POP(EMP,EMP,$index,$event)">Apply Shift Type</a>
+
+                                                <a class="dropdown-item text-xs"
+                                                   ng-click="SET_SHIFT_TO_OPEN_SINGLE(EMP.SHIFT_ID,'AREA_VIEW');"
+                                                   ng-if="EMP.STATUS_ID!=23 && EMP.STATUS_ID!=24 && EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE==null
+                                                   && EMP.EMPTY_OPEN_FLAG !=-2 && IS_EDIT_PRIVILAGE">Set Shift to open</a>
+
+                                                <a class="dropdown-item text-xs"
+                                                   ng-show="IS_DELETE_PRIVILAGE"
+                                                   ng-click="DELETE_ROTA_SHIFTS_FY(AssignShift_Form,'AREA_VIEW',EMP,EMP,Shift);"
+                                                   ng-if="EMP.STATUS_ID!=23">Delete Shift</a>
+
+                                                <a title="Break"
+                                                   class="dropdown-item text-xs"
+                                                   ng-click="ROTA_INS_SHIFT_BREAKS_POP_FY(EMP,EMP,Shift,'AREA_VIEW',SHIFT_BREAKS_FORM)"
+                                                   ng-if="EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null && (EMP.ON_BREAK_TABLE_ID==0 || EMP.ON_BREAK_TABLE_ID>0) && EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null && EMP.STATUS_ID!=24"
+                                                   ng-show="!IS_EMPLOYEE">{{EMP.ON_BREAK_TABLE_ID==0?"Break In":"Break Out"}}</a>
+                                                <a class="dropdown-item text-xs"
+                                                   ng-click="NO_SHOW_ROTA_SHIFTS_FY(AssignShift_Form,'AREA_VIEW',EMP,EMP,1,Shift);"
+                                                   ng-if="EMP.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE==null && EMP.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null && EMP.STATUS_ID==22">
+                                                    No Show
+                                                </a>
+                                                <a class="dropdown-item text-xs"
+                                                   ng-click="NO_SHOW_ROTA_SHIFTS_FY(AssignShift_Form,'AREA_VIEW',EMP,EMP,2,Shift);"
+                                                   ng-if="EMP.STATUS_ID==24">Revert No Show</a>
+                                            </div>
+                                            <div class="custom-control custom-checkbox checkbox-padding" ng-if="!IS_EMPLOYEE && Shift.IS_LOCK">
+                                                <input class="custom-control-input"
+                                                       type="checkbox"
+                                                       id="{{EMP.SHIFT_ID}}"
+                                                       ng-model="EMP.EMP_ID_IS_CHECK"
+                                                       ng-change="CHECK_UNCHECK_ALL_DATE_WISE('','','','');">
+                                                <label for="{{EMP.SHIFT_ID}}" class="custom-control-label"></label>
+                                            </div>
+                                            <i class="fas fa-comment-exclamation text-success font-15" ng-class="EMP.STATUS_ID==23?'text-white':''" data-toggle="tooltip" data-html="true" data-original-title="NOTE : {{EMP.NOTES}}" ng-if="EMP.NOTES.length>0"></i>
+                                        </div>
+                                        <div class="col-md-12" ng-show="SHOW_ALL_DETIAL_FILTER">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <span class="badge font-9 {{FILTER_COUNT>0?(EMP.FILTER_SELECTED?'badge-light-grey':'badge-success'):(EMP.STATUS_ID==23?'badge-light-green':'badge-success')}}" ng-if="EMP.STATUS_ID==23">Approved</span>
+                                                    <span class="badge font-9 {{FILTER_COUNT>0?EMP.FILTER_SELECTED?'badge-light-grey':'badge-light-green':'badge-light-green'}}" ng-if="EMP.STATUS_ID==22 && EMP.EMPTY_OPEN_FLAG !=-1">Published</span>
+                                                    <span class="badge font-9 {{FILTER_COUNT>0?EMP.FILTER_SELECTED?'badge-light-grey' :'badge-light-yellow':'badge-light-yellow'}}" ng-if="EMP.STATUS_ID==21 && EMP.EMPTY_OPEN_FLAG !=-1">Unpublished</span>
+                                                    <span class="badge font-9 {{FILTER_COUNT>0?EMP.FILTER_SELECTED?'badge-light-grey' :' badge-light-pink':' badge-light-pink'}}" ng-if="EMP.STATUS_ID==24 && EMP.EMPTY_OPEN_FLAG !=-1">No Show </span>
+                                                </div>
+                                                <div class="col-md-6 text-right">
+                                                    <!--<span class="badge badge-light-red font-9">On Leave</span>-->
+                                                    <span ng-show="EMP.ON_LEAVE_LIST.length>0" class="badge badge-light-red font-9 max-width-100">
+                                                        <span data-toggle="tooltip" data-html="true" class="event-title-limitations" data-original-title="{{EMP.ON_LEAVE_LIST[0].LEAVE_COMMENTS==null?EMP.ON_LEAVE_LIST[0].ABSENCE_TYPE_NAME:EMP.ON_LEAVE_LIST[0].ABSENCE_TYPE_NAME+' : '+ EMP.ON_LEAVE_LIST[0].LEAVE_COMMENTS}}" ng-if="EMP.ON_LEAVE_LIST[0].LEAVE_STATUS_ID == 12 || EMP.ON_LEAVE_LIST[0].LEAVE_STATUS_ID == 15">
+                                                            {{EMP.ON_LEAVE_LIST[0].ABSENCE_TYPE_NAME}}
+                                                        </span>
+                                                        <span data-toggle="tooltip" data-html="true" data-original-title="{{EMP.ON_LEAVE_LIST[0].LEAVE_COMMENTS==null?'No Comments':EMP.ON_LEAVE_LIST[0].LEAVE_COMMENTS}}" ng-if="EMP.ON_LEAVE_LIST[0].LEAVE_STATUS_ID != 12 && EMP.ON_LEAVE_LIST[0].LEAVE_STATUS_ID != 15">{{ABSENCE_TYPE_NAME}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="deactivated-badge" ng-show="EMP.IS_DEACTIVATED && SHOW_ALL_DETIAL_FILTER">
+                                        <span class="badge badge-danger text-normal">Leaver </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="event-footer animated fadeInUp" ng-if="!IS_EMPLOYEE">
+    <div class="row text-center">
+        <div class="col text-left text-nowrap semibold">
+            <i class="fas fa-clock text-blue font-12"></i>
+            <span class="font-12">
+                Total: <span ng-show="FOOTER_SHIFT_SHIFTCOUNT>0">{{FOOTER_SHIFT_SHIFTCOUNT}}</span>
+                <span ng-show="FOOTER_SHIFT_SHIFTCOUNT==null">0</span> Shifts | {{(FOOTER_SHIFT_DERATION/60) | number:2}} Hrs.
+                <span ng-show="Section_Week_Search.COSE_PRIVILEGE==0 && SHOW_INDIVIDUAL_COST_IN_SCHEDULE==0">| <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{ASTRIC}}</span>
+                <span ng-show="(TOTAL_DATEWISE_COST>0  || TOTAL_DATEWISE_COST==0) && Section_Week_Search.COSE_PRIVILEGE==1  && SHOW_INDIVIDUAL_COST_IN_SCHEDULE==1"> ( <span ng-bind-html="CURRENCY_SYMBOL"></span>  {{TOTAL_DATEWISE_COST | number:2}} )</span>
+            </span>
+        </div>
+        <div class="col text-nowrap" ng-if="false">
+            <i class="fas fa-square text-success font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold" ng-click="ROTA_EMP_SHOW_UNALLOCATED_SHIFT_ALL();">{{OPEN_COUNT}} Unallocated</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-pink font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{NO_SHOW_COUNT  | number:2}} No Show</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-success font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{APPROVED_SHIFT_COUNT  | number:2}} Approved</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-light-green font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{PUBLISHED_COUNT | number:2}} Published</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-light-yellow font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{UNPUBLISHED_COUNT | number:2}} Unpublished</a></span>
+        </div>
+        <div class="col text-nowrap" ng-if="false">
+            <i class="fas fa-square text-dull-green font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">15 Require Confirmation</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-pink font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{OPEN_COUNT | number:2}} Open Shifts</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-danger font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{EMPTY_COUNT | number:2}}  Empty Shifts</a></span>
+        </div>
+        <div class="col text-nowrap" ng-show="false">
+            <i class="fas fa-square text-danger font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{WARNINGS | number:2}} Warnings</a></span>
+        </div>
+        <div class="col text-nowrap" ng-if="false">
+            <i class="fas fa-square text-gray font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">15 Leave Approved</a></span>
+        </div>
+        <div class="col text-nowrap" ng-if="false">
+            <i class="fas fa-square text-light-orange font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">15 Leave Pending</a></span>
+        </div>
+        <div class="col text-nowrap" ng-if="false">
+            <i class="fas fa-square text-light-purple font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">15 People Unavailable</a></span>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Copy_Weeks">
+    <form id="CopyWeek_Form" name="CopyWeek_Form" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Copy Shifts <small>from {{SHIFT_CELDER_START_DATE | date}} - {{SHIFT_CELDER_END_DATE | date}}</small>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/Copy_Week.html?v=3{{AppVersion}}'"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Back</button>-->
+                    <button type="button" click-once ng-click="ROTA_CHK_EXISTING_SHIFTS_BEFORE_COPY(CopyWeek_Form,'AREA_VIEW',2);" ng-disabled="OVER_LAP_SHIFT_LIST.length>0" class="btn btn-wenodo">Save</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="event-footer animated fadeInUp" ng-if="SHIFT_COUNT>0">
+    <div class="row">
+        <div class="col-md-3">
+            <i class="fas fa-minus-square text-blue cursor-pointer" ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_SELECT_ALL','','',true);" ng-if="FOOTER_SELECT_ALL_MINUS"></i>
+            <div class="custom-control custom-checkbox d-inline" ng-if="FOOTER_SELECT_ALL_CHECKBOX">
+                <input class="custom-control-input" type="checkbox" ng-model="FOOTER_SELECT_ALL_CHECKBOX"
+                       id="Header_Check{{$index}}" ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_DESELECT_ALL','','',false);">
+                <label for="Header_Check{{$index}}" class="custom-control-label"></label>
+            </div>
+            <span class="font-12">
+                {{SHIFT_COUNT | number:2}} of  {{FOOTER_SHIFT_SHIFTCOUNT | number:2}} Shift Selected |
+                <a class="text-blue cursor-pointer semibold"
+                   ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_DESELECT_ALL','','',false);">Deselect all</a>
+            </span>
+        </div>
+        <div class="col-md-6 text-center">
+            <a class="cursor-pointer mx-2 hover-lg" ng-if="false" data-toggle="modal" ng-click="EDIT_MULTI_SHIFT_POP(1,'AREA_VIEW')"><i class="far fa-edit fa-xs" data-toggle="tooltip" title="Edit"></i></a>
+            <a class="cursor-pointer mx-2 hover-lg" ng-click="APPROVE_SHIFT_POP()"><i class="far fa-check-circle fa-xs" data-toggle="tooltip" title="Approve Shifts"></i></a>
+            <a class="cursor-pointer mx-2 hover-lg" ng-show="IS_EDIT_PRIVILAGE" ng-click="SET_TO_OPEN_MULTIPLE_POP(3,'AREA_VIEW')"><i class="far fa-user-plus fa-xs" data-toggle="tooltip" title="Set Shift to Open"></i></a>
+            <a class="cursor-pointer mx-2 hover-lg" ng-show="IS_DELETE_PRIVILAGE" ng-click="DELETE_MULTIPLE_SHIFTS_POP(2,'AREA_VIEW')"><i class="far fa-trash fa-xs" data-toggle="tooltip" title="Delete"></i></a>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="border-bottom"></div>
+    <div class="row">
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-pink font-12"></i>
+            <span class="font-12"><a class=" cursor-pointer semibold">{{NO_SHOW_SHIFT_COUNT | number:2}} of  {{ROTA_SHIFT_COUNTS[0].NO_SHOW_COUNT==null?0:ROTA_SHIFT_COUNTS[0].NO_SHOW_COUNT | number:2}} No Show Selected</a> <span ng-if="NO_SHOW_SHIFT_COUNT>0"> | </span> <a ng-if="NO_SHOW_SHIFT_COUNT>0" class="text-blue cursor-pointer semibold" ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_STATUS','','',24)">Deselect</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-success font-12"></i>
+            <span class="font-12"><a class=" cursor-pointer semibold">{{APPROVE_SHIFT_COUNT | number:2}} of  {{ROTA_SHIFT_COUNTS[0].APPROVED_SHIFT_COUNT==null?0:ROTA_SHIFT_COUNTS[0].APPROVED_SHIFT_COUNT | number:2}} Approved Selected </a> <span ng-if="APPROVE_SHIFT_COUNT>0"> | </span> <a ng-if="APPROVE_SHIFT_COUNT>0" class="text-blue cursor-pointer semibold" ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_STATUS','','',23)">Deselect</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-light-green font-12"></i>
+            <span class="font-12"><a class=" cursor-pointer semibold">{{(LOGIN_LIST_COUNT+ PUBLISH_SHIFT_COUNT+LOGIN_LOGOUT_LIST_COUNT) | number:2}} of  {{ROTA_SHIFT_COUNTS[0].PUBLISHED_COUNT==null?0:ROTA_SHIFT_COUNTS[0].PUBLISHED_COUNT | number:2}} Published Selected </a> <span ng-if="PUBLISH_SHIFT_COUNT>0"> | </span> <a ng-if="PUBLISH_SHIFT_COUNT>0" class="text-blue cursor-pointer semibold" ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_STATUS','','',22)">Deselect</a></span>
+        </div>
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-light-yellow font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{UNPUBLISH_SHIFT_COUNT | number:2}} of {{ROTA_SHIFT_COUNTS[0].UNPUBLISHED_COUNT==null?0:ROTA_SHIFT_COUNTS[0].UNPUBLISHED_COUNT | number:2}} Unpublished Selected</a> <span ng-if="UNPUBLISH_SHIFT_COUNT>0"> | </span> <a ng-if="UNPUBLISH_SHIFT_COUNT>0" class="text-blue cursor-pointer semibold" ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_STATUS','','',21)">Deselect</a></span>
+        </div>
+
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-pink font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{OPEN_SHIFT_COUNT | number:2}} of {{ROTA_SHIFT_COUNTS[0].OPEN_COUNT==null?0:ROTA_SHIFT_COUNTS[0].OPEN_COUNT | number:2}} Open Shifts Selected</a> <span ng-if="OPEN_SHIFT_COUNT>0"> | </span> <a ng-if="OPEN_SHIFT_COUNT>0" class="text-blue cursor-pointer semibold" ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_STATUS','','',-2)">Deselect</a></span>
+        </div>
+
+        <div class="col text-nowrap">
+            <i class="fas fa-square text-danger font-12"></i>
+            <span class="font-12"><a class="cursor-pointer semibold">{{EMTY_SHIFT_COUNT | number:2}} of {{ROTA_SHIFT_COUNTS[0].EMPTY_COUNT==null?0:ROTA_SHIFT_COUNTS[0].EMPTY_COUNT | number:2}}  Empty Shifts Selected</a> <span ng-if="EMTY_SHIFT_COUNT>0"> | </span> <a ng-if="EMTY_SHIFT_COUNT>0" class="text-blue cursor-pointer semibold" ng-click="CHECK_UNCHECK_ALL_DATE_WISE('FOOTER_STATUS','','',-1)">Deselect</a></span>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Add_Shift">
+    <form id="AssignShift_Form" name="AssignShift_Form" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        {{SELECTED_CELL.SHIFT_TEXT}} shift on {{SELECTED_CELL.NewDate | date  }}
+                        <small ng-if="SELECTED_SHIFT.EMPTY_OPEN_FLAG!=-1" class="badge {{SELECTED_SHIFT.STATUS_BADGE}}">{{SELECTED_SHIFT.STATUS_NAME}}</small>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" ng-click="closeNav(1);">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/AssignShift.html?v=13{{AppVersion}}'"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button  type="button" ng-show="!IS_EMPLOYEE && (SELECTED_CELL.SHIFT_TEXT=='Add' || (SELECTED_CELL.SHIFT_TEXT=='Copy' && Section_Week_Search.EMPLOYEES.length>1))" click-once
+                            ng-click="ROTA_INS_MULTIPLE_SHIFTS(AssignShift_Form,'AREA_VIEW',SELECTED_SHIFT,SELECTED_CELL);" class="btn btn-wenodo">Save</button>
+                    <button type="button" ng-show="!IS_EMPLOYEE && (SELECTED_CELL.SHIFT_TEXT=='Edit' || SELECTED_CELL.SHIFT_TEXT=='Approve' || (SELECTED_CELL.SHIFT_TEXT=='Copy' && Section_Week_Search.EMPLOYEES.length==1))" click-once
+                            ng-click="ROTA_INS_UPD_SHIFTS(AssignShift_Form,'AREA_VIEW',SELECTED_SHIFT,SELECTED_CELL);" class="btn btn-wenodo">{{APPROVE_FLAG=='1'?'Approve':'Save'}}</button>-->
+                    <button type="button" ng-if="!IS_EMPLOYEE && SELECTED_SHIFT.STATUS_ID!=23"
+                            click-once
+                            ng-show="IS_ADD_PRIVILAGE  && APPROVE_FLAG!='1' && SELECTED_CELL.IS_LOCK || IS_EDIT_PRIVILAGE  && Section_Week_Search.SHIFT_ID>0 && SELECTED_CELL.IS_LOCK || APPROVE_FLAG=='1' && SELECTED_CELL.IS_LOCK"
+                            ng-click="ROTA_INS_UPD_SHIFTS_FY(AssignShift_Form,'AREA_VIEW',SELECTED_SHIFT,SELECTED_CELL)"
+                            class="btn btn-wenodo">
+                        {{APPROVE_FLAG=='1'?'Approve':'Save'}}
+                    </button>
+
+                    <button type="button"
+                            click-once
+                            ng-click="ROTA_PICK_SHIFT_BY_EMP(AssignShift_Form,'AREA_VIEW',SELECTED_SHIFT,SELECTED_CELL);"
+                            class="btn btn-wenodo"
+                            ng-show="IS_EMPLOYEE && SELECTED_SHIFT.EMPTY_OPEN_FLAG==-2 && PICK_SHIFT_VALID && SELECTED_CELL.IS_LOCK">
+                        Pick
+                    </button>
+                    <button type="button" click-once ng-if="APPROVE_FLAG!=1 && !VIEW_FLAG  && IS_DELETE_PRIVILAGE" ng-show="Section_Week_Search.SHIFT_ID>0 && !IS_EMPLOYEE || Section_Week_Search.SHIFT_ID>0 && IS_OPEN_SHIFT && SELECTED_CELL.IS_LOCK" ng-click="DELETE_ROTA_SHIFTS_FY(AssignShift_Form,'AREA_VIEW',SELECTED_SHIFT,SELECTED_SHIFT,SELECTED_CELL);" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Delete</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close" ng-click="closeNav(1)">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="mySidenav" class="sidenav sidenav-sm" style="z-index:-9">
+    <div class="card-header">
+        <h5 class="card-title mt-1">Add Breaks</h5>
+        <div class="card-tools ml-auto">
+            <button class="btn btn-tool py-0" ng-click="closeNav()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="custom-scrollbar height-82vh">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8" ng-show="false">
+                    <div class="form-group">
+                        <label>Time</label>
+                        <div class="input-group d-flex">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="From"
+                                   ng-model="Section_Week_Search.PAID_BREAK"
+                                   ng-value="Section_Week_Search.PAID_BREAK=((((BREAK_LIST | filter:FILTERBYPAID) | total:'DURATION') | number:2))">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="To"
+                                   ng-model="Section_Week_Search.UN_PAID_BREAK"
+                                   ng-value="Section_Week_Search.UN_PAID_BREAK=((((BREAK_LIST | filter:FILTERBYUNPAID) | total:'DURATION') | number:2))">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" ng-repeat="BL in BREAK_LIST track by $index" ng-show="BL.DELETE_FLAG==0">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Break Type</label>
+                                        <select class="custom-select" name="BREAK_TYPE{{$index}}" ng-disabled="IS_EMPLOYEE || APPROVE_FLAG==1 || SELECTED_SHIFT.STATUS_ID==23 || SELECTED_CELL.IS_LOCK==false"
+                                                ng-model="BL.BREAK_TYPE_ID"
+                                                ng-options="MB.ID  as MB.NAME for MB in (MEAL_BREAK)"
+                                                ng-change="NG_COURSE_NAME(BL.COURSE_MASTER_ID,CRS)">
+                                            <option value="">- Select Break Type -</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Duration <small>(Mins)</small></label>
+                                        <input type="text"
+                                               name="DURATION{{$index}}"
+                                               maxlength="3"
+                                               ng-model="BL.DURATION"
+                                               class="form-control"
+                                               ng-disabled="BL.SET_BREAK || IS_EMPLOYEE || APPROVE_FLAG==1 || SELECTED_SHIFT.STATUS_ID==23 || SELECTED_CELL.IS_LOCK==false"
+                                               only-numbers
+                                               placeholder="Enter..">
+                                    </div>
+                                </div>
+                                <div class="" ng-class="{'col-auto px-0':BL.SET_BREAK,'col-md-5':!BL.SET_BREAK}">
+                                    <div class="form-group">
+                                        <label class="d-block">&nbsp;</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" ng-disabled="IS_EMPLOYEE "
+                                                   type="checkbox"
+                                                   ng-model="BL.SET_BREAK"
+                                                   ng-change="ngclickSetbreak(BL)"
+                                                   id="Set_Break{{$index}}"
+                                                   value="option1">
+                                            <label for="Set_Break{{$index}}"
+                                                   class="custom-control-label">
+                                                <span ng-show="!BL.SET_BREAK">
+                                                    Set break start and end time
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col" ng-if="BL.SET_BREAK">
+                                    <div class="form-group"
+                                         format="HH:mm">
+                                        <label class="text-nowrap">Start Time </label>
+                                        <input class="form-control"
+                                               moment-picker="BL.BREAK_START"
+                                               onkeypress="return event.charCode >= 48 && event.charCode <= 58"
+                                               maxlength="5"
+                                               placeholder="Select a time"
+                                               ng-model="BL.BREAK_START"
+                                               format="HH:mm"
+                                               locale="en-gb"
+                                               show-header="0"
+                                               change="SetBreakStartChange(BL)"
+                                               ng-disabled="IS_EMPLOYEE || APPROVE_FLAG==1 || SELECTED_SHIFT.STATUS_ID==23 || SELECTED_CELL.IS_LOCK==false">
+                                    </div>
+                                </div>
+                                <div class="col" ng-if="BL.SET_BREAK">
+                                    <div class="form-group">
+                                        <label class="text-nowrap">End Time </label>
+                                        <input class="form-control"
+                                               placeholder="Select a time"
+                                               show-header="false"
+                                               ng-model="BL.BREAK_END"
+                                               moment-picker="BL.BREAK_END"
+                                               onkeypress="return event.charCode >= 48 && event.charCode <= 58"
+                                               format="HH:mm"
+                                               maxlength="5"
+                                               locale="en-gb"
+                                               change="SetBreakEndChange(BL)"
+                                               ng-disabled="IS_EMPLOYEE || APPROVE_FLAG==1 || SELECTED_SHIFT.STATUS_ID==23 || SELECTED_CELL.IS_LOCK==false">
+                                    </div>
+                                </div>
+                                <div class="col-auto text-right" ng-if="APPROVE_FLAG!=1">
+                                    <div class="form-group" ng-show="!IS_EMPLOYEE">
+                                        <label class="d-block">&nbsp;</label>
+                                        <i ng-click="REMOVE_BREAK(BL,$index)" class="fa fa-times text-danger cursor-pointer"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-w-default btn-sm"
+                            ng-if="!IS_EMPLOYEE && APPROVE_FLAG!=1 && SELECTED_SHIFT.STATUS_ID!=23 && SELECTED_CELL.IS_LOCK" ng-click="ADD_BREAK()">
+                        <i class="far fa-plus"></i> Add break
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-header" ng-show="ACTUAL_BREAK_LIST.length>0"><h5 class="card-title">Break list</h5></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row" ng-repeat="ABL in ACTUAL_BREAK_LIST track by $index" ng-show="ABL.DELETE_FLAG==0" ng-class="ABL.ERROR>1?'error':''">
+                        <div class="col-md-5">
+                            <div class="form-group"
+                                 format="HH:mm">
+                                <label class="text-nowrap">Break Start Time</label>
+                                <input class="form-control"
+                                       moment-picker="ABL.BREAK_START"
+                                       onkeypress="return event.charCode >= 48 && event.charCode <= 58"
+                                       placeholder="Select a time"
+                                       ng-model="ABL.BREAK_START"
+                                       format="HH:mm"
+                                       locale="en-gb"
+                                       maxlength="5"
+                                       ng-disabled="IS_EMPLOYEE || APPROVE_FLAG==1 || SELECTED_SHIFT.STATUS_ID==23 || ABL.IS_DISCARDED || ABL.TABLE_ID>0 || SELECTED_CELL.IS_LOCK==false"
+                                       change="SetBreakStartChange(ABL)">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label class="text-nowrap"> Break End Time </label>
+                                    <input class="form-control"
+                                           placeholder="Select a time"
+                                           ng-model="ABL.BREAK_END"
+                                           ng-disabled="IS_EMPLOYEE || APPROVE_FLAG==1 || SELECTED_SHIFT.STATUS_ID==23 || ABL.IS_DISCARDED || ABL.TABLE_ID>0 || SELECTED_CELL.IS_LOCK==false"
+                                           onkeypress="return event.charCode >= 48 && event.charCode <= 58"
+                                           maxlength="5"
+                                           moment-picker="ABL.BREAK_END"
+                                           format="HH:mm"
+                                           locale="en-gb"
+                                           change="SetBreakEndChange(ABL)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="col-auto text-right">
+                                <div class="form-group" ng-show="!IS_EMPLOYEE && APPROVE_FLAG!=1 && !ABL.IS_DISCARDED">
+                                    <label class="d-block">&nbsp;</label>
+                                    <i ng-click="REMOVE_ACT_BREAK(ABL,$index)" class="fa fa-times text-danger cursor-pointer"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3" ng-show="ABL.ERROR>1"><span class="w-100 error p-2 font-12">{{ABL.ERROR_MSG}}</span></div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="SELECTED_CELL.IS_LOCK">
+                    <button type="button" class="btn btn-w-default btn-sm" ng-show="!IS_EMPLOYEE && APPROVE_FLAG!=1 && SELECTED_SHIFT.STATUS_ID!=23 && SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null" ng-click="ADD_EMPLOYEE_BREAK()"><i class="far fa-plus"></i> Add employee break</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-header" ng-show="DISCARDED_BREAK_LIST.length>0"><h5 class="card-title">Discarded Breaks</h5></div>
+        <div class="card-body">
+            <div class="row" ng-repeat="ABL in DISCARDED_BREAK_LIST track by $index">
+                <div class="col-md-6">
+                    <div class="form-group"
+                         format="HH:mm">
+                        <label class="text-nowrap">Break Start Time&nbsp;</label>
+                        <br />
+                        <span ng-show="ABL.BREAK_START==null">-</span>
+                        <span ng-show="ABL.BREAK_START!=null"> {{ABL.BREAK_START | date:'HH:mm' }} </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="text-nowrap"> Break End Time&nbsp; </label>
+                            <br />
+                            <span ng-show="ABL.BREAK_END==null">-</span>
+                            <span ng-show="ABL.BREAK_END!=null"> {{ABL.BREAK_END | date:'HH:mm' }} </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer sidenav-footer-fixed">
+        <button type="button" class="btn btn-wenodo" ng-click="closeNav()">Close</button>
+    </div>
+</div>
+<div class="modal fade" id="Publish_Shifts">
+    <form id="PublishShift_Form" name="PublishShift_Form" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Publish your Schedule
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/Publish_Rota.html?v=5{{AppVersion}}'"></div>
+                </div>
+                <div class="modal-footer">
+                    <!--ng-show="OVER_LAP_SHIFT_LIST.length==0"-->
+                    <!--<button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Back</button>-->
+                    <button type="button" click-once ng-click="PUBLISH_SHIFTS_POP('AREA_VIEW',PublishShift_Form,DEPARTMENTS,1);" ng-disabled="OVER_LAP_SHIFT_LIST.length>0" class="btn btn-wenodo">Save</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="mySidenav3" class="sidenav">
+    <div class="card-header">
+        <h5 class="card-title mt-1">Settings</h5>
+        <div class="card-tools ml-auto">
+            <button class="btn btn-tool py-0" ng-click="closeNav3()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body custom-scrollbar height-82vh">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="semibold">Finance</h5>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Revenue">
+                    <label class="custom-control-label" for="Revenue">Revenue</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Payroll">
+                    <label class="custom-control-label" for="Payroll">Payroll hours & costs</label>
+                </div>
+            </div>
+            <div class="border-bottom"></div>
+            <div class="col-md-12">
+                <h5 class="semibold">Shifts</h5>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Shift_details">
+                    <label class="custom-control-label" for="Shift_details">Shift details</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Quick_edit_shifts">
+                    <label class="custom-control-label" for="Quick_edit_shifts">Quick edit shifts</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Flex">
+                    <label class="custom-control-label" for="Flex">Flex</label>
+                </div>
+            </div>
+            <div class="border-bottom"></div>
+            <div class="col-md-12">
+                <h5 class="semibold">Schedule</h5>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Availability">
+                    <label class="custom-control-label" for="Availability">Availability</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Bank_holidays">
+                    <label class="custom-control-label" for="Bank_holidays">Bank holidays / Vacations</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Contract_Rules">
+                    <label class="custom-control-label" for="Contract_Rules">Contract Rules</label>
+                </div>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="Skills">
+                    <label class="custom-control-label" for="Skills">Skills</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer sidenav-footer-fixed">
+        <button type="button" class="btn btn-wenodo">Done</button>
+        <button type="button" class="btn btn-w-default" ng-click="closeNav3()">Close</button>
+    </div>
+</div>
+<div id="mySidenav5" class="sidenav" style="z-index:-1">
+    <form id="SectionForm" name="SectionForm" novalidate>
+        <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/AddSection.html?v=42{{AppVersion}}'"></div>
+        <div class="modal-footer sidenav-footer-fixed">
+            <button type="button" class="btn btn-wenodo" ng-click="ROTA_INS_UPD_SECTION(SectionForm,'AREA_VIEW');">Save</button>
+            <button type="button" class="btn btn-w-default" ng-click="closeNav5(SectionForm)">Close</button>
+        </div>
+    </form>
+</div>
+<div id="mySidenav6" class="sidenav">
+    <form id="Section_Shift_Form" name="Section_Shift_Form" novalidate>
+        <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/AddShift.html?v=41{{AppVersion}}'"></div>
+        <div class="modal-footer sidenav-footer-fixed">
+            <button type="button" click-once class="btn btn-wenodo" ng-click="ADMIN_INS_UPD_SHIFT_MASTER(Section_Shift_Form);">Save</button>
+            <button type="button" class="btn btn-w-default" ng-click="closeNav6(Section_Shift_Form)">Close</button>
+            <button type="button" ng-click="DELETE_SHIFT_CLICK(Section_Shift_Form)" class="btn btn-danger">Delete</button>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="Edit_Headline">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Add to
+                    <span class="d-block font-12">Mon. 9 Aug</span>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="form-group">
+                    <label>Headline</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Note (Visible only to schedule managers)</label>
+                    <textarea class="form-control" rows="6" placeholder="Enter ..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once class="btn btn-wenodo">Create</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Approve_Multiple_Shifts">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Approve Multiple Shift
+                    <span class="d-block font-12">{{SHIFT_COUNT}} Shifts Selected</span>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <form id="Form_Approve_Multiple_Shifts" name="Form_Approve_Multiple_Shifts">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/Approve_Multi_shift.html?v=8{{AppVersion}}'"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-disabled="APPROVE_COUNT==0" ng-click="APPROVE_SHIFT_FY(Form_Approve_Multiple_Shifts,'AREA_VIEW')" class="btn btn-wenodo">Approve</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Edit_Multiple_Shifts">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Edit Shift
+                    <span class="d-block font-12">{{SHIFT_COUNT}} Shifts Seleceted</span>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <form id="Form_Edit_Multiple_Shifts" name="Form_Edit_Multiple_Shifts">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/Edit_Multi_Shift.html?v=4{{AppVersion}}'"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-click="EDIT_MULTI_SHIFT(Form_Edit_Multiple_Shifts,'AREA_VIEW')" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Login_Shift">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{Section_Week_Search.LOGIN_OR_LOGOUT_TEXT}} on {{SELECTED_SHIFT.NewDate | date  }}
+                    <!--<small class="badge badge-light-green">Published</small>-->
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <form id="Form_Login_Shift" name="Form_Login_Shift">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/Login_Shift.html?v=4{{AppVersion}}'"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-click="ROTA_INS_UPD_LOGIN_LOGOUT(SELECTED_EMP,SELECTED_SHIFT,'AREA_VIEW',Form_Login_Shift,SELECTED_CELL)" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CommanComments">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{CommentHeader}}
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <label class="d-block">Comments *</label>
+                <textarea class="form-control" rows="5" ng-class="{'error':DELETECOMMENTSFLAG && Section_Week_Search.textCommanComments==''}" maxlength="250" ng-model="Section_Week_Search.textCommanComments"></textarea>
+                <small>
+                    <!--Note:-Appoved shift(s) can't be deleted;-->
+                </small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-click="ROTA_REVERT_SHIFT_APPROVAL(4,'AREA_VIEW')" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Set_Shifts_To_Open">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Set Shift To  Open
+                    <span class="d-block font-12">{{SHIFT_COUNT}} shifts selected</span>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <form id="Form_Set_Shift_To_Open" name="Form_Set_Shift_To_Open">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/Set_Shift_To_Open.html?v=4{{AppVersion}}'"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-disabled="SET_SHIFT_TO_OPEN_LIST.length==0" ng-click="SET_TO_OPEN_MULTIPLE_FY(Form_Set_Shift_To_Open,'AREA_VIEW')" class="btn btn-wenodo">Set Shift Open</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Delete_Multi_Shift">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Delete Shift
+                    <span class="d-block font-12">{{SHIFT_COUNT}} shifts selected</span>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <form id="Form_Delete_Mulit_Shift" name="Form_Delete_Mulit_Shift">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/Delete_Multi_Shift.html?v=41{{AppVersion}}'"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-disabled="DELETE_SHIFT_LIST.length==0" ng-click="DELETE_MULTIPLE_SHIFTS(Form_Delete_Mulit_Shift,'AREA_VIEW')" class="btn btn-wenodo">Delete</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="SHIFTOPEN">
+    <form id="SHIFTOPEN_Form" name="SHIFTOPEN_Form" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Apply Shift Type
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="Section_Week_Search.SHIFT_SEARCH" placeholder="Search">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4" ng-repeat="ST in SHIFT_TYPES | filter:Section_Week_Search.SHIFT_SEARCH ">
+                            <ul class="todo-list" ID="divNewNotifications">
+                                <li class="text-xs border cursor-pointer p-2" ng-class="{'border-green':SELECTED_SHIFT.SHIFT_TYPE_ID==ST.SHIFT_TYPE_ID,'':SELECTED_SHIFT.SHIFT_TYPE_ID!=ST.SHIFT_TYPE_ID}" ng-click="APPLY_SHIFT_TYPE(ST,'EMP_VIEW')">
+                                    <a class="d-block px-2 py-1">
+                                        <i class="fas fa-circle d-inline-block" ng-class="{'text-green':SELECTED_SHIFT.SHIFT_TYPE_ID==ST.SHIFT_TYPE_ID,'':SELECTED_SHIFT.SHIFT_TYPE_ID!=ST.SHIFT_TYPE_ID}"></i> {{ST.DISPLAY_TEXT}}
+                                        <div class="" ng-class="{'float-right':SELECTED_SHIFT.SHIFT_TYPE_ID==ST.SHIFT_TYPE_ID,'tools':SELECTED_SHIFT.SHIFT_TYPE_ID!=ST.SHIFT_TYPE_ID}">
+                                            <i class="fas fa-check-circle fa-lg" ng-class="{'text-green':SELECTED_SHIFT.SHIFT_TYPE_ID==ST.SHIFT_TYPE_ID,'text-white':SELECTED_SHIFT.SHIFT_TYPE_ID!=ST.SHIFT_TYPE_ID}"></i>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="DeleteweekCommentspop">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Delete this week
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <label class="d-block">Comments *</label>
+                <textarea class="form-control" rows="5" ng-class="{'error':DELETEWEEKFLAG && Section_Week_Search.DeleteWeekComments==''}" maxlength="250" ng-model="Section_Week_Search.DeleteWeekComments"></textarea>
+                <small class="font-11">
+                    <b>Note:</b> Clocked-In & Appoved shift(s) can't be deleted;
+                </small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-click="ROTA_OPTIONS(4,null,null,'AREA_VIEW')" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ADD_NEW_TAG">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> Add Tag </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Tag Name*</label>
+                            <input class="form-control"
+                                   name="TAG_NAME"
+                                   placeholder="Enter Tag Name"
+                                   ng-class="{'error':DELETEWEEKFLAG && Section_Week_Search.TAG_NAME==''}"
+                                   maxlength="250"
+                                   ng-model="Section_Week_Search.TAG_NAME" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Tag Description</label>
+                            <textarea class="form-control" rows="5"
+                                      placeholder="Enter Tag Description"
+                                      ng-class="{'error':DELETEWEEKFLAG && Section_Week_Search.TAG_DESCRIPTION==''}"
+                                      maxlength="250"
+                                      ng-model="Section_Week_Search.TAG_DESCRIPTION"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-click="ADMIN_INS_UPD_SHIFT_TAGS()" class="btn btn-wenodo">Save</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ROTA_INS_SHIFT_BREAKS_POP">
+    <div class="modal-dialog modal-lg">
+        <form id="SHIFT_BREAKS_FORM" name="SHIFT_BREAKS_FORM" novalidate>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        {{SELECTED_SHIFT_BREAK_CELL.BREAK_START_END}}   Break <span class="font-12">({{SELECTED_SHIFT_BREAK_CELL.NewDate | date }})</span>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+
+                    <div class="row">
+                        <div class="col-md-3 border">
+                            <div class="form-group mb-0">
+                                <label>Start</label>
+                                <span class="d-block">{{SELECTED_SHIFT.START_TIME | date :'HH:mm'}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 border">
+                            <div class="form-group mb-0">
+                                <label>Finish</label>
+                                <span class="d-block">{{SELECTED_SHIFT.END_TIME | date :'HH:mm'}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 border">
+                            <div class="form-group mb-0">
+                                <label>Clock-In</label>
+                                <span class="d-block">{{SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE | date :'HH:mm' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 border">
+                            <div class="form-group mb-0">
+                                <label>Name</label>
+                                <span class="d-block">{{SELECTED_EMPLOYEE.EMPLOYEE_NAME}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-2">
+                                <label>{{SELECTED_SHIFT_BREAK_CELL.BREAK_START_END}} Time</label>
+                                <input class="form-control"
+                                       placeholder="Break Time"
+                                       moment-picker="Section_Week_Search.EMPLOYEE_BREAK_TIME"
+                                       autocomplete="off"
+                                       name="EMPLOYEE_BREAK_TIME"
+                                       locale="en-gb"
+                                       ng-model="Section_Week_Search.EMPLOYEE_BREAK_TIME"
+                                       format="HH:mm"
+                                       onkeypress="return event.charCode >= 48 && event.charCode <= 58"
+                                       maxlength="5"
+                                       required
+                                       ng-class="{'error':SHIFT_BREAKS_FORM.submitted && SHIFT_BREAKS_FORM.EMPLOYEE_BREAK_TIME.$error.required}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Note </label>
+                        <textarea class="form-control"
+                                  rows="6"
+                                  ng-model="Section_Week_Search.EMPLOYEE_BREAK_NOTES"
+                                  placeholder="Enter..."></textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div data-ng-show="SHIFT_BREAKS_FORM.submitted && SHIFT_BREAKS_FORM.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                        <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                    </div>
+                    <div id="divInvlidUser" class="hideshowdiv" data-ng-show="SHIFT_BREAKS_FORM.$valid">
+                        <span class="help-block">{{InvalidUser}}</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" ng-click="ROTA_INS_SHIFT_BREAKS(SELECTED_EMPLOYEE,SELECTED_SHIFT,'EMP_VIEW',SELECTED_CELL,SHIFT_BREAKS_FORM)" class="btn btn-wenodo">Submit</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="Myfilters" class="filter-panel">
+    <div class="card-header">
+        <h5 class="card-title mt-1">Filters</h5>
+        <div class="card-tools ml-auto">
+            <button class="btn btn-tool py-0" data-toggle="tooltip" data-html="true" data-placement="left" data-original-title="Reset Filters" ng-click="FILTER_RESET_SIDE();">
+                <i class="fas fa-undo"></i>
+            </button>
+            <button class="btn btn-tool py-0" ng-click="closeNav1()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body custom-scrollbar height-82vh">
+        <div class="row">
+            <div class="col-md-12" ng-if="false">
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="Hide_Rows">
+                        <label class="custom-control-label" for="Hide_Rows">Hide empty rows</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="accordion" id="accordionExample">
+                    <div class="card" ng-if="false">
+                        <div class="card-header cursor-pointer p-0" id="headingOne" data-toggle="collapse" data-target="#Shift_Time" aria-expanded="true" aria-controls="collapseOne" ng-click="SHIFT_TIME=!SHIFT_TIME">
+                            <button class="btn btn-link font-14" type="button">
+                                Shift Times
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!SHIFT_TIME"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="SHIFT_TIME"></i>
+                            </span>
+                        </div>
+                        <div id="Shift_Time" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="input-group d-flex">
+                                    <input type="text" class="form-control" placeholder="From">
+                                    <input type="text" class="form-control" placeholder="To">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header cursor-pointer p-0" id="headingTwo" data-toggle="collapse" data-target="#Status" aria-expanded="false" aria-controls="collapseTwo" ng-click="FSTATUS=!FSTATUS">
+                            <button class="btn btn-link font-14" type="button">
+                                Status
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!FSTATUS"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="FSTATUS"></i>
+                            </span>
+                        </div>
+                        <div id="Status" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group" ng-if="false">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="ALLSTS" value="ALL">
+                                        <label for="ALLSTS" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-repeat="ST in SHIFT_STATUS track by $index">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" ng-change="FILTER_SHIFT_STATUS()" ng-model="ST.FILTER_SELECTED" type="checkbox" id="STS{{$index}}" value="option1">
+                                        <label for="STS{{$index}}" class="custom-control-label"><i class="fas fa-circle" ng-class="ST.CLASS"></i> {{ST.STATUS_NAME}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+
+
+                        <div class="card-header cursor-pointer p-0" id="headingThree" data-toggle="collapse" data-target="#Shift_Type" aria-expanded="false" aria-controls="collapseThree" ng-click="SHT_TYPE=!SHT_TYPE">
+                            <button class="btn btn-link font-14" type="button">
+                                Shift Type
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!SHT_TYPE"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="SHT_TYPE"></i>
+                            </span>
+                        </div>
+                        <div id="Shift_Type" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" ng-model="FILTER_SHIFT_SEARCH" type="search" placeholder="Search" aria-label="Search">
+                                </div>
+                                <div class="form-group" ng-if="false">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="All_Shifts_Type" value="ALL">
+                                        <label for="All_Shifts_Type" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-repeat="ST in SHIFT_TYPES | filter:FILTER_SHIFT_SEARCH ">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" ng-model="ST.SELECTED" ng-change="FILTER_SHIFT_TYPE()" type="checkbox" id="FILTER_SHIFTS{{$index}}">
+                                        <label for="FILTER_SHIFTS{{$index}}" class="custom-control-label"><i class="fas fa-circle" style="color:#{{ST.COLOR}}"></i> {{ST.DISPLAY_TEXT}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-if="false">
+                        <div class="card-header cursor-pointer p-0" id="headingFour" data-toggle="collapse" data-target="#Employees" aria-expanded="false" aria-controls="collapseThree" ng-click="EMP_DTS=!EMP_DTS">
+                            <button class="btn btn-link font-14" type="button">
+                                Employees
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!EMP_DTS"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="EMP_DTS"></i>
+                            </span>
+                        </div>
+                        <div id="Employees" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="All_Employees" value="option1">
+                                        <label for="All_Employees" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="No_Section" value="option1">
+                                        <label for="No_Section" class="custom-control-label">No Section</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="CR" value="option1">
+                                        <label for="CR" class="custom-control-label"><span class="name-badge">CR</span> Chan Ranawat</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="AS" value="option1">
+                                        <label for="AS" class="custom-control-label"><span class="name-badge">AK</span> Aasim Sultan Khan</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="SA" value="option1">
+                                        <label for="SA" class="custom-control-label"><span class="name-badge">AS</span> Sahil Khan</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-if="false">
+                        <div class="card-header cursor-pointer p-0" id="headingFive" data-toggle="collapse" data-target="#Employee_Group" aria-expanded="false" aria-controls="collapseThree" ng-click="EMP_GRP=!EMP_GRP">
+                            <button class="btn btn-link font-14" type="button">
+                                Employee Position
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!EMP_GRP"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="EMP_GRP"></i>
+                            </span>
+                        </div>
+                        <div id="Employee_Group" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="All_Group" value="option1">
+                                        <label for="All_Group" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Manager" value="option1">
+                                        <label for="Manager" class="custom-control-label">Manager</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Barista" value="option1">
+                                        <label for="Barista" class="custom-control-label">Barista</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Waiter" value="option1">
+                                        <label for="Waiter" class="custom-control-label">Waiter</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Host" value="option1">
+                                        <label for="Host" class="custom-control-label">Host</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Bartender" value="option1">
+                                        <label for="Bartender" class="custom-control-label">Bartender</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Head_Chef" value="option1">
+                                        <label for="Head_Chef" class="custom-control-label">Head Chef</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Chef" value="option1">
+                                        <label for="Chef" class="custom-control-label">Chef</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Kitchen_Porter" value="option1">
+                                        <label for="Kitchen_Porter" class="custom-control-label">Kitchen Porter</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-if="false">
+                        <div class="card-header cursor-pointer p-0" id="headingSix" data-toggle="collapse" data-target="#Positions" aria-expanded="false" aria-controls="collapseThree" ng-click="POS=!POS">
+                            <button class="btn btn-link font-14" type="button">
+                                Positions
+                            </button>
+                            <span class="float-right">
+                                <i class="fas fa-chevron-circle-down text-blue mt-2" ng-show="!POS"></i>
+                                <i class="fas fa-chevron-circle-up text-blue mt-2" ng-show="POS"></i>
+                            </span>
+                        </div>
+                        <div id="Positions" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="All_Positions" value="option1">
+                                        <label for="All_Positions" class="custom-control-label">All</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="No_Section" value="option1">
+                                        <label for="No_Section" class="custom-control-label">No Section</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="No_Position" value="option1">
+                                        <label for="No_Position" class="custom-control-label">No Position</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer sidenav-footer-fixed">
+        <button type="button" class="btn btn-wenodo" ng-click="closeNav1()">Close</button>
+    </div>
+</div>
+<div class="modal fade" id="APPLY_TEMPLATE">
+    <form id="Employee_APPLY_TEMPLATE_Form" name="Employee_APPLY_TEMPLATE_Form" novalidate>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Apply Template</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        Delete all existing shifts which are Unapproved & Unpublished.
+                    </div>
+                    <small class="font-10"> <b>Note:</b> Clocked-In & Approved shift shall not be deleted.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" click-once ng-click="ROTA_CREATE_SHIFTS_BY_TEMPLATE(Employee_APPLY_TEMPLATE_Form,2,'AREA_VIEW')" class="btn btn-wenodo">Apply Templete</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="APPLY_WORK_PATTERN">
+    <form id="Employee_Work_PTN_Form" name="Employee_Work_PTN_Form" novalidate>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Apply Work Pattern</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        Add Work Pattern and Delete existing shifts Unapproved & Unpublished.
+                    </div>
+                    <small class="font-10"> <b>Note:</b> Clocked-In & Approved shift shall not be deleted.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            click-once
+                            ng-click="ROTA_CREATE_SHIFTS_BY_WORKPATTERN(Employee_Work_PTN_Form,2,'AREA_VIEW')"
+                            class="btn btn-wenodo">
+                        Apply Work Pattern
+                    </button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="PRINTROTA">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Weekly Schedule</h4>
+
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item mr-3 mt-1">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" ng-change="ROTA_PRINT_NG_CHANGE()" type="radio" id="RotaDateView" value="1" ng-model="Section_Week_Search.RotaReportWeeky" name="RotaReport">
+                                <label for="RotaDateView" class="custom-control-label">Rota Date View</label>
+                            </div>
+                        </li>
+                        <li class="nav-item mr-3 mt-1">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" ng-change="ROTA_PRINT_NG_CHANGE()" type="radio" ng-model="Section_Week_Search.RotaReportWeeky" value="2" id="RotaWeekyView" name="RotaReport">
+                                <label for="RotaWeekyView" class="custom-control-label">Rota Weekly View</label>
+                            </div>
+                        </li>
+                        <li class="nav-item mr-3 mt-1">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" ng-change="ROTA_PRINT_NG_CHANGE()" type="radio" ng-model="Section_Week_Search.RotaReportWeeky" value="3" id="RotaSectionView" name="RotaReport">
+                                <label for="RotaSectionView" class="custom-control-label">Rota Section View</label>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/RotaPrintReport.html?v=10{{AppVersion}}'"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-click="PRINT_ROTA()" class="btn btn-wenodo">Download</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="PRINT_BUDGETREVENUE">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Budget Revenue</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar height-450">
+                <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/Budget_Revenue.html?v=8{{AppVersion}}'"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" click-once ng-click="REVENUE_PDF_PRINT()" class="btn btn-wenodo">Download</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="NO_SHOW_POP">
+    <form id="NoShow_Form" name="NoShow_Form" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{SELECTED_SHIFT.STATUS_ID == 24?'Revert':''}} No Show</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="row content-bg mx-1">
+                        <div class="col">
+                            <div class="form-group mb-0">
+                                <label class="font-12">Name</label>
+                                <span class="d-flex">
+                                    <span class="name-badge" ng-if="SELECTED_EMPLOYEE.IMAGE_PATH==null && SELECTED_EMPLOYEE.EMP_PRS_ID!=-1 && EL.EMP_PRS_ID!=-2">{{SELECTED_EMPLOYEE.INITIALS}}</span>
+                                    <img class="profile-pic" ng-if="SELECTED_EMPLOYEE.IMAGE_PATH!=null" ng-src="{{SELECTED_EMPLOYEE.IMAGE_PATH}}" />
+                                    <span class="ml-2 mt-1">{{SELECTED_EMPLOYEE.EMPLOYEE_NAME}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="font-12">Business Date</label>
+                                <span class="d-block"><i class="far fa-calendar-alt text-blue"></i> {{SELECTED_CELL.NewDate | date}}</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-0">
+                                <label class="font-12">Start</label>
+                                <span class="d-block"><i class="far fa-clock text-blue"></i> {{SELECTED_SHIFT.START_TIME | date :'HH:mm'}}</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-0">
+                                <label class="font-12">Finish</label>
+                                <span class="d-block"><i class="far fa-clock text-blue"></i> {{SELECTED_SHIFT.END_TIME | date :'HH:mm'}}</span>
+                            </div>
+                        </div>
+                        <div class="col-auto" ng-show="false">
+                            <div class="form-group mb-0">
+                                <label>&nbsp;</label>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="customCheckbox1" value="option1">
+                                    <label for="customCheckbox1" class="custom-control-label">Sick</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mx-1 mt-2">
+                        <div class="col-md-6" ng-show="SELECTED_SHIFT.STATUS_ID != 24">
+                            <div class="form-inline mb-2">
+                                <label class="mr-2">Reason </label>
+                                <select class="custom-select w-60"
+                                        ng-model="Section_Week_Search.ROTA_NO_SHOW_REASONS_ID"
+                                        ng-options="RL.ROTA_NO_SHOW_REASONS_ID  as RL.NO_SHOW_DESCRIPTION for RL in (NO_SHOW_REASONS_LIST)">
+                                    <option value="">-No Reason-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group w-100">
+                                <label class="font-12">Comment  </label>
+                                <textarea class="form-control"
+                                          rows="6"
+                                          maxlength="500"
+                                          name="NO_SHOW"
+                                          ng-model="Section_Week_Search.NO_SHOW_COMMENTS"
+                                          placeholder="Enter..."
+                                          ng-class="{'error':NoShow_Form.submitted && NoShow_Form.NO_SHOW.$error.required}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div data-ng-show="NoShow_Form.submitted && NoShow_Form.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                        <span class="help-block errormessageline" style="padding-left:0px;"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                    </div>
+                    <div id="divInvlidUser" class="hideshowdiv" data-ng-show="NoShow_Form.$valid">
+                        <span class="help-block">{{InvalidUser}}</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            click-once
+                            ng-click="ROTA_MARK_AND_REVERT_NO_SHOW(SELECTED_EMPLOYEE,SELECTED_SHIFT,'EMP_VIEW',NoShow_Form)"
+                            class="btn btn-wenodo">
+                        Save
+                    </button>
+                    <button type="button"
+                            class="btn btn-w-default"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="context1" class="dropdown-menu" role='menu'>
+    <div ng-show="!IS_EMPLOYEE && SELECTED_CELL.IS_LOCK && SELECTED_SHIFT==null">
+        <a class="dropdown-item text-xs"
+           ng-click="ADD_NEW_SHIFT_POP(SELECTED_EMPLOYEE,SELECTED_CELL,'EMP_VIEW')">Add Shift</a>
+    </div>
+    <div ng-show="!IS_EMPLOYEE && SELECTED_CELL.IS_LOCK && (SELECTED_SHIFT!='' && SELECTED_SHIFT!=null)">
+        <a class="dropdown-item text-xs"
+           ng-if="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null || SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE!=null" ng-click="EDIT_SHIFT_POP(SELECTED_EMPLOYEE,SELECTED_SHIFT,'',SELECTED_CELL,'EMP_VIEW',true)">View Shift Details</a>
+        <a ng-if="(SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE==null || SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null) && SELECTED_CELL.NewDate<=TODAY_DATE && SELECTED_SHIFT.STATUS_ID==22 && SELECTED_SHIFT.EMPTY_OPEN_FLAG!=-2  && IS_EDIT_PRIVILAGE" class="dropdown-item text-xs"
+           ng-click="LOGIN_SHIFT_POP(SELECTED_EMPLOYEE,SELECTED_SHIFT,'EMP_VIEW',(SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE==null?0:1),SELECTED_CELL);">
+            <span ng-show="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS==null || SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS.length==0">Clock-In</span>
+            <span ng-show="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null && SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null">Clock-Out</span>
+        </a>
+        <a class="dropdown-item text-xs" ng-if="SELECTED_SHIFT.STATUS_ID!=23 &&  SELECTED_SHIFT.STATUS_ID!=24 && IS_EDIT_PRIVILAGE" ng-click="EDIT_SHIFT_POP(SELECTED_EMPLOYEE,SELECTED_SHIFT,'',SELECTED_CELL,'EMP_VIEW')" ng-show="SELECTED_SHIFT.length==1 && SELECTED_SHIFT.STATUS_ID!=23 && IS_EDIT_PRIVILAGE">Edit Shift</a>
+        <a class="dropdown-item text-xs" ng-show="(SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null && SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE!=null  && SELECTED_SHIFT.STATUS_ID!=23 &&  SELECTED_SHIFT.STATUS_ID!=24) || APPROVE_SHIFTS_WITHOUT_CLOCK_IN_AND_CLOCK_OUT==1 && SELECTED_SHIFT.STATUS_ID==22" ng-click="EDIT_SHIFT_POP(SELECTED_EMPLOYEE,SELECTED_SHIFT,1,SELECTED_CELL,'EMP_VIEW')">Approve Shift</a>
+        <a class="dropdown-item text-xs" ng-show="IS_ADD_PRIVILAGE" ng-click="COPY_SHIFT(SELECTED_EMPLOYEE,SELECTED_SHIFT,'EMP_VIEW')">Copy Shift</a>
+        <a class="dropdown-item text-xs" ng-show="SELECTED_SHIFT.STATUS_ID==23 && IS_EDIT_PRIVILAGE" ng-click="ROTA_REVERT_SHIFT_APPROVAL_POP(SELECTED_EMPLOYEE,SELECTED_SHIFT)">Revert Approval </a>
+        <a class="dropdown-item text-xs" ng-show="IS_EDIT_PRIVILAGE" data-target="#SHIFTOPEN{{$index}}{{EL.EMP_INDEX}}" ng-class="Shift.FILTER_SWTICH_ON_OFF?'btn-active':''" ng-click="APPLY_SHIFT_TYPE_POP(SELECTED_SHIFT,SELECTED_EMPLOYEE,$index,$event)">Apply Shift Type</a>
+        <a class="dropdown-item text-xs" ng-init="nginitsettoopen(SELECTED_CELL)" ng-show="(SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE==null && SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null) &&  SELECTED_SHIFT.STATUS_ID!=23 &&  SELECTED_SHIFT.STATUS_ID!=24 && SELECTED_SHIFT.EMPTY_OPEN_FLAG!=-2 && IS_EDIT_PRIVILAGE" ng-click="SET_SHIFT_TO_OPEN_SINGLE(SELECTED_SHIFT.SHIFT_ID,'EMP_VIEW')">Set Shift to open</a>
+        <a class="dropdown-item text-xs" ng-show="SELECTED_SHIFT.STATUS_ID!=23 && IS_DELETE_PRIVILAGE" ng-click="DELETE_ROTA_SHIFTS_FY(AssignShift_Form,'EMP_VIEW',SELECTED_EMPLOYEE,SELECTED_SHIFT,SELECTED_CELL);"> Delete Shift</a>
+        <a title="On Breaks"
+           class="dropdown-item text-xs" ng-click="ROTA_INS_SHIFT_BREAKS_POP_FY(SELECTED_EMPLOYEE,SELECTED_SHIFT,Shift,'EMP_VIEW',SHIFT_BREAKS_FORM)"
+           ng-if="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE!=null && (SELECTED_SHIFT.ON_BREAK_TABLE_ID==0 || SELECTED_SHIFT.ON_BREAK_TABLE_ID>0) && SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null && !SELECTED_CELL.IS_LOCK"
+           ng-show="!IS_EMPLOYEE">{{SELECTED_SHIFT.ON_BREAK_TABLE_ID==0?"Break In":"Break Out"}}</a>
+        <a class="dropdown-item text-xs"
+           ng-click="NO_SHOW_ROTA_SHIFTS_FY(AssignShift_Form,'EMP_VIEW',SELECTED_EMPLOYEE,SELECTED_SHIFT,1,SELECTED_CELL);"
+           ng-if="SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGIN_DATE==null && SELECTED_SHIFT.LOGIN_LOGOUT_DETAILS[0].LOGOUT_DATE==null && SELECTED_SHIFT.STATUS_ID==22">
+            No Show
+        </a>
+        <a class="dropdown-item text-xs"
+           ng-click="NO_SHOW_ROTA_SHIFTS_FY(AssignShift_Form,'EMP_VIEW',SELECTED_EMPLOYEE,SELECTED_SHIFT,2,SELECTED_CELL);"
+           ng-if="SELECTED_SHIFT.STATUS_ID==24">Revert No Show</a>
+    </div>
+</div>
+
+<div class="modal fade" id="APPROVE_SHIFT_POP">
+    <form id="APPROVE_SHIFT_Form" name="APPROVE_SHIFT_Form" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Approve</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar height-450">
+                    <div class="w-100" ng-include="'../AngularViews/HR/Scheduler/ApproveShiftAlertBox.html?v=8{{AppVersion}}'"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-w-default"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        Close
+                    </button>
+                    <button type="button"
+                            click-once
+                            ng-click="ROTA_APPROVE_SHIFT(Section_Week_Search.SHIFT_ID,2,'EMP_VIEW',Section_Week_Search.EMPLOYEE_LOGIN,Section_Week_Search.EMPLOYEE_LOGOUT,Section_Week_Search.SHIFT_TYPE_ID)"
+                            class="btn btn-wenodo">
+                        Approve
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    $('.select2').select2()
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    $('#divNewNotifications li').on('click', function () {
+        $('#dropdown_title').html($(this).find('a').html());
+    });
+    $('#show9').click(function () {
+        $('.menu9').toggle("slide");
+    });
+    $('#show10').click(function () {
+
+        $('.menu10').toggle("slide");
+
+    });
+    $('#SHOW_WAGE_COST_VS_BUDGET').click(function () {
+        $('.MENU_WAGE_COST_VS_BUDGET').toggle("slide");
+    });
+    $('#SHOW_WAGE_COST_VS_FORECAST').click(function () {
+        $('.MENU_WAGE_COST_VS_FORECAST').toggle("slide");
+    });
+    $('#SHOW_WAGE_COST_VS_ACTUAL').click(function () {
+        $('.MENU_WAGE_COST_VS_ACTUAL').toggle("slide");
+    });
+    $('#SHOW_WAGE_COST_VS_ACTUAL_OUT').click(function () {
+        $('.MENU_WAGE_COST_VS_ACTUAL_OUT').toggle("slide");
+    });
+</script>

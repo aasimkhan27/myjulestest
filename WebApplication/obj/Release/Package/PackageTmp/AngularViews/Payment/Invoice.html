@@ -1,0 +1,1062 @@
+﻿<div class="card mb-0" ng-show="SCHEDULE_CLICK ">
+    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(3)">
+            <a class="nav-link " ng-class="{'active':TAB_FLAG==3}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">SupplierWise Aging</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(1)">
+            <a class="nav-link " ng-class="{'active':TAB_FLAG==1}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Pending</a>
+        </li>
+        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(2)">
+            <a class="nav-link" ng-class="{'active':TAB_FLAG==2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Scheduled</a>
+        </li>       
+        <li class="card-tools ml-auto">
+            
+            <ul class="nav nav-pills">
+                <li class="nav-item text-sm mt-1" ng-show="!IntegrationDetails.PageLoad && IntegrationDetails.ShowSyncBtn">
+                    Last Sync on {{IntegrationDetails.LAST_PICKUP_DATE | utcToLocal:"dd/MMM/yyyy h:mm:ss a" }}
+                    <button type="button" click-once class="btn btn-sm btn-w-default ml-2"
+                            data-toggle="tooltip" data-html="true" data-original-title="Sync Xero Invoices" 
+                            ng-click="RESYNC_XERO_DATA()"><i class="fas fa-sync"></i></button>
+                </li>
+                <li class="nav-item" ng-show="!IntegrationDetails.PageLoad && !IntegrationDetails.ShowSyncBtn"><i class="fas fa-sync fa-spin"></i> Syncing Xero Invoices</li>
+            </ul>
+        </li>
+    </ul>
+    <div class="tab-content" id="custom-content-below-tabContent">
+        <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==3}" 
+             id="custom-content-below-home" 
+             role="tabpanel" 
+             aria-labelledby="custom-content-below-home-tab">
+            <div class="card-header">
+                <!--<h5 class="card-title"> Aging is on the basis of Due Date.</h5>-->
+                <div class="form-group">
+                    <div class="custom-control custom-switch custom-toggle-switch d-flex pl-0">
+                        <span style="font-weight: 500;font-size: 13px;color: #213A4D; margin-right:6px; margin-top:2px;">Aging is on the basis of:</span>
+                        <span style="font-weight: 600;font-size: 13px;color: #213A4D; margin-right:42px; margin-top:2px;">Due Date</span>
+                        <input type="checkbox" class="custom-control-input" ng-model="InvoiceSearch.SWITCH_DUE_INVOICE_DATE" ng-change="SWITCH_INVOICE_DUE_DATE()"  id="DueDateInvoice">
+                        <label class="custom-control-label" for="DueDateInvoice" style="padding-top:2px;font-weight: 600;font-size: 13px;">Invoice Date</label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-2">
+                <form>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block">Invoice #</label>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       placeholder="Invoice #"
+                                       ng-model="InvoiceSearch.INVOICE_NO" />
+                            </div>
+                        </div>
+                        <div class="col" id="AddCustomScroll_SUP">
+                            <label class="d-block">Supplier Name</label>
+                            <input type="text" name="SUPPLIER_NAME_BOX"
+                                   ng-model="InvoiceSearch.SUPPLIER_NAME"
+                                   ng-change="SetValues(Supplier,$index)"
+                                   uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIER_LIST | filter:$viewValue"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   class="form-control form-control-sm"
+                                   autocomplete="off"
+                                   placeholder="Type to select Supplier Name..." />
+                        </div>
+                        <div class="col" ng-if="false">
+                            <select class="custom-select custom-select-sm" name="STATUS_TYPE"
+                                    data-placeholder="Select Status"
+                                    ng-model="InvoiceSearch.STATUS_IDS"
+                                    ng-options="IS.ID  as IS.NAME for IS in (INVOICE_STATUS)">
+                                <option value="">- Select Status -</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block">Invoice Date</label>
+                                <div id="reporInvrange" class="form-control form-control-sm">
+                                    <i class="fa fa-calendar mt-1"></i>&nbsp;
+                                    <span class="mt-1">{{InvoiceSearch.INVOICE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block">Due Date</label>
+                                <div id="reportduedaterange" class="form-control form-control-sm">
+                                    <i class="fa fa-calendar mt-1"></i>&nbsp;
+                                    <span class="mt-1">{{InvoiceSearch.DUE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                            <label class="d-block">Branch Name</label>
+                            <select class="custom-select custom-select-sm" name="BRN_LG"
+                                    data-placeholder="Select Status"
+                                    ng-change="GetIntegrationDetails()"
+                                    ng-model="InvoiceSearch.BRANCH_LOGIN_ID"
+                                    ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <button name="submit"
+                                        type="submit"
+                                        class="btn btn-sm btn-wenodo"
+                                        click-once
+                                        ng-click="GET_XERO_INVOICES(1, 2, false, 2)">
+                                    Search
+                                </button>
+                                <button class="btn btn-sm btn-w-default"
+                                        ng-click="RESET_XERO_INVOICES_FILTER(2)">
+                                    Reset
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive custom-scrollbar height-supplier-payment">
+                    <table class="table table-head-fixed table-hover mb-0 compact_table table-head-fixed">
+                        <thead class="bg-wenodo-border" ng-repeat="Line in XERO_INVOICES__AGING_LIST | filter :{'TYPE':0}">
+                            <tr ng-if="Line.TYPE==0">
+                                <th width="3%">
+                                    <span class="bigcheck" ng-show="false">
+                                        <label class="bigcheck mb-0" for="TYPE0_INDEX_SUP{{$index}}">
+                                            <input type="checkbox"
+                                                   name="TYPE0_INDEX_SUP{{$index}}"
+                                                   ng-change="HEADER_SELECTED(Line,0,0)"
+                                                   ng-model="Line.ALL_SUPPLIER_CHECK"
+                                                   class="bigcheck" id="TYPE0_INDEX_SUP{{$index}}" />
+                                            <span class="bigcheck-target"></span>
+                                        </label>
+                                    </span>
+                                </th>
+                                <th>
+                                    <div class="form-inline">
+                                        <a class="cursor-pointer" ng-click="AllShowHideInvoices(Line)">
+                                            <i class="far mr-2" ng-class="{'fa-chevron-down':!Line.SHOW_INVOICE,'fa-chevron-right':Line.SHOW_INVOICE}"></i>
+                                            <span class="mr-2">{{Line.SUPPLIER_NAME}}</span>
+                                        </a>
+                                        <input type="text" ng-model="InvoiceSearch.SearchSupplier" class="form-control" placeholder="Type to filter supplier" />
+                                    </div>
+                                </th>
+                                <th>Invoice Date</th>
+                                <th>Due Date</th>
+                                <th>Invoice Amount</th>
+                                <th>Reconciliation</th>
+                                <th class="text-right"><span>{{Line.MONTH1_NAME}}</span></th>
+                                <th class="text-right"><span>{{Line.MONTH2_NAME}}</span></th>
+                                <th class="text-right"><span>{{Line.MONTH3_NAME}}</span></th>
+                                <th class="text-right"><span>{{Line.OLDER_NAME}}</span></th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="Line in XERO_INVOICES__AGING_LIST
+                               | filter :{'TYPE':'!0'} | filter :{'SUPPLIER_NAME':InvoiceSearch.SearchSupplier} ">
+                            <tr ng-if="Line.TYPE==1" style="background-color: #d9ebf4;">
+                                <td>
+                                    <span class="bigcheck">
+                                        <label class="bigcheck mb-0" for="TYPE1Index{{$index}}">
+                                            <input type="checkbox"
+                                                   class="bigcheck"
+                                                   id="TYPE1Index{{$index}}"
+                                                   ng-model="Line.SUPPLIER_CHECK"
+                                                   ng-change="SupplierCheck(Line, 0, 0)" />
+                                            <span class="bigcheck-target"></span>
+                                        </label>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a ng-click="ShowHideInvoices(Line);">
+                                        <i class="far mr-2" ng-class="{'fa-chevron-down':Line.SHOW_INVOICE,'fa-chevron-right':!Line.SHOW_INVOICE}"></i> {{Line.SUPPLIER_NAME}}
+                                    </a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right">
+                                    <span class="bigcheck cursor-pointer text-bold" ng-show="Line.MONTH1_AMT>0" ng-click="Line.MONTH1_CHECK=!Line.MONTH1_CHECK;SupplierCheck(Line, 1, Line.MONTH1_NO)">
+                                        <label class="bigcheck mb-0" for="TYPE1INDEXMONTH1_AMT{{$index}}">
+                                            <input type="checkbox" ng-model="Line.MONTH1_CHECK" class="bigcheck" id="TYPE1INDEXMONTH1_AMT{{$index}}" />
+                                            <span class="bigcheck-target font-14"></span>
+                                        </label>
+                                        {{Line.MONTH1_AMT}}
+                                    </span>
+                                    <span ng-show="Line.MONTH1_AMT==0">-</span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="bigcheck cursor-pointer  text-bold" ng-show="Line.MONTH2_AMT>0" ng-click="Line.MONTH2_CHECK=!Line.MONTH2_CHECK;SupplierCheck(Line, 2, Line.MONTH2_NO)">
+                                        <label class="bigcheck mb-0" for="TYPE1_MONTH2_AMTINDEX{{$index}}">
+                                            <input type="checkbox" ng-model="Line.MONTH2_CHECK" class="bigcheck" id="TYPE1_MONTH2_AMTINDEX{{$index}}" />
+                                            <span class="bigcheck-target font-14"></span>
+                                        </label>
+                                        {{Line.MONTH2_AMT}}
+                                    </span>
+                                    <span ng-show="Line.MONTH2_AMT==0">-</span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="bigcheck cursor-pointer  text-bold" ng-show="Line.MONTH3_AMT>0" ng-click="Line.MONTH3_CHECK=!Line.MONTH3_CHECK;SupplierCheck(Line, 3, Line.MONTH3_NO)">
+                                        <label class="bigcheck mb-0" for="TYPE1_MONTH3_AMTINDEX{{$index}}">
+                                            <input type="checkbox" ng-model="Line.MONTH3_CHECK" class="bigcheck" id="TYPE1_MONTH3_AMTINDEX{{$index}}" />
+                                            <span class="bigcheck-target font-14"></span>
+                                        </label>
+                                        {{Line.MONTH3_AMT}}
+                                    </span>
+                                    <span ng-show="Line.MONTH3_AMT==0">-</span>
+                                </td>
+                                <td class="text-right">
+                                    <span class="bigcheck cursor-pointer  text-bold" ng-show="Line.OLDER_AMT>0" ng-click="Line.OLDER_CHECK=!Line.OLDER_CHECK;SupplierCheck(Line, -1, -1)">
+                                        <label class="bigcheck mb-0" for="TYPE1_OLDER_AMTINDEX{{$index}}">
+                                            <input type="checkbox" ng-model="Line.OLDER_CHECK" class="bigcheck" id="TYPE1_OLDER_AMTINDEX{{$index}}" />
+                                            <span class="bigcheck-target font-14"></span>
+                                        </label>
+                                        {{Line.OLDER_AMT}}
+                                    </span>
+                                    <span ng-show="Line.OLDER_AMT==0">-</span>
+                                </td>
+                                <td class="text-right text-bold">
+                                    <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                    {{Line.SUPPLIER_TOTAL}}
+                                </td>
+                            </tr>
+                            <tr ng-if="Line.TYPE==2" ng-show="Line.SHOW_INVOICE" class="cursor-pointer" ng-click="Line.INVOICE_CHECK=!Line.INVOICE_CHECK;InvoiceCheck(Line)">
+                                <td></td>
+                                <td class="pl-5">
+                                    <label class="bigcheck mb-0" for="TYPE1Index{{$index}}">
+                                        <input type="checkbox"
+                                               class="bigcheck"
+                                               id="TYPE1Index{{$index}}"
+                                               ng-change="SupplierLineCheck(Line,$index)"
+                                               ng-model="Line.INVOICE_CHECK" />
+                                        <span class="bigcheck-target align-checkbox"></span>
+
+                                    </label>
+                                    <span> {{Line.INVOICE_NUMBER}}</span>
+                                    <button type="button" ng-click="VIEW_INVOICE_DETAIL(Line.ROW,1)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fa fa-eye"></i></button>
+
+                                </td>
+                                <td>{{Line.INVOICE_DATE  | date}}</td>
+                                <td>{{Line.DUE_DATE | date}}</td>
+                                <td>{{Line.ROW.AMOUNT | number:2}}</td>
+                                <td>
+                                    {{Line.ROW.IS_RECONSILED?'Yes':'No'}}
+                                </td>
+                                <td class="text-right">
+                                    <span ng-show="Line.MONTH1_AMT>0 || Line.MONTH1_AMT<0">
+                                        {{Line.MONTH1_AMT}}
+                                    </span>
+                                    <span ng-show="Line.MONTH1_AMT==0">-</span>
+
+                                </td>
+                                <td class="text-right">
+                                    <span ng-show="Line.MONTH2_AMT==0">-</span>
+                                    <span ng-show="Line.MONTH2_AMT>0 || Line.MONTH2_AMT<0">  {{Line.MONTH2_AMT}}  </span>
+
+                                </td>
+                                <td class="text-right">
+
+                                    <span ng-show="Line.MONTH3_AMT==0">-</span>
+                                    <span ng-show="Line.MONTH3_AMT>0 || Line.MONTH3_AMT<0">  {{Line.MONTH3_AMT}}  </span>
+                                </td>
+                                <td class="text-right">
+                                    <span ng-show="Line.OLDER_AMT==0">-</span>
+                                    <span ng-show="Line.OLDER_AMT>0 || Line.OLDER_AMT<0">  {{Line.OLDER_AMT}}  </span>
+                                </td>
+                                <td class="text-right text-bold">-</td>
+                            </tr>
+                            <tr ng-if="$last && Line.TYPE==3" class="table-footer-fixed">
+                                <td colspan="5"></td>
+                                <td class="text-right text-bold"> {{Line.SUPPLIER_NAME}}</td>
+                                <td class="text-right  text-bold">
+                                    {{Line.MONTH1_AMT}}
+                                </td>
+                                <td class="text-right  text-bold">
+                                    {{Line.MONTH2_AMT}}
+                                </td>
+                                <td class="text-right  text-bold">
+                                    {{Line.MONTH3_AMT}}
+                                </td>
+
+                                <td class="text-right">
+                                    {{Line.OLDER_AMT}}
+                                </td>
+                                <td class="text-right text-bold"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{Line.SUPPLIER_TOTAL}} </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white py-0">
+                <div class="form-group mb-0" ng-show="CheckSubModuleAccess(56)">
+                    <a class="btn btn-sm btn-wenodo ng-binding" ng-click="SCHEDULE_SUPPLIER_WISE_CLICK_FY()">
+                        Schedule Payments ({{(XERO_INVOICES__AGING_SELECTED_LIST.length)}})
+                        <!--Schedule Payments ({{(XERO_INVOICES__AGING_LIST | filter :{'TYPE':2} | filter :{'INVOICE_CHECK':true}).length}})-->
+                    </a>
+                    <button type="button" class="btn btn-sm btn-w-default" ng-click="RESET_SCHEDULE_SUPPLIER_WISE_CLICK_FY()">Reset Invoice Selection</button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+            <div class="card-body pt-0">
+                <form>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block">Invoice #</label>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       placeholder="Invoice #"
+                                       ng-model="InvoiceSearch.INVOICE_NO" />
+                            </div>
+                        </div>
+                        <div class="col" id="AddCustomScroll_REQ">
+                            <label class="d-block">Supplier Name</label>
+                            <input type="text" name="SUPPLIER_NAME_BOX"
+                                   ng-model="InvoiceSearch.SUPPLIER_NAME"
+                                   ng-change="SetValues(Supplier,$index)"
+                                   uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIER_LIST | filter:$viewValue"
+                                   typeahead-loading="loading"
+                                   typeahead-no-results="noResults"
+                                   class="form-control form-control-sm"
+                                   autocomplete="off"
+                                   placeholder="Type to select Supplier Name..." />
+                        </div>
+                        <div class="col" ng-if="false">
+                            <select class="custom-select custom-select-sm" name="STATUS_TYPE"
+                                    data-placeholder="Select Status"
+                                    ng-model="InvoiceSearch.STATUS_IDS"
+                                    ng-options="IS.ID  as IS.NAME for IS in (INVOICE_STATUS)">
+                                <option value="">- Select Status -</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block">Invoice Date</label>
+                                <div id="reporInvrangetab1" class="form-control form-control-sm">
+                                    <i class="fa fa-calendar mt-1"></i>&nbsp;
+                                    <span class="mt-1">{{InvoiceSearch.INVOICE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">   
+                            <div class="form-group">
+                                <label class="d-block">Due Date</label>
+                                <div id="reportduedaterangetab1" class="form-control form-control-sm">
+                                    <i class="fa fa-calendar mt-1"></i>&nbsp;
+                                    <span class="mt-1">{{InvoiceSearch.DUE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                            <label class="d-block">Branch Name</label>
+                            <select class="custom-select custom-select-sm" name="BRN_LG"
+                                    data-placeholder="Select Status"
+                                    ng-change="GetIntegrationDetails()"
+                                    ng-model="InvoiceSearch.BRANCH_LOGIN_ID"
+                                    ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <button name="submit"
+                                        type="submit"
+                                        class="btn btn-sm btn-wenodo"
+                                        click-once
+                                        ng-click="GET_XERO_INVOICES(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC,1)">
+                                    Search
+                                </button>
+                                <button class="btn btn-sm btn-w-default"
+                                        ng-click="RESET_XERO_INVOICES_FILTER(1)">
+                                    Reset
+                                </button>
+                                <button ng-show="false" type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel"><i class="far fa-file-excel"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive custom-scrollbar height-49vh">
+                    <div class="text-center" ng-show="XERO_INVOICES_LIST.length==0" empty-grid></div>
+                    <table class="table table-head-fixed table-striped table-hover mb-0 compact_table" ng-show="XERO_INVOICES_LIST.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th width="3%">
+                                    <span class="bigcheck">
+                                        <label class="bigcheck mb-0">
+                                            <input type="checkbox" class="bigcheck" ng-change="SET_CHECKBOX_ALL()" ng-model="InvoiceSearch.IS_ALL_SELECTED" id="Check_All" />
+                                            <span class="bigcheck-target"></span>
+                                        </label>
+                                    </span>
+                                </th>
+                                <th width="3%"></th>
+                                <th ng-repeat="HL in HEADER_LIST" ng-class="HL.CLASS_NAME" ng-click="HL.IS_SORT_ALLOW?GET_XERO_INVOICES(1,HL.ID,!SORT_ORDER_NO_ASCDESC,1):''" class="text-nowrap"> <a class="text-bold"> {{HL.NAME}} <i class="far " ng-show="HL.ID==SORT_COLUMN_NO && HL.IS_SORT_ALLOW" ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC,'fa-angle-up':SORT_ORDER_NO_ASCDESC}"></i> </a></th>
+                                <th width="6%" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="XIL in XERO_INVOICES_LIST" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td>
+                                    <span class="bigcheck">
+                                        <label class="bigcheck mb-0" for="XeroIndex{{$index}}">
+                                            <input type="checkbox" class="bigcheck" ng-change="SET_CHECKBOX_LINE(XIL)" ng-model="XIL.IS_SELECTED" id="XeroIndex{{$index}}" />
+                                            <span class="bigcheck-target"></span>
+                                        </label>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-light-purple" data-toggle="tooltip" data-html="true" data-original-title="CR" ng-show="XIL.XERO_TYPE_ID==2">CR</span>
+                                    <i ng-show="XIL.XERO_TYPE_ID==1" data-toggle="tooltip" data-html="true" data-original-title="Invoice" class="far fa-file-invoice text-info"></i>
+                                </td>
+                                <td class="text-nowrap">{{XIL.INVOICENUMBER}}</td>
+                                <td>{{XIL.SUPPLIER_NAME}}</td>
+                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{XIL.INVOICE_DATE | date}}</td>
+
+                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{XIL.DUEDATE | date}}</td>
+                                <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                                <td class="text-nowrap text-right">
+                                    {{XIL.AMOUNT | number:2}}
+                                </td>
+                                <td class="text-nowrap text-right">
+                                    {{XIL.AMOUNTDUE | number:2}}
+                                </td>
+                                <td>
+                                    {{XIL.IS_RECONSILED?'Yes':'No'}}
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" ng-click="VIEW_INVOICE_DETAIL(XIL,1)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fa fa-eye"></i></button>
+                                    <button type="button" ng-show="false" class="btn btn-sm btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-footer-fixed">
+                                <td colspan="5" class="text-nowrap">Selected Invoice Amount:  <span ng-bind-html="CURRENCY_SYMBOL"></span> {{(XERO_INVOICES_SELECTED_LIST | unique:'ID' | filter:IS_SELECTED) | total:'AMOUNT' | number :2 }}</td>
+                                <td><a class="btn btn-sm btn-secondary text-white text-nowrap" ng-show="GetData" click-once ng-click="GET_XERO_INVOICES_LAZY_LOAD()">{{VIEWMORERECORD}}</a></td>
+                                <td class="text-bold text-right">Total</td>
+                                <td class="text-bold text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{(XERO_TOTAL_AMOUNT)  | number:2}}</td>
+                                <td class="text-bold text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{(TOTAL_DUE_AMOUNT)  | number:2}}</td>
+                                <td class="text-center table-footer-fixed" colspan="8">
+
+                                    <div class="form-inline float-right">
+                                        <label class="d-block mr-2">Show Records</label>
+                                        <select class="custom-select custom-select-sm w-50px" name="STATUS_TYPE"
+                                                data-placeholder="Show Records"
+                                                ng-model="InvoiceSearch.PAGE_SIZE"
+                                                ng-change="GET_XERO_INVOICES(1,SORT_COLUMN_NO, SORT_ORDER_NO_ASCDESC,1)"
+                                                ng-options="PA.ID  as PA.NAME for PA in (PAGE_ARRAY_LIST)"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white py-0">
+                <div class="form-group mb-0" ng-show="CheckSubModuleAccess(56)">
+                    <a ng-click="SCHEDULE_CLICK_FY()" class="btn btn-sm btn-wenodo">
+                        Schedule Payments
+                        ({{(XERO_INVOICES_SELECTED_LIST | unique:'ID' | filter:IS_SELECTED).length}})
+                    </a>
+                    <button ng-click="RESET_SCHEDULE_CLICK()" type="button" class="btn btn-sm btn-w-default">Reset Invoice Selection</button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" ng-class="{'show active':TAB_FLAG==2}" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
+            <div class="card-body pt-0">
+                <form>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label class="d-block text-nowrap">Invoice #</label>
+                                <input type="text"
+                                       class="form-control form-control-sm"
+                                       placeholder="Invoice #"
+                                       ng-model="InvoiceSearch.SHDL_INVOICE_NO" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group" id="AddCustomScroll_SHD">
+                                <label class="d-block text-nowrap">Supplier Name</label>
+                                <input type="text" name="SUPPLIER_NAME_BOX"
+                                       ng-model="InvoiceSearch.SHDL_SUPPLIER_NAME"
+                                       ng-change="SetValues(Supplier,$index)"
+                                       uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIER_LIST | filter:$viewValue"
+                                       typeahead-loading="loading" typeahead-no-results="noResults"
+                                       class="form-control form-control-sm" autocomplete="off"
+                                       placeholder="Type to select Supplier Name..." />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block text-nowrap">Status</label>
+                                <select class="custom-select custom-select-sm" name="STATUS_TYPE"
+                                        data-placeholder="Select Status"
+                                        ng-model="InvoiceSearch.SHDL_STATUS_IDS"
+                                        ng-options="IS.ID  as IS.NAME for IS in (SCHEDULES_STATUS)">
+                                    <option value="">- Select -</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block text-nowrap">Invoice Date</label>
+                                <div id="reporShdltrange" class="form-control form-control-sm text-xs p-1">
+                                    <i class="fa fa-calendar mt-1"></i>&nbsp;
+                                    <span class="mt-1 text-nowrap">{{InvoiceSearch.INVOICE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block text-nowrap">Due Date</label>
+                                <div id="reportShdlduedaterange" class="form-control form-control-sm text-xs p-1">
+                                    <i class="fa fa-calendar mt-1"></i>&nbsp;
+                                    <span class="mt-1 text-nowrap">{{InvoiceSearch.DUE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="d-block text-nowrap">Schedule Date</label>
+                                <div id="reportShdlScheduledaterange" class="form-control form-control-sm text-xs p-1">
+                                    <i class="fa fa-calendar mt-1"></i>&nbsp;
+                                    <span class="mt-1 text-nowrap">{{InvoiceSearch.SCHEDULE_DATE_TEXT}} </span> <i class="fa fa-sort float-right mt-1"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                            <label class="d-block">Branch Name</label>
+                            <select class="custom-select custom-select-sm" name="BRN_LG"
+                                    data-placeholder="Select Status"
+                                    ng-model="InvoiceSearch.SHDL_BRANCH_LOGIN_ID"
+                                    ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-group">
+                                <label class="d-block">&nbsp;</label>
+                                <button name="submit" type="submit" class="btn btn-sm btn-wenodo"
+                                        click-once
+                                        ng-click="GET_SHDL_XERO_INVOICES(1,SORT_SHD_COLUMN_NO,SORT_ORDER_NO_ASCDESC_SHD)">
+                                    Search
+                                </button>
+                                <button class="btn btn-sm btn-w-default" ng-click="RESET_SHDL_XERO_INVOICES_FILTER()">Reset</button>
+                                <button ng-show="false" type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel">
+                                    <i class="far fa-file-excel"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive custom-scrollbar height-56vh">
+                    <div class="text-center" ng-show="XERO_SHDL_INVOICES_LIST.length==0" empty-grid></div>
+                    <table class="table table-head-fixed table-striped table-hover mb-0 compact_table" ng-show="XERO_SHDL_INVOICES_LIST.length>0">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th></th>
+                                <th ng-repeat="HL in HEADER_SH_INV_LIST" ng-class="HL.CLASS_NAME"
+                                    ng-click="HL.IS_SORT_ALLOW?GET_SHDL_XERO_INVOICES(1,HL.ID,!SORT_ORDER_NO_ASCDESC_SHD):''"
+                                    class="text-nowrap">
+                                    <a class="text-bold">
+                                        {{HL.NAME}}
+                                        <i class="far " ng-show="HL.ID==SORT_SHD_COLUMN_NO && HL.IS_SORT_ALLOW" ng-class="{'fa-angle-down':!SORT_ORDER_NO_ASCDESC_SHD,'fa-angle-up':SORT_ORDER_NO_ASCDESC_SHD}"></i>
+                                    </a>
+                                </th>
+                                <th width="6%" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="XIL in XERO_SHDL_INVOICES_LIST" on-finish-render="ngRepeatFinished">
+                            <tr>
+                                <td>
+                                    <span class="badge badge-light-purple" data-toggle="tooltip" data-html="true" data-original-title="CR" ng-show="XIL.XERO_TYPE_ID==2">CR</span>
+                                    <i ng-show="XIL.XERO_TYPE_ID==1" data-toggle="tooltip" data-html="true" data-original-title="Invoice" class="far fa-file-invoice text-info"></i>
+                                </td>
+                                <td class="text-nowrap">{{XIL.INVOICENUMBER}}</td>
+                                <td>{{XIL.SUPPLIER_NAME}}</td>
+                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{XIL.INVOICE_DATE | date}}</td>
+                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{XIL.DUEDATE | date}}</td>
+                                <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                                <td class="text-nowrap text-right">{{XIL.AMOUNT | number:2}}</td>
+                                <td class="text-nowrap text-right">{{XIL.AMOUNTPAID | number:2}}</td>
+                                <td class="text-nowrap text-right">{{XIL.AMOUNTDUE | number:2}}</td>
+                                <td class="text-nowrap text-right">{{XIL.SCHEDULED_AMOUNT | number:2}}</td>
+                                <td>{{XIL.SCHEDULE_NAME}}</td>
+                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{XIL.SCHEDULE_DATE | date}}</td>
+                                <td class="text-center">
+                                    <span class="badge " ng-class="{'badge-success':XIL.SCHEDULE_STATUS_ID==37 || XIL.SCHEDULE_STATUS_ID==0 ,'badge-light-blue':XIL.SCHEDULE_STATUS_ID==38 ,'badge-light-grey':XIL.SCHEDULE_STATUS_ID==39}">
+                                        {{XIL.SCHEDULE_STATUS}}
+                                    </span>
+                                </td>
+                                <td>{{XIL.IS_RECONSILED?'Yes':'No'}}</td>
+                                <td class="text-center">
+                                    <button type="button" ng-click="VIEW_INVOICE_DETAIL(XIL,1)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fa fa-eye"></i></button>
+                                    <button type="button" ng-show="false" class="btn btn-sm btn-transparent" data-toggle="tooltip" data-html="true" data-original-title="Download"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-footer-fixed">
+                                <td colspan="5" class="text-right"><a class="btn btn-sm btn-secondary text-white" ng-show="GetShdData" click-once ng-click="GET_XERO_SHDL_INVOICES_LAZY_LOAD()">{{VIEWMORERECORD}}</a></td>
+                                <td class="text-bold text-right">Total</td>
+                                <td class="text-bold text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{XERO_INVOICE_TOTAL.TOTAL_AMOUNT  | number:2}}</td>
+                                <td></td>
+                                <td class="text-bold text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{XERO_INVOICE_TOTAL.TOTAL_AMOUNTDUE  | number:2}}</td>
+                                <td class="text-bold text-nowrap text-right"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{XERO_INVOICE_TOTAL.TOTAL_SCHEDULED_AMOUNT  | number:2}}</td>
+                                <td class="text-center" colspan="5">
+                                    <div class="form-inline float-right">
+                                        <label class="d-block mr-2">Show Records</label>
+                                        <select class="custom-select custom-select-sm w-50px" name="STATUS_TYPE"
+                                                data-placeholder="Select Status"
+                                                ng-model="InvoiceSearch.SHDL_PAGE_SIZE"
+                                                ng-change="GET_SHDL_XERO_INVOICES(1,SORT_SHD_COLUMN_NO,SORT_ORDER_NO_ASCDESC_SHD)"
+                                                ng-options="PA.ID  as PA.NAME for PA in (PAGE_ARRAY_LIST)"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" ng-show="!SCHEDULE_CLICK ">
+    <div class="card-header">
+        <h5 class="heading-text-2">Schedule Payments</h5>
+    </div>
+    <div class="card-body">
+        <form id="SchInvoiceForm" name="SchInvoiceForm" novalidate>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <div class="info-box bg-headers mb-0">
+                                    <span class="info-box-icon"><i class="fad fa-file-invoice app-text"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text semibold">Invoices</span>
+                                        <span class="info-box-number text-nowrap">
+                                            {{InvoiceSearch.TOTAL_INVOICES=(XERO_SCHEDULE_PAYMENTS_SELECTED_LIST.length)}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="info-box bg-headers mb-0">
+                                    <span class="info-box-icon"><i class="fad fa-people-carry app-text"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text semibold">Suppliers</span>
+                                        <span class="info-box-number text-nowrap">
+                                            {{InvoiceSearch.SUPPLIERS_COUNT=((XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | unique:'SUPPLIER_ID').length)}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="info-box bg-headers mb-0">
+                                    <span class="info-box-icon"><i class="fad fa-file-invoice-dollar app-text"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text semibold">Invoice Amount</span>
+                                        <span class="info-box-number text-nowrap">
+                                            <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                            <span> {{ InvoiceSearch.TOTAL_AMOUNT | number:2}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="info-box bg-headers mb-0">
+                                    <span class="info-box-icon"><i class="fad fa-sack-dollar app-text"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text semibold">Due Amount</span>
+                                        <span class="info-box-number text-nowrap">
+                                            <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                            <span> {{ InvoiceSearch.AMOUNT_DUE | number:2}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="info-box bg-headers mb-0">
+                                    <span class="info-box-icon"><i class="fad fa-hand-holding-usd app-text"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text semibold">Payment Amount</span>
+                                        <span class="info-box-number text-nowrap">
+                                            <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                            <span> {{ InvoiceSearch.PAYMENT_AMOUNT | number:2}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h6>Selected Invoices:</h6>
+                    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(-1)">
+                            <a class="nav-link " ng-class="{'active':TAB_FLAG==-1}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Invoice-wise</a>
+                        </li>
+                        <li class="nav-item" ng-click="TAB_CLICK_SHDL_FY(-2)">
+                            <a class="nav-link" ng-class="{'active':TAB_FLAG==-2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Supplier-wise</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="custom-content-below-tabContent">
+                        <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==-1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-head-fixed table-striped table-hover compact_table">
+                                        <thead class="bg-wenodo-border">
+                                            <tr>
+                                                <th width="2%">#</th>
+                                                <th class="text-nowrap">Invoice #</th>
+                                                <th class="text-nowrap">Supplier Name</th>
+                                                <th class="text-nowrap">Invoice Date</th>
+                                                <th class="text-nowrap">Due Date</th>
+                                                <th>Currency</th>
+                                                <th class="text-nowrap text-right">Invoice Amount</th>
+                                                <th class="text-nowrap text-right">Due Amount</th>
+                                                <th class="text-nowrap text-right">Scheduled Amount</th>
+                                                <th class="text-nowrap text-right w-145">Payment Amount</th>
+                                                <th class="text-center w-105">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="ISL in XERO_SCHEDULE_PAYMENTS_SELECTED_LIST track by $index" on-finish-render="ngRepeatFinished">
+                                            <tr>
+                                                <td>{{$index+1}} <span ng-show="false">{{ISL.IN_INDEX=$index+1}} </span> </td>
+                                                <td class="text-nowrap">{{ISL.INVOICENUMBER}}</td>
+                                                <td>{{ISL.SUPPLIER_NAME}}</td>
+                                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{ISL.INVOICE_DATE | date}}</td>
+                                                <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{ISL.DUEDATE | date}}</td>
+                                                <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                                                <td class="text-nowrap text-right">
+                                                    {{ISL.AMOUNT | number:2}}
+                                                </td>
+                                                <td class="text-nowrap text-right">
+                                                    {{ISL.AMOUNTDUE | number:2}}
+                                                </td>
+                                                <td class="text-nowrap text-right">
+                                                    {{ISL.ALREADY_SCHEDULED_AMOUNT | number:2}}
+                                                    <!--// remaing and scheduling not greater then-->
+                                                    <small ng-show="false"><br />{{ISL.REMAINING_SCHEDULING_AMOUNT}}</small>
+                                                </td>
+                                                <td class="text-nowrap text-right">
+                                                    <span ng-show="!IS_PARTIAL_PAYMENT_ALLOW">
+                                                        {{ISL.PAYMENT_AMOUNT | number:2}}
+                                                    </span>
+                                                    <span ng-show="IS_PARTIAL_PAYMENT_ALLOW">
+                                                        <input type="text"
+                                                               ng-required="!ISL.IS_PAY_OVER"
+                                                               name="PAYMENT_AMOUNT"
+                                                               only-digits
+                                                               class="form-control form-control-sm text-right"
+                                                               ng-model="ISL.PAYMENT_AMOUNT"
+                                                               ng-class="{'error':InvoiceForm.submitted && InvoiceForm.PAYMENT_AMOUNT{{$index}}.$error.required}" />
+                                                    </span>
+                                                    <span ng-show="false">
+                                                        {{(ISL.PAYMENT_AMOUNT>ISL.REMAINING_SCHEDULING_AMOUNT)?ISL.IS_PAY_OVER=true:ISL.IS_PAY_OVER=false}}
+                                                    </span>
+                                                    <span class="text-danger" ng-show="ISL.IS_PAY_OVER">Cannot be more than due amount.</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button type="button" ng-click="VIEW_INVOICE_DETAIL(ISL,1)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fa fa-eye"></i></button>
+                                                    <button type="button" ng-click="DELETE_INVOICE(ISL,$index)" class="btn btn-sm btn-transparent-danger" data-toggle="tooltip" data-html="true" data-original-title="Remove"><i class="fas fa-times"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot class="table-footer-fixed">
+                                            <tr>
+                                                <td colspan="6" class="text-bold text-right font-14">Total</td>
+                                                <td class="text-bold text-right text-nowrap font-14">
+                                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    <span class="semibold">{{InvoiceSearch.TOTAL_AMOUNT=(XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | total:'AMOUNT')  | number:2}}</span>
+                                                </td>
+                                                <td class="text-bold text-right text-nowrap font-14">
+                                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    <span class="semibold">{{InvoiceSearch.AMOUNT_DUE=(XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | total:'AMOUNTDUE')  | number:2}}</span>
+                                                </td>
+                                                <td class="text-bold text-right text-nowrap font-14">
+                                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    <span class="semibold">{{InvoiceSearch.ALREADY_SCHEDULED_AMOUNT=(XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | total:'ALREADY_SCHEDULED_AMOUNT')  | number:2}}</span>
+                                                </td>
+                                                <td class="text-bold text-right text-nowrap font-14">
+                                                    <span class="semibold" ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                    <span class="semibold">{{InvoiceSearch.PAYMENT_AMOUNT=(XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | total:'PAYMENT_AMOUNT')  | number:2}}</span>
+                                                </td>
+                                                <td colspan="1"></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==-2}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                            <div class="card-body p-0">
+                                <table class="table table-head-fixed table-hover compact_table" id="Cancel">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th width="2%"></th>
+                                            <th class="text-nowrap">Payee</th>
+                                            <th>Selected Invoices</th>
+                                            <th>Currency</th>
+                                            <th class="text-nowrap text-right">Selected Amount</th>
+                                            <th class="text-nowrap text-right">Total Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="SPL in SUPPLIER_VIEW_LIST">
+                                        <tr ng-click="HIDE_SHOW_FY(SPL)">
+                                            <td class="cursor-pointer">
+                                                <span ng-show="false">  {{SPL.SL_INDEX= $index; SPL.IS_VALID=false;}}</span>
+                                                <i class="far " ng-class="{'fa-chevron-down':SPL.HIDESHOW,'fa-chevron-right':!SPL.HIDESHOW}"></i>
+                                            </td>
+                                            <td>{{SPL.SUPPLIER_NAME}}</td>
+                                            <td>
+                                                {{(XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter :{SUPPLIER_ID:SPL.SUPPLIER_ID}).length}}
+                                            </td>
+                                            <td><span ng-bind-html="CURRENCY_SYMBOL"></span></td>
+                                            <td class="text-nowrap text-right">
+                                                {{SPL.SELECTED_TOTAL_AMOUNT=((XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter :{SUPPLIER_ID:SPL.SUPPLIER_ID}) | total: 'AMOUNTDUE') | number : TO_NUMBER_DECIMAL_TWO}}
+                                            </td>
+                                            <td class="text-nowrap text-right">
+                                                {{SPL.TOTAL_TOTAL_AMOUNT=((XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter :{SUPPLIER_ID:SPL.SUPPLIER_ID}) | total: 'AMOUNT') | number : TO_NUMBER_DECIMAL_TWO}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="SPL.HIDESHOW">
+                                            <td colspan="6" class="p-0">
+                                                <table class="table bg-white mb-0">
+                                                    <thead class="bg-wenodo-blue">
+                                                        <tr class="text-bold">
+                                                            <td></td>
+                                                            <td class="text-white">Invoice No.</td>
+                                                            <td class="text-white">Due Date</td>
+                                                            <td class="text-white text-right">Invoice Amount</td>
+                                                            <td class="text-white text-right">Due Amount</td>
+                                                            <td class="text-white text-right">Scheduled Amount</td>
+                                                            <td class="text-white text-right">Payment Amount</td>
+                                                            <td class="text-white text-center w-105">Action</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody ng-repeat="INL in XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter :{SUPPLIER_ID:SPL.SUPPLIER_ID}">
+                                                        <tr>
+                                                            <td width="2%"></td>
+                                                            <td class="text-nowrap">{{INL.INVOICENUMBER}}</td>
+                                                            <td class="text-nowrap"><i class="fal fa-calendar-alt text-blue"></i> {{INL.DUEDATE | date }}</td>
+                                                            <td class="text-nowrap text-right">{{INL.AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}</td>
+                                                            <td class="text-nowrap text-right">{{INL.AMOUNTDUE | number : TO_NUMBER_DECIMAL_TWO}}</td>
+                                                            <td class="text-nowrap text-right">
+                                                                {{INL.ALREADY_SCHEDULED_AMOUNT | number : TO_NUMBER_DECIMAL_TWO}}
+                                                            </td>
+                                                            <td class="text-nowrap text-right">
+                                                                <span ng-show="!IS_PARTIAL_PAYMENT_ALLOW">
+                                                                    {{INL.PAYMENT_AMOUNT | number:2}}
+                                                                </span>
+                                                                <span ng-show="IS_PARTIAL_PAYMENT_ALLOW">
+                                                                    <input type="text"
+                                                                           ng-required="!INL.IS_PAY_OVER"
+                                                                           name="PAYMENT_AMOUNT{{SPL.SL_INDEX}}{{$index}}"
+                                                                           only-digits
+                                                                           class="form-control form-control-sm"
+                                                                           ng-model="INL.PAYMENT_AMOUNT"
+                                                                           ng-class="{'error':InvoiceForm.submitted && InvoiceForm.PAYMENT_AMOUNT{{SPL.SL_INDEX}}{{$index}}.$error.required}" />
+                                                                </span>
+                                                                <span class="text-danger" ng-show="INL.IS_PAY_OVER">Cannot be more than due amount.</span>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <button type="button" ng-click="VIEW_INVOICE_DETAIL(INL,1)" class="btn btn-sm btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="View"><i class="fa fa-eye"></i></button>
+                                                                <button type="button" ng-click="DELETE_INVOICE(INL,$index,2,SPL)" class="btn btn-sm btn-transparent-danger" data-toggle="tooltip" data-html="true" data-original-title="Remove"><i class="fas fa-times"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td class="text-bold text-right" colspan="3">Total</td>
+                                                            <td class="text-bold text-nowrap text-right">
+                                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                                <span class="semibold">
+                                                                    {{INL.TOTAL_AMOUNT=((XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter :{SUPPLIER_ID:SPL.SUPPLIER_ID}) | total: 'AMOUNT') | number : TO_NUMBER_DECIMAL_TWO}}
+                                                                </span>
+                                                            </td>
+
+                                                            <td class="text-bold text-nowrap text-right">
+                                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                                {{INL.AMOUNT_DUE=((XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter :{SUPPLIER_ID:SPL.SUPPLIER_ID}) | total: 'AMOUNTDUE') | number : TO_NUMBER_DECIMAL_TWO}}
+                                                            </td>
+                                                            <td class="text-bold text-nowrap text-right">
+                                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                                {{INL.ALREADY_SCHEDULED_AMOUNT=((XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter :{SUPPLIER_ID:SPL.SUPPLIER_ID}) | total: 'ALREADY_SCHEDULED_AMOUNT') | number : TO_NUMBER_DECIMAL_TWO}}
+                                                            </td>
+                                                            <td class="text-bold text-nowrap text-right">
+                                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                                {{INL.PAYMENT_AMOUNT=((XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter :{SUPPLIER_ID:SPL.SUPPLIER_ID}) | total: 'PAYMENT_AMOUNT') | number : TO_NUMBER_DECIMAL_TWO}}
+                                                            </td>
+                                                            <td></td>
+
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-bold text-right" colspan="4">Total</td>
+                                            <td class="text-bold text-nowrap text-right" ng-show="false">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                <span class="semibold">{{InvoiceSearch.TOTAL_AMOUNT | number:2}}</span>
+                                            </td>
+                                            <td class="text-bold text-nowrap text-right" ng-show="false">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                {{InvoiceSearch.AMOUNT_DUE | number : TO_NUMBER_DECIMAL_TWO}}
+                                            </td>
+                                            <td class="text-bold text-nowrap text-right">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                {{InvoiceSearch.AMOUNT_DUE | number : TO_NUMBER_DECIMAL_TWO}}
+                                            </td>
+                                            <td class="text-bold text-nowrap text-right">
+                                                <span ng-bind-html="CURRENCY_SYMBOL"></span>
+                                                {{(XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | total: 'AMOUNT') | number : TO_NUMBER_DECIMAL_TWO}}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border card-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Schedule Name  <span class="text-danger">*</span></label>
+                                    <input type="text"
+                                           class="form-control form-control-sm"
+                                           name="SCHEDULE_NAME"
+                                           required
+                                           ng-class="{'error':SchInvoiceForm.submitted && SchInvoiceForm.SCHEDULE_NAME.$error.required}"
+                                           ng-model="InvoiceSearch.SCHEDULE_NAME" maxlength="100">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Date  <span class="text-danger">*</span></label>
+                                    <input type="text"
+                                           class="form-control form-control-sm DateInputLoadStartForm"
+                                           name="PAYMENT_DATE"
+                                           required
+                                           autocomplete="off"
+                                           readonly
+                                           ng-class="{'error':SchInvoiceForm.submitted && SchInvoiceForm.PAYMENT_DATE.$error.required}"
+                                           ng-model="InvoiceSearch.PAYMENT_DATE">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Comments</label>
+                                <textarea class="form-control form-control-sm"
+                                          rows="6"
+                                          placeholder="Your Comments ..."
+                                          name="COMMENTS"
+                                          maxlength="2000"
+                                          ng-model="InvoiceSearch.COMMENT"></textarea>
+                                <span class="d-block text-gray font-12 text-xs semibold" maxlength="2000">{{2000-InvoiceSearch.COMMENT.length}} characters remaining</span>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <table class="table table-head-fixed table-striped compact_table">
+                                <thead class="bg-wenodo-border">
+                                    <tr>
+                                        <th>Select Approver</th>
+                                        <th width="10%">Order</th>
+                                        <th width="25%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="Al in APPROVER_LIST" on-finish-render="ngRepeatFinished">
+                                    <tr>
+                                        <td>
+                                            <input type="text"
+                                                   name="APPROVER_BOX{{$index}}"
+                                                   ng-model="Al.APPROVER_NAME"
+                                                   ng-change="SetValues(Supplier,$index)"
+                                                   uib-typeahead="AP.NAME  for AP in PYMNT_APPROVERS_LIST | filter:$viewValue"
+                                                   typeahead-loading="loading" typeahead-no-results="noResults"
+                                                   class="form-control form-control-sm" autocomplete="off"
+                                                   placeholder="Type to select Approver Name..."
+                                                   required
+                                                   ng-class="{'error':SchInvoiceForm.submitted && SchInvoiceForm.APPROVER_BOX{{$index}}.$error.required}" />
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   name="APP_SORT_SEQUENCE{{$index}}"
+                                                   class="form-control form-control-sm"
+                                                   only-numbers
+                                                   maxlength="2"
+                                                   required
+                                                   ng-model="Al.APP_SORT_SEQUENCE"
+                                                   ng-class="{'error':SchInvoiceForm.submitted && SchInvoiceForm.APP_SORT_SEQUENCE{{$index}}.$error.required}" />
+                                        </td>
+                                        <td>
+                                            <div class="col-auto">
+                                                <div class="form-group mb-0">
+                                                    <button ng-click="REMOVE_APPROVER_FY(Al,$index)" ng-show="APPROVER_LIST.length>1" type="button" class="btn btn-sm btn-transparent-danger float-right ml-2" data-toggle="tooltip" data-html="true" data-original-title="Delete"><i class="far fa-times"></i></button>
+                                                    <button ng-click="ADD_APPROVER_FY(Al)" ng-show="$last" type="button" class="btn btn-sm btn-transparent-wenodo float-right" data-toggle="tooltip" data-html="true" data-original-title="Add More Approver"><i class="far fa-plus"></i></button>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div data-ng-show="SchInvoiceForm.submitted && SchInvoiceForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+                <div ng-repeat="ISL in XERO_SCHEDULE_PAYMENTS_SELECTED_LIST | filter : {IS_PAY_OVER:true}">
+                    Error in Line No.{{ISL.IN_INDEX}}
+                </div>
+                <div id="divInvlidUser" class="hideshowdiv" data-ng-show="SchInvoiceForm.$valid">
+                    <span class="help-block">{{InvalidUser}}</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer bg-white py-0">
+        <button type="button" class="btn btn-sm btn-wenodo" ng-show="XERO_SCHEDULE_PAYMENTS_SELECTED_LIST.length>0" click-once ng-click="INS_PYMNT_PAYMENT_SCHEDULES()">Submit</button>
+        <button type="button" ng-click="SCHEDULE_CLICK_ADD_MORE()" class="btn btn-sm btn-w-default" data-dismiss="modal">Add more..</button>
+        <button type="button" ng-click="SCHEDULE_CLICK_CANCEL()" class="btn btn-sm btn-w-default" data-dismiss="modal">Cancel</button>
+    </div>
+</div>
+<div class="modal fade show" id="Reference_ID">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Request Generated</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar text-center">
+                Your Reference ID is <span class="text-bold d-block font-18">12345</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">$('.select2').select2()</script>

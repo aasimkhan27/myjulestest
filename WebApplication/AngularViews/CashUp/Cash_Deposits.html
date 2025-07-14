@@ -1,0 +1,319 @@
+﻿<div class="card-header">
+    <h5 class="card-title">Deposits</h5>
+    <div class="card-tools">
+        <ul class="nav nav-pills">
+            <li class="nav-item mr-1"><a class="btn btn-wenodo text-white" data-toggle="modal" data-target="#Add_Deposits">Add</a></li>
+            <li class="nav-item"><a class="btn btn-wenodo text-white" data-toggle="modal" ng-click="REDIRECTION_PAGE('DepositUpload');">Upload</a></li>
+        </ul>
+    </div>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Branch</label>
+                <select name="BRANCH" class="custom-select"
+                        ng-options="BRL.BRANCH_ID as BRL.BRANCH_NAME for BRL in BRANCH_LIST"
+                        ng-model="DepositeSearch.FILTER_BRANCH_ID" style=""></select>
+            </div>
+        </div>
+
+        <!--<div class="col">
+        <div class="form-group">
+            <label class="d-block">Date</label>
+            <input type="text"
+                   class="form-control dateinputOpenDate"
+                   name="datecontrol"
+                   autocomplete="off"
+                   ng-model="DepositeSearch.FILTER_DATE"
+                   ng-value="DepositeSearch.FILTER_DATE | date" />
+        </div>
+    </div>-->
+
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Invoice #</label>
+                <input type="text"
+                       class="form-control" placeholder="Enter Invoice number"
+                       ng-model="DepositeSearch.FILTER_INVOICENUMBER" />
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Deposit Reference</label>
+                <input type="text"
+                       class="form-control" placeholder="Enter Deposit Reference"
+                       ng-model="DepositeSearch.FILTER_DEPOSIT_REFERENCE" />
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Name of Payee</label>
+                <input type="text"
+                       class="form-control" placeholder="Enter Name of Payee"
+                       ng-model="DepositeSearch.FILTER_PAYEE_NAME" />
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label class="d-block">Payment Method</label>
+                <select class="custom-select" placeholder="Enter Payment Method"
+                        ng-options="Payment.PAYMENT_METHOD_ID as Payment.METHOD_NAME for Payment in PAYMENT_METHODS"
+                        ng-model="DepositeSearch.FILTER_PAYMENT_METHOD_ID">
+                    <option value="">Select</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="form-group">
+                <label class="d-block">&nbsp;</label>
+                <button type="button" ng-click="GET_DEPOSITS(1)" class="btn btn-wenodo">Search</button>
+                <button type="button" ng-click="RESET_GET_DEPOSITS()" class="btn btn-w-default">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div class="text-center" ng-show="DEPOSITS_LIST.length==0" empty-grid>
+    </div>
+    <div class="table-responsive custom-scrollbar height-67vh" ng-show="DEPOSITS_LIST.length>0">
+        <table class="table table-hover table-striped table-head-fixed">
+            <thead>
+                <tr>
+                    <th style="width:10%;">Invoice #</th>
+                    <th style="width:12%;">Deposit Reference</th>
+                    <th class="text-right" style="width:10%;">Deposit Amount</th>
+                  
+                    <th style="width:10%; padding-left: 15px;">Deposit Date</th>
+                    <th style="width:12%;">Payment Method</th>
+                    <th style="width:10%;">Name Of Payee</th>
+                    <th style="width:10%;">Note</th>
+                    <th style="width:10%;">Redeem</th>
+                    <th width="3%" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="DL in DEPOSITS_LIST">
+                    <td style="width:10%;">{{DL.CHECK_NO}}</td>
+                    <td style="width:12%;">{{DL.CODE}}</td>
+                    <td class="text-right" style="width:10%;"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{DL.VALUE | number: 2}} </td>
+                    
+                    <td style="width:10%; padding-left: 15px;"><i ng-show="DL.VALIDITY_DATE !=null" class="far fa-calendar-alt"></i> {{DL.VALIDITY_DATE | date}}</td>
+                    <td style="width:12%;"> {{DL.PAYMENT_METHOD_NAME}}</td>
+                    <td style="width:10%;"> {{DL.CUSTOMER_NAME}}</td>
+                    <td style="width:10%;"> {{DL.NOTE}}</td>
+                    <!--<td>{{DL.IS_REDEMMED==1?'Yes':'No' }}</td>-->
+                    <td style="width:10%;">{{(DL.IS_REDEMMED==1 || (DL.REMAINING_VALUE < DL.VALUE))?'Yes':'No' }}</td>
+                    <td class="text-center">
+                        <button ng-show="!DL.IS_CANCELLED && DL.VALUE_REDEMED==0" type="button" class="btn btn-sm btn-danger"
+                                ng-click="ADD_AMT_CANCEL(DL)">
+                            Cancel
+                        </button>
+                        <span ng-show="DL.IS_CANCELLED==true" style="color: #fff; background-color: #dbdbdb; box-shadow: none; display: inline-block; border: 2px solid #e6e6e6 !important; font-size: 12px; padding: 7px 11px; -webkit-border-radius: 3px; border-radius: 3px; color: #000; text-align: center; -webkit-transition: all .3s; -o-transition: all .3s; transition: all .3s; font-weight: 600;">Cancelled</span>
+                         <span ng-show="(DL.IS_REDEMMED==1 || (DL.REMAINING_VALUE < DL.VALUE))?true:false" style="color: #fff; background-color: #dbdbdb; box-shadow: none; display: inline-block; border: 2px solid #e6e6e6 !important; font-size: 12px; padding: 7px 8px; -webkit-border-radius: 3px; border-radius: 3px; color: #11a345; text-align: center; -webkit-transition: all .3s; -o-transition: all .3s; transition: all .3s; font-weight: 600;">Redeemed</span>
+
+                        <!--<button ng-show="DL.IS_CANCELLED==true" type="button" class="btn btn-sm btn-dark" style="background-color:#d4cdcd8f; color: #000;cursor:none;">
+                            Cancelled
+                        </button>-->
+                        <!--<span ng-show="DL.IS_CANCELLED==true">Cancelled</span>-->
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8" class="text-center table-footer-fixed" ng-show="GetData">
+                        <a class="btn btn-secondary text-white" click-once ng-click="LAZY_GET_DEPOSITS();">{{VIEWMORERECORD}}</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="CancelDepositForm" aria-modal="true">
+    <form id="CancelDepositForm" name="CancelDepositForm" novalidate>
+        <div class="modal-dialog" id="CancelDepositForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Cancellation ({{SELECTED_LINE.CODE}})</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="CANCEL_RESET();">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Cancellation Amount <span class="text-danger">*</span> <small>(Deposit Amount  <span ng-bind-html="CURRENCY_SYMBOL"></span> <span class="bold">{{SELECTED_LINE.VALUE | number:2}}</span> )</small> </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="SELECTED_LINE.CANCEL_AMT"
+                                       name="CANCEL_AMT" placeholder="Enter Cancellation Amount"
+                                       required only-digits ng-blur="CHECK_CANCEL_AMOUNT(SELECTED_LINE.CANCEL_AMT);"
+                                       ng-class="{'error':CancelDepositForm.submitted && CancelDepositForm.CANCEL_AMT.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Cancellation Comments <span class="text-danger">*</span></label>
+                                <textarea class="form-control"
+                                          rows="3"
+                                          name="CANCEL_COMMENTS"
+                                          ng-model="SELECTED_LINE.CANCEL_NOTES"
+                                          required placeholder="Enter Cancellation Comments"  style="font-size: 13px;"
+                                          ng-class="{'error':CancelDepositForm.submitted && CancelDepositForm.CANCEL_COMMENTS.$error.required}">
+                                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div data-ng-show="CancelDepositForm.submitted && CancelDepositForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                        <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CancelDepositForm.$valid">
+                            <span class="help-block">{{InvalidUser}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="CANCEL_ENTRY_DEPOSIT_DECLARATION()" class="btn btn-wenodo">Save</button>
+                    <button type="button" class="btn btn-w-default" ng-click="CANCEL_RESET();" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="Add_Deposits" aria-modal="true">
+    <form id="AddDepositForm" name="AddDepositForm" novalidate>
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Deposits</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="RESET_ADDCANCEL()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Branch</label>
+                                <select name="BRANCH" class="custom-select"
+                                        ng-options="BRL.BRANCH_ID as BRL.BRANCH_NAME for BRL in BRANCH_LIST"
+                                        ng-model="DepositeSearch.BRANCH_ID"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-bottom"></div>
+
+                    <div class="row my-3">
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="check" class="text-nowrap">Invoice # <span class="text-danger">*</span></label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="INVOICE_NO" placeholder="Enter Invoice number"
+                                       ng-model="DepositeSearch.CHECK_NO"
+                                       required
+                                       ng-class="{'error':AddDepositForm.submitted && AddDepositForm.INVOICE_NO.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="deposit" class="text-nowrap">Deposit Reference <span class="text-danger">*</span></label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="CODE"
+                                       ng-model="DepositeSearch.CODE" placeholder="Enter Deposit Reference"
+                                       required ng-blur="UPLOAD_DEPOSITE_CHECK();"
+                                       ng-class="{'error':AddDepositForm.submitted && AddDepositForm.CODE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="value" class="text-nowrap">Amount  <span class="text-danger">*</span></label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="VALUE"
+                                       ng-model="DepositeSearch.VALUE" placeholder="Enter Amount"
+                                       oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/^(-)|-+/g,'$1').replace(/^([^.]*\.)|\.+/g, '$1');"
+                                       ng-blur="CheckDecimal(VISS)"
+                                       required
+                                       ng-class="{'error':AddDepositForm.submitted && AddDepositForm.VALUE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="date" class="text-nowrap">Date</label>
+                                <input type="text"
+                                       class="form-control dateinputOpenDate"
+                                       name="datecontrol"
+                                       autocomplete="off" placeholder="Enter Date"
+                                       ng-model="DepositeSearch.VALIDITY_DATE"
+                                       ng-value="DepositeSearch.VALIDITY_DATE | date" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="text-nowrap">Payment Method  <span class="text-danger">*</span></label>
+                                <select class="custom-select"
+                                        ng-options="Payment.PAYMENT_METHOD_ID as Payment.METHOD_NAME for Payment in PAYMENT_METHODS"
+                                        ng-model="DepositeSearch.PAYMENT_METHOD_ID"
+                                        name="PAYMENT_METHOD_ID" 
+                                        required 
+                                        ng-class="{'error':AddDepositForm.submitted && AddDepositForm.PAYMENT_METHOD_ID.$error.required}">
+                                    <option value="">Select</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="nameofpayee" class="text-nowrap">Name Of Payee</label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="CUSTOMER_NAME" placeholder="Enter Name of Payee"
+                                       ng-model="DepositeSearch.CUSTOMER_NAME" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="note" class="text-nowrap">Note</label>
+                                <div class="d-flex">
+                                    <input type="text"
+                                           name="NOTE"
+                                           class="form-control" placeholder="Enter Note"
+                                           ng-model="DepositeSearch.NOTE" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div data-ng-show="AddDepositForm.submitted && AddDepositForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                        <div id="divInvlidUser" class="hideshowdiv" data-ng-show="AddDepositForm.$valid">
+                            <span class="help-block">{{InvalidUser}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group text-nowrap">
+                        <button type="button"
+                                ng-click="INSERT_ENTRY_DEPOSIT_DECLARATION()"
+                                class="btn btn-wenodo">
+                            Save & close
+                        </button>
+                        <button type="button"
+                                ng-click="INSERT_ENTRY_DEPOSIT_DECLARATION(1)"
+                                class="btn btn-w-default">
+                            Save & Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

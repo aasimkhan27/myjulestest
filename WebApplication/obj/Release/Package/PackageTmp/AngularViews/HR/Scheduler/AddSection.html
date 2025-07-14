@@ -1,0 +1,100 @@
+﻿<div class="card-header">
+    <h5 class="card-title mt-1">{{SECTION_HEADER_TEXT}}</h5>
+    <div class="card-tools ml-auto">
+        <button class="btn btn-tool py-0" ng-click="closeNav5(SectionForm)">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-12">
+            <label>Section Name:*</label>
+            <label class="float-right">Color</label>
+            <div class="input-group d-flex mb-3">
+                <input type="text" class="form-control" name="SECTION_NAME_ROTA" required
+                       ng-model="Section_Week_Search.SECTION_NAME_ROTA"
+                       autocomplete="off"
+                       placeholder="Enter Section Name..."
+                       ng-class="{'error':SectionForm.submitted && SectionForm.SECTION_NAME_ROTA.$error.required}">
+                <div ng-init="$parent.ColorPicker(undefined,true,'pick-a-color12');">
+                    <input type="text"
+                           class="form-control pick-a-color12 popup-left"
+                           maxlength="250"
+                           id="SECTION_COLOR"
+                           autocomplete="off"
+                           name="FIELD_NAME"
+                           ng-model="Section_Week_Search.SECTION_COLOR">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Location:*</label>
+                <select class="form-control select2" style="width: 100%;" placeholder="Select Location..."
+                        name="LOCATION_ID"
+                        ng-model="Section_Week_Search.LOCATION_ID"
+                        ng-options="LO.LOCATION_ID as LO.LOCATION_NAME for LO in LOCATION"
+                        ng-change="ADMIN_GET_BRANCH();"
+                        required
+                        ng-disabled="SECTION_EDIT_FLAG"
+                        ng-class="{'error':SectionForm.submitted && SectionForm.LOCATION_ID.$error.required}">
+                    <option value="">--SELECT--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Branch:*</label>
+                <select class="form-control select2" style="width: 100%;" placeholder="Select Branch..."
+                        name="BRANCH_ID_ROTA"
+                        ng-model="Section_Week_Search.BRANCH_ID_ROTA"
+                        ng-options="BR.BRANCH_ID as BR.BRANCH_NAME for BR in BRANCH_ADD_LIST"
+                        required
+                        ng-disabled="SECTION_EDIT_FLAG"
+                        ng-class="{'error':SectionForm.submitted && SectionForm.BRANCH_ID_ROTA.$error.required}">
+                    <option value="">--SELECT--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Department:*</label>
+                <select class="form-control select2" style="width: 100%;" placeholder="Select Department..."
+                        name="DEPARTMENT_ID_ROTA"
+                        ng-model="Section_Week_Search.DEPARTMENT_ID_ROTA"
+                        ng-options="DL.TABLE_ID as (DL.DISPLAY_TEXT | uppercase) for DL in DEPARTMENT_LIST "
+                        required
+                        ng-disabled="SECTION_EDIT_FLAG"
+                        ng-class="{'error':SectionForm.submitted && SectionForm.DEPARTMENT_ID_ROTA.$error.required}">
+                    <option value="">--SELECT--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox" ng-class="{'error':SectionForm.submitted && SectionForm.ACTIVE_ROTA_CHK.$error.required}">
+                    <input class="custom-control-input" type="checkbox" name="ACTIVE_ROTA_CHK" id="ACTIVE_ROTA"
+                           ng-model="Section_Week_Search.ACTIVE_ROTA"
+                           ng-required="Section_Week_Search.SECTION_ID_ROTA=='' || Section_Week_Search.SECTION_ID_ROTA==null"
+                           ng-checked="Section_Week_Search.ACTIVE_ROTA"
+                           ng-disabled="SECTION_EDIT_FLAG">
+                    <label for="ACTIVE_ROTA" class="custom-control-label">Active <span ng-show="Section_Week_Search.SECTION_ID_ROTA=='' || Section_Week_Search.SECTION_ID_ROTA==null">*</span></label>
+                </div>
+                <label class="custom-control">
+                <span ng-show="false" class="font-10">All Shifts, which are associated with this section  will be deactivated.</span>
+                <span ng-show="SECTION_EDIT_FLAG" class="font-10"> Section cannot be disabled due to active shift(s).</span>
+                </label>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //$('#dropdown option')[0].remove();
+    $("#dropdown").select2({
+        allowClear: true
+    });
+    
+</script>

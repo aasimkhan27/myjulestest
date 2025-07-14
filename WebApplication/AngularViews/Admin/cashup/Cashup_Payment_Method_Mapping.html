@@ -1,0 +1,80 @@
+﻿<form id="CPMMForm" name="CPMMForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Integration System</label>
+                    <select class="custom-select"
+                            name="INTEGRATION_SYSTEM_ID"
+                            ng-model="INTEGRATION_SYSTEM_ID"
+                            ng-options="IL.INTEGRATION_SYSTEM_ID as IL.SYSTEM_NAME for IL in INTEGRATIONSYSTEM_LIST "
+                            required
+                            ng-change="GET_EPOS_PAYMENT_METHOD_FOR_MAPPING()"
+                            ng-class="{'error':CPMMForm.submitted && CPMMForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select-</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="col-md-12">
+                <div data-ng-show="PDQForm.submitted && PDQForm.$invalid" class="form-group has-error errormessage form-group has-error errormessage badge badge-light-red w-100 p-3">
+                    <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body mb-0">
+        <div class="text-center" ng-show="EPOS_PAYMENT_LIST.length==0" empty-grid></div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="EPOS_PAYMENT_LIST.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>EPOS Payment Name</th>
+                        <th>EPOS Amount</th>
+                        <th>Payment Method</th>
+                        <th class="text-center" width="5%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="EPOSLIST in EPOS_PAYMENT_LIST | filter:{IS_DELETED:0}" >
+                    <tr>
+                        <td>{{EPOSLIST.EPOS_PAYMENT_NAME}} </td>
+                        <td>
+                           
+                            <select class="custom-select"
+                                    name="CASHUP_EPOS_AMOUNT_FLAG"
+                                    ng-model="EPOSLIST.EPOS_AMOUNT_FLAG"
+                                    ng-options="AL.EPOS_AMOUNT_FLAG as AL.Name for AL in EPOS_AMOUNT_LIST "
+                                    required>                               
+                                <option value="null">-</option>
+                                <!--<option value="-1"><0</option>
+                                <option value="1">>0</option>-->
+                            </select>
+                        </td>
+                        <td>
+                            <select class="custom-select"
+                                    name="CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID"
+                                    ng-model="EPOSLIST.CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID"
+                                    ng-options="PL.CASHUP_PAYMENT_METHOD_DISPLAY_NAME_ID as PL.DISPLAY_NAME for PL in PAYMENTMETHOD_NAMES_LIST "
+                                    required>
+                                <!--   ng-class="{'error':CPMMForm.submitted && CPMMForm.CUSTOMER_ID.$error.required}" -->
+                                <option value="">- Please Select-</option>
+                            </select>
+                        </td>
+                        <td class="text-center"><a class="btn btn-transparent text-danger" ng-click="DeleteLine(EPOS_PAYMENT_LIST, $index,EPOSLIST)"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12" ng-show="EPOS_PAYMENT_LIST.length>0">
+            <div>
+                <div class="form-group">
+                    <button click-once ng-click="INS_UPD_EPOS_PAYMENT_METHOD_MAPPING();" class="btn btn-wenodo">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>

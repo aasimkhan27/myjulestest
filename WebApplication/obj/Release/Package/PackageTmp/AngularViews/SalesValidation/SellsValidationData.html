@@ -1,0 +1,51 @@
+﻿<form id="SalesValidationForm" name="SalesValidationForm" novalidate>
+    <button ng-click="BACK_TO_SALES();" class="btn btn-w-default">Back</button>
+
+
+    <div class="card-body">
+        <div class="text-center" ng-show="CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA.length>0">
+            <table class="table table-striped compact_table">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Invoice Number</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Unit Amount</th>
+                        <th>Tax Type</th>
+                        <th>Tax Amount</th>
+                        <th>Tax Percentage</th>
+                        <th>Invoice Date</th>
+                        <th>Invoice Due Date</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody ng-repeat="CIL in CASHUP_LIST_XERO_OUTBOUND_INVOICE_DATA" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{CIL.INVOICE_NUMBER | date}}</td>
+                        <td>{{CIL.DESCRIPTION}}</td>
+                        <td>{{CIL.TYPE}}</td>
+                        <td>{{CIL.QUANTITY}}</td>
+                        <td>{{CIL.UNIT_AMOUNT}}</td>
+                        <td>{{CIL.TAX_TYPE}}</td>
+                        <td>{{CIL.TAX_AMOUNT}}</td>
+                        <td>{{CIL.TAX_PERCENTAGE}}</td>
+                        <td>{{CIL.INVOICE_DATE |  date}}</td>
+                        <td>{{CIL.DUE_DATE |  date}}</td>
+                        <td>{{CIL.STATUS}}</td>
+
+                        <td>
+                            <!--<a ng-click="OUTBOUND_INVOICE(CIL)" data-toggle="tooltip" data-html="true" data-original-title="Action"><i class="fad fa-edit fa-lg text-green"></i></a>-->
+                            <!--<a ng-click="DELETE_AREA(AL)"><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+     

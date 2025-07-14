@@ -1,0 +1,736 @@
+﻿<form novalidate id="CIReportForm" name="CIReportForm">
+    <style>
+        .overlay_loadingNew {
+            background-image: url(/E_Content/images/loading.gif);
+            background-color: #666;
+            opacity: 0.4;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+    </style>
+    <div class="box-shadow mb-5">
+            <div class="card-header">
+                <h5 class="card-title mt-3">Consolidated Report</h5>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item mr-2" ng-show="false">
+                            <div class="form-group mb-0 sitename_multi" >
+                                <label class="d-block">First Day Of Week</label>
+                                <select class="custom-select"
+                                        name="FIRST_DAY_OF_WEEK"
+                                        ng-options="FDW.ID as FDW.WEEKDAY for FDW in FIRST_DAY_OF_WEEK"
+                                        ng-model="ConsolidatedSearch.FIRST_DAY_OF_WEEK"
+                                        ng-change="CHANGE_WEEK();"
+                                        ng-class="{'error':CIReportForm.submitted && CIReportForm.FIRST_DAY_OF_WEEK.$error.required}">
+                                   
+                                </select>
+                            </div>
+                        </li>
+                        <li class="nav-item mr-2">
+                            <div class="form-group mb-0">
+                                <label class="d-block mb-0">Till Date</label>
+                                <input class="form-control input-i dateinputOpenDate_BI" id="dateinputOpenDate_BI"
+                                       type="text"
+                                       name="START_DATE"
+                                       readonly
+                                       placeholder="Select Date"
+                                       ng-model="ConsolidatedSearch.YEARLY"
+                                       ng-value="ConsolidatedSearch.YEARLY | date"
+                                       required
+                                       ng-change="GET_CONSOLIDATED_DATES(ConsolidatedSearch.YEARLY);">
+                            </div>
+                        </li>
+                        <li class="nav-item mr-2">
+                            <div class="form-group mb-0" >
+                                <label class="d-block mb-0">Week Range</label>
+                                <input class="form-control input-i"
+                                       ng-show="false"
+                                       type="text"
+                                       name=""
+                                       readonly
+                                       placeholder="Week Range"
+                                       ng-model="ConsolidatedSearch.WEEK_DATE"
+                                       ng-value="ConsolidatedSearch.WEEK_DATE">
+
+                                
+                                    <input type="text"
+                                           class="form-control week-picker font-11 bg-light-grey"
+                                           format="yy-mm-dd"
+                                           disabled="disabled"
+                                           placeholder="Select a Week">
+                            </div>
+                        </li>
+
+                        <!--<li class="nav-item mr-2">
+                            <div class="form-group mb-0">
+                                <label class="d-block text-sm">&nbsp;</label>
+                                <button ng-click="REVENUE_CONSOLIDATED_DASHBOARD();" class="btn btn-sm btn-wenodo">Submit</button>
+                            </div>
+                        </li>-->
+                        <li class="nav-item mr-2">
+                            <div class="form-group mb-0">
+                                <label class="d-block mb-0">&nbsp;</label>
+                                <button type="button" class="btn btn-sm btn-wenodo" ng-click="PRINT_PDF();" data-toggle="tooltip" data-html="true" data-original-title="Download PDF" title="Download PDF" ng-disabled="SALES_DAILY.length == 0 && COVERS_DAILY.length == 0 && SPEND_DAILY.length ==0"><i class="far fa-file-pdf"></i></button>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" id="content">
+                    <div class="overlay_loadingNew" style="display:none!important" id="BI_Loader"></div>
+                    <!--<div class="col-md-6 border-bottom" hidden><img src="{{ConsolidatedSearch.CUSTOMER_LOGO}}" class="img-fluid footer-logo" /></div>-->
+                    <div class="col-md-12 border-bottom" hidden>
+                        <ul class="nav nav-pills">
+                            <li class="nav-item mr-2">
+                                <div class="form-group">
+                                    <label class="d-block text-sm">&nbsp;</label>
+                                    <img src="{{ConsolidatedSearch.CUSTOMER_LOGO}}" class="img-fluid footer-logo" />
+                                </div>
+                            </li>
+                            <li class="nav-item mr-2 ml-auto">
+                                <!--<div class="form-group sitename_multi">
+                                    <label class="d-block text-sm">First Day Of Week</label>
+                                    <select class="custom-select"
+                                            name="FIRST_DAY_OF_WEEK"
+                                            ng-options="FDW.ID as FDW.WEEKDAY for FDW in FIRST_DAY_OF_WEEK"
+                                            ng-model="ConsolidatedSearch.FIRST_DAY_OF_WEEK"
+                                            ng-change="CREATE_DATES(ConsolidatedSearch.YEARLY);"
+                                            ng-class="{'error':CIReportForm.submitted && CIReportForm.FIRST_DAY_OF_WEEK.$error.required}">
+                                        <option value="">- Please Select Week Day-</option>
+                                    </select>
+                                </div>-->
+                            </li>
+                            <li class="nav-item mr-2">
+                                <div class="form-group">
+                                    <label class="d-block text-sm">Till Date</label>
+                                    <input class="form-control input-i dateinputOpenDate_BI"
+                                           type="text"
+                                           name="START_DATE"
+                                           readonly
+                                           placeholder="Select Date"
+                                           ng-model="ConsolidatedSearch.YEARLY"
+                                           ng-value="ConsolidatedSearch.YEARLY | date"
+                                           required
+                                           ng-change="GET_CONSOLIDATED_DATES(ConsolidatedSearch.YEARLY);"
+                                           ng-class="{'error':BIReportForm.submitted && BIReportForm.YEARLY.$error.required }">
+                                </div>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <div class="form-group">
+                                    <label class="d-block text-sm">Week Range</label>
+                                    <input class="form-control input-i"
+                                           type="text"
+                                           name=""
+                                           readonly
+                                           placeholder="Week Range"
+                                           ng-model="ConsolidatedSearch.WEEK_DATE"
+                                           ng-value="ConsolidatedSearch.WEEK_DATE">
+                                </div>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <div class="form-group">
+                                    <label class="d-block text-sm">&nbsp;</label>
+                                    <img src="../../E_Content/images/logo.png" class="img-fluid footer-logo" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr /><br />
+                    <!--DAILY DATA HTML START-->
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="SALES_DAILY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES_DAILY" ng-show="SALES_DAILY.length>0">
+                            <h6 class="font-13 mt-3">SALES - {{ConsolidatedSearch.SESSION_START_DATE | date}}(In K's)</h6>
+                            <div class="table-responsive custom-scrollbar " ng-class="{'mx-height-56' : (SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0" id="DAILY_SALES{{country.ID}}">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="sales in SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(sales);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{sales.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY | number:2}}">{{sales.CY | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.LY | number:2}}">{{sales.LY | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY_LY_DIFF | number:2}}">{{sales.CY_LY_DIFF | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.P1 | number:2}}">{{sales.P1 | number:1}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.BUDGET | number:2}}">{{sales.BUDGET | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY_BUDGET_DIFF | number:2}}">{{sales.CY_BUDGET_DIFF | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.P2 | number:2}}">{{sales.P2 | round}}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF'| thousandSuffix:2)}}</td>
+                                            <!--<td>{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'P1' | number:2)}}%</td>-->
+                                            <td class="text-right">{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF' ==0) || (SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY') ==0 ? 0 : ((SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:1}}%</td>
+                                            <td class="text-right">{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET' | thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF' | thousandSuffix:2)}}</td>
+                                            <!--<td>{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'P2' | number:2)}}%</td>-->
+                                            <td class="text-right">{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0 ?0.00: ((SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF')/(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))*100 | number:1}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="COVERS_DAILY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES_DAILY" ng-show="COVERS_DAILY.length>0">
+                            <h6 class="font-13 mt-3">COVERS - {{ConsolidatedSearch.SESSION_START_DATE | date}}</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                              <table class="table table-head-fixed table-striped consolidated-table mb-0" id="DAILY_COVERS{{country.ID}}">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="covers in COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}" on-finish-render="ngRepeatFinished">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(covers);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{covers.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY | number:0}}"> {{covers.CY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.LY | number:0}}">{{covers.LY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY_LY_DIFF | number:2}}">{{covers.CY_LY_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.P1 | number:2}}">{{covers.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.BUDGET | number:2}}">{{covers.BUDGET | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY_BUDGET_DIFF | number:2}}">{{covers.CY_BUDGET_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.P2 | number:2}}">{{covers.P2 |round}}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF') ==0 || (COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0? 0.00 : ((COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:1}}%</td>
+                                            <td class="text-right">{{(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0? 0.00 : ((COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF')/(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))*100 | number:1}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="SPEND_DAILY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES_DAILY" ng-show="SPEND_DAILY.length>0">
+                            <h6 class="font-13 mt-3">SPEND - {{ConsolidatedSearch.SESSION_START_DATE | date}}</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (SPEND_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (SPEND_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0" id="DAILY_SPEND{{country.ID}}">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="spend in SPEND_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(spend);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{spend.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY | number:2}}">{{spend.CY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.LY | number:2}}">{{spend.LY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY_LY_DIFF | number:2}}">{{spend.CY_LY_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.P1 | number:2}}">{{spend.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.BUDGET | number:2}}">{{spend.BUDGET | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY_BUDGET_DIFF | number:2}}">{{spend.CY_BUDGET_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.P2 | number:2}}">{{spend.P2 | round | round}}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{(COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')==0 ? CY=0.00 :CY=((SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')/((COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY'))) | round}}</td>
+                                            <td class="text-right">{{(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 ? LY=0.00 : LY=((SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')/((COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))) | round}}</td>
+                                            <td class="text-right">{{CY_LY_DIFF=((CY-LY) | round)}}</td>
+
+
+
+                                            <!--<td>{{(SPEND_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF' | round)}}</td>-->
+                                            <!--<td>{{CY_LY_DIFF=((SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')/((COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')))-((SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')/((COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))) | round}}</td>-->
+                                            <!--<td>{{((SPEND_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(SPEND_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:1}}%</td>-->
+                                            <td class="text-right">{{LY==0? CY_LY_DIFF=0.00 : CY_LY_DIFF=(CY_LY_DIFF/LY)*100| number:1}}%</td>
+                                            <td class="text-right">{{BUDGET=(SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET') <=0?0.00:((SALES_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')/((COVERS_DAILY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))) | round}}</td>
+                                            <td class="text-right">{{CY_BUDGET_DIFF=(CY-BUDGET | round)}}</td>
+                                            <td class="text-right">{{BUDGET<=0? 0.00:(CY_BUDGET_DIFF/BUDGET)*100 | number:1}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--DAILY DATA HTML END-->
+                    <!--WEEKLY DATA HTML START-->
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="SALES_WEEKLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="SALES_WEEKLY.length>0">
+                            <h6 class="font-13 mt-3">SALES - WTD(In K's)</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="sales in SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(sales);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{sales.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY | number:2}}">{{sales.CY | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.LY | number:2}}">{{sales.LY | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY_LY_DIFF | number:2}}">{{sales.CY_LY_DIFF | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.P1 | number:2}}">{{sales.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.BUDGET | number:2}}">{{sales.BUDGET | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY_BUDGET_DIFF | number:2}}">{{sales.CY_BUDGET_DIFF | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.P2 | number:2}}">{{sales.P2 | round}}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{CY=(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{LY=(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{CY_LY_DIFF=(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')==0 || (SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')== 0 ? 0 :  ((SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:1}}%</td>
+                                            <td class="text-right">{{(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET' | thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF' | thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')==0 ? 0.00 : ((SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF')/(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))*100 | number:1}}%</td>
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="COVERS_WEEKLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="COVERS_WEEKLY.length>0">
+                            <h6 class="font-13 mt-3">COVERS - WTD </h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="covers in COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(covers);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{covers.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY | number:0}}">{{covers.CY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.LY | number:0}}">{{covers.LY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY_LY_DIFF | number:2}}">{{covers.CY_LY_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.P1 | number:2}}">{{covers.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.BUDGET | number:2}}">{{covers.BUDGET | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY_BUDGET_DIFF | number:2}}">{{covers.CY_BUDGET_DIFF | round }}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.P2 | number:2}}">{{covers.P2 | round}}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')==0 || (COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 ? 0.00 : ((COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:1}}%</td>
+                                            <td class="text-right">{{(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0 ? 0.00 : ((COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF')/(COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))*100 | number:1}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="SPEND_WEEKLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="SPEND_WEEKLY.length>0">
+                            <h6 class="font-13 mt-3">SPEND - WTD</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (SPEND_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (SPEND_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="spend in SPEND_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(spend);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{spend.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY | number:2}}">{{spend.CY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.LY | number:2}}">{{spend.LY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY_LY_DIFF | number:2}}">{{spend.CY_LY_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.P1 | number:2}}">{{spend.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.BUDGET | number:2}}">{{spend.BUDGET | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY_BUDGET_DIFF | number:2}}">{{spend.CY_BUDGET_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.P2 | number:2}}">{{spend.P2 | round }}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{CY=(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')<=0?0.00:((SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')/((COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY'))) | round}}</td>
+                                            <td class="text-right">{{(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 || (COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 ? LY=0.00 : LY=((SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')/((COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))) | round}}</td>
+                                            <td class="text-right">{{(SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 || (COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0  ? CY_LY_DIFF=0.00 : CY_LY_DIFF=((SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')/((COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')))-((SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')/((COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))) | round}}</td>
+                                            <td class="text-right">{{LY ==0 ? CY_LY_DIFF=0.00 : CY_LY_DIFF=(CY_LY_DIFF/LY)*100| number:1}}%</td>
+                                            <td class="text-right">{{BUDGET= (SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0?0.00:((SALES_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')/((COVERS_WEEKLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))) | round}}</td>
+                                            <td class="text-right">{{CY_BUDGET_DIFF=(CY-BUDGET | round)}}</td>
+                                            <td class="text-right">{{BUDGET<=0?0.00:(CY_BUDGET_DIFF/BUDGET)*100 | number:1}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--WEEKLY DATA HTML END-->
+                    <!--MONTHLY DATA HTML START-->
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="SALES_MONTHLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="SALES_MONTHLY.length>0">
+                            <h6 class="mt-3 font-13">SALES - MTD</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="sales in SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(sales);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{sales.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY | number:2}}">{{sales.CY | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.LY | number:2}}">{{sales.LY | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY_LY_DIFF | number:2}}">{{sales.CY_LY_DIFF | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.P1 | number:2}}">{{sales.P1 | number:1}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.BUDGET | number:2}}">{{sales.BUDGET | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY_BUDGET_DIFF | number:2}}">{{sales.CY_BUDGET_DIFF | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.P2 | number:2}}">{{sales.P2 | number:1}}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF') == 0 || (SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY') ==0 ? 0.00 :((SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:2}}%</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET' | thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF' | thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0 ? 0.00 :((SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF')/(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))*100 | number:2}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="COVERS_MONTHLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="COVERS_MONTHLY.length>0">
+                            <h6 class="mt-3 font-13">COVERS - MTD</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="covers in COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(covers);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{covers.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY | number:0}}">{{covers.CY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.LY | number:0}}">{{covers.LY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY_LY_DIFF | number:2}}">{{covers.CY_LY_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.P1 | number:2}}">{{covers.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.BUDGET | number:2}}">{{covers.BUDGET | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY_BUDGET_DIFF | number:0}}">{{covers.CY_BUDGET_DIFF| round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.P2 | number:2}}">{{covers.P2 | round }}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF') ==0 || (COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY') ==0  ? 0.00 : ((COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:1}}%</td>
+                                            <td class="text-right">{{(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0 ? 0.00 :((COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF')/(COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))*100 | number:1}}%</td>
+
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="SPEND_MONTHLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="SPEND_MONTHLY.length>0">
+                            <h6 class="mt-3 font-13">SPEND - MTD</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (SPEND_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (SPEND_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="spend in SPEND_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(spend);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{spend.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY | number:2}}">{{spend.CY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.LY | number:2}}">{{spend.LY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY_LY_DIFF | number:2}}">{{spend.CY_LY_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.P1 | number:2}}">{{spend.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.BUDGET | number:2}}">{{spend.BUDGET | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY_BUDGET_DIFF | number:2}}">{{spend.CY_BUDGET_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.P2 | number:2}}">{{spend.P2 | round }}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{CY= (SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY') <=0 ? 0.00: ((SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')/((COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY'))) | round}}</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')== 0 || (COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY') == 0 ? LY=0.00 : LY=((SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')/((COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))) | round}}</td>
+                                            <td class="text-right">{{(SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 || (COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0  ? CY_LY_DIFF=0.00 : CY_LY_DIFF=((SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')/((COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')))-((SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')/((COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))) | round}}</td>
+                                            <td class="text-right">{{CY_LY_DIFF == 0 || LY==0 ? CY_LY_DIFF=0.00 : CY_LY_DIFF=(CY_LY_DIFF/LY)*100| number:1}}%</td>
+                                            <td class="text-right">{{BUDGET= (SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0? 0.00 : ((SALES_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')/((COVERS_MONTHLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))) | round}}</td>
+                                            <td class="text-right">{{CY_BUDGET_DIFF=(CY-BUDGET | round)}}</td>
+                                            <td class="text-right">{{BUDGET<=0?0.00:(CY_BUDGET_DIFF/BUDGET)*100 | number:1}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--MONTHLY DATA HTML END-->
+                    <!--YEARLY DATA HTML START-->
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="SALES_YEARLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="SALES_YEARLY.length>0">
+                            <h6 class="mt-3 font-13">SALES - YTD</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="sales in SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(sales);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{sales.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY | number:2}}">{{sales.CY | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.LY | number:2}}">{{sales.LY | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY_LY_DIFF | number:2}}">{{sales.CY_LY_DIFF | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.P1 | number:2}}">{{sales.P1 | number:2}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.BUDGET | number:2}}">{{sales.BUDGET | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.CY_BUDGET_DIFF | number:2}}">{{sales.CY_BUDGET_DIFF | thousandSuffix:2}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && sales.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{sales.P2 | number:2}}">{{sales.P2 | number:2 }}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF'| thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF') ==0 || (SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 ? 0.00 : ((SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:1}}%</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET' | thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF' | thousandSuffix:2)}}</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0 ?0.00 : ((SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF')/(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))*100 | number:1}}%</td>
+
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="COVERS_YEARLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="COVERS_YEARLY.length>0">
+                            <h6 class="mt-3 font-13">COVERS - YTD</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="covers in COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(covers);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{covers.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY | number:0}}">{{covers.CY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.LY | number:0}}">{{covers.LY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY_LY_DIFF | number:2}}">{{covers.CY_LY_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.P1 | number:2}}">{{covers.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.BUDGET | number:2}}">{{covers.BUDGET | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.CY_BUDGET_DIFF | number:0}}">{{covers.CY_BUDGET_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && covers.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{covers.P2 | number:2}}">{{covers.P2 | round }}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')==0 || (COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 ? 0.00 : ((COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_LY_DIFF')/(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))*100 | number:1}}%</td>
+                                            <td class="text-right">{{(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF' | round)}}</td>
+                                            <td class="text-right">{{(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0 ? 0.00 : ((COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY_BUDGET_DIFF')/(COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))*100 | number:1}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center" ng-show="SPEND_YEARLY.length==0" empty-grid>
+                        </div>
+                        <div ng-repeat="country in COUNTRIES" ng-show="SPEND_YEARLY.length>0">
+                            <h6 class="mt-3 font-13">SPEND - YTD</h6>
+                            <div class="table-responsive custom-scrollbar" ng-class="{'mx-height-56' : (SPEND_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length>=12, 'mx-height-auto': (SPEND_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}).length<12}">
+                                <table class="table table-head-fixed table-striped consolidated-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-nowrap" title="{{country.COUNTRY_NAME}}">{{country.COUNTRY_CODE}}</th>
+                                            <th class="text-nowrap text-right">CY</th>
+                                            <th class="text-nowrap text-right">LY</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                            <th class="text-nowrap text-right">Budget</th>
+                                            <th class="text-nowrap text-right">+/-</th>
+                                            <th class="text-nowrap text-right">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="spend in SPEND_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}">
+                                        <tr ng-click="CASHUP_CONSOLIDATED_DASHBOARD_HIGHLIGHT(spend);">
+                                            <td ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}">{{spend.BRANCH_NAME}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY | number:2}}">{{spend.CY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.LY | number:2}}">{{spend.LY | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY_LY_DIFF | number:2}}">{{spend.CY_LY_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.P1 | number:2}}">{{spend.P1 | round}}%</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.BUDGET | number:2}}">{{spend.BUDGET | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.CY_BUDGET_DIFF | number:2}}">{{spend.CY_BUDGET_DIFF | round}}</td>
+                                            <td class="text-right" ng-class="{'':ConsolidatedSearch.IS_CLICKED ==false ,'text-bold':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID==ENTITY_HIGHLIGHT,'text-grey':ConsolidatedSearch.IS_CLICKED ==true && spend.BRANCH_ID!=ENTITY_HIGHLIGHT}" title="{{spend.P2 | number:2}}">{{spend.P2 | round }}%</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="font-weight: bold;">
+                                            <td>Total {{country.CURRENCY_SYMBOL}}</td>
+                                            <td class="text-right">{{CY=(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY') <=0?0.00 :((SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')/((COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY'))) | round}}</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 || (COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 ? LY=0.00 :  LY=((SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')/((COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))) | round}}</td>
+                                            <td class="text-right">{{(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0 || (COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')==0  ? CY_LY_DIFF=0.00 : CY_LY_DIFF=((SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')/((COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'CY')))-((SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY')/((COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'LY'))) | round}}</td>
+                                            <td class="text-right">{{CY_LY_DIFF<=0 || LY<=0 ? CY_LY_DIFF=0.00 : CY_LY_DIFF=(CY_LY_DIFF/LY)*100| number:1}}%</td>
+                                            <td class="text-right">{{BUDGET=(SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')<=0?0.00:((SALES_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET')/((COVERS_YEARLY | filter:{COUNTRY_CODE:country.COUNTRY_CODE}| total:'BUDGET'))) | round}}</td>
+                                            <td class="text-right">{{CY_BUDGET_DIFF=(CY-BUDGET | round)}}</td>
+                                            <td class="text-right">{{BUDGET<=0 ?0.00:(CY_BUDGET_DIFF/BUDGET)*100 | number:1}}%</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--YEARLY DATA HTML END-->
+
+                </div>
+            </div>
+
+    </div>
+</form>

@@ -1,0 +1,527 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Service Monitoring Dashboard</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <label class="d-block">Entity</label>
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                            <span class="select-label" id="select_label">Select Entity</span>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                            <li class="DontHideOnClick">option 1</li>
+                            <li class="DontHideOnClick">option 2</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <label class="d-block">Branch</label>
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                            <span class="select-label" id="select_label">Select Branch</span>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                            <li class="DontHideOnClick">option 1</li>
+                            <li class="DontHideOnClick">option 2</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <label class="d-block">Integration Name</label>
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                            <span class="select-label" id="select_label">Select Integration Name</span>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                            <li class="DontHideOnClick">option 1</li>
+                            <li class="DontHideOnClick">option 2</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <label class="d-block">Status</label>
+                <ul class="nav nav-pills">
+                    <li class="dropdown w-100">
+                        <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                            <span class="select-label" id="select_label">Select Status</span>
+                        </a>
+                        <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                            <li class="DontHideOnClick">Stopped</li>
+                            <li class="DontHideOnClick">Running</li>
+                            <li class="DontHideOnClick">Error</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-auto">
+                <div class="form-group">
+                    <label class="d-block">&nbsp;</label>
+                    <button type="button" class="btn btn-sm btn-primary">Go</button>
+                    <button type="button" class="btn btn-sm btn-light">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion" id="outlineaccordion">
+            <div class="accordion-item border bg-white">
+                <h2 class="accordion-header" id="outlineaccordionone">
+                    <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#left-collapseOne" aria-expanded="false" aria-controls="left-collapseOne">
+                        SALES INTEGRATION
+                    </button>
+                    <div class="date-column ms-auto" style="position: absolute;right:2%;}">
+                        <input type="text"
+                               class="mb-0 py-2"
+                               name="DOB"
+                               autocomplete="off"
+                               aria-autocomplete="none"
+                               placeholder="Select Date"
+                               ng-model="Date_Sales"
+                               ng-class="{'error':primaryForm.submitted && primaryForm.DOB.$error.required}" />
+                        <i class="date-icon fa-light fa-calendar f-16" aria-hidden="true"></i>
+                    </div>
+                </h2>
+                <div class="accordion-collapse bg-white collapse" id="left-collapseOne" aria-labelledby="outlineaccordionone" data-bs-parent="#outlineaccordion">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Entity</th>
+                                        <th>Branch Name</th>
+                                        <th>EPOS Name</th>
+                                        <th>Last Sync</th>
+                                        <th>Status</th>
+                                        <th class="text-nowrap">Covers Uploaded Till</th>
+                                        <th class="text-center">Error</th>
+                                        <th class="text-center">Integration Service Status</th>
+                                        <th width="6%" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Restratech PVT. LTD</td>
+                                        <td>Technology</td>
+                                        <td>IT</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>No Data Found</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 8 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-primary">Running</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wenodo</td>
+                                        <td>Sales Corridore</td>
+                                        <td>SCL</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 1 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-success">Success</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lio London</td>
+                                        <td>The Courtyard</td>
+                                        <td>ICG</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 5 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-danger text-white">Error</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border bg-white">
+                <h2 class="accordion-header" id="outlineaccordionone">
+                    <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#left-collapseTwo" aria-expanded="false" aria-controls="left-collapseTwo">
+                        ACCOUNTING
+                    </button>
+                </h2>
+                <div class="accordion-collapse bg-white collapse" id="left-collapseTwo" aria-labelledby="outlineaccordionone" data-bs-parent="#outlineaccordion">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Entity</th>
+                                        <th>Branch Name</th>
+                                        <th>EPOS Name</th>
+                                        <th>Last Sync</th>
+                                        <th>Status</th>
+                                        <th class="text-nowrap">Covers Uploaded Till</th>
+                                        <th class="text-center">Error</th>
+                                        <th class="text-center">Integration Service Status</th>
+                                        <th width="6%" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Restratech PVT. LTD</td>
+                                        <td>Technology</td>
+                                        <td>IT</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>No Data Found</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 8 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-primary">Running</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wenodo</td>
+                                        <td>Sales Corridore</td>
+                                        <td>SCL</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 1 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-success">Success</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lio London</td>
+                                        <td>The Courtyard</td>
+                                        <td>ICG</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 5 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-danger text-white">Error</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border bg-white">
+                <h2 class="accordion-header" id="outlineaccordionone">
+                    <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#left-collapseThree" aria-expanded="false" aria-controls="left-collapseThree">
+                        PAYROLL
+                    </button>
+                </h2>
+                <div class="accordion-collapse bg-white collapse" id="left-collapseThree" aria-labelledby="outlineaccordionone" data-bs-parent="#outlineaccordion">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Entity</th>
+                                        <th>Branch Name</th>
+                                        <th>EPOS Name</th>
+                                        <th>Last Sync</th>
+                                        <th>Status</th>
+                                        <th class="text-nowrap">Covers Uploaded Till</th>
+                                        <th class="text-center">Error</th>
+                                        <th class="text-center">Integration Service Status</th>
+                                        <th width="6%" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Restratech PVT. LTD</td>
+                                        <td>Technology</td>
+                                        <td>IT</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>No Data Found</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 8 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-primary">Running</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wenodo</td>
+                                        <td>Sales Corridore</td>
+                                        <td>SCL</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 1 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-success">Success</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lio London</td>
+                                        <td>The Courtyard</td>
+                                        <td>ICG</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 5 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-danger text-white">Error</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border bg-white">
+                <h2 class="accordion-header" id="outlineaccordionone">
+                    <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#left-collapseFour" aria-expanded="false" aria-controls="left-collapseFour">
+                        INVENTORY
+                    </button>
+                </h2>
+                <div class="accordion-collapse bg-white collapse" id="left-collapseFour" aria-labelledby="outlineaccordionone" data-bs-parent="#outlineaccordion">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Entity</th>
+                                        <th>Branch Name</th>
+                                        <th>EPOS Name</th>
+                                        <th>Last Sync</th>
+                                        <th>Status</th>
+                                        <th class="text-nowrap">Covers Uploaded Till</th>
+                                        <th class="text-center">Error</th>
+                                        <th class="text-center">Integration Service Status</th>
+                                        <th width="6%" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Restratech PVT. LTD</td>
+                                        <td>Technology</td>
+                                        <td>IT</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>No Data Found</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 8 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-primary">Running</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wenodo</td>
+                                        <td>Sales Corridore</td>
+                                        <td>SCL</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 1 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-success">Success</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lio London</td>
+                                        <td>The Courtyard</td>
+                                        <td>ICG</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 5 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-danger text-white">Error</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border bg-white">
+                <h2 class="accordion-header" id="outlineaccordionone">
+                    <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#left-collapseFive" aria-expanded="false" aria-controls="left-collapseFive">
+                        ROTA
+                    </button>
+                </h2>
+                <div class="accordion-collapse bg-white collapse" id="left-collapseFive" aria-labelledby="outlineaccordionone" data-bs-parent="#outlineaccordion">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Entity</th>
+                                        <th>Branch Name</th>
+                                        <th>EPOS Name</th>
+                                        <th>Last Sync</th>
+                                        <th>Status</th>
+                                        <th class="text-nowrap">Covers Uploaded Till</th>
+                                        <th class="text-center">Error</th>
+                                        <th class="text-center">Integration Service Status</th>
+                                        <th width="6%" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Restratech PVT. LTD</td>
+                                        <td>Technology</td>
+                                        <td>IT</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>No Data Found</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 8 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-primary">Running</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wenodo</td>
+                                        <td>Sales Corridore</td>
+                                        <td>SCL</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 1 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-success">Success</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lio London</td>
+                                        <td>The Courtyard</td>
+                                        <td>ICG</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 5 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-danger text-white">Error</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border bg-white">
+                <h2 class="accordion-header" id="outlineaccordionone">
+                    <button class="accordion-button bg-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#left-collapseSix" aria-expanded="false" aria-controls="left-collapseSix">
+                        PRODUCTS
+                    </button>
+                </h2>
+                <div class="accordion-collapse bg-white collapse" id="left-collapseSix" aria-labelledby="outlineaccordionone" data-bs-parent="#outlineaccordion">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Entity</th>
+                                        <th>Branch Name</th>
+                                        <th>EPOS Name</th>
+                                        <th>Last Sync</th>
+                                        <th>Status</th>
+                                        <th class="text-nowrap">Covers Uploaded Till</th>
+                                        <th class="text-center">Error</th>
+                                        <th class="text-center">Integration Service Status</th>
+                                        <th width="6%" class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Restratech PVT. LTD</td>
+                                        <td>Technology</td>
+                                        <td>IT</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>No Data Found</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 8 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-primary">Running</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wenodo</td>
+                                        <td>Sales Corridore</td>
+                                        <td>SCL</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 1 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-light-success">Success</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lio London</td>
+                                        <td>The Courtyard</td>
+                                        <td>ICG</td>
+                                        <td>
+                                            <i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Aug, 8 2023
+                                            <span class="d-block"><i class="fa-light fa-clock txt-light-gray me-2"></i>12:11 PM</span>
+                                        </td>
+                                        <td>Error</td>
+                                        <td><i class="fa-light fa-calendar-alt txt-light-gray me-2"></i>Dec, 5 2023</td>
+                                        <td class="text-center"><i class="fa-light fa-info-circle txt-danger" data-bs-toggle="tooltip" data-bs-html="true" data-bs-original-title="Error Message"></i></td>
+                                        <td class="text-center"><span class="badge-lg badge-danger text-white">Error</span></td>
+                                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary">Process</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+    </div>
+</div>

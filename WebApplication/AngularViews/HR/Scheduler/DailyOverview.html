@@ -1,0 +1,65 @@
+﻿<div class="row" ng-show="WORKING_SHIFT_LIST.length==0">
+    <div class="col">
+        <div class="row border-bottom">
+            <div class="col"><i class="fas fa-square text-success font-12"></i> Approved</div>
+            <div class="col-auto">{{DAILY_SHIFT_OVERVIEW_DETAILS.APPROVAL_SHIFT_LIST.length}}</div>
+        </div>
+        <div class="row border-bottom">
+            <div class="col"><i class="fas fa-square text-light-green font-12"></i> Published</div>
+            <div class="col-auto">{{DAILY_SHIFT_OVERVIEW_DETAILS.PUBLISH_SHIFT_LIST.length}}</div>
+        </div>
+        <div class="row border-bottom">
+            <div class="col"><i class="fas fa-square text-light-yellow font-12"></i> Unpublished</div>
+            <div class="col-auto">{{DAILY_SHIFT_OVERVIEW_DETAILS.UNPUBLISH_SHIFT_LIST.length}}</div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col">
+        <div class="row border-bottom">
+            <div class="col"><i class="fas fa-check-square text-success"></i> Working Today</div>
+            <div class="col-auto">
+                {{DAILY_SHIFT_OVERVIEW_DETAILS.WORKING_SHIFT_LIST==null?0: DAILY_SHIFT_OVERVIEW_DETAILS.WORKING_SHIFT_LIST.length}}
+                <span ng-show="DAILY_SHIFT_OVERVIEW_DETAILS.WORKING_SHIFT_LIST.length>0"><a class="cursor-pointer" ng-click="WORKING_TODAY_FY(DAILY_SHIFT_OVERVIEW_DETAILS)"> <i class="fas fa-chevron-right text-secondary ml-2"></i></a></span>
+            </div>
+        </div>
+        <div class="row border-bottom" ng-show="false">
+            <div class="col">On Leave</div>
+            <div ng-show="false" class="col-auto">
+                {{DAILY_SHIFT_OVERVIEW_DETAILS.ON_LEAVE_LIST.length}}
+            </div>
+        </div>
+        <div class="row border-bottom" ng-show="false">
+            <div class="col">Available</div>
+            <div ng-show="false" class="col-auto">2</div>
+        </div>
+        <div class="row border-bottom" ng-show="false">
+            <div class="col">Unavailable</div>
+            <div ng-show="false" class="col-auto">2</div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="WORKING_SHIFT_LIST.length>0">
+    <div class="col-md-12 text-right mb-2">
+        <button ng-click="BACK_WORKING_FY();" class="btn btn-w-default"><i class="fas fa-arrow-alt-from-right"></i> Back</button>
+    </div>
+</div>
+<div class="table-responsive custom-scrollbar height-400" ng-show="WORKING_SHIFT_LIST.length>0">
+    <table class="table table-striped">
+        <thead class="bg-wenodo-dark-blue">
+            <tr>
+                <th>Employee Name</th>
+                <th>Time</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="SOL in WORKING_SHIFT_LIST">
+            <tr>
+                <td> {{SOL.EMPLOYEE_NAME}}</td>
+                <td>
+                    {{SOL.START_TIME | date:'HH:mm' }} -{{SOL.END_TIME | date:'HH:mm'}}
+                </td>
+                <td>{{SOL.NOTES}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

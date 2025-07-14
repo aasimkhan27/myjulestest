@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/Payments_Layout_Main.cshtml";
+}
+<link href="~/E_Scripts/Colorpicker/pick-a-color-1.2.3.min.css" rel="stylesheet" />
+<div id="myDiv">
+    <ng-view></ng-view>
+</div>
+<script type="text/javascript">
+        var AppVersion = @System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString();
+</script>
+<script src="~/AngularControllers/PaymentController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/E_Content/plugins/web-analytics/ChartJS.js"></script>
+<script src="~/E_Content/plugins/chart.js/Chart.min.js"></script>
+<script src="~/E_Scripts/angular-chart.js"></script>
+<script src="~/AngularControllers/Payment/Pay_ApprovalsController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/Payment/Pay_MySchedulesController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/Payment/Pay_DashboardController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+
+<script src="~/AngularControllers/HrController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PositionController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/EmployeeController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/Department.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/AngularControllers/PayrollController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<script src="~/E_Content/plugins/moment/moment-timezone-with-data.js"></script>
+<script src="~/E_Scripts/Colorpicker/tinycolor-0.9.15.min.js"></script>
+<script src="~/E_Scripts/Colorpicker/pick-a-color-1.2.3.min.js"></script>
+<script src="~/AngularControllers/Payment/Pay_InvoiceController.js?v=@System.Configuration.ConfigurationManager.AppSettings["AppVersion"].ToString()"></script>
+<link href="~/E_Scripts/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
+<script src="~/E_Scripts/daterangepicker-master/daterangepicker.js"></script>

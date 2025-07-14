@@ -1,0 +1,347 @@
+﻿<div class="card mb-0">
+    <div class="card-header">
+        <h5 class="heading-text-2">Suppliers</h5>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group" id="AddCustomScroll">
+                        <label class="d-block">Select Supplier</label>
+                        <input type="text" name="CategorySearchBox"
+                               ng-model="PaymentSearch.SUPPLIER_NAME"
+                               ng-change="SetValues(PaymentSearch.SUPPLIER_NAME)"
+                               uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIER_LIST  | filter:$viewValue"
+                               typeahead-loading="loading" typeahead-no-results="noResults"
+                               class="form-control form-control-sm" autocomplete="off"
+                               placeholder="Type to select Supplier Name..." />
+                        <!--<select class="custom-select mw-150" ng-model="SUPPLIER_ID" name="SUPPLIER_ID"
+                    ng-options="SUP.ID as SUP.NAME for SUP in VENDOR_LIST">
+                <option>Select Name</option>
+            </select>-->
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label class="d-block">Select Tags</label>
+                        <select class="custom-select custom-select-sm" ng-model="PaymentSearch.TAG_NAME" name="TAG_ID"
+                                ng-options="Tag.TAG as Tag.TAG for Tag in TAGS_LIST">
+                            <option value="" selected="selected">Select Tags</option>
+                        </select>
+                    </div>
+                </div>  
+                <div class="col" ng-show="BRANCH_LOGIN_LIST.length>0">
+                    <div class="form-group">
+                        <label class="d-block">Branch Name</label>
+                        <select class="custom-select custom-select-sm min-w-250" name="BRN_LG"
+                                data-placeholder="Select Branch"
+                                ng-model="PaymentSearch.BRANCH_LOGIN_ID"
+                                ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)"></select>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <label class="d-block">&nbsp;</label>
+                    <button type="submit" name="submit" class="btn btn-sm btn-wenodo"   click-once ng-click="GET_PYMNT_SUPPLIER(1)">Search</button>
+                    <button class="btn btn-sm btn-w-default" ng-click="RESETPAGESEARCH();">Reset</button>
+                    <a href="#!/Request" class="btn btn-sm btn-w-default">Back</a>
+                    <!--<button ng-show="false" type="button" class="btn btn-w-default" data-toggle="tooltip" data-html="true" data-original-title="Download Excel"><i class="far fa-file-excel"></i></button>-->
+                </div>
+
+            </div>
+        </form>
+        <div class="table-reponsive custom-scrollbar height-60vh">
+            <div class="text-center" ng-show="VENDOR_LIST.length==0" empty-grid></div>
+            <table class="table table-head-fixed table-striped table-hover compact_table" ng-show="VENDOR_LIST.length>0">
+                <thead class="bg-wenodo-border">
+                    <tr>
+                        <th width="2%">
+                            <span class="bigcheck">
+                                <label class="bigcheck mb-0" for="Check_All">
+                                    <input type="checkbox" class="bigcheck" ng-model="PaymentSearch.IS_CHECKED" ng-change="SET_DATA()" id="Check_All" />
+                                    <span class="bigcheck-target"></span>
+                                </label>
+                            </span>
+                            <!--<div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Check_All" ng-model="PaymentSearch.IS_CHECKED" ng-change="SET_DATA()">
+                                <label for="Check_All" class="custom-control-label"></label>
+                            </div>-->
+                        </th>
+                        <th>Supplier Name</th>
+                        <th>Email</th>
+                        <th>Tax No</th>
+                        <th>Tags</th>
+                        <th width="5%" class="text-nowrap">Add Tags</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" class="text-center table-footer-fixed" ng-show="GetData">
+                            <a class="btn btn-sm btn-secondary text-white" ng-click="LAZY_GET_REQUESTSTATEMENT_LIST();">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="Vendor in VENDOR_LIST" ng-init="INIT_SUPPLIER_TAG_DETAILS(Vendor)">
+                    <tr>
+                        <td>
+                            <span class="bigcheck">
+                                <label class="bigcheck mb-0" for="index_1{{$index}}">
+                                    <input type="checkbox" class="bigcheck" id="index_1{{$index}}" ng-change="SET_LINEDATA()" ng-model="Vendor.IS_CHECKED" />
+                                    <span class="bigcheck-target"></span>
+                                </label>
+                            </span>
+                            <!--<div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="index_1{{$index}}" ng-change="SET_LINEDATA()" ng-model="Vendor.IS_CHECKED">
+                                <label for="index_1{{$index}}" class="custom-control-label"></label>
+                            </div>-->
+                        </td>
+                        <!--<td>{{}} <span class="badge badge-success">Head</span></td>-->
+                        <td>{{Vendor.SUPPLIER_NAME}} </td>
+                        <td> {{Vendor.EMAILADDRESS}}</td>
+                        <td>{{Vendor.TAXNUMBER}}</td>
+                        <!-- <td><span ng-repeat="TagName in Vendor.TAGS | split:':;:'">{{TagName}}</span></td>-->
+                        <td><span style="margin-left: 3px;" class="badge badge-wenodo" ng-repeat="TagName in Vendor.TagNameList">{{TagName}}</span>&nbsp;&nbsp;</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-transparent text-success" data-toggle="modal" ng-click="SET_TAGDATA(Vendor)"><i class="fas fa-tag" data-toggle="tooltip" data-html="true" data-original-title="Add Tags"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="button" class="btn btn-sm btn-wenodo"   click-once ng-show="CheckSubModuleAccess(60)" data-toggle="modal" ng-click="VALID_SCHEDULECLICK();">Create schedule</button>
+                <!--<button type="button" class="btn btn-wenodo" data-toggle="modal" data-target="#Schedule_Statement">Schedule Request</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show" id="Schedule_Statement">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title d-flex">
+                    Create schedule
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <div class="row">
+                    <div class="col-md-3" ng-show="BRANCH_LOGIN_LIST.length>0">
+                        <div class="form-group">
+                            <label class="d-block">Branch Name</label>
+                            <select class="custom-select custom-select-sm" name="BRN_LG"
+                                    data-placeholder="Select Branch"
+                                    ng-model="SCHEDULE.BRANCH_LOGIN_ID"
+                                    ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)" ng-change="GET_PYMNT_SUPPLIER_SEARCH();"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Active From <span class="text-danger">*</span></label>
+                            <!--<div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control" placeholder="Active Date" ng-model="ACTIVE_DATE" name="ACTIVE_DATE " ng-class="{'error':!ACTIVE_DATE_VALID }">
+                    <div class="input-group-addon">
+                        <i class="far fa-calendar-alt"></i>
+                    </div>
+                </div>-->
+                            <input type="text"
+                                   class="form-control form-control-sm DateInputLoadStartForm"
+                                   name="ACTIVE_DATE"
+                                   required
+                                   autocomplete="off" placeholder="Active From"
+                                   readonly
+                                   ng-class="{'error':!ACTIVE_DATE_VALID }"
+                                   ng-model="ACTIVE_DATE">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Schedule <span style="color:red;">*</span></label>
+                            <select class="custom-select custom-select-sm mw-150" ng-model="SCHEDULE_FREQUENCY" name="SCHEDULE_FREQUENCY" data-placeholder="Select Schedule"
+                                    ng-options="SFRQ.SCHEDULE_FREQUENCY as SFRQ.Name for SFRQ in SCHEDULE_FREQUENCYLIST" ng-class="{'error':!SCHEDULE_FREQUENCY_VALID }">
+                                <option value="" selected="selected">Select Schedule</option>
+                            </select>
+                            <!--<select class="custom-select mw-150" ng-model="SCHEDULE_FREQUENCY" name="SCHEDULE_FREQUENCY">
+                <option value="0">Select Schedule</option>
+                <option value="1">Daily</option>
+                <option value="2">Weekly</option>
+                <option value="3">Fortnightly</option>
+                <option value="4">Monthly</option>
+            </select>-->
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Category <span class="text-danger">*</span></label>
+                            <select class="custom-select custom-select-sm" ng-model="CATEGORY_ID" name="CATEGORY_ID"   data-placeholder="Select Category"
+                                    ng-options="CAT.ID as CAT.CATEGORY_NAME for CAT in CATEGORY_LIST" ng-class="{'error':!CATEGORY_ID_VALID }">
+                                <option value="" selected="selected">Select Category</option>
+                            </select>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Request Type <span class="text-danger">*</span></label>
+                            <select class="custom-select custom-select-sm" ng-model="REQUEST_TYPE_ID" name="REQUEST_TYPE_ID"  data-placeholder="Select Request Type"
+                                    ng-options="REQ.ID as REQ.TYPE_NAME for REQ in REQUEST_LIST" ng-class="{'error':!REQUEST_TYPE_ID_VALID }">
+                                <option value="" selected="selected">Select Type</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Subject  <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-sm" ng-model="SUBJECT" name="SUBJECT" ng-class="{'error':!SUBJECT_VALID }" placeholder="Subject" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Body</label>
+                            <textarea class="form-control" rows="4" ng-model="BODY" name="BODY" ng-trim="false" maxlength="2000" ng-class="{'error':!BODY_VALID }" placeholder="Body" />
+                            <span class="text-xs text-danger semibold mb-2">{{2000 - BODY.length}}/2000 Character Limit </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="table-responsive custom-scrollbar">
+                            <!--   <label>Selected Suppliers Details: </label>-->
+                            <table class="table table-striped table-head-fixed table-hover compact_table">
+                                <thead class="bg-wenodo-dark-blue">
+                                    <tr>
+                                        <th width="5%"></th>
+                                        <th>Selected Suppliers Details</th>
+                                        <th>Email *</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="Vendor in VENDOR_LIST| filter:{IS_CHECKED:true}">
+                                    <tr>
+                                        <td>
+                                            <span class="bigcheck">
+                                                <label class="bigcheck mb-0" for="index_10{{$index}}">
+                                                    <input type="checkbox" class="bigcheck" id="index_10{{$index}}" ng-change="SET_LINEDATA()" ng-model="Vendor.IS_CHECKED" />
+                                                    <span class="bigcheck-target"></span>
+                                                </label>
+                                            </span>
+                                            <!--<div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="index_10{{$index}}" ng-change="SET_LINEDATA()" ng-model="Vendor.IS_CHECKED">
+                                <label for="index_10{{$index}}" class="custom-control-label"></label>
+                            </div>-->
+                                        </td>
+                                        <td> {{Vendor.SUPPLIER_NAME}} </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm" name="EMAIL" ng-model="Vendor.EMAILADDRESS" ng-class="{'error':!Vendor.EMAIL_VALID}" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div data-ng-show="REQUESTSCHEDULEVALID==false" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                        <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                    </div>                  
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"   click-once class="btn btn-sm btn-wenodo" ng-click="INS_PYMNT_REQUEST_SCHEDULE();">Submit</button>
+                <button type="button" class="btn btn-sm btn-w-default" ng-click="RESETSCHEDULE();">Reset</button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade show" id="Add_tags">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Add Tags </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <div class="row">
+                    <div class="col-md-4" ng-show="BRANCH_LOGIN_LIST.length>0">
+                        <div class="form-group">
+                            <label class="d-block">Branch Name</label>
+                            <select class="custom-select custom-select-sm" name="BRN_LG"
+                                    data-placeholder="Select Branch"
+                                    ng-model="TAGS.BRANCH_LOGIN_ID"
+                                    ng-options="IS.BRANCH_ID  as IS.BRANCH_NAME for IS in (BRANCH_LOGIN_LIST)" ng-change="GET_PYMNT_SUPPLIER_TAGS_MASTER();"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="d-block">Add New Tags</label>
+                            <input class="form-control form-control-sm w-100" type="text" placeholder="Add New Tag" aria-label="Tags" ng-model="Tags" ng-class="{'error':!Tags_VALID }">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="d-block">&nbsp;</label>
+                        <button type="button" class="btn btn-sm btn-wenodo float-left" ng-click="ADD_NEW_SUPPLIERTAGS();">Add</button>
+                    </div>
+                    </div>
+                    <div class="row px-2 mt-3" ng-show="TAGS_LIST.length>0">
+                        <div class="col-md-12 px-0">
+                            <div class="d-flex">
+                                <h5 class="heading-text-2 mb-2">Search Tags</h5>
+                            </div>
+                        </div>
+                        <div class="col px-0">
+                            <input class="form-control form-control-sm w-100" type="search" placeholder="Search Existing Tags" aria-label="Search">
+                        </div>
+                        <div class="col-auto ml-auto">
+                            <span class="bigcheck mt-1">
+                                <label class="bigcheck mb-0" for="All_Shifts_Tag">
+                                    <span class="bigcheck_label">Select All</span>
+                                    <input type="checkbox" class="bigcheck" id="All_Shifts_Tag" value="ALL" ng-model="PaymentSearch.IS_VALID" ng-change="SET_TAGALL()" />
+                                    <span class="bigcheck-target"></span>
+                                </label>
+                            </span>
+                            <!--<div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="All_Shifts_Tag" value="ALL" ng-model="PaymentSearch.IS_VALID" ng-change="SET_TAGALL()">
+                    <label for="All_Shifts_Tag" class="custom-control-label text-bold">Select All</label>
+                </div>
+            </div>-->
+                        </div>
+
+                    </div>
+                    <div class="row px-2">
+                        <div class="col-md-4 border mt-2" ng-repeat="Tag in TAGS_LIST">
+                            <span class="bigcheck">
+                                <label class="bigcheck mb-0" for="index_01{{$index}}">
+                                    <span class="bigcheck_label">{{Tag.TAG}}</span>
+                                    <input type="checkbox" class="bigcheck" id="index_01{{$index}}" ng-change="SET_TAG_CHECKLINE();" ng-model="Tag.IS_VALID" />
+                                    <span class="bigcheck-target"></span>
+                                </label>
+                            </span>
+                            <!--<div class="form-group mb-0">
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="index_01{{$index}}" ng-change="SET_TAG_CHECKLINE();" ng-model="Tag.IS_VALID">
+                    <label for="index_01{{$index}}" class="custom-control-label">{{Tag.TAG}}</label>
+                </div>
+            </div>-->
+                        </div>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-wenodo"   click-once ng-click="UPD_SUPPLIER_TAGS();">Submit</button>
+                <button type="button" class="btn btn-sm btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

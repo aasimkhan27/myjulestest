@@ -1,0 +1,2093 @@
+﻿<ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+    <li class="nav-item" ng-click="TAB_CLICK_REQ_FY(1)">
+        <a class="nav-link " ng-class="{'active':TAB_FLAG==1}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Action Required</a>
+    </li>
+    <li class="nav-item" ng-click="TAB_CLICK_REQ_FY(2)">
+        <a class="nav-link " ng-class="{'active':TAB_FLAG==2}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Processed</a>
+    </li>
+    <!--<li class="nav-item" ng-click="TAB_CLICK_REQ_FY(3)">
+        <a class="nav-link " ng-class="{'active':TAB_FLAG==3}" data-toggle="pill" role="tab" aria-controls="custom-content-below-home" aria-selected="true">All</a>
+    </li>-->
+    <li class="nav-item ml-auto" ng-show="CheckSubModuleAccess(137)">
+        <button ng-click="TAB_CLICK_REQ_FY(4)" ng-show="TAB_FLAG!=4" type="button" class="btn btn-wenodo mt-2"> Create New Requisition</button>
+    </li>
+</ul>
+<div class="tab-content" id="custom-content-below-tabContent">
+    <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==1}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+        <div class="row">
+            <div class="col-md-2 custom-scrollbar height-77vh stick-top">
+                <div class="col-md-12 px-0 pb-1 sticky-top bg-white">
+                    <form id="SearchForm" name="SearchForm" novalidate autocomplete="off">
+                        <div class="search-form-group">
+                            <input type="text" ng-model="REQ_Search.NAME"
+                                   class="form-control"
+                                   placeholder="Search by Item/Request#/Supplier" />
+                            <button type="submit" class="btn btn-wenodo"
+                                    click-once
+                                    ng-click="GET_PURCHASE_REQUESTS_BY_BUYER(1)">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="detailed-card "
+                     ng-class="{'active':PRL.PAGING==REQ_Search.REQUEST_LINE.PAGING}"
+                     ng-repeat="PRL in PURCHASE_REQUESTS_BY_BUYER_LIST"
+                     ng-click="PURCHASE_REQUEST_CLICK(PRL,1)">
+                    <div class="card-body align-items-center height-100p">
+                        <div class="row align-items-center height-100p">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="po-details text-limit-2 font-12"
+                                              ng-show="PRL.REQUEST_ID!=null">{{PRL.PR_NUMBER}}|{{PRL.ITEM_NAME}}</span>
+                                        <span class="po-details font-12"
+                                              ng-show="PRL.REQUEST_ID==null">
+                                            {{PRL.CONTACT_NAME}}
+                                        </span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="badge badge-light-grey  font-12" ng-show="PRL.STATUS_ID==66">Draft</span>
+                                        <span class="po-supplier text-danger font-12">{{PRL.URGENT_REQUEST?'Urgent':''}}</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <span class="po-supplier font-10">{{PRL.REQUESTOR_NAME}}</span>
+                                    </div>
+                                    <div class="col-auto text-right">
+                                        <span class="po-supplier  font-10">{{PRL.BRANCH_NAME}}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="GetActionData">
+                    <button type="button" ng-click="GET_PURCHASE_REQUESTS_BY_BUYER_LAZY_LOAD()" class="btn btn-block btn-w-default">
+                        {{VIEWMORERECORD}}
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <form id="POForm" name="POForm" novalidate>
+                    <div class="row align-content-center mn-height-66vh" ng-show="PURCHASE_REQUESTS_BY_BUYER_LIST.length==0">
+                        <div class="col-md-12 text-center">
+                            <h5 class="text-muted">
+                                <span class="d-block mb-3">
+                                    <img src="../../../E_Content/images/sorted.png" />
+                                </span>
+                                Everything's sorted!
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="card-body" ng-show="PURCHASE_REQUESTS_BY_BUYER_LIST.length>0">
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="po-details font-14" ng-show="REQ_Search.REQUEST_LINE.REQUEST_ID!=null">
+                                    {{REQ_Search.REQUEST_LINE.PR_NUMBER}} | {{REQ_Search.REQUEST_LINE.ITEM_NAME}}
+                                </h6>
+                                <h6 class="po-details font-14" ng-show="REQ_Search.REQUEST_LINE.REQUEST_ID==null">
+                                    PO to {{REQ_Search.REQUEST_LINE.CONTACT_NAME}}
+                                </h6>
+
+                            </div>
+                            <div class="col-auto text-right">
+                                <button type="button"
+                                        ng-click="INS_UPD_REQUISITION(1)"
+                                        class="btn btn-transparent-wenodo mr-2 border"
+                                        data-toggle="tooltip"
+                                        ng-show="REQ_Search.REQUEST_LINE.BUYER_ID>0"
+                                        data-html="true"
+                                        data-original-title="Save as draft">
+                                    <i class="fal fa-save"></i>
+                                </button>
+                                <button type="button"
+                                        ng-click="INS_UPD_REQUISITION(2)"
+                                        class="btn btn-wenodo mr-2">
+                                    {{REQ_Search.REQUEST_LINE.BUYER_ID>0?"Submit for Approval":'Take a Ownership'}}
+                                </button>
+                                <button type="button"
+                                        ng-show="REQ_Search.REQUEST_LINE.REQUEST_ID>0 && REQ_Search.REQUEST_LINE.BUYER_ID>0"
+                                        ng-click="PR_OWNERSHIP(1)"
+                                        class="btn btn-w-default mr-2">
+                                    Revert Ownership
+                                </button>
+
+                                <button type="button"
+                                        ng-show="REQ_Search.REQUEST_LINE.REQUEST_ID==null && REQ_Search.REQUEST_LINE.BUYER_ID>0"
+                                        ng-click="DISCARD_REQUISITION_POP(1)"
+                                        class="btn btn-transparent-danger mr-2"
+                                        data-toggle="tooltip"
+                                        data-html="true"
+                                        data-original-title="Cancel">
+                                    <i class="fal fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8" ng-show="REQ_Search.REQUEST_LINE.REQUEST_ID!=null">
+                                <span class="po-supplier"><span class="text-normal">By </span>{{REQ_Search.REQUEST_LINE.REQUESTOR_NAME}} <span class="text-normal">on</span> {{REQ_Search.REQUEST_LINE.CREATED_DATE | date}}</span>
+                                <span class="po-supplier">
+                                    <span class="text-normal">Raised For</span> {{REQ_Search.REQUEST_LINE.BRANCH_NAME}}
+                                    <span ng-click="REQ_Search.REQUEST_LINE.SHOW_REQUEST_DTLS=!REQ_Search.REQUEST_LINE.SHOW_REQUEST_DTLS" class="text-blue float-right mr-3 cursor-pointer">
+                                        <a class="btn btn-sm btn-transparent-wenodo">
+                                            <i ng-class="{'far fa-chevron-down':REQ_Search.REQUEST_LINE.SHOW_REQUEST_DTLS, 'far fa-chevron-up':!REQ_Search.REQUEST_LINE.SHOW_REQUEST_DTLS}"> </i>
+                                            {{REQ_Search.REQUEST_LINE.SHOW_REQUEST_DTLS?'Hide':'View'}} Request Details
+                                        </a>
+                                        <span class="badge badge-danger">{{REQ_Search.REQUEST_LINE.URGENT_REQUEST?'Urgent':''}}</span>
+                                    </span>
+
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="REQ_Search.REQUEST_LINE.SHOW_REQUEST_DTLS">
+                            <div class="col-md-8 pr-4">
+                                <label class="text-bold mt-2">Description: </label>
+                                <span class="d-block font-12">
+                                    {{REQ_Search.REQUEST_LINE.DESCRIPTION | limitTo:LIMIT_TO}}
+                                    <span ng-show="REQ_Search.REQUEST_LINE.DESCRIPTION.length>LIMIT_TO">...</span>
+                                    <span class="btn btn-xs btn-transparent-wenodo"
+                                          ng-show="REQ_Search.REQUEST_LINE.DESCRIPTION.length>LIMIT_TO"
+                                          ng-click="READ_MORE(REQ_Search.REQUEST_LINE,1)"
+                                          data-toggle="tooltip"
+                                          data-html="true"
+                                          data-original-title="Read More"><i class="far fa-plus"></i></span>
+                                    <span class="btn btn-xs btn-transparent-wenodo"
+                                          ng-show="REQ_Search.REQUEST_LINE.DESCRIPTION.length==LIMIT_TO"
+                                          ng-click="READ_MORE(REQ_Search.REQUEST_LINE,2)"
+                                          data-toggle="tooltip"
+                                          data-html="true"
+                                          data-original-title="Hide"><i class="far fa-minus"></i></span>
+                                </span>
+                                <label class="text-bold">Comments:</label>
+                                <span class="d-block font-12">
+                                    {{REQ_Search.REQUEST_LINE.COMMENTS | limitTo:COMMENTS_LIMIT_TO}}
+                                    <span ng-show="REQ_Search.REQUEST_LINE.COMMENTS.length>COMMENTS_LIMIT_TO">...</span>
+
+                                    <span class="btn btn-xs btn-transparent-wenodo"
+                                          ng-show="REQ_Search.REQUEST_LINE.COMMENTS.length>COMMENTS_LIMIT_TO"
+                                          ng-click="READ_MORE_COMMENTS(REQ_Search.REQUEST_LINE,1)"
+                                          data-toggle="tooltip"
+                                          data-html="true"
+                                          data-original-title="Read More">
+                                        <i class="far fa-plus"></i>
+                                    </span>
+
+                                    <span class="btn btn-xs btn-transparent-wenodo"
+                                          ng-show="REQ_Search.REQUEST_LINE.COMMENTS.length==COMMENTS_LIMIT_TO"
+                                          ng-click="READ_MORE_COMMENTS(REQ_Search.REQUEST_LINE,2)"
+                                          data-toggle="tooltip"
+                                          data-html="true"
+                                          data-original-title="Hide"><i class="far fa-minus"></i></span>
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Quantity:</label>
+                                <span class="po-supplier">{{REQ_Search.REQUEST_LINE.QUANTITY | number:2}} {{REQ_Search.REQUEST_LINE.UOM_NAME}}</span>
+                                <label class="mt-2">Expected Amount:</label>
+                                <span class="po-supplier">
+                                    {{REQ_Search.REQUEST_LINE.APPROVER_EXPECTED_PRICE | number :2}}   <span class="text-bold ml-1" ng-bind-html="REQ_Search.CURRENCY_CODE"></span>
+                                </span>
+                                <label class="mt-2">Attachments:</label>
+                                <div ng-show="REQ_Search.REQUEST_LINE.UploadedFiles.length==0">No attachment</div>
+                                <div class="file-block"
+                                     ng-repeat="file in REQ_Search.REQUEST_LINE.UploadedFiles">
+                                    <div class="file-info" ng-show="REQ_Search.REQUEST_LINE.UploadedFiles.length>0">
+                                        <i class="far fa-file-alt file-icon"></i>
+
+                                        <a href="/P2PFiles/{{file.FILE_PATH}}{{file.SERVER_FILE_NAME}}"
+                                           download="/P2PFiles/{{file.FILE_PATH}}{{file.SERVER_FILE_NAME}}">
+                                            <span class="text-limit-1 font-12">{{file.ORIGINAL_FILE_NAME}} </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Project:</label>
+                                <span class="po-supplier">{{REQ_Search.REQUEST_LINE.PROJECT_NAME==null?'-':REQ_Search.REQUEST_LINE.PROJECT_NAME}}</span>
+                                <label class="mt-2">GL Account:</label>
+                                <span class="po-supplier">{{REQ_Search.REQUEST_LINE.ACCOUNT_DETAILS==null?'-':REQ_Search.REQUEST_LINE.ACCOUNT_DETAILS}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <templateurl class="w-100" template-url="../AngularViews/P2P/REQ/INS_UPD_REQ.html?v=58{{AppVersion}}" ng-init="DateInputLoad('PO_REQ',1)"><templateurl>
+                        </div>
+                        <div class="card-header border-top border-bottom-0 mt-3" ng-show="REQ_Search.REQUEST_LINE.BUYER_ID>0">
+                            <div class="row">
+                                <div class="col"><h5 class="card-title" ng-show="false">{{REQ_Search.REQUEST_LINE.PR_NUMBER}} | {{REQ_Search.REQUEST_LINE.ITEM_NAME}}</h5></div>
+                                <div class="col-auto">
+                                    <button type="button" ng-click="INS_UPD_REQUISITION(1)" class="btn btn-transparent-wenodo mr-2 border" data-toggle="tooltip" data-html="true" data-original-title="Save as draft"><i class="fal fa-save"></i></button>
+                                    <button type="button" ng-click="INS_UPD_REQUISITION(2)" class="btn btn-wenodo mr-2">Submit for Approval</button>
+                                    <button type="button" ng-show="false" class="btn btn-transparent-wenodo" data-toggle="tooltip" ng-click="RESET_PR_RE()" data-html="true" data-original-title="Reset"><i class="fal fa-undo-alt  fa-flip-vertical"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==2}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+        <div class="row">
+            <div class="col-md-2 custom-scrollbar height-77vh stick-top">
+                <div class="col-md-12 px-0 pb-1 sticky-top bg-white">
+                    <form id="SearchProForm" name="SearchProForm" novalidate autocomplete="off">
+                        <div class="search-form-group">
+                            <input type="text" ng-model="REQ_PROC_Search.NAME" class="form-control" placeholder="Search by REQ#/Supplier/PO#" />
+                            <button type="submit" class="btn btn-wenodo"
+                                    click-once
+                                    ng-click="GET_PURCHASE_REQUESTS_BY_BUYER_PROCESSED(1)">
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="detailed-card  " ng-class="{'active':PPL.PAGING==REQ_PROC_Search.REQUEST_DETAILS.PAGING}" ng-repeat="PPL in  PURCHASE_PROCESSED_LIST" ng-click="PURCHASE_PROCESSED_CLICK(PPL,2)">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="po-details text-limit-1 font-12">{{PPL.CONTACT_NAME}}</span>
+                                        <span class="po-supplier font-12" ng-if="PPL.PO_NUMBER!=null">{{PPL.PO_NUMBER}}</span>
+                                        <span class="po-supplier font-12" ng-if="PPL.PO_NUMBER==null">{{PPL.REQ_NUMBER}}</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="badge "
+                                              ng-class="{'badge-light-blue':PPL.STATUS_ID==70,
+                                                                'badge-light-green':PPL.STATUS_ID==72
+                                                                 ,'badge-danger':PPL.STATUS_ID==73 || PPL.STATUS_ID==71}">{{PPL.STATUS_NAME}}</span>
+
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="po-supplier font-10">{{PPL.REQUESTOR_NAME}}</span>
+                                        <span class="po-supplier font-10">{{PPL.BRANCH_NAME}}</span>
+                                    </div>
+                                    <div class="col-auto text-right">
+                                        <span class="po-supplier font-12 text-dark text-nowrap">
+                                            {{PPL.TOTAL_AMOUNT | number :2}}   <span ng-bind-html="PPL.PO_CURRENCY_CODE"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="GetProcessData">
+                    <button type="button" ng-click="GET_PURCHASE_REQUESTS_BY_BUYER_PROCESSED_LAZY_LOAD()" class="btn btn-block btn-w-default">
+                        {{VIEWMORERECORD}}
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="row align-content-center mn-height-66vh" ng-show="PURCHASE_PROCESSED_LIST.length==0">
+                    <div class="col-md-12 text-center">
+                        <h5 class="text-muted">
+                            <span class="d-block mb-3">
+                                <img src="../../../E_Content/images/sorted.png" />
+                            </span>
+                            Everything's sorted!
+                        </h5>
+                    </div>
+                </div>
+                <div class="card-body" ng-show="PURCHASE_PROCESSED_LIST.length>0">
+                    <div class="row">
+                        <div class="col"><h6 class="po-details  font-14 ">Purchase Order  <span ng-show="REQ_PROC_Search.REQUEST_DETAILS.STATUS_ID==72">({{REQ_PROC_Search.REQUEST_DETAILS.PO_NUMBER}})</span>  to {{REQ_PROC_Search.REQUEST_DETAILS.CONTACT_NAME}}. </h6></div>
+                        <div class="col-auto">
+                            <h6 class="po-details text-nowrap  ">
+                                {{REQ_PROC_Search.REQUEST_DETAILS.TOTAL_AMOUNT | number :2 }}
+                                <span ng-bind-html="REQ_PROC_Search.REQ_DETAILS.PO_CURRENCY_CODE"></span>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto ml-auto">
+                            <button type="button" ng-show="REQ_PROC_Search.REQ_DETAILS.STATUS_ID==70"
+                                    class="btn btn-wenodo mr-2"
+                                    ng-click="EDIT_REQ_BTN(1)"
+                                    data-toggle="tooltip"
+                                    data-html="true"
+                                    data-placement="botton"
+                                    data-original-title="Edit">
+                                Edit REQ
+                            </button>
+                            <!--<button type="button"
+                    ng-show="REQ_PROC_Search.REQ_DETAILS.GRN_STATUS_ID==75 && REQ_PROC_Search.REQ_DETAILS.STATUS_ID!=73"
+                    class="btn btn-transparent-danger border mr-2"
+                    ng-click="POP_DISCARD_PO_FY(1)"
+                    data-toggle="tooltip"
+                    data-html="true"
+                    data-placement="right"
+                    data-original-title="Delete">
+                <i class="fal fa-trash"></i>
+            </button>-->
+
+                            <button type="button"
+                                    ng-show="REQ_PROC_Search.REQ_DETAILS.STATUS_ID==70"
+                                    ng-click="DISCARD_REQUISITION_POP(2)"
+                                    class="btn btn-transparent-danger mr-2"
+                                    data-toggle="tooltip"
+                                    data-html="true"
+                                    data-original-title="Cancel">
+                                <i class="fal fa-trash"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="row align-items-center mt-1">
+                        <div class="col-auto"><div class="name-badge">{{REQ_PROC_Search.REQ_DETAILS.SHORT_NAME}}</div></div>
+                        <div class="col-md-5">
+                            <span class="po-details">By {{REQ_PROC_Search.REQ_DETAILS.REQUESTOR_NAME}}</span>
+                            <span class="po-supplier">{{REQ_PROC_Search.REQ_DETAILS.REQUESTOR_EMAIL}}</span>
+                            <span class="po-supplier"><span class="text-normal">Raised For {{REQ_PROC_Search.REQ_DETAILS.BRANCH_NAME}} </span></span>
+
+
+                        </div>
+                        <div class="col-md-3"><span class="po-supplier">REQ#: {{REQ_PROC_Search.REQUEST_DETAILS.REQ_NUMBER}}</span></div>
+                        <div class="col-auto text-right">REQUEST#:{{REQ_PROC_Search.REQUEST_DETAILS.PR_NUMBER}}</div>
+                    </div>
+                    <div class="col-md-12 mt-3" ng-show="PROC_QUOTATION_LIST.length>0">
+                        <h5 class="card-title w-100">Quotation(s)</h5>
+                        <div class="table-responsive" style="overflow-x:visible">
+                            <table class="table table-head-fixed table-hover table-bordered">
+                                <thead class="bg-wenodo-border">
+                                    <tr>
+                                        <th>Contact Name</th>
+                                        <th width="15%">Amount</th>
+                                        <th>Rank</th>
+                                        <th width="25%">Comments</th>
+                                        <th width="25%" class="text-center">Attachment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="QL in PROC_QUOTATION_LIST" ng-init="InginitQuotation(QL,$last,3)">
+                                        <td> {{QL.CONTACT_NAME}} </td>
+                                        <td> {{QL.TOTAL_AMOUNT | number :2}} </td>
+                                        <td class="">
+                                            {{QL.RANK==null?'-':QL.RANK}}
+                                        </td>
+                                        <td> {{QL.COMMENTS}} </td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-md-12 text-center" ng-show="QL.UploadedFiles ==null || QL.UploadedFiles.length==0">No attachment</div>
+                                                <div class="col-md-12" ng-repeat="file in QL.UploadedFiles">
+                                                    <div class="file-block">
+                                                        <div class="file-info">
+                                                            <i class="far fa-file-alt file-icon"></i>
+                                                            <a href="/P2PFiles/{{file.FILE_PATH}}{{file.SERVER_FILE_NAME}}" download="/P2PFiles/{{file.FILE_PATH}}{{file.SERVER_FILE_NAME}}"> <span class="text-limit-1 font-12">{{file.ORIGINAL_FILE_NAME}} </span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Contact</label>
+                                <span class="d-block text-bold font-14"> {{REQ_PROC_Search.REQ_DETAILS.CONTACT_NAME}}</span>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <span class="d-block text-bold font-14">{{REQ_PROC_Search.REQ_DETAILS.PO_DATE | date}}</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Delivery Date</label>
+                                <span class="d-block text-bold font-14">{{REQ_PROC_Search.REQ_DETAILS.DELIVERY_DATE  | date}}</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Reference</label>
+                                <span class="d-block text-bold font-14">{{REQ_PROC_Search.REQ_DETAILS.REFERENCE==null || REQ_PROC_Search.REQ_DETAILS.REFERENCE==''?'-':REQ_PROC_Search.REQ_DETAILS.REFERENCE}}</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <span class="d-block text-bold font-14">{{REQ_PROC_Search.REQ_DETAILS.PROJECT_NAME==null || REQ_PROC_Search.REQ_DETAILS.PROJECT_NAME==''?'-':REQ_PROC_Search.REQ_DETAILS.PROJECT_NAME}}</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Theme</label>
+                                <span class="d-block text-bold font-14">{{REQ_PROC_Search.REQ_DETAILS.BRANDING_THEME==null || REQ_PROC_Search.REQ_DETAILS.BRANDING_THEME==''?'-':REQ_PROC_Search.REQ_DETAILS.BRANDING_THEME}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-3">
+                            <h5 class="card-title mt-2">Line Items</h5>
+                            <div class="row">
+                                <div class="col-auto " ng-show="false">
+                                    <div class=" mb-2">
+                                        1  &nbsp;
+                                        {{(CURRENCY_LIST | filter :{CURRENCY_ID:REQ_PROC_Search.REQ_DETAILS.BASE_CURRENCY_ID})[0].CURRENCY_CODE }}
+                                        =  {{REQ_PROC_Search.REQ_DETAILS.BASE_TO_PO_CONVERSION_RATE}}
+                                        {{REQ_PROC_Search.REQ_DETAILS.PO_CURRENCY_CODE =(CURRENCY_LIST | filter :{CURRENCY_ID:REQ_PROC_Search.REQ_DETAILS.PO_CURRENCY_ID})[0].CURRENCY_CODE }}
+                                    </div>
+                                </div>
+                                <div class="col-auto  ml-auto ">
+                                    <div class="form-inline mb-2">
+                                        <label class="mr-2">PO Currency:</label>
+                                        <span class="text-bold font-13">    {{(CURRENCY_LIST | filter :{CURRENCY_ID:REQ_PROC_Search.REQ_DETAILS.PO_CURRENCY_ID})[0].CURRENCY_CODE }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="form-inline mb-2">
+                                        <label class="mr-2">Amounts are</label>
+                                        <span class="text-bold font-13">{{REQ_PROC_Search.REQ_DETAILS.TAX_NAME}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive custom-scrollbar height-auto">
+                                <table class="table table-head-fixed table-hover table-bordered">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th width="15%">Item </th>
+                                            <th width="20%">Description </th>
+                                            <th>Quantity </th>
+                                            <th><span class="text-nowrap">Unit Price </span></th>
+                                            <th>UOM</th>
+                                            <th><span class="text-nowrap">Disc %</span></th>
+                                            <th>GL Account </th>
+                                            <th><span class="text-nowrap">Tax Rate</span> </th>
+                                            <th>Tax Amount</th>
+                                            <th class="text-right">Amount</th>
+                                            <th><span class="text-nowrap">Recieving Method</span></th>
+                                            <th ng-repeat="TrackingCat in XERO_TRACKING_CATEGORIES track by $index">{{TrackingCat.FIELD_NAME}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="PRL in PRO_ITEM_LIST" ng-init="InitiateItemList(PRL);" on-finish-render="ngRepeatFinishedProcessRender">
+                                            <td><span ng-show="false">{{PRL.LINE_NO=($index+1)}}</span>{{PRL.ITEM_NAME}}</td>
+                                            <td>
+                                                {{PRL.DESCRIPTION | limitTo:PRL.DESCRIPTION_LIMIT_TO}}
+                                                <span ng-show="PRL.DESCRIPTION.length>PRL.DESCRIPTION_LIMIT_TO">...</span>
+                                                <span class="btn btn-xs btn-wenodo d-inline-flex"
+                                                      ng-show="PRL.DESCRIPTION.length>PRL.DESCRIPTION_LIMIT_TO"
+                                                      ng-click="READ_MORE_FY(PRL,1)"
+                                                      data-toggle="tooltip" data-html="true"
+                                                      data-original-title="Read More"><i class="far fa-plus"></i></span>
+                                                <span class="btn btn-xs btn-wenodo d-inline-flex"
+                                                      ng-show="PRL.DESCRIPTION.length==PRL.DESCRIPTION_LIMIT_TO"
+                                                      ng-click="READ_MORE_FY(PRL,2)"
+                                                      data-toggle="tooltip" data-html="true"
+                                                      data-original-title="Hide"><i class="far fa-minus"></i></span>
+                                            </td>
+                                            <td>{{PRL.QUANTITY}}</td>
+                                            <td>{{PRL.UNIT_PRICE}}</td>
+                                            <td> {{PRL.UOM_NAME==null?'-':PRL.UOM_NAME}}</td>
+                                            <td>{{PRL.DISCOUNT_PERCENT==null?'-':PRL.DISCOUNT_PERCENT}}</td>
+                                            <td>{{PRL.ACCOUNT_DETAILS}}</td>
+                                            <td>{{PRL.TAX_RATE_DETAILS}}</td>
+                                            <td class="text-right">
+                                                {{PRL.TAX_AMOUNT=REQ_PROC_Search.TAX_TYPE==3?0: (REQ_PROC_Search.TAX_TYPE==2?((((PRL.UNIT_PRICE*PRL.QUANTITY) / (1 + (PRL.TAX_RATE/100)))-(((PRL.UNIT_PRICE*PRL.QUANTITY) / (1 + (PRL.TAX_RATE/100)))*(PRL.DISCOUNT_PERCENT/100))) * (PRL.TAX_RATE/100)):(((PRL.UNIT_PRICE*PRL.QUANTITY)-((PRL.UNIT_PRICE*PRL.QUANTITY)*(PRL.DISCOUNT_PERCENT/100))) * (PRL.TAX_RATE/100))) | number:2}}
+                                            </td>
+                                            <td class="text-right text-nowrap pr-2">
+                                                {{PRL.AMOUNT= ((PRL.QUANTITY * PRL.UNIT_PRICE) - (PRL.QUANTITY*1 * PRL.UNIT_PRICE*1 * (PRL.DISCOUNT_PERCENT)/100)) | number:2}}
+                                                <span ng-show="false">{{PRL.TOTAL_SPLIT_AMOUNT= SETTING_USE_GROSS==1?(PRL.AMOUNT + (REQ_PROC_Search.TAX_TYPE==2?0:PRL.TAX_AMOUNT)):REQ_PROC_Search.TAX_TYPE==2? ((PRL.AMOUNT-PRL.TAX_AMOUNT)) :PRL.AMOUNT}}</span>
+                                            </td>
+                                            <td><span class="text-nowrap">{{PRL.RECEIVING_TYPE_NAME}}</span></td>
+                                            <td ng-repeat="TrackingCat in PRL.XERO_TRACKING_CATEGORIES track by $index" ng-init="InitiateXeroTrackingCategories(TrackingCat, $index,PRL,2);">
+                                                {{TrackingCat.SELECTED_CATEGORY_OPTION.OPTION_NAME}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="text-bold">
+                                            <td colspan="9" class="text-right font-13">Sub Total</td>
+                                            <td class="text-right text-nowrap pr-2 font-13">
+                                                {{(PRO_ITEM_LIST | total: 'AMOUNT') | number:2}}
+                                            </td>
+                                            <td colspan="{{XERO_TRACKING_CATEGORIES.length+1}}"></td>
+                                        </tr>
+                                        <tr class="text-bold" ng-repeat="TAX in PRO_ITEM_LIST | unique:'TAX_RATE_ID'" ng-if="TAX.TAX_RATE_ID!=null">
+                                            <td colspan="9" class="text-right font-13">
+                                                {{TAX.TAX_RATE_DETAILS}}
+                                            </td>
+                                            <td class="text-right text-nowrap pr-2 font-13">
+                                                {{ PRO_ITEM_LIST | filter:{TAX_RATE_ID:TAX.TAX_RATE_ID} | total:'TAX_AMOUNT' | number:2}}
+                                            </td>
+                                            <td colspan="{{XERO_TRACKING_CATEGORIES.length+1}}"></td>
+                                        </tr>
+                                        <tr class="text-bold">
+                                            <td colspan="9" class="text-right font-13">Total</td>
+                                            <td class="text-right text-nowrap pr-2 font-13">
+                                                <span ng-show="false"> {{(PRO_ITEM_LIST | total:'TAX_AMOUNT') | number:2}} </span>
+                                                <span ng-if="REQ_PROC_Search.TAX_TYPE==1">
+                                                    {{((PRO_ITEM_LIST | total: 'AMOUNT') + (PRO_ITEM_LIST | total: 'TAX_AMOUNT')) | number:2}}
+                                                </span>
+                                                <span ng-if="REQ_PROC_Search.TAX_TYPE==2">
+                                                    {{(PRO_ITEM_LIST | total: 'AMOUNT')  | number:2}}
+                                                </span>
+                                                <span ng-if="REQ_PROC_Search.TAX_TYPE==3">
+                                                    {{(PRO_ITEM_LIST | total: 'AMOUNT') | number:2}}
+                                                </span>
+                                                {{(CURRENCY_LIST | filter :{CURRENCY_ID:REQ_PROC_Search.REQ_DETAILS.PO_CURRENCY_ID})[0].CURRENCY_CODE }}
+                                            </td>
+
+                                            <td colspan="{{XERO_TRACKING_CATEGORIES.length+1}}"></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12  my-4">
+                            <div class="card-header w-100">
+                                <h5 class="card-title mt-1 font-15"> Advance Amount</h5>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <span class="d-block text-bold font-14"> {{REQ_PROC_Search.REQ_DETAILS.ADVANCE | number:2}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-header w-100" ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length>0">
+                                <h5 class="card-title mt-1">
+                                    Actual Budget (This shows the current status of Budget) <span ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length>0"> ({{REQ_PROC_Search.BUDGET_NAME}}) </span>
+                                </h5>
+                                <button type="button"
+                                        ng-click="SHOW_REQ_BUDGET=!SHOW_REQ_BUDGET"
+                                        data-toggle=""
+                                        data-html="true"
+                                        class="btn btn-transparent-wenodo ml-2 border float-right">
+                                    {{SHOW_REQ_BUDGET?'Hide':'Show'}} Requisition Budget
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <div class="table-responsive custom-scrollbar" style="max-height:100%">
+                                        <table class="table table-head-fixed table-hover table-form table-bordered " ng-show="MONTH_LIST.length>0">
+                                            <thead>
+                                                <tr>
+                                                    <th width="10%">GL Account</th>
+                                                    <th ng-repeat="PRL in PRO_ITEM_LIST | unique:'ACCOUNT_ID' | orderBy:['ACCOUNT_ID']"
+                                                        colspan="{{(PRO_ITEM_LIST |  filter:{ACCOUNT_ID:PRL.ACCOUNT_ID}:true).length}}">
+                                                        {{PRL.ACCOUNT_DETAILS}}
+                                                    </th>
+                                                </tr>
+                                                <tr class="bg-wenodo-border">
+                                                    <th width="10%">Item Name</th>
+                                                    <th data-toggle="tooltip" data-html="true" data-original-title="{{PRL.DESCRIPTION | limitTo:250}}"
+                                                        ng-repeat="PRL in PRO_ITEM_LIST | orderBy: ['ACCOUNT_ID'] ">
+                                                        {{PRL.ITEM_NAME | limitTo:30}}
+                                                    </th>
+                                                </tr>
+                                                <tr class="bg-wenodo-border">
+                                                    <th width="10%">Line Amount</th>
+                                                    <th ng-repeat="PRL in PRO_ITEM_LIST | orderBy: ['ACCOUNT_ID'] ">
+                                                        {{PRL.TOTAL_SPLIT_AMOUNT | number:2}}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="_m in MONTH_LIST">
+                                                <tr>
+                                                    <td width="10%">{{_m.START_DATE | date}} <span ng-show="false"> {{_m.FLAG=($last?1:0)}}</span></td>
+                                                    <td ng-repeat="_prl in _m.ITEM_LIST | orderBy: ['ACCOUNT_ID']" ng-init="_m.FLAG==1?Inittotalreq(_prl,_m,$index):''">
+                                                        {{_prl.BUDGET}}
+                                                    </td>
+                                                </tr>
+                                                <tr ng-show="$last">
+                                                    <td class="text-bold">
+                                                        Allocated Amount
+                                                    </td>
+                                                    <td class="text-bold" ng-repeat="line in _m.ITEM_LIST | orderBy: ['ACCOUNT_ID']">
+                                                        {{line.TOTAL_BUDGET}}
+                                                    </td>
+                                                </tr>
+                                                <tr ng-show="$last">
+                                                    <td class="text-bold">Remaining Amount</td>
+                                                    <td ng-repeat="_prl in _m.ITEM_LIST | orderBy: ['ACCOUNT_ID']" class="text-bold" ng-class="{'text-red':(_prl.REMAINING_AMOUNT | number:2)!=0,'':(_prl.REMAINING_AMOUNT | number:2)==0}">
+                                                        {{(_prl.REMAINING_AMOUNT=(PRO_ITEM_LIST | filter:{LINE_NO:_prl.LINE_NO}:true | total:'TOTAL_SPLIT_AMOUNT') -_prl.TOTAL_BUDGET) | number:2}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-2" ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length>0">
+                                <span class="po-amount">The following budgets would be affected by the approval of the request.</span>
+                            </div>
+                            <div class="col-md-12 text-center mt-2" ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length==0">
+                                <div class="alert bg-custom-blue">{{BUDGET_TEXT_VALIDATION}}</div>
+                            </div>
+                            <div class="card-body p-0 mt-2" ng-show="P2P_PROCESS_BUDGET_MASTER_LIST.length>0">
+                                <div class="table-responsive custom-scrollbar">
+                                    <table class="table table-head-fixed table-hover">
+                                        <thead class="bg-wenodo-border">
+                                            <tr>
+                                                <th>GL Account </th>
+                                                <th>Period</th>
+                                                <th class="text-right">Total</th>
+                                                <th class="text-right">Remaining</th>
+                                                <th class="text-right">Consumed</th>
+                                                <th class="text-right">Booked</th>
+                                                <th class="text-right">Credit Notes</th>
+                                                <th class="text-right" ng-show="false">Current</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="BD in P2P_PROCESS_BUDGET_MASTER_LIST">
+                                            <tr>
+                                                <td rowspan="3">{{BD.GLACCOUNT_NAME}}</td>
+                                                <td colspan="7" ng-if="BD.DB_ACCOUNT_ID==0" class="text-align-center text-bold">There is no budget allocated in this GL Account</td>
+                                            </tr>
+                                            <tr ng-if="BD.DB_ACCOUNT_ID!=0" ng-repeat="BL in BD.BUDGET_DETAILS_LIST"
+                                                ng-init="BL.CURRENT_PO_CUSTOM=0;REQ_PROC_Search.REQ_DETAILS.SPLIT_TYPE>0?Fn_RETURN_CURRENT_PROCESS_AMT(BD,REQ_PROC_Search.REQ_DETAILS):''"
+                                                ng-click="VIEW_BUDGET_fn(BD,REQ_PROC_Search.PO_DATE,REQ_PROC_Search.REQ_DETAILS.PROJECT_MASTER_ID,REQ_PROC_Search,REQ_PROC_Search,'REQ_PROC')">
+                                                <td>{{BL.PERIOD}}</td>
+                                                <td class="text-right">{{BL.TOTAL | number:2}}</td>
+                                                <td class="text-right" ng-class="{'text-red text-bold':BL.REMAINING_AMOUNT<0}">
+                                                    <span ng-show="false">
+                                                        {{BD.IS_OVER_BUDGET=(BL.REMAINING_AMOUNT<0 && BD.BUDGET_DETAILS_LIST.length==BL.LINE_ID?true:BD.IS_OVER_BUDGET?true:false)}}
+                                                    </span>
+                                                    {{(BL.REMAINING_AMOUNT=((BL.TOTAL*1)-((BL.BOOKED*1) +(BL.CURRENT_PO_CUSTOM*1)+(BL.CONSUMED*1)+(BL.MEMO*1)))) | number:2}}
+                                                </td>
+                                                <td class="text-right">{{BL.CONSUMED | number :2}}</td>
+                                                <td class="text-right">{{BL.BOOKED  | number :2}}</td>
+                                                <td class="text-right">
+                                                    <span ng-show="BL.MEMO==0">{{BL.MEMO*-1 | number :2}}</span><span ng-show="BL.MEMO!=0">({{BL.MEMO*-1 | number :2}})</span>
+                                                </td>
+
+                                                <td class="text-right" ng-show="false">
+                                                    <span ng-show="false">
+                                                        {{BL.ITEM_TAX_AMOUNT=(PRO_ITEM_LIST | filter:{ACCOUNT_ID:BD.ACCOUNT_ID} | total:'TAX_AMOUNT')}}
+                                                        {{BL.ITEM_AMOUNT= (PRO_ITEM_LIST | filter:{ACCOUNT_ID:BD.ACCOUNT_ID} | total:'AMOUNT') }}
+                                                        {{BL.TAX_AMT_TOTAL=((NAN_Fn(BL.ITEM_TAX_AMOUNT)?0:BL.ITEM_TAX_AMOUNT) + BL.ITEM_AMOUNT*1)}}
+                                                    </span>
+                                                    <span> {{REQ_PROC_Search.REQ_DETAILS.STATUS_ID==73 || REQ_PROC_Search.REQ_DETAILS.STATUS_ID==71 || TAB_FLAG==2 ?0: (REQ_PROC_Search.REQ_DETAILS.SPLIT_TYPE>0?BL.CURRENT_PO_CUSTOM=BD.CURRENT_AMOUNT/REQ_PROC_Search.BASE_TO_PO_CONVERSION_RATE:(SETTING_USE_GROSS==1?(BL.CURRENT_PO_CUSTOM=REQ_PROC_Search.TAX_TYPE==1 ?(BL.TAX_AMT_TOTAL/REQ_PROC_Search.BASE_TO_PO_CONVERSION_RATE):(BL.ITEM_AMOUNT/REQ_PROC_Search.BASE_TO_PO_CONVERSION_RATE)):BL.CURRENT_PO_CUSTOM=(BL.ITEM_AMOUNT-(REQ_PROC_Search.TAX_TYPE==1?0:BL.ITEM_TAX_AMOUNT))/REQ_PROC_Search.BASE_TO_PO_CONVERSION_RATE)) | number:2}}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="alert alert-warning-red" ng-show="(P2P_PROCESS_BUDGET_MASTER_LIST | filter:{IS_OVER_BUDGET:true}).length>0">
+                                    <strong>Warning!</strong> This requisition is going over budget.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" ng-show="SHOW_REQ_BUDGET">
+                            <div class="card-header w-100">
+                                <h5 class="card-title mt-1">
+                                    Requisition Budget (This shows the budget when the requisition was posted) <span ng-show="P2P_PROCESS_SNAP_SHOT_BUDGET_MASTER_LIST.length>0"> ({{REQ_PROC_Search.SNAPSHOT_BUDGET_NAME}}) </span>
+                                </h5>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-transparent-wenodo border" ng-click="SHOW_REQ_BUDGET=!SHOW_REQ_BUDGET">
+                                        <i class="fa fa-close"
+                                           data-toggle="tooltip" data-html="true"
+                                           data-original-title="Hide"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-center mt-2" ng-show="P2P_SNAP_SHOT_MASTER_LIST.length==0" empty-grid> </div>
+                            <div class="card-body p-0 mt-2" ng-show="P2P_SNAP_SHOT_MASTER_LIST.length>0">
+                                <div class="table-responsive custom-scrollbar">
+                                    <table class="table table-head-fixed table-hover">
+                                        <thead class="bg-wenodo-border">
+                                            <tr>
+                                                <th>GL Account </th>
+                                                <th>Period</th>
+                                                <th class="text-right">Total</th>
+                                                <th class="text-right">Remaining</th>
+                                                <th class="text-right">Consumed</th>
+                                                <th class="text-right">Booked</th>
+                                                <th class="text-right">Credit Notes</th>
+                                                <th class="text-right">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody ng-repeat="BD in P2P_SNAP_SHOT_MASTER_LIST | unique:'ACCOUNT_ID'">
+                                            <tr><td rowspan="3">{{BD.ACCOUNT_DETAILS}}</td></tr>
+                                            <tr ng-repeat="BL in P2P_SNAP_SHOT_MASTER_LIST | filter:{ACCOUNT_ID:BD.ACCOUNT_ID}">
+                                                <td>{{BL.PERIOD}}</td>
+                                                <td class="text-right">{{BL.TOTAL | number:2}}</td>
+                                                <td class="text-right" ng-class="{'text-red text-bold':BL.REMAINING_AMOUNT<0}">
+                                                    {{(BL.REMAINING_AMOUNT=((BL.TOTAL*1)-((BL.BOOKED*1) +(BL.CURRENT*1)+(BL.CONSUMED*1)+(BL.MEMO*1)))) | number:2 }}
+                                                    <span ng-show="false">
+                                                        {{BD.IS_OVER_BUDGET=(BL.REMAINING_AMOUNT<0 && BD.BUDGET_DETAILS_LIST.length==BL.LINE_ID?true:BD.IS_OVER_BUDGET?true:false)}}
+                                                    </span>
+                                                </td>
+                                                <td class="text-right">{{BL.CONSUMED | number :2}}</td>
+                                                <td class="text-right">{{BL.BOOKED  | number :2}}</td>
+
+                                                <td class="text-right">
+                                                    <span ng-show="BL.MEMO==0">{{BL.MEMO*-1 | number :2}}</span><span ng-show="BL.MEMO!=0">({{BL.MEMO*-1 | number :2}})</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    {{BL.CURRENT | number:2}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="alert alert-warning-red" ng-show="(P2P_SNAP_SHOT_MASTER_LIST | filter:{IS_OVER_BUDGET:true}).length>0">
+                                    <strong>Warning!</strong> This requisition is going over budget.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                            <h5 class="card-title w-100">Delivery Details</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <span class="d-block font-12">{{REQ_PROC_Search.REQ_DETAILS.DELIVERY_ADDRESS}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Attention To</label>
+                                            <span class="d-block text-bold font-14">
+                                                {{REQ_PROC_Search.REQ_DETAILS.ATTENTION == null || REQ_PROC_Search.REQ_DETAILS.ATTENTION==''?'-':REQ_PROC_Search.REQ_DETAILS.ATTENTION}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Phone</label>
+                                            <span class="d-block text-bold font-14">{{REQ_PROC_Search.REQ_DETAILS.PHONE}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Delivery Instructions</label>
+                                        <span class="d-block font-12">
+                                            {{REQ_PROC_Search.REQ_DETAILS.DELIVERY_INSTRUCTIONS == null || REQ_PROC_Search.REQ_DETAILS.DELIVERY_INSTRUCTIONS==''?'-':REQ_PROC_Search.REQ_DETAILS.DELIVERY_INSTRUCTIONS | limitTo:REQ_PROC_Search.DELIVERY_INSTRUCTIONS_LIMIT_TO}}
+                                        </span>
+                                        <span ng-show="REQ_PROC_Search.REQ_DETAILS.DELIVERY_INSTRUCTIONS.length>REQ_PROC_Search.DELIVERY_INSTRUCTIONS_LIMIT_TO">...</span>
+                                        <span class="btn btn-xs btn-transparent-wenodo"
+                                              ng-show="REQ_PROC_Search.REQ_DETAILS.DELIVERY_INSTRUCTIONS.length>REQ_PROC_Search.DELIVERY_INSTRUCTIONS_LIMIT_TO"
+                                              ng-click="READ_MORE_FY(REQ_PROC_Search.REQ_DETAILS,1,'DELIVERY_INSTRUCTIONS')"
+                                              data-toggle="tooltip" data-html="true"
+                                              data-original-title="Read More"><i class="far fa-plus"></i></span>
+                                        <span class="btn btn-xs btn-transparent-wenodo"
+                                              ng-show="REQ_PROC_Search.REQ_DETAILS.DELIVERY_INSTRUCTIONS.length==REQ_PROC_Search.DELIVERY_INSTRUCTIONS_LIMIT_TO"
+                                              ng-click="READ_MORE_FY(REQ_PROC_Search.REQ_DETAILS,2,'DELIVERY_INSTRUCTIONS')"
+                                              data-toggle="tooltip" data-html="true"
+                                              data-original-title="Hide"><i class="far fa-minus"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h5 class="text-dark-blue text-bold font-13 mb-0">Note for Approvers</h5>
+                            <span class="font-12">
+                                {{REQ_PROC_Search.REQ_DETAILS.NOTE_FOR_APPROVERS == null || REQ_PROC_Search.REQ_DETAILS.NOTE_FOR_APPROVERS==''?'-':REQ_PROC_Search.REQ_DETAILS.NOTE_FOR_APPROVERS | limitTo:REQ_PROC_Search.NOTE_FOR_APPROVERS_LIMIT_TO }}
+                                <span ng-show="REQ_PROC_Search.REQ_DETAILS.NOTE_FOR_APPROVERS.length>REQ_PROC_Search.NOTE_FOR_APPROVERS_LIMIT_TO">...</span>
+                                <span class="btn btn-xs btn-wenodo d-inline-flex"
+                                      ng-show="REQ_PROC_Search.REQ_DETAILS.NOTE_FOR_APPROVERS.length>REQ_PROC_Search.NOTE_FOR_APPROVERS_LIMIT_TO"
+                                      ng-click="READ_MORE_FY(REQ_PROC_Search.REQ_DETAILS,1,'NOT_FOR_APPROVER')"
+                                      data-toggle="tooltip" data-html="true"
+                                      data-original-title="Read More"><i class="far fa-plus"></i></span>
+                                <span class="btn btn-xs btn-wenodo d-inline-flex"
+                                      ng-show="REQ_PROC_Search.REQ_DETAILS.NOTE_FOR_APPROVERS.length==REQ_PROC_Search.NOTE_FOR_APPROVERS_LIMIT_TO"
+                                      ng-click="READ_MORE_FY(REQ_PROC_Search.REQ_DETAILS,2,'NOT_FOR_APPROVER')"
+                                      data-toggle="tooltip" data-html="true"
+                                      data-original-title="Hide"><i class="far fa-minus"></i></span>
+                            </span>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <span class="bigcheck">
+                                <label class="bigcheck float-left" for="MATCHTYPE1">
+                                    <input type="checkbox" class="bigcheck" ng-disabled="true" id="MATCHTYPE1" ng-model="REQ_PROC_Search.REQ_DETAILS.AUTO_EMAIL_TO_SUPPLIER" />
+                                    <span class="bigcheck-target"></span>
+                                    <span class="font-14" style="margin-top:2px"> Automatically email approved Purchase Order to Supplier </span>
+                                </label>
+                            </span>
+                        </div>
+                        <div class="col-md-12 mt-3" ng-show="PROC_TERMS_AND_CONDITIONS_MASTER_LIST.length>0">
+                            <h5 class="text-dark-blue text-bold font-13 mb-0">Terms & Conditions</h5>
+                            <ul class="products-list product-list-in-card pl-2 pr-2">
+                                <li class="item" ng-repeat="PRL in PROC_TERMS_AND_CONDITIONS_MASTER_LIST">
+                                    <span class="terms"><span class="text-bold">{{$index+1}}.</span> {{PRL.TEXT}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <h5 class="card-title w-100">Attachments</h5>
+                            <div class="row">
+                                <div ng-show="REQ_PROC_Search.UploadedFiles.length==0" class="col-md-12">No attachment</div>
+                                <div class="col-md-3" ng-show="REQ_PROC_Search.UploadedFiles!=null && REQ_PROC_Search.UploadedFiles.length>0">
+                                    <div class="file-block" ng-repeat="FILE in REQ_PROC_Search.UploadedFiles">
+                                        <div class="file-info">
+                                            <i class="far fa-paperclip file-icon"></i>
+                                            <span class="text-limit-1"> <a href="../P2PFiles/{{FILE.FILE_PATH}}{{FILE.SERVER_FILE_NAME}}" download="{{FILE.ORIGINAL_FILE_NAME}}">  {{FILE.ORIGINAL_FILE_NAME}} </a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3"></div>
+                    <div class="card-header"><h5 class="card-title">Approval Workflow</h5></div>
+                    <div class="row align-items-center mt-3">
+
+                        <div class="col d-flex custom-scrollbar horizontal_scroll" style="min-height:350px">
+                            <div class="col-md-2" ng-repeat-start="APL in APPROVAL_HEADERS_CHAIN_LIST   | unique:'APPROVAL_CHAIN_GROUP_ID'" ng-init="InitiateApprover(APL)">
+                                <div class="row pl-2">
+                                    <span ng-show="false">{{APL.APL_INDEX=$index+1}}</span>
+                                    <div class="col-md-12 pl-1">
+                                        <button type="button" class="btn btn-w-default w-100" ng-class="{'active':APL.STEP_ACTIVE==1, 'active-approved':APL.SEQUENCE_APPROVED}">
+                                            {{APL.GROUP_NAME}}
+                                        </button>
+                                    </div>
+                                    <span class="w-100 z-index-997">
+                                        Approval condition: {{APL.ANY_ALL_FLAG==0?'All':'Any'}} <span ng-show="APL.ANY_ALL_FLAG>0"> {{APL.ANY_ALL_FLAG}}</span>
+                                    </span>
+                                    <div class="col-auto pl-1 mt-2"
+                                         ng-repeat="User in APPROVAL_HEADERS_CHAIN_LIST  | filter:{APPROVAL_CHAIN_GROUP_ID:APL.APPROVAL_CHAIN_GROUP_ID}"
+                                         ng-init="InitiateNameApprover(User,APL)">
+                                        <div class="sec-center mt-1">
+                                            <input class="dropdown" type="checkbox" id="Prodropdown{{$index}}{{APL.APL_INDEX}}" name="dropdown{{$index}}" />
+                                            <label class="name-badge-short cursor-pointer"
+                                                   ng-class="{'name-badge-approved':User.STATUS_ID==37,'name-badge-action-required':User.ACTION_REQUIRED==1 &&  User.STATUS_ID==39,'name-badge-pending':User.ACTION_REQUIRED!=1 && User.STATUS_ID==39,'name-badge-rejected': User.STATUS_ID==38 || User.STATUS_ID==42,'name-badge-auto-approved': User.STATUS_ID==41,'name-badge-no-action-required': User.STATUS_ID==74}"
+                                                   for="Prodropdown{{$index}}{{APL.APL_INDEX}}">{{User.SHORT_NAME}}</label>
+                                            <div class="section-dropdown">
+                                                <div class="card-header">
+                                                    <div class="name-badge d-inline">{{User.SHORT_NAME}} </div>
+                                                    <span class="mt-2 ml-2">{{User.APPROVER_NAME}}</span>
+                                                    <span class="badge  text-white float-right"
+                                                          ng-class="{'name-badge-approved':User.STATUS_ID==37,'name-badge-pending': User.STATUS_ID==39,'name-badge-rejected': User.STATUS_ID==38 || User.STATUS_ID==42,'name-badge-auto-approved': User.STATUS_ID==41,'name-badge-no-action-required': User.STATUS_ID==74}">{{User.STATUS_NAME}}</span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <ul class="products-list product-list-in-card">
+                                                        <li class="item pt-0">
+                                                            <div class="product-info ml-0">
+                                                                <div class="product-title">
+                                                                    {{User.APPROVER_EMAIL}}
+                                                                    <span class="d-block" ng-if="User.LAST_ACTION_TAKEN_DATE!=null">{{User.LAST_ACTION_TAKEN_DATE | toDate | date}}, {{User.LAST_ACTION_TAKEN_DATE | toDate | date:'H:mm'}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="product-info ml-0 font-12 custom-scrollbar" style="max-height:100px">
+                                                                {{User.COMMENTS==null?'-':User.COMMENTS}}
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-auto" ng-if="APL.showborder && !$last" ng-repeat-end><i class="far fa-angle-right text-grey mt-1"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="tab-pane fade " ng-class="{'show active':TAB_FLAG==4}" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+        <form name="CREATE_REQ_FORM" id="CREATE_REQ_FORM" novalidate>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        Branch:- {{(BRANCH_LOGIN_LIST | filter:{BRANCH_ID:Create_REQ_Search.BRANCH_ID})[0].BRANCH_NAME}}
+                        <i ng-show="BRANCH_LOGIN_LIST.length>1" class="far fa-edit cursor-pointer text-blue" data-toggle="modal" data-target="#select_branch"></i>
+                    </h5>
+                    <div class="card-tools ml-auto">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><button type="button" ng-click="CREATE_INS_UPD_REQUISITION(1,Create_REQ_Search,CREATE_ITEM_LIST)" class="btn btn-transparent-wenodo mr-2" data-toggle="tooltip" data-html="true" data-original-title="Save as draft"><i class="fal fa-save"></i></button></li>
+                            <li class="nav-item"><button type="button" ng-click="CREATE_INS_UPD_REQUISITION()" class="btn btn-wenodo mr-2">Submit for Approval</button></li>
+                            <li class="nav-item"><button type="button" ng-click="RESET_CREATE_REQ()" class="btn btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Reset"><i class="fad fa-undo-alt"></i></button></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row my-4">
+                        <div class="col-md-4">
+                            <div class="form-group" id="AddCustomScroll_CREATE">
+                                <label>Contact <span class="text-danger">*</span></label>
+                                <div class="float-right">
+                                    <button ng-click="POP_SUPPLIER_FY('CREATE')"
+                                            type="button"
+                                            class="btn btn-transparent-wenodo border py-0 ml-2 "
+                                            data-toggle="tooltip"
+                                            data-html="true"
+                                            data-original-title="Add new contact">
+                                        Add new contact  <i class="far fa-plus"></i>
+                                    </button>
+                                    <button ng-show="!IntegrationDetails.PageLoad && IntegrationDetails.ShowSyncBtn"
+                                            ng-click="CLICK_SUPPLIER_XERO_SYNC_Fn('CREATE')"
+                                            type="button"
+                                            class="btn btn-transparent-wenodo border py-0" data-toggle="tooltip"
+                                            data-html="true"
+                                            data-original-title="Sync Xero Contact">
+                                        Sync Xero Contact <i class="far fa-sync-alt"></i>
+                                    </button>
+                                    <a ng-show="!IntegrationDetails.PageLoad && !IntegrationDetails.ShowSyncBtn"><i class="fas fa-sync fa-spin"></i> Syncing Xero Contact</a>
+                                </div>
+                                <input type="text" name="SUPPLIER_NAME_BOX"
+                                       ng-model="Create_REQ_Search.SUPPLIER_NAME"
+                                       ng-change="SetValues(Supplier,$index)"
+                                       ng-blur="SetCreateContactValues(Supplier,$index)"
+                                       uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIER_LIST | filter:$viewValue"
+                                       typeahead-loading="loading" typeahead-no-results="noResults"
+                                       class="form-control form-control-sm mt-1" autocomplete="off"
+                                       required
+                                       placeholder="Type to select contact name..."
+                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.SUPPLIER_NAME_BOX.$error.required ||  CREATE_REQ_FORM.submitted && SELECT_EDIT_SUPPLIER_LIST.length==0 }" />
+                                <small ng-show="CREATE_REQ_FORM.submitted && SELECT_EDIT_SUPPLIER_LIST.length==0">Invalid contact name</small>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Date <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control dateinput mt-1"
+                                       name="DATE"
+                                       placeholder="Select date"
+                                       ng-model="Create_REQ_Search.PO_DATE"
+                                       ng-change="ChangeCreateBudget()"
+                                       ng-value="Create_REQ_Search.PO_DATE | date"
+                                       required
+                                       readonly
+                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.DATE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Delivery Date <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control dateinput mt-1"
+                                       name="DELIVERY_DATE"
+                                       placeholder="Select delivery date"
+                                       ng-model="Create_REQ_Search.DELIVERY_DATE"
+                                       ng-value="Create_REQ_Search.DELIVERY_DATE | date"
+                                       required
+                                       readonly
+                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.DELIVERY_DATE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Reference</label>
+                                <input type="text" class="form-control mt-1"
+                                       name="REFERENCE"
+                                       placeholder="Enter reference"
+                                       ng-model="Create_REQ_Search.REFERENCE"
+                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.REFERENCE.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Project</label>
+                                <select class="custom-select mw-150 mt-1"
+                                        name="PROJECT_MASTER_ID"
+                                        ng-change="CHANGE_PROJECT_Fn(3)"
+                                        ng-model="Create_REQ_Search.PROJECT_MASTER_ID"
+                                        ng-options="T.PROJECT_MASTER_ID as T.PROJECT_NAME for T in PROJECT_MASTER_LIST">
+                                    <option value="">-Select Project-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Themes</label>
+                                <select class="custom-select mw-150 mt-1"
+                                        name="XERO_BRANDING_THEMES_ID"
+                                        ng-model="Create_REQ_Search.XERO_BRANDING_THEME_ID"
+                                        ng-options="T.XERO_BRANDING_THEME_ID as T.NAME for T in XERO_BRANDING_THEMES_LIST"
+                                        ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.XERO_BRANDING_THEMES_ID.$error.required}">
+                                    <option value="">-Select Themes-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 my-4">
+                            <div class="card-header">
+                                <h5 class="card-title  font-15">Line Items</h5>
+                                <div class="row">
+                                    <div class="col-auto font-11 mt-2 ml-auto">
+                                        <span ng-show="Create_REQ_Search.BASE_CURRENCY_ID!=Create_REQ_Search.PO_CURRENCY_ID"> Currency rate for {{Create_REQ_Search.CURRENT_DATE | date}} provided by openexchangerates.org, will be applied after submission.</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="form-inline mb-2" ng-show="Create_REQ_Search.BASE_CURRENCY_ID!=Create_REQ_Search.PO_CURRENCY_ID">
+                                            <label class="mr-2">1  &nbsp;{{Create_REQ_Search.BASE_CURRENCY_NAME }} </label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="CREATE_CURRENCY_CONVER"
+                                                   placeholder="Enter value"
+                                                   ng-model="Create_REQ_Search.BASE_TO_PO_CONVERSION_RATE"
+                                                   ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.CURRENCY_CONVER.$error.required}" />
+                                            <label class="mr-2">  &nbsp;{{Create_REQ_Search.PO_CURRENCY_NAME }}</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="form-inline mb-2">
+                                            <select class="custom-select mw-150"
+                                                    name="CREATE_CURRENCY_ID"
+                                                    ng-change="CHANGE_CREATE_CURRENCY()"
+                                                    ng-model="Create_REQ_Search.PO_CURRENCY_ID"
+                                                    ng-options="TE.CURRENCY_ID as TE.DISPLAY_TEXT +'-' + TE.CURRENCY_NAME for TE in CREATE_CURRENCY_LIST"
+                                                    ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.CREATE_CURRENCY_ID.$error.required}"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="form-inline mb-2">
+                                            <label class="mr-2">Amounts are</label>
+                                            <select class="custom-select mw-150"
+                                                    name="CREATE_TAX_TYPE"
+                                                    ng-model="Create_REQ_Search.TAX_TYPE"
+                                                    ng-options="T.ID as T.NAME for T in TAX_TYPE"
+                                                    ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.CREATE_TAX_TYPE.$error.required}"></select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive custom-scrollbar height-auto">
+                                <table class="table table-head-fixed table-hover table-form table-bordered">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th width="15%">Item <span class="text-danger">*</span></th>
+                                            <th width="20%">Description <span class="text-danger">*</span></th>
+                                            <th>Quantity <span class="text-danger">*</span></th>
+                                            <th>Unit Price <span class="text-danger">*</span></th>
+                                            <th>UOM </th>
+                                            <th>Disc %</th>
+                                            <th>GL Account <span class="text-danger">*</span></th>
+                                            <th>Tax Rate <span class="text-danger">*</span></th>
+                                            <th class="text-right">Tax</th>
+                                            <th class="text-right">Amount</th>
+                                            <th>Receiving Method<span class="text-danger">*</span></th>
+                                            <th ng-repeat="TrackingCat in XERO_TRACKING_CATEGORIES track by $index">{{TrackingCat.FIELD_NAME}}</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="PRL in CREATE_ITEM_LIST" ng-init="InitiateItemList(PRL,3);">
+                                            <td>
+                                                <span ng-show="false">
+                                                    {{PRL.LINE_NO=($index+1)}}
+                                                </span>
+                                                <div class="AddCustomScroll_itemCREATE_REQ">
+                                                    <input type="text"
+                                                           name="ITEM_NAME{{$index}}"
+                                                           ng-model="PRL.ITEM_NAME"
+                                                           ng-change="SetEdititemValues('CREATE_REQ');"
+                                                           uib-typeahead="item.ITEM_NAME  for item in CREATE_P2P_ITEMS_LIST | filter:$viewValue"
+                                                           typeahead-loading="loading"
+                                                           typeahead-no-results="noResults"
+                                                           class="hidden-input"
+                                                           autocomplete="off"
+                                                           required
+                                                           placeholder="Enter item name"
+                                                           ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.ITEM_NAME{{$index}}.$error.required}" />
+                                                </div>
+
+
+                                            </td>
+                                            <td>
+                                                <textarea class="hidden-input scroll"
+                                                          name="DESCRIPTION{{$index}}"
+                                                          required
+                                                          maxlength="2000"
+                                                          placeholder="Enter description"
+                                                          ng-model="PRL.DESCRIPTION"
+                                                          ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.DESCRIPTION{{$index}}.$error.required}"></textarea>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="hidden-input"
+                                                       name="QUANTITY{{$index}}"
+                                                       only-digits
+                                                       maxlength="13"
+                                                       placeholder="Enter QTY."
+                                                       required
+                                                       ng-model="PRL.QUANTITY"
+                                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.QUANTITY{{$index}}.$error.required}" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="hidden-input"
+                                                       only-digits
+                                                       required
+                                                       maxlength="13"
+                                                       placeholder="Enter unit price"
+                                                       name="UNIT_PRICE{{$index}}"
+                                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.UNIT_PRICE{{$index}}.$error.required}"
+                                                       ng-model="PRL.UNIT_PRICE" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="hidden-input"
+                                                       maxlength="30"
+                                                       placeholder="Enter UOM"
+                                                       name="UOM{{$index}}"
+                                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.UOM{{$index}}.$error.required}"
+                                                       ng-model="PRL.UOM_NAME" />
+                                            </td>
+
+                                            <td>
+                                                <input type="text" class="hidden-input"
+                                                       name="DISCOUNT_PERCENT{{$index}}"
+                                                       placeholder="Enter discount"
+                                                       maxlength="4"
+                                                       only-digits
+                                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.DISCOUNT_PERCENT{{$index}}.$error.required}"
+                                                       ng-model="PRL.DISCOUNT_PERCENT" />
+                                            </td>
+
+                                            <td>
+
+                                                <div class="AddCustomScroll_Account">
+                                                    <input type="text" name="XERO_ACCOUNT_CODE{{$index}}"
+                                                           ng-model="PRL.ACCOUNT_NAME"
+                                                           ng-change="SetAccountValues(PRL,$index);"
+                                                           typeahead-on-select="ChangeCreateBudget($item, 3, $label)"
+                                                           uib-typeahead="Acct.CODE + ' - ' + Acct.NAME  for Acct in XERO_ACCOUNT_CODES | filter:$viewValue"
+                                                           typeahead-loading="loading" typeahead-no-results="noResults"
+                                                           class="hidden-input" autocomplete="off"
+                                                           required
+                                                           placeholder="Type to select account name..."
+                                                           ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.XERO_ACCOUNT_CODE{{$index}}.$error.required || CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.IS_ACCOUNT_VALID}" />
+                                                </div>
+                                                <small ng-show="PRL.IS_ACCOUNT_VALID" class="text-red text-bold">Invalid GL Account</small>
+                                            </td>
+                                            <td>
+                                                <select class="hidden-input"
+                                                        name="TAX_TYPE{{$index}}"
+                                                        ng-model="PRL.TAX_ID"
+                                                        ng-options="XT as XT.NAME +' ('+ XT.RATE +')'  for XT in XERO_TAXES"
+                                                        required
+                                                        ng-change="TAXPERCENTAGE_CHANGE(PRL.TAX_ID,PRL);"
+                                                        ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.TAX_TYPE{{$index}}.$error.required}">
+                                                    <option value="">- Please Select Tax -</option>
+                                                </select>
+                                            </td>
+                                            <td class="text-right text-nowrap pr-2">
+                                                {{PRL.TAX_AMOUNT=Create_REQ_Search.TAX_TYPE==3?0: (Create_REQ_Search.TAX_TYPE==2?((((PRL.UNIT_PRICE*PRL.QUANTITY) / (1 + (PRL.TAX_ID.RATE/100)))-(((PRL.UNIT_PRICE*PRL.QUANTITY) / (1 + (PRL.TAX_ID.RATE/100)))*(PRL.DISCOUNT_PERCENT/100))) * (PRL.TAX_ID.RATE/100)):(((PRL.UNIT_PRICE*PRL.QUANTITY)-((PRL.UNIT_PRICE*PRL.QUANTITY)*(PRL.DISCOUNT_PERCENT/100))) * (PRL.TAX_ID.RATE/100))) | number:2}}
+                                            </td>
+                                            <td class="text-right text-nowrap pr-2">
+
+                                                {{PRL.AMOUNT= ((PRL.QUANTITY * PRL.UNIT_PRICE) - (PRL.QUANTITY*1 * PRL.UNIT_PRICE*1 * (PRL.DISCOUNT_PERCENT)/100)) | number:2}}
+                                            </td>
+                                            <td>
+                                                <select class="hidden-input"
+                                                        name="RECEIVING_TYPE_ID{{$index}}"
+                                                        ng-options="RT.ID as RT.NAME  for RT in RECEIVING_TYPE"
+                                                        required
+                                                        ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.RECEIVING_TYPE_ID{{$index}}.$error.required}"
+                                                        ng-model="PRL.RECEIVING_TYPE_ID">
+                                                    <option value="">- Select Receiving Type -</option>
+                                                </select>
+                                            </td>
+                                            <td ng-repeat="TrackingCat in PRL.XERO_TRACKING_CATEGORIES track by $index" ng-init="InitiateXeroTrackingCategories(TrackingCat, $index,PRL,3);">
+                                                <select class="hidden-input"
+                                                        ng-model="TrackingCat.SELECTED_CATEGORY_OPTION"
+                                                        ng-options="XT as XT.OPTION_NAME for XT in XERO_TRACKING_CATEGORIES_OPTIONS | filter:{APPROVAL_CHAIN_CUSTOM_FIELDS_MASTER_ID:TrackingCat.APPROVAL_CHAIN_CUSTOM_FIELDS_MASTER_ID}">
+                                                    <option value="">- Please Select -</option>
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                <i ng-show="!$first" class="far fa-times-circle cursor-pointer text-danger"
+                                                   ng-click="REMOVE_LINE_ITEM_CREATE($index,PRL)"
+                                                   data-toggle="tooltip" data-html="true" data-original-title="Remove">
+                                                </i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="{{XERO_TRACKING_CATEGORIES.length+12}}"
+                                                ng-click="ADD_MORE_ITEM_CREATE()" class="text-center cursor-pointer">
+                                                <a class="text-blue cursor-pointer text-sm"><i class="far fa-plus"></i> {{ADD_MORE_ITEM_NAME}}</a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-bold table-footer-fixed">
+                                            <td colspan="{{9}}" class="text-right font-13">Sub Total</td>
+                                            <td class="text-right text-nowrap pr-2 font-16"> {{Create_REQ_Search.NET_AMOUNT=(CREATE_ITEM_LIST | total: 'AMOUNT') | number:2}}</td>
+                                            <td></td>
+                                            <td colspan="{{XERO_TRACKING_CATEGORIES.length+3}}" class="text-right font-13"></td>
+                                        </tr>
+                                        <tr class="text-bold table-footer-fixed" ng-repeat="TAX in CREATE_ITEM_LIST | unique:'TAX_ID'" ng-if="TAX.TAX_ID!=null">
+                                            <td colspan="{{9}}" class="text-right font-13">
+                                                {{TAX.TAX_ID.NAME}} ({{TAX.TAX_ID.RATE +'%'}})
+                                            </td>
+                                            <td class="text-right text-nowrap pr-2 font-13">
+                                                {{ CREATE_ITEM_LIST | filter:{TAX_ID:TAX.TAX_ID} | total:'TAX_AMOUNT' | number:2}}
+                                                <!--Taxamount=((UnitPrice*Qty)/(1 + Tax%))*tax%-->
+                                            </td>
+                                            <td></td>
+                                            <td colspan="{{XERO_TRACKING_CATEGORIES.length+2}}" class="text-right font-13"></td>
+                                        </tr>
+                                        <tr class="text-bold table-footer-fixed">
+                                            <td colspan="{{9}}" class="text-right font-13">Total</td>
+                                            <td class="text-right text-nowrap pr-2 font-13">
+                                                <span ng-show="false">
+                                                    {{Create_REQ_Search.TAX_AMOUNT= (CREATE_ITEM_LIST | total:'TAX_AMOUNT') | number:2}}
+                                                </span>
+                                                <span ng-if="Create_REQ_Search.TAX_TYPE==1">
+                                                    {{Create_REQ_Search.TOTAL_AMOUNT=((CREATE_ITEM_LIST | total: 'AMOUNT') + (CREATE_ITEM_LIST | total: 'TAX_AMOUNT')) | number:2}}
+                                                </span>
+                                                <span ng-if="Create_REQ_Search.TAX_TYPE==2">
+                                                    {{Create_REQ_Search.TOTAL_AMOUNT=(CREATE_ITEM_LIST | total: 'AMOUNT')  | number:2}}
+                                                </span>
+                                                <span ng-if="Create_REQ_Search.TAX_TYPE==3">
+                                                    {{Create_REQ_Search.TOTAL_AMOUNT=(CREATE_ITEM_LIST | total: 'AMOUNT') | number:2}}
+                                                </span>
+                                                {{(CURRENCY_LIST | filter :{CURRENCY_ID:Create_REQ_Search.PO_CURRENCY_ID})[0].CURRENCY_CODE }}
+                                            </td>
+                                            <td></td>
+                                            <td colspan="{{XERO_TRACKING_CATEGORIES.length+2}}" class="text-right font-13"></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12  my-4">
+                            <div class="card-header w-100">
+                                <h5 class="card-title mt-1 font-15"> Advance Amount</h5>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control mt-1"
+                                           name="ADVANCE"
+                                           placeholder="Enter advance Amount"
+                                           only-digits
+                                           ng-model="Create_REQ_Search.ADVANCE"
+                                           ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.ADVANCE.$error.required}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12  my-4">
+                            <div class="card-header w-100">
+                                <h5 class="card-title mt-1">
+                                    Budget
+                                    <span ng-show="Create_REQ_Search.BUDGET_NAME!=''">
+                                        ({{Create_REQ_Search.BUDGET_NAME}})
+                                    </span>
+                                </h5>
+                                <button type="button"
+                                        ng-click="ChangeBudgetCreatfy(Create_REQ_Search)"
+                                        data-toggle="tooltip"
+                                        data-html="true"
+                                        class="btn btn-transparent-wenodo ml-2 border float-right">
+                                    Refresh Budget
+                                </button>
+                            </div>
+                            <div class="col-md-12 mt-2" ng-show="P2P_CREATE_BUDGET_MASTER_LIST.length>0">
+                                <span class="po-amount">The following budgets will only get impacted when this requision is submitted for approval.</span>
+                            </div>
+                            <div class="col-md-12 text-center mt-2" ng-show="P2P_CREATE_BUDGET_MASTER_LIST.length==0 ">
+                                <div class="alert bg-custom-blue">{{BUDGET_TEXT_VALIDATION}}</div>
+                            </div>
+                            <div class="card-body p-0 mt-2" ng-show="P2P_CREATE_BUDGET_MASTER_LIST.length>0">
+                                <table class="table table-head-fixed table-hover">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>GL Account </th>
+                                            <th>Period</th>
+                                            <th class="text-right">Total</th>
+                                            <th class="text-right">Remaining</th>
+                                            <th class="text-right">Consumed</th>
+                                            <th class="text-right">Booked</th>
+                                            <th class="text-right">Credit Notes</th>
+                                            <th class="text-right">Current Amt.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="BD in P2P_CREATE_BUDGET_MASTER_LIST">
+                                        <tr>
+                                            <td rowspan="3">{{BD.GLACCOUNT_NAME}}</td>
+                                            <td colspan="7" ng-if="BD.DB_ACCOUNT_ID==0" class="text-align-center text-bold">There is no budget allocated in this GL Account</td>
+                                        </tr>
+                                        <tr ng-if="BD.DB_ACCOUNT_ID!=0" ng-repeat="BL in BD.BUDGET_DETAILS_LIST"
+                                            ng-init="BL.CURRENT_PO_CUSTOM=0;"
+                                            ng-click="VIEW_BUDGET_fn(BD,Create_REQ_Search.PO_DATE,Create_REQ_Search.PROJECT_MASTER_ID,Create_REQ_Search,Create_REQ_Search,'REQ_CREATE_ACTION')">
+                                            <td>{{BL.PERIOD}}</td>
+                                            <td class="text-right">{{BL.TOTAL | number:2}}</td>
+                                            <td class="text-right">
+                                                <span ng-class="{'text-red text-bold':BL.REMAINING_AMOUNT<0}">
+                                                    {{(BL.REMAINING_AMOUNT=((BL.TOTAL*1)-((BL.BOOKED*1) +(BL.CURRENT_PO_CUSTOM*1)+(BL.CONSUMED*1)+(BL.MEMO*1)))) | number:2}}
+                                                </span>
+                                                <span ng-show="false">
+                                                    {{BD.IS_OVER_BUDGET=(BL.REMAINING_AMOUNT<0?true:BL.REMAINING_AMOUNT>0?false:BD.IS_OVER_BUDGET?true:false)}}
+                                                </span>
+                                            </td>
+                                            <td class="text-right">{{BL.CONSUMED | number :2}}</td>
+                                            <td class="text-right">{{BL.BOOKED  | number :2}}</td>
+                                            <td class="text-right">
+                                                <span ng-show="BL.MEMO==0">{{BL.MEMO*-1 | number :2}}</span><span ng-show="BL.MEMO!=0">({{BL.MEMO*-1 | number :2}})</span>
+                                            </td>
+                                            <td class="text-right">
+                                                <span ng-show="false">
+                                                    {{BL.ITEM_TAX_AMOUNT=(CREATE_ITEM_LIST | filter:{ACCOUNT_ID:BD.ACCOUNT_ID} | total:'TAX_AMOUNT')}}
+                                                    {{BL.ITEM_AMOUNT= (CREATE_ITEM_LIST | filter:{ACCOUNT_ID:BD.ACCOUNT_ID} | total:'AMOUNT') }}
+                                                    {{BL.TAX_AMT_TOTAL= ((NAN_Fn(BL.ITEM_TAX_AMOUNT)?0:BL.ITEM_TAX_AMOUNT) + BL.ITEM_AMOUNT*1)}}
+                                                </span>
+                                                <span ng-show="Create_REQ_Search.TAX_TYPE==1">
+                                                    <span> {{(BL.CURRENT_PO_CUSTOM=((BL.TAX_AMT_TOTAL)/Create_REQ_Search.BASE_TO_PO_CONVERSION_RATE)) | number:2}}</span>
+                                                </span>
+                                                <span ng-show="Create_REQ_Search.TAX_TYPE!=1">
+                                                    <span> {{(BL.CURRENT_PO_CUSTOM=((BL.ITEM_AMOUNT)/Create_REQ_Search.BASE_TO_PO_CONVERSION_RATE))| number:2}}</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="alert alert-warning-red" ng-show="(P2P_CREATE_BUDGET_MASTER_LIST | filter:{IS_OVER_BUDGET:true}).length">
+                                <strong>Warning!</strong> This requisition is going over budget.
+                            </div>
+                        </div>
+                        <div class="col-md-12 my-4">
+                            <div class="card-header w-100">
+                                <h5 class="card-title w-100 mt-3 font-15">Quotation</h5>
+                            </div>
+                            <div class="card-body p-0 mt-2">
+                                <div class="table-responsive" style="overflow-x:visible">
+                                    <table class="table table-head-fixed table-hover table-form table-bordered">
+                                        <thead class="bg-wenodo-border">
+                                            <tr>
+                                                <th>Contact Name <span class="text-danger">*</span></th>
+                                                <th width="15%">Amount <span class="text-danger">*</span></th>
+                                                <th width="5%">Rank</th>
+                                                <th width="25%">Comments</th>
+                                                <th width="25%" class="text-center">Attachment <span class="text-danger">*</span></th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="QL in CREATE_QUOTATION_LIST" ng-init="InginitQuotation(QL,$last,3)">
+                                                <td>
+                                                    <div class="AddCustomScroll_Contact">
+                                                        <input type="text" name="SUPPLIER_CREATE_NAME_BOX{{$index}}"
+                                                               ng-model="QL.CONTACT_NAME"
+                                                               ng-blur="SetQuotationValues(QL,$index)"
+                                                               ng-change="SetQValues(QL,$index)"
+                                                               required
+                                                               uib-typeahead="Supplier.SUPPLIER_NAME for Supplier in SUPPLIER_LIST | filter:$viewValue"
+                                                               typeahead-loading="loading"
+                                                               typeahead-no-results="noResults"
+                                                               class="form-control" autocomplete="off"
+                                                               placeholder="Type to select Supplier Name..."
+                                                               ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.SUPPLIER_CREATE_NAME_BOX{{$index}}.$error.required || QL.INVALID}" />
+                                                    </div>
+                                                    <div ng-show="QL.INVALID">Please select valid contact Name</div>
+                                                </td>
+                                                <td>
+                                                    <input type="text"
+                                                           class="form-control"
+                                                           name="CREATEAMOUNT{{$index}}"
+                                                           only-digits
+                                                           ng-disabled="QL.CONTACT_NAME.length==0 || QL.CONTACT_NAME==null"
+                                                           required
+                                                           placeholder="Enter Amount"
+                                                           ng-change="ChangeQAmt(QL,3)"
+                                                           maxlength="13"
+                                                           ng-model="QL.TOTAL_AMOUNT"
+                                                           ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.CREATEAMOUNT{{$index}}.$error.required}" />
+                                                </td>
+                                                <td class="">
+                                                    {{QL.RANK==null?'-':QL.RANK}}
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control"
+                                                              name="COMMENTS{{$index}}"
+                                                              ng-disabled="QL.CONTACT_NAME.length==0 || QL.CONTACT_NAME==null"
+                                                              maxlength="500"
+                                                              onInput="this.parentNode.dataset.replicatedValue = this.value"
+                                                              placeholder="Enter comment"
+                                                              ng-model="QL.COMMENTS"></textarea>
+                                                    <span class="d-block text-grey text-xs semibold mb-2">{{500 - QL.COMMENTS.length}} Character Remaining </span>
+                                                </td>
+                                                <td class="text-center" ng-class="{'error':CREATE_REQ_FORM.submitted && QL.IS_QUOTATION_REQUIRED && (QL.UploadedFiles==null || QL.UploadedFiles.length==0)}">
+                                                    <div ng-show="QL.IS_QUOTATION_REQUIRED && (QL.UploadedFiles==null || QL.UploadedFiles.length==0)">Please provide attachment</div>
+                                                    <div class="row">
+                                                        <div class="col-md-6" ng-repeat="file in QL.UploadedFiles">
+                                                            <div class="file-block">
+                                                                <div class="file-info">
+                                                                    <i class="far fa-file-alt file-icon"></i>
+                                                                    <a href="/P2PFiles/{{file.FILE_PATH}}{{file.SERVER_FILE_NAME}}" download="{{file.ORIGINAL_FILE_NAME}}"> <span class="text-limit-1">{{file.ORIGINAL_FILE_NAME}} </span></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <label for="CREATE_QUOTAT{{$index}}" class="cursor-pointer"
+                                                           data-toggle="tooltip"
+                                                           data-html="true"
+                                                           data-original-title="Add Attachment">
+                                                        <i class="far fa-file-upload text-blue"></i>
+                                                    </label>
+                                                    <span class="hidden-input">
+                                                        <input id="CREATE_QUOTAT{{$index}}"
+                                                               name="file"
+                                                               type="file"
+                                                               ng-model="QL.UploadedFiles"
+                                                               ng-files="getTheFilesToUpload($files,'CREATE_QUOTAT'+{{$index}},5,QL,35,1,'QUOTATION' ,3,'P2P_Upload_Path','P2P')">
+                                                    </span>
+                                                    <i ng-show="Create_REQ_Search.SELECTED_SUPPLIER_ID!=QL.XERO_CONTACT_ID || QL.CONTACT_NAME=='' || QL.CONTACT_NAME==null"
+                                                       class="far fa-times-circle cursor-pointer text-danger"
+                                                       ng-click="REMOVE_FILTE_CREATE_QUOTATION($index,PRL)"
+                                                       data-toggle="tooltip" data-html="true" data-original-title="Remove">
+                                                    </i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="6" ng-click="ADD_MORE_CREATE_QUOTATION()" class="text-center cursor-pointer">
+                                                    <a class="text-blue cursor-pointer text-sm">
+                                                        <i class="far fa-plus"></i>
+                                                        {{ADD_MORE_QUOTATION_NAME}}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="alert alert-warning-red" ng-show="(CREATE_QUOTATION_LIST.length==1 && CREATE_QUOTATION_LIST[0].CONTACT_NAME!='') || (CREATE_QUOTATION_LIST.length>1 && (CREATE_QUOTATION_LIST | filter: emptyFilter).length<2)">
+                                <strong>Warning!</strong> This is a single quote requisition.
+                            </div>
+                        </div>
+                        <div class="col-md-12 my-4">
+                            <div class="card-header w-100">
+                                <h5 class="card-title mt-1 font-15">Delivery Details</h5>
+                                <button class="btn btn-transparent-wenodo ml-4 border float-right"
+                                        ng-click="POP_DELIVERY_DETAILS_FY('CREATE',Create_REQ_Search)"
+                                        data-toggle="tooltip"
+                                        data-html="true">
+                                    Add New Delivery Address&nbsp;&nbsp;<i class="far fa-plus"></i>
+                                </button>
+                                <button type="button"
+                                        class="btn btn-transparent-wenodo border float-right"
+                                        data-toggle="dropdown">
+                                    Select Delivery Address
+                                    &nbsp;&nbsp;<i class="far fa-chevron-down"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right dropdown-menu-arrow text-sm custom-scrollbar"
+                                    style="width:300px;"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <li class="stick-top bg-white">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Search Delivery Address"
+                                               ng-model="Create_REQ_Search.searchDA" />
+                                    </li>
+                                    <li class="pl-4 py-2 DontHideOnClick" ng-show="false">
+
+                                    </li>
+                                    <li class="text-center"
+                                        ng-show="P2P_DELIVERY_ADDRESS_LIST.length==0"
+                                        ng-click="POP_DELIVERY_DETAILS_FY('CREATE',Create_REQ_Search)"
+                                        data-toggle="tooltip"
+                                        data-html="true"
+                                        data-original-title="Add Delivery Details">
+                                        No record found
+                                        <i class="fa fa-plus"></i>
+                                    </li>
+                                    <li class="dropdown-item"
+                                        ng-repeat="DA in P2P_DELIVERY_ADDRESS_LIST  | filter:{DELIVERY_ADDRESS:Create_REQ_Search.searchDA}"
+                                        ng-click="CLICK_DELIVERY_ADDRESS(DA)">
+                                        {{DA.DELIVERY_ADDRESS}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Address <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" rows="5"
+                                                  name="DELIVERY_ADDRESS"
+                                                  maxlength="500"
+                                                  placeholder="Enter delivery address"
+                                                  ng-model="Create_REQ_Search.DELIVERY_ADDRESS"
+                                                  required
+                                                  ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.DELIVERY_ADDRESS.$error.required}"></textarea>
+                                        <span class="d-block text-grey text-xs semibold mb-2">{{500 - Create_REQ_Search.DELIVERY_ADDRESS.length}} Character Remaining </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Attention To</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="ATTENTION"
+                                                   maxlength="150"
+                                                   placeholder="Enter attention"
+                                                   ng-model="Create_REQ_Search.ATTENTION"
+                                                   ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.ATTENTION.$error.required}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Phone <span class="text-danger">*</span></label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="PHONE"
+                                                   maxlength="15"
+                                                   placeholder="Enter phone"
+                                                   autocomplete="off"
+                                                   ng-model="Create_REQ_Search.PHONE"
+                                                   only-phone
+                                                   required
+                                                   ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.PHONE.$error.required}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Delivery Instructions</label>
+                                        <textarea class="form-control"
+                                                  rows="5"
+                                                  name="DELIVERY_INSTRUCTIONS"
+                                                  maxlength="500"
+                                                  placeholder="Enter delivery instructions"
+                                                  ng-model="Create_REQ_Search.DELIVERY_INSTRUCTIONS"
+                                                  ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.DELIVERY_INSTRUCTIONS.$error.required}"></textarea>
+                                        <span class="d-block text-grey text-xs semibold mb-2">{{500 - Create_REQ_Search.DELIVERY_INSTRUCTIONS.length}} Character Remaining </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 my-4">
+                            <h5 class="card-title w-100">Note for Approvers</h5>
+                            <textarea class="form-control" rows="4"
+                                      name="NOTE_FOR_APPROVERS"
+                                      maxlength="2000"
+                                      placeholder="Enter note for approvers"
+                                      ng-model="Create_REQ_Search.NOTE_FOR_APPROVERS"
+                                      ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.NOTE_FOR_APPROVERS.$error.required}"></textarea>
+                            <span class="d-block text-grey text-xs semibold mb-2">{{2000 - Create_REQ_Search.NOTE_FOR_APPROVERS.length}} Character Remaining </span>
+
+                        </div>
+                        <div class="col-md-6 my-4">
+                            <span class="bigcheck">
+                                <label class="bigcheck float-left">
+                                    <input type="checkbox" class="bigcheck" id="CREATE_MATCHTYPE"
+                                           name="AUTO_EMAIL_TO_SUPPLIER"
+                                           ng-model="Create_REQ_Search.AUTO_EMAIL_TO_SUPPLIER"
+                                           ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.AUTO_EMAIL_TO_SUPPLIER.$error.required}" />
+                                    <span class="bigcheck-target" for="CREATE_MATCHTYPE"></span>
+                                    <span class="font-14" style="margin-top:2px;"> Automatically email approved Purchase Order to Supplier </span>
+                                </label>
+
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Contact Email</label>
+                                <input type="text" class="form-control"
+                                       name="SUPPLIER_EMAIL"
+                                       placeholder="Enter contact email"
+                                       ng-model="Create_REQ_Search.SUPPLIER_EMAIL"
+                                       maxlength="500"
+                                       ng-pattern="/^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$/"
+                                       ng-required="Create_REQ_Search.AUTO_EMAIL_TO_SUPPLIER"
+                                       ng-class="{'error':CREATE_REQ_FORM.submitted && CREATE_REQ_FORM.SUPPLIER_EMAIL.$error.required}" />
+                                <span class="text-red" ng-show="CREATE_REQ_FORM.SUPPLIER_EMAIL.$error.pattern">Not valid email!</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 my-4">
+                            <div class="card-header w-100">
+                                <h5 class="card-title font-15">Terms & Conditions</h5>
+                                <button class="btn btn-transparent-wenodo border  ml-4 float-right" ng-click="POP_TERMS_CONDITIONS_FY('CREATE', Create_REQ_Search)"
+                                        data-toggle="tooltip"
+                                        data-html="true">
+                                    Add Terms and Conditions &nbsp;&nbsp;<i class="far fa-plus"></i>
+                                </button>
+                                <button type="button"
+                                        class="btn btn-transparent-wenodo border float-right"
+                                        data-toggle="dropdown" ng-click="POP_ADD_TERMS_CONDITIONS_Fn('CREATE',Create_REQ_Search)">
+                                    Select Terms and Conditions
+                                    &nbsp;&nbsp;
+                                </button>
+
+                            </div>
+                            <div class="table-responsive" style="overflow-x:visible">
+                                <table class="table table-head-fixed table-hover table-form table-bordered">
+                                    <thead class="bg-wenodo-border">
+                                        <tr>
+                                            <th>Terms & Conditions</th>
+                                            <th width="5%" class="text-center">Order</th>
+                                            <th width="3%" class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="PRL in CREATE_TERMS_AND_CONDITIONS_MASTER_LIST | orderBy:'SORT_ORDER'">
+                                            <td>
+                                                <textarea class="hidden-input scroll"
+                                                          name="TEXT{{$index}}"
+                                                          id="text"
+                                                          maxlength="1000"
+                                                          onInput="this.parentNode.dataset.replicatedValue = this.value"
+                                                          placeholder="Enter "
+                                                          ng-model="PRL.TEXT"></textarea>
+                                                <span class="d-block text-grey text-xs semibold mb-2">{{1000 - PRL.TEXT.length}} Character Remaining </span>
+
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-transparent-wenodo mr-2 float-left"
+                                                        ng-click="ADD_ABOVE_CREATE(PRL,$index)"
+                                                        ng-show="!$first"
+                                                        data-toggle="tooltip"
+                                                        data-html="true"
+                                                        data-original-title="Add Above">
+                                                    <i class="far fa-angle-double-up"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-transparent-wenodo float-right"
+                                                        data-toggle="tooltip"
+                                                        ng-show="CREATE_TERMS_AND_CONDITIONS_MASTER_LIST.length>1 && !$last"
+                                                        ng-click="ADD_BELOW_CREATE(PRL,$index)"
+                                                        data-html="true"
+                                                        data-original-title="Add Below">
+                                                    <i class="far fa-angle-double-down"></i>
+                                                </button>
+                                            </td>
+                                            <td class="text-center">
+                                                <i class="far fa-times-circle cursor-pointer text-danger"
+                                                   ng-click="REMOVE_FILTE_CREATE_TERM_CON($index,PRL)"
+                                                   data-toggle="tooltip" data-html="true" data-original-title="Remove">
+                                                </i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3" ng-click="ADD_MORE_CREATE_TERM_CON()" class="text-center cursor-pointer">
+                                                <a class="text-blue cursor-pointer text-sm"><i class="far fa-plus"></i>{{ADD_MORE_TERMS_CONDITIONS_NAME}}</a>
+                                            </td>
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12 my-4">
+                            <!--<h5 class="card-title text-center w-100">Attachments</h5>-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="upload-files-container">
+                                        <div class="drag-file-area">
+                                            <label class="label">
+                                                <span class="browse-files">
+                                                    <input type="file" class="default-file-input w-100" id="PO1"
+                                                           ng-model="Create_REQ_Search.UploadedFiles"
+                                                           ng-files="getTheFilesToUpload($files,'PO1',5,Create_REQ_Search,32,'1','PO',10,'P2P_Upload_Path','P2P')" />
+                                                    <span class="browse-files-text"><i class="far fa-upload"></i> Add an Attachment</span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="file-block" ng-repeat="file in Create_REQ_Search.UploadedFiles">
+                                        <div class="file-info">
+                                            <i class="far fa-file-alt file-icon"></i>
+                                            <span class="text-limit-1">{{file.ORIGINAL_FILE_NAME}} </span>
+                                        </div>
+                                        <span class="remove-file-icon cursor-pointer" ng-click="REMOVE_FILTE_CREATE($index)"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <h5 class="card-title">
+                        Branch:- {{(BRANCH_LOGIN_LIST | filter:{BRANCH_ID:Create_REQ_Search.BRANCH_ID})[0].BRANCH_NAME}}
+                        <i ng-show="BRANCH_LOGIN_LIST.length>1" class="far fa-edit cursor-pointer text-blue" data-toggle="modal" data-target="#select_branch"></i>
+                    </h5>
+                    <div class="card-tools ml-auto float-right">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><button type="button" ng-click="CREATE_INS_UPD_REQUISITION(1,Create_REQ_Search,CREATE_ITEM_LIST)" class="btn btn-transparent-wenodo mr-2" data-toggle="tooltip" data-html="true" data-original-title="Save as draft"><i class="fal fa-save"></i></button></li>
+                            <li class="nav-item"><button type="button" ng-click="CREATE_INS_UPD_REQUISITION()" class="btn btn-wenodo mr-2">Submit for Approval</button></li>
+                            <li class="nav-item"><button type="button" ng-click="RESET_CREATE_REQ()" class="btn btn-transparent-wenodo" data-toggle="tooltip" data-html="true" data-original-title="Reset"><i class="fad fa-undo-alt"></i></button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade show" id="REQ_DIC_COMM">
+    <form id="DISCARD_REQ_FORM" name="DISCARD_REQ_FORM" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span ng-if="TAB_FLAG == 1">
+                            {{REQ_Search.REQUEST_LINE.PR_NUMBER}}
+                        </span>
+                        <span ng-if="TAB_FLAG == 2"> {{REQ_PROC_Search.REQ_DETAILS.REQ_NUMBER}}</span> Comments
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar">
+                    <textarea ng-model="REQ_DISCARD_COMMENTS"
+                              class="form-control"
+                              name="DISCARD_COMMENTS"
+                              maxlength="2000"
+                              required
+                              ng-class="{'error':DISCARD_REQ_FORM.submitted && DISCARD_REQ_FORM.DISCARD_COMMENTS.$error.required}"
+                              rows="5" />
+                    <span class="d-block text-grey text-xs semibold mb-2">{{2000 - REQ_DISCARD_COMMENTS.length}} Character Remaining </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-wenodo" ng-click="DISCARD_REQUISITION()">Submit</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade show" id="select_branch">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Branch</h4>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <div class="row">
+                    <div class="col-auto box-shadow mb-2" ng-repeat="BL in  BRANCH_LOGIN_LIST">
+                        <button type="button" ng-click="CLICK_BRANCH_FY(BL)" class="btn btn-w-default" data-dismiss="modal" ng-class="{'active':BL.BRANCH_ID==Create_REQ_Search.BRANCH_ID}">{{BL.BRANCH_NAME}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="EDIT_REQ" ng-controller="EDIT_REQController">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Edit
+                    <span ng-show="EDIT_REQ_Search.REQUEST_LINE.STATUS_ID==72">{{EDIT_REQ_Search.REQUEST_LINE.PO_NUMBER}}</span>
+                    <span ng-show="EDIT_REQ_Search.REQUEST_LINE.STATUS_ID==70">{{EDIT_REQ_Search.REQUEST_LINE.PR_NUMBER}}</span>
+
+                </h4>
+                <button type="button" class="btn-w-default" ng-click="EDIT_FORM_CLOSE()" data-bs-dismiss="modal">Back</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <templateurl class="w-100" template-url="../AngularViews/P2P/REQ/Edit_REQ.html?v=35{{AppVersion}}" ng-init="DateInputLoad()"><templateurl>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo" ng-click="EDIT_INS_UPD_REQUISITION(2)">Save</button>
+                <button type="button" class="btn-w-default" ng-click="EDIT_FORM_CLOSE()" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade show" id="POP_DISCARD_PO">
+    <form id="DISCARD_PO_FORM" name="DISCARD_PO_FORM" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{REQ_PROC_Search.REQ_DETAILS.PR_NUMBER}} Comments</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar">
+                    <textarea ng-model="DISCARD_PO_COMMENTS"
+                              class="form-control"
+                              maxlength="2000"
+                              name="DISCARD_PO_COMMENTS"
+                              required
+                              ng-class="{'error':DISCARD_PO_FORM.submitted && DISCARD_PO_FORM.DISCARD_PO_COMMENTS.$error.required}"
+                              rows="5" />
+                    <span class="d-block text-grey text-xs semibold mb-2">{{2000 - DISCARD_PO_COMMENTS.length}} Character Remaining </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-wenodo" ng-click="DISCARD_PO()">Submit</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade show" id="DELIVERY_DETAILS">
+    <form name="DELIVERY_DETAILS_FORM" novalidate>
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delivery Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-scrollbar">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Delivery Address  <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="3"
+                                          name="DELIVERY_ADDRESS"
+                                          ng-model="DELIVERY_ADDRESS_SEARCH.DELIVERY_ADDRESS"
+                                          placeholder="Enter delivery address"
+                                          required
+                                          maxlength="500"
+                                          ng-class="{'error':DELIVERY_DETAILS_FORM.submitted && DELIVERY_DETAILS_FORM.DELIVERY_ADDRESS.$error.required}" />
+                                <span class="d-block text-grey text-xs semibold mb-2">{{500 - DELIVERY_ADDRESS_SEARCH.DELIVERY_ADDRESS.length}} Character Remaining </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Attention To </label>
+                                <input type="text"
+                                       name="ATTENTION"
+                                       class="form-control"
+                                       maxlength="200"
+                                       ng-model="DELIVERY_ADDRESS_SEARCH.ATTENTION"
+                                       placeholder="Enter attention to"
+                                       ng-class="{'error':DELIVERY_DETAILS_FORM.submitted && DELIVERY_DETAILS_FORM.ATTENTION.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Phone </label>
+                                <input type="text"
+                                       name="PHONE_TO"
+                                       class="form-control"
+                                       maxlength="250"
+                                       only-phone
+                                       autocomplete="off"
+                                       ng-model="DELIVERY_ADDRESS_SEARCH.PHONE"
+                                       placeholder="Enter phone"
+                                       ng-class="{'error':DELIVERY_DETAILS_FORM.submitted && DELIVERY_DETAILS_FORM.PHONE_TO.$error.required}" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-wenodo" ng-click="INS_UPD_P2P_DELIVERY_ADDRESS()">Submit</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade show" id="POP_SUPPLIER">
+    <form name="SUPPLIER_FORM" novalidate>
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Contact</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Add New Contact  <span class="text-danger">*</span> </label>
+                                <input type="text"
+                                       name="SUPPLIER_NAME"
+                                       class="form-control"
+                                       maxlength="200"
+                                       ng-model="SUPPLIER_SEARCH.SUPPLIER_NAME"
+                                       required
+                                       placeholder="Enter Contact"
+                                       ng-class="{'error':SUPPLIER_FORM.submitted && SUPPLIER_FORM.SUPPLIER_NAME.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="upload-files-container">
+                                <div class="drag-file-area">
+                                    <input type="file" class="default-file-input w-100"
+                                           id="upl_SUPPLIER_SEARCH1"
+                                           ng-model="SUPPLIER_SEARCH.UploadedFiles"
+                                           ng-files="getTheFilesToUpload($files,'upl_SUPPLIER_SEARCH1',5,SUPPLIER_SEARCH,36,1,'NEW_SUPPLIER' ,3,'P2P_Upload_Path','P2P')" />
+                                    <label class="browse-files-text btn btn-wenodo m-auto" for="upl_SUPPLIER_SEARCH1"><i class="far fa-upload"></i> Upload</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="file-block" ng-repeat="file in SUPPLIER_SEARCH.UploadedFiles">
+                                <div class="file-info">
+                                    <i class="far fa-file-alt file-icon"></i>
+                                    <a href="/P2PFiles/{{file.FILE_PATH}}{{file.SERVER_FILE_NAME}}" download="/P2PFiles/{{file.FILE_PATH}}{{file.SERVER_FILE_NAME}}"> <span class="text-limit-1 font-12">{{file.ORIGINAL_FILE_NAME}} </span></a>
+                                </div>
+                                <span class="remove-file-icon" ng-click="REMOVE_SUPPLIER_FILTE($index,'upl_SUPPLIER_SEARCH1')"><i class="fa fa-times"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-wenodo" ng-click="P2P_NEW_SUPPLIER_REQUEST()">Submit</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade show" id="AddTANDC">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Select Terms & Conditions</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Search Terms & Conditions"
+                                   ng-model="REQ_Search.searchTM" />
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-head-fixed table-hover table-bordered">
+                        <thead class="bg-wenodo-border">
+                            <tr>
+                                <th>Action</th>
+                                <th>Terms & Conditions</th>
+                            </tr>
+                            <tr ng-repeat="TM in P2P_TERMS_AND_CONDITIONS_LIST  | filter:{TEXT:REQ_Search.searchTM}" ng-click="CLICK_TERMS_CONDITIONS(TM)">
+                                <td><i class="far fa-lg" ng-class="{'fa-check-square green':TM.IS_CHECK_TMC,'fa-square':!TM.IS_CHECK_TMC}"></i></td>
+                                <td>    {{TM.TEXT}}</td>
+                            </tr>
+                        <tfoot ng-show="P2P_TERMS_AND_CONDITIONS_LIST.length==1">
+                            <tr>
+                                <td colspan="2" class="cursor-pointer" ng-click="POP_TERMS_CONDITIONS_FY()">
+                                    Add New Record
+                                    <i class="fa fa-plus"></i>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-wenodo" ng-click="CLICK_TERMS_CONDITIONS_APPLY()">Add</button>
+                <button type="button" class="btn-w-default" ng-click="CLICK_TERMS_CONDITIONS_RESET()">Reset</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade show" id="TERMS_CONDITIONS">
+    <form name="TERMS_AND_CONDITIONS_FORM" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Terms & Conditions</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>
+                                    Add New Terms & Conditions
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control"
+                                          name="TEXT"
+                                          id="text"
+                                          maxlength="1000"
+                                          rows="5"
+                                          required
+                                          onInput="this.parentNode.dataset.replicatedValue = this.value"
+                                          placeholder="Enter Terms & Conditions"
+                                          ng-model="TERAM_CONDITION.TEXT"
+                                          ng-class="{'error':TERMS_AND_CONDITIONS_FORM.submitted && TERMS_AND_CONDITIONS_FORM.TEXT.$error.required}">
+                                   </textarea>
+                                <span class="d-block text-grey text-xs semibold mb-2">{{1000 - TERAM_CONDITION.TEXT.length}} Character Remaining </span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-wenodo" ng-click="INS_UPD_TERMS_AND_CONDITIONS_MASTER(0,SELECT_REQ)">Submit</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade show" id="CONVERSION_COMMENTS_POP">
+    <form name="CONVERSION_COMMENTS_FORM" novalidate>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Comment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>The currency conversion rate has changed. Are you sure you want to submit for approval?<span class="text-danger">*</span></label>
+                                <textarea class="form-control"
+                                          name="CONVERSION_COMMENTS"
+                                          id="text"
+                                          maxlength="500"
+                                          rows="5"
+                                          required
+                                          onInput="this.parentNode.dataset.replicatedValue = this.value"
+                                          placeholder="Enter .."
+                                          ng-model="REQ_Search.CONVERSION_COMMENTS"
+                                          ng-class="{'error':POForm.submitted && CONVERSION_COMMENTS_FORM.$error.required}">
+                                   </textarea>
+                                <span class="d-block text-grey text-xs semibold mb-2">{{500 - REQ_Search.CONVERSION_COMMENTS.length}} Character Remaining </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-wenodo" ng-click="INS_UPD_REQUISITION(2,1)">Submit for Approval</button>
+                    <button type="button" class="btn btn-w-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

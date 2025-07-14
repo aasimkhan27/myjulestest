@@ -1,0 +1,185 @@
+﻿<form id="SessionMappingForm" name="SessionMappingForm" novalidate>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Customer:*</label>
+                    <select class="custom-select"
+                            name="CUSTOMER_ID"
+                            ng-model="SessionMappingSearch.CUSTOMER_ID"
+                            ng-options="CL.CUSTOMER_ID as CL.CUSTOMER_NAME for CL in CUSTOMER_LIST "
+                            required
+                            ng-change="GET_ENTITY_LIST()"
+                            ng-class="{'error':SessionMappingForm.submitted && SessionMappingForm.CUSTOMER_ID.$error.required}">
+                        <option value="">- Please Select Customer-</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Entity:*</label>
+                    <select class="custom-select"
+                            name="ENTITY_ID"
+                            ng-model="SessionMappingSearch.ENTITY_ID"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST"
+                            ng-change="GET_LOCATION();"
+                            required
+                            ng-class="{'error':SessionMappingForm.submitted && SessionMappingForm.ENTITY_ID.$error.required}">
+                        <option value="">- Please Select Entity-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Location:*</label>
+                    <select class="custom-select"
+                            name="LOCATION_ID"
+                            ng-model="SessionMappingSearch.LOCATION_ID"
+                            ng-options="EL.LOCATION_ID as EL.LOCATION_NAME for EL in LOCATION"
+                            ng-change="ADMIN_GET_BRANCH();"
+                            required
+                            ng-class="{'error':SessionMappingForm.submitted && SessionMappingForm.LOCATION_ID.$error.required}">
+                        <option value="">- Please Select Location-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Branch Name:*</label>
+                    <select class="custom-select"
+                            name="BRANCH_ID"
+                            ng-model="SessionMappingSearch.BRANCH_ID"
+                            ng-options="EL.BRANCH_ID as EL.BRANCH_NAME for EL in BRANCH_LIST"
+                            
+                            required
+                            ng-class="{'error':SessionMappingForm.submitted && SessionMappingForm.BRANCH_ID.$error.required}">
+                        <option value="">- Please Select Branch-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Session:*</label>
+                    <select class="custom-select"
+                            name="SESSION_ID"
+                            ng-model="SessionMappingSearch.SESSION_ID"
+                            ng-options="SL.SESSION_MASTER_ID as SL.SESSION_NAME for SL in SESSION_LIST"
+                            ng-change="ADMIN_GET_SESSION_NAME(SL.SESSION_NAME);"
+                            required
+                            ng-class="{'error':SessionMappingForm.submitted && SessionMappingForm.SESSION_ID.$error.required}">
+                        <option value="">- Please Select Session-</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea class="form-control"
+                              maxlength="250"
+                              name="DESCRIPTION"
+                              ng-model="SessionMappingSearch.DESCRIPTION"
+                              placeholder="Enter ..."
+                              ng-class="{'error':SessionMappingForm.submitted && SessionMappingForm.DESCRIPTION.$error.required}" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-inline">
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="SessionMappingSearch.All" name="ccradio"
+                                   ng-value="-1"
+                                   ng-model="SessionMappingSearch.ACTIVE" />
+                            <label for="SessionMappingSearch.All" class="custom-control-label justify-content-left">ALL</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="SessionMappingSearch.ACTIVE" name="ccradio"
+                                   ng-model="SessionMappingSearch.ACTIVE"
+                                   ng-value="1">
+                            <label for="SessionMappingSearch.ACTIVE" class="custom-control-label justify-content-left">Active</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" id="SessionMappingSearch.InActive" name="ccradio"
+                                   ng-value="0"
+                                   ng-model="SessionMappingSearch.ACTIVE">
+                            <label for="SessionMappingSearch.InActive" class="custom-control-label justify-content-left">In-Active</label>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <!--<div class="col-md-4">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" id="SessionMappingSearch.ACTIVE"
+                               ng-model="SessionMappingSearch.ACTIVE">
+                        <label for="SessionMappingSearch.ACTIVE" class="custom-control-label">Active</label>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+        <div class="col-md-12 px-0">
+            <div data-ng-show="SessionMappingForm.submitted && SessionMappingForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+            </div>
+
+        </div>
+        <div class="col-md-12 mt-3">
+                <div class="form-group">
+                    <button click-once ng-click="ADMIN_INS_UPD_CU_SESSION_MAPPING_FOR_COVERS();" class="btn btn-wenodo">Save</button>
+                    <button ng-click="ADMIN_GET_CU_SESSION_MAPPING_FOR_COVERS(1);" class="btn btn-w-default">Search</button>
+                    <button ng-click="RESET();" class="btn btn-w-default">Reset</button>
+                </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="text-center" ng-show="SESSION_MAPPING_COVERS.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="SESSION_MAPPING_COVERS.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Entity</th>
+                        <th>Location</th>
+                        <th>Branch</th>
+                        <th>Session</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th width="5%"></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="10" align="center" ng-show="GetData">
+                            <a class="btn btn-secondary text-white" ng-click="LAZY_ADMIN_GET_CU_SESSION_MAPPING_FOR_COVERS();">{{VIEWMORERECORD}}</a>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="SL in SESSION_MAPPING_COVERS" on-finish-render="ngRepeatFinished">
+
+                    <tr>
+                        <td>{{SL.CUSTOMER_NAME}}</td>
+                        <td>{{SL.ENTITY_NAME}}</td>
+                        <td>{{SL.LOCATION_NAME}}</td>
+                        <td>{{SL.BRANCH_NAME}}</td>
+                        <td>{{SL.SESSION_NAME}}</td>
+                        <td>{{SL.DESCRIPTION}}</td>
+                        <td>{{SL.ACTIVE ?'Active':'Inactive'}}</td>
+                        <td>
+                            <a ng-click="EDIT_ADMIN_GET_CU_SESSION_MAPPING_FOR_COVERS(SL);" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fad fa-edit fa-lg text-green"></i></a>
+                            <!--<a><i class="fal fa-trash-alt fa-lg text-danger"></i></a>-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</form>

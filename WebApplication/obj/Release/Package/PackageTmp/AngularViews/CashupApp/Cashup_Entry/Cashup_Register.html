@@ -1,0 +1,719 @@
+﻿<div class="card-header p-0 bg-transparent">
+    <div class="row gx-2 resCashupHeader">
+        <div class="col-xxl-2 col-xl-2 col-md-2">
+            <form id="SearchForm" name="SearchForm" novalidate>
+                <input type="text"
+                       name="search"
+                       autocomplete="off"
+                       aria-autocomplete="none"
+                       ng-model="register_Search.APPROVER_NAME"
+                       placeholder="Search " />
+                <button type="submit" ng-show="false" class="btn btn-wenodo" click-once ng-click="GET_CASHUP_REGISTER(1)"> </button>
+            </form>
+        </div>
+
+        <div class="col-xxl-1 col-xl-1 col-md-1">
+            <ul class="nav nav-pills mb-1">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{ (FILTERED_SITES_LIST | filter:{IS_SELECTED:true,WILl_USE_IN_CASHUP:true}).length == (FILTERED_SITES_LIST | filter:{WILl_USE_IN_CASHUP:true}).length ? 'All' : (FILTERED_SITES_LIST | filter:{IS_SELECTED:true, WILl_USE_IN_CASHUP:true}).length }} Site(s)
+                        </span>
+                    </a>
+                    <ul ID="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick" ng-click="SITES_APPLY_ALL_Fn((FILTERED_SITES_LIST | filter:{IS_SELECTED:true}).length)" ng-init="SiteSearch.SelectAllSites = true">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       prevent-double-click="2000"
+                                       ng-disabled="IS_EDIT_MODE"
+                                       ng-model="SiteSearch.SelectAllSites" />
+                                <label class="form-check-label text_truncate text-nowrap">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li class="DontHideOnClick" ng-repeat="site in FILTERED_SITES_LIST" ng-show="site.WILl_USE_IN_CASHUP == true" ng-init="site.IS_SELECTED = true">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       id="Site-{{$index}}"
+                                       type="checkbox"
+                                       prevent-double-click="2000"
+                                       ng-model="site.IS_SELECTED"
+                                       ng-change="FILTER_Fn(site)"
+                                       checked=""
+                                       ng-disabled="IS_EDIT_MODE">
+                                <label class="form-check-label text_truncate text-nowrap" for="Site-{{$index}}">
+                                    {{ site.BRANCH_NAME }}
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!--<div class="col-xxl-1 col-xl-1 col-md-1">
+            <ul class="nav nav-pills mb-1">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer"
+                       data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{(STATUS_LIST | filter:{IS_SELECTED:true}).length === STATUS_LIST.length ? 'Status' : (STATUS_LIST | filter:{IS_SELECTED:true}).length + ' Status(es)'}}
+                        </span>
+                    </a>
+                    <ul id="statusDropdown" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick" ng-init="StatusSearch.SelectAllStatuses = true"
+                            ng-click="SELECT_ALL_STATUSES()">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       ng-model="StatusSearch.SelectAllStatuses"
+                                       ng-disabled="IS_EDIT_MODE">
+                                <label class="form-check-label text_truncate text-nowrap">
+                                    <span class="f-w-700">All</span>
+                                </label>
+                            </div>
+                        </li>
+
+                        <li class="DontHideOnClick"
+                            ng-repeat="status in STATUS_LIST">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       id="Status-{{$index}}"
+                                       ng-model="status.IS_SELECTED"
+                                       ng-change="FILTER_BY_STATUS_Fn()"
+                                       ng-disabled="IS_EDIT_MODE">
+                                <label class="form-check-label text_truncate text-nowrap" for="Status-{{$index}}">
+                                    {{ status.name }}
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+            </ul>
+        </div>-->
+
+        <div class="col-xxl-1 col-xl-1 col-md-1">
+            <ul class="nav nav-pills">
+                <li class="dropdown w-100">
+                    <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                        <span class="select-label" id="select_label">
+                            {{register_Search.STATUS_NAME || DD_DEFAULT_STATUS}}
+                        </span>
+                    </a>
+
+                    <ul id="divNewNotifications" class="dropdown-menu DontHideOnClick scrollbar-wrapper w-auto" style="min-width:100%">
+                        <li class="DontHideOnClick"
+                            ng-repeat="option in STATUS_LIST"
+                            ng-click="SELECT_STATUS(option.name, option.id)">
+                            <span class="truncate">{{ option.name }}</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!--<div class="col-xxl-auto col-xl-auto col-md-auto" ng-init="DateInputLoad()">
+            <div class="date-column">
+                <input type="text"
+                       class="dateinput"
+                       name="CASHUP_DATE"
+                       ng-model="register_Search.CASHUP_DATE"
+                       ng-change="GET_CASHUP_REGISTER(1)"
+                       placeholder="DD/MM/YY"
+                       required>
+                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+            </div>
+        </div>-->
+
+        <div class="col-xxl-2 col-xl-2 col-md-2">
+            <div id="reportrange" class="form-control-box">
+                <span></span>
+                <i class="fa-regular fa-calendar float-end mt-1"></i>
+            </div>
+        </div>
+
+        <div class="col-xxl-auto col-xl-auto col-md-auto">
+            <button ng-click="RESET_CASHUP_REGISTER()" type="button" class="btn btn-outline w-100" data-bs-toggle="tooltip" data-bs-original-title="Reset"><i class="fa-light fa-undo"></i></button>
+        </div>
+
+        <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+            <!--<button class="btn btn-primary" href="#!/Cashup_Entry">
+                Cashup Entry
+            </button>-->
+            <!--<a href="#!/CashUpApp_Entry" class="btn btn-primary" type="button">Cashup Entry</a>-->
+            <button click-once class="btn btn-primary" type="button" ng-click="REDIRECT_CASHUP_ENTRY()">Cashup Entry</button>
+        </div>
+
+        <div class="col-xxl-auto col-xl-auto col-md-auto">
+            <button class="btn btn-primary w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-arrow-down-to-bracket me-2"></i>Export</button>
+            <ul class="dropdown-menu dropdown-block dropdown-menu-end">
+                <li ng-click="EXPORT_CAHSUP_RECORD_LIST(1)"><a class="dropdown-item">Export in CSV</a></li>
+                <li ng-click="EXPORT_CAHSUP_RECORD_LIST(2)"><a class="dropdown-item">Export in XLS</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-xxl-12 col-xl-12 col-md-12" ng-show="CASHUP_RECORDS.length == 0">
+    <div class="no-record text-center">
+        <span class="d-block text-center">{{LOAD_FETCH_TEXT}}</span>
+    </div>
+</div>
+<div class="table-responsive mx-height-longCashup scrollbar-wrapper mt-2 resCashupTable" ng-show="CASHUP_RECORDS.length > 0">
+    <table class="mb-0">
+        <thead class="table-sticky-top">
+            <tr>
+                <!--<th class="text-nowrap">
+                    <span class="d-flex align-items-center c-pointer" ng-click="SORT_BY_ORDER(1)">
+                        Cashup Date
+                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey ms-auto sort-icon"
+                           ng-class="{'fa-arrow-down-a-z': register_Search.SORT_ORDER_NO == 1, 'fa-arrow-up-a-z': register_Search.SORT_ORDER_NO == -1}">
+                        </i>
+                    </span>
+                </th>-->
+                <th class="text-nowrap" ng-click="SORT_BY_ORDER(1)">
+                    <span class="d-flex align-items-center c-pointer">
+                        Cashup Date
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 1 && register_Search.SORT_ORDER_NO === 1" class="fa-regular fa-arrow-up text-grey ms-auto"></i>
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 1 && register_Search.SORT_ORDER_NO === -1" class="fa-regular fa-arrow-down text-grey ms-auto"></i>
+                    </span>
+                </th>
+
+                <!--<th class="text-nowrap">
+                    <span class="d-flex align-items-center c-pointer" ng-click="SORT_BY_ORDER(2)">
+                        Site
+                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey ms-auto sort-icon"
+                           ng-class="{'fa-arrow-down-a-z': register_Search.SORT_ORDER_NO == 1, 'fa-arrow-up-a-z': register_Search.SORT_ORDER_NO == -1}">
+                        </i>
+                    </span>
+                </th>-->
+                <th class="text-nowrap" ng-click="SORT_BY_ORDER(2)">
+                    <span class="d-flex align-items-center c-pointer">
+                        Site
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 2 && register_Search.SORT_ORDER_NO === 1" class="fa-regular fa-arrow-up text-grey ms-auto"></i>
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 2 && register_Search.SORT_ORDER_NO === -1" class="fa-regular fa-arrow-down text-grey ms-auto"></i>
+                    </span>
+                </th>
+
+                <!--<th class="text-nowrap">
+                    <span class="d-flex align-items-center c-pointer" ng-click="SORT_BY_ORDER(3)">
+                        Status
+                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey ms-auto sort-icon"
+                           ng-class="{'fa-arrow-down-a-z': register_Search.SORT_ORDER_NO == 1, 'fa-arrow-up-a-z': register_Search.SORT_ORDER_NO == -1}">
+                        </i>
+                    </span>
+                </th>-->
+                <th class="text-nowrap" ng-click="SORT_BY_ORDER(3)">
+                    <span class="d-flex align-items-center c-pointer">
+                        Status
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 3 && register_Search.SORT_ORDER_NO === 1" class="fa-regular fa-arrow-up text-grey ms-auto"></i>
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 3 && register_Search.SORT_ORDER_NO === -1" class="fa-regular fa-arrow-down text-grey ms-auto"></i>
+                    </span>
+                </th>
+
+                <!--<th class="text-nowrap">
+
+                    <span class="d-flex align-items-center">
+                        Submitted By
+                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>
+                    </span>
+                </th>-->
+                <!--<th class="text-nowrap">
+                    <span class="d-flex align-items-center c-pointer" ng-click="SORT_BY_ORDER(4)">
+                        Last Updated Date
+                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey ms-auto sort-icon"
+                           ng-class="{'fa-arrow-down-a-z': register_Search.SORT_ORDER_NO == 1, 'fa-arrow-up-a-z': register_Search.SORT_ORDER_NO == -1}">
+                        </i>
+                    </span>
+                </th>-->
+                <th class="text-nowrap" ng-click="SORT_BY_ORDER(4)">
+                    <span class="d-flex align-items-center c-pointer">
+                        Last Updated Date
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 4 && register_Search.SORT_ORDER_NO === 1" class="fa-regular fa-arrow-up text-grey ms-auto"></i>
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 4 && register_Search.SORT_ORDER_NO === -1" class="fa-regular fa-arrow-down text-grey ms-auto"></i>
+                    </span>
+                </th>
+
+                <!--<th class="text-nowrap">
+                    <span class="d-flex align-items-center c-pointer" ng-click="SORT_BY_ORDER(5)">
+                        Approved By
+                        <i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey ms-auto sort-icon"
+                           ng-class="{'fa-arrow-down-a-z': register_Search.SORT_ORDER_NO == 1, 'fa-arrow-up-a-z': register_Search.SORT_ORDER_NO == -1}">
+                        </i>
+                    </span>
+                </th>-->
+                <th class="text-nowrap" ng-click="SORT_BY_ORDER(5)">
+                    <span class="d-flex align-items-center c-pointer">
+                        Approve/Reject by
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 5 && register_Search.SORT_ORDER_NO === 1" class="fa-regular fa-arrow-up text-grey ms-auto"></i>
+                        <i ng-if="register_Search.SORT_COLUMN_NO === 5 && register_Search.SORT_ORDER_NO === -1" class="fa-regular fa-arrow-down text-grey ms-auto"></i>
+                    </span>
+                </th>
+                <th class="text-nowrap">
+                    <span class="d-flex align-items-center">
+                        ePOS Value
+                        <!--<i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>-->
+                    </span>
+                </th>
+                <th class="text-nowrap">
+
+                    <span class="d-flex align-items-center">
+                        Actual Value
+                        <!--<i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>-->
+                    </span>
+                </th>
+                <th class="text-nowrap">
+                    <span class="d-flex align-items-center">
+                        Variance Value
+                        <!--<i class="fa-regular fa-arrow-up-arrow-down me-2 text-grey c-pointer ms-auto"></i>-->
+                    </span>
+                </th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="_record in CASHUP_RECORDS" ng-init="ng_initrecords(_record,$last)">
+                <!--<tr ng-repeat="_record in CASHUP_RECORDS | orderBy: 'ORDER_NO': sortOrder === -1" ng-init="ng_initrecords(_record,$last)">-->
+                <td class="text-nowrap">{{_record.CASHUP_DATE | date: DISPLAY_DATE_FORMAT}}</td>
+                <td class="text-nowrap">{{_record.BRANCH_NAME}}</td>
+                <td class="text-center ME_sticky_right status">
+                    <span class="badge-lg f-10" ng-class="{'cashup-badge-lg badge-light-warning':_record.STATUS_ID==0,
+                                      'cashup-badge-lg badge-light-outline':_record.STATUS_ID==1,
+                                      'cashup-badge-lg badge-light-primary':_record.STATUS_ID==2,
+                                      'cashup-badge-lg badge-light-success':_record.STATUS_ID==4,
+                                      'cashup-badge-lg badge-light-danger':_record.STATUS_ID==5}">
+                        {{_record.STATUS_ID=='' ?_record.STATUS_NAME:(_record.STATUS_ID=='' || _record.STATUS_ID==null?'-' :_record.STATUS_NAME)}}
+                    </span>
+                </td>
+                <!--<td class="text-nowrap f-w-700">-</td>-->
+                <td class="text-nowrap"> {{ _record.CREATED_DATE ? (_record.CREATED_DATE | date: DISPLAY_DATE_FORMAT) : '-' }} </td>
+                <td class="text-nowrap">
+                    <label class="form-check-label" for="Invited">
+                        <span ng-if="_record.APPROVER!='' && _record.APPROVER!=null" class="text_avatar me-1">
+                            {{(_record.APPROVER.split(' ')[0][0] + (_record.APPROVER.split(' ').length > 1 ? _record.APPROVER.split(' ')[_record.APPROVER.split(' ').length - 1][0] : ' ')).toUpperCase() }}
+                        </span>
+                        <span ng-if="_record.APPROVER=='' || _record.APPROVER==null">-</span>
+                        <span ng-if="_record.APPROVER">{{ _record.APPROVER }}</span>
+                    </label>
+                </td>
+                <td class="text-nowrap f-w-700">{{(_record.EPOS_VALUE | number:2) || '-'}}</td>
+                <td class="text-nowrap f-w-700">{{(_record.ACTUAL_VALUE | number:2) || '-'}}</td>
+                <td class="text-nowrap f-w-700">
+                    <span class="txt-danger" ng-if="(_record.ACTUAL_VALUE-_record.EPOS_VALUE) < 0">
+                        <i class="fa-light fa-arrow-down-right txt-danger"></i>
+                        {{(_record.ACTUAL_VALUE-_record.EPOS_VALUE) | number:2}}
+                    </span>
+
+                    <span class="txt-success" ng-if="(_record.ACTUAL_VALUE-_record.EPOS_VALUE) > 0">
+                        <i class="fa-light fa-arrow-up-right txt-success"></i>
+                        {{(_record.ACTUAL_VALUE-_record.EPOS_VALUE) | number:2}}
+                    </span>
+                    <span class="txt-success" ng-if="(_record.ACTUAL_VALUE-_record.EPOS_VALUE) == 0">
+                        <i class="fa-light"></i>
+                        {{(_record.ACTUAL_VALUE-_record.EPOS_VALUE) | number:2}}
+                    </span>
+                </td>
+                <!--<td class="text-nowrap text-center f-w-700">
+                    <a ng-click="EDIT_CASHUP_REGISTER()" data-toggle="tooltip" data-html="true" data-original-title="Edit"><i class="fa-light fa-pen me-2"></i></a>
+                </td>-->
+                <td class="text-center">
+                    <div class="dropstart">
+                        <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-light fa-ellipsis"></i></button>
+                        <ul class="dropdown-menu" ng-style="{'z-index': 9999, 'position': 'absolute', 'overflow': 'visible'}">
+                            <li ng-click="EDIT_CASHUP_REGISTER(_record)" class="dropdown-item"><a class="text-dark d-block"><i class="fa-light fa-eye me-2"></i>View/Edit</a></li>
+                            <!--<li ng-click="EDIT_CASHUP_REGISTER(_record,2)" class="dropdown-item"><a class="text-dark d-block"><i class="fa-light fa-pen me-2" data-bs-toggle="tooltip" data-bs-title="Edit"></i>Edit</a></li>-->
+                            <li class="dropdown-item"
+                                ng-show="_record.RESET_TO_DRAFT_PRIVILEGE"
+                                ng-click="UPD_CASHUP_RESET_TO_DRAFT(_record)">
+                                <a class="text-dark d-block"><i class="fa-light fa-arrow-turn-down-left me-2"></i>Reset to Draft</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot class="table-sticky-bottom">
+            <tr>
+                <td colspan="10" class="text-center">
+                    <button type="button" click-once class="btn btn-sm btn-light btn_fixed" ng-show="GetData" ng-click="LAZY_LOAD_GET_CASHUP_REGISTER()">Load More...</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="modal fade" id="Select_Cashup_details_reg_original" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content custom-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Cashup details</h5>
+                <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form name="RegSelectCashupDetailsForm" autocomplete="off" novalidate>
+                <div class="modal-body resCashupHeader">
+                    <div class="row cashup-register-modal">
+
+                        <!--Left portion [Cashup Site]-->
+                        <div class="col-xxl-5 col-xl-5 col-md-5">
+                            <div class="col-xxl-12 col-xl-12 col-md-12">
+                                <h5 class="modal-title "> Cashup Site : {{SELECTED_RECORD.BRANCH_NAME}}</h5>
+                            </div>
+
+                            <div ng-show="CASHUP_BY_AREA">
+                                <div class="col-xxl-12 col-xl-12 col-md-12">
+                                    <h5 class="headings my-2">Select Area</h5>
+                                </div>
+                                <div class="col-xxl-12 col-xl-12 col-md-12">
+                                    <div ng-show="AREA_LIST.length==0">No Area has been set up. Please setup area from settings</div>
+                                    <div class="row g-2 my-2" ng-repeat="_area in AREA_LIST">
+                                        <div class="col-xxl col-xl col-md">
+                                            <div class="form-check">
+                                                <input type="hidden"
+                                                       ng-model="SELECTED_AREA"
+                                                       ng-required="CASHUP_BY_AREA"
+                                                       name="area_{{$index}}"
+                                                       ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.area_{{$index}}.$error.required}" />
+                                                <input class="radio_animated" id="{{ _area.AREA_NAME}}"
+                                                       type="radio" name="area" ng-click="SELECT_AREA(_area)"
+                                                       ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.area_{{$index}}.$error.required}">
+                                                <label class="form-check-label mb-0" for="{{ _area.AREA_NAME}}">{{ _area.AREA_NAME}} </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Right portion [Cashup Date]-->
+                        <div class="col-xxl-7 col-xl-7 col-md-7">
+                            <div class="col-xxl-12 col-xl-12 col-md-12">
+                                <h5 class="modal-title "> Cashup Date : {{CASHUP_DATE | date:DISPLAY_DATE_FORMAT}}</h5>
+                            </div>
+                            <div ng-show="CASHUP_BY_SESSION">
+                                <div class="col-xxl-12 col-xl-12 col-md-12">
+                                    <h5 class="headings my-2">Select Session</h5>
+                                </div>
+                                <div class="col-xxl-12 col-xl-12 col-md-12">
+                                    <div ng-show="SESSION_LIST.length==0">No Session has been set up. Please setup session from settings</div>
+                                    <div class="row g-2 my-2" ng-repeat="_session in SESSION_LIST" ng-show="_session.ACTIVE == true">
+                                        <div class="col-xxl-3 col-xl-3 col-md-3">
+                                            <div class="form-check">
+                                                <input type="hidden"
+                                                       ng-model="SELECTED_SESSION"
+                                                       required
+                                                       name="session_{{$index}}"
+                                                       ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}" />
+                                                <input class="radio_animated" id="{{ _session.SESSION_NAME}}"
+                                                       type="radio" name="session" ng-click="SELECT_SESSION(_session)"
+                                                       ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}">
+                                                <!--<input class="radio_animated" id="{{ _session.SESSION_NAME}}"
+                                                       type="radio" name="session" ng-click="SELECT_SESSION(_session)">-->
+                                                <label class="form-check-label mb-0" for="{{ _session.SESSION_NAME}}">{{ _session.SESSION_NAME}} </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                            <span class="badge badge-white">
+                                                ePOS : {{(GET_HEADER_VALUE_FOR_PROMPT('epos',_session.SESSION_MAPPING_ID) | number:2)||'-' }}
+                                            </span>
+                                        </div>
+                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                            <span class="badge badge-white">
+                                                Actual : {{(GET_HEADER_VALUE_FOR_PROMPT('actual',_session.SESSION_MAPPING_ID)|number:2)||'-'}}
+                                            </span>
+                                        </div>
+                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                            <span class="badge badge-white variance">
+                                                Variance :
+                                                <span class="txt-danger" ng-if="GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) < 0">
+                                                    <i class="fa-light fa-arrow-down-right txt-danger"></i>
+                                                    {{ GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) | number:2}}
+                                                </span>
+                                                <span class="txt-success" ng-if="GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) > 0">
+                                                    <i class="fa-light fa-arrow-up-right txt-success"></i>
+                                                    {{GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) | number:2}}
+                                                </span>
+                                                <span class="txt-success" ng-if="GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) == 0">
+                                                    <i class="fa-light"></i>
+                                                    {{GET_HEADER_VALUE_FOR_PROMPT('varience',_session.SESSION_MAPPING_ID) | number:2}}
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                            <span ng-class="{'badge badge-light-warning':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==0,
+                                                  'badge badge-light-outline':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==1,
+                                                  'badge badge-light-primary':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==3,
+                                                  'badge badge-light-success':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==4,
+                                                  'badge badge-light-danger':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==5}">
+                                                {{HEADER_STATUS_LIST[GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)]}}
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" click-once ng-click="INS_CASHUP_HEADER()">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Select_Cashup_details_reg_new_backup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop='static'>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Select Cashup details</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="RegSelectCashupDetailsForm" autocomplete="off" novalidate>
+                <div class="modal-body resCashupHeader resBreadCrumbModal">
+                    <div class="row g-2">
+                        <div class="col-xxl-3 col-xl-3 col-md-3">
+                            <input type="text" disabled ng-model="SELECTED_RECORD.BRANCH_NAME" />
+                        </div>
+                        <div class="col-xxl-3 col-xl-3 col-md-3">
+                            <input type="text" disabled ng-model="CASHUP_DATE | date:DISPLAY_DATE_FORMAT" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 mt-2" ng-show="CASHUP_BY_AREA==true">
+                        <div ng-show="AREA_LIST.length==0">No Area has been set up. Please setup area from settings</div>
+                        <div class="border b-r-5 mb-2 p-2" ng-show="AREA_LIST.length>0">
+                            <div class="row align-items-center">
+                                <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700">Area</div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 f-w-700">Session</div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 f-w-700 text-center">Status</div>
+                                <div class="col-xxl-2 col-xl-2 col-md-2 f-w-700 text-center">Actions</div>
+                            </div>
+                            <div class="row align-items-center mt-2" ng-repeat="_area in AREA_LIST">
+                                <div class="col-xxl-4 col-xl-4 col-md-4">
+                                    <span class="f-w-600" ng-class="{'txt-primary':SELECTED_AREA==_area.AREA_NAME}">{{ _area.AREA_NAME}} </span>                                    
+                                </div>
+
+                                <div class="row align-items-center mt-2" ng-repeat="_session in SESSION_LIST | orderBy:'SORT_ORDER'">
+                                    <div class="col-xxl-4 col-xl-4 col-md-4">&nbsp;</div>
+                                    <div class="col-xxl-3 col-xl-3 col-md-3">
+                                        <div class="form-check ps-0">
+                                            <input type="hidden"
+                                                   ng-model="SELECTED_SESSION"
+                                                   required
+                                                   name="session_{{$index}}"
+                                                   ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}" />
+                                            <input class="radio_animated" id="{{ _session.SESSION_NAME}}"
+                                                   type="radio" name="session_{{$parent.$index}}" ng-click="SELECT_SESSION(_session);SELECT_AREA(_area)"
+                                                   ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}">
+                                            <label class="form-check-label mb-0" for="{{ _session.SESSION_NAME}}">{{ _session.SESSION_NAME}} </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-3 col-xl-3 col-md-3 text-center">
+                                        <span class="badge-lg f-10" ng-class="{'badge-light-warning':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==0,
+                                                  'badge-light-outline':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==1,
+                                                  'badge-light-primary':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==3,
+                                                  'badge-light-success':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==4,
+                                                  'badge-light-danger':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==5}">
+                                            {{HEADER_STATUS_LIST[GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)]}}
+                                        </span>
+                                    </div>
+                                    <div class="col-xxl-2 col-xl-2 col-md-2 text-center"><button type="button" class="btn btn-sm btn-light" ng-disabled="!CLOSE_CASHUP_HEADER_PRIVILEGE(_session.SESSION_MAPPING_ID,_area.AREA_ID)" ng-click="CLOSE_CASHUP_HEADER(_session.SESSION_MAPPING_ID,_area.AREA_ID)">Close</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 mt-2" ng-show="CASHUP_BY_AREA==false">
+                        <div ng-show="SESSION_LIST.length==0">No Session has been set up. Please setup area from settings</div>
+                        <div class="border b-r-5 mb-2 p-2" ng-show="SESSION_LIST.length>0">
+                            <div class="row align-items-center">
+
+                                <div class="col-xxl-6 col-xl-6 col-md-6 f-w-700">Session</div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 f-w-700 text-center">Status</div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 f-w-700 text-center">Actions</div>
+                            </div>
+                            <div class="row align-items-center mt-2" ng-repeat="_session in SESSION_LIST">
+                                <div class="col-xxl-6 col-xl-6 col-md-6">
+                                    <div class="form-check ps-0">
+                                        <input type="hidden"
+                                               ng-model="SELECTED_SESSION"
+                                               required
+                                               name="session_{{$index}}"
+                                               ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}" />
+                                        <input class="radio_animated" id="{{ _session.SESSION_NAME}}"
+                                               type="radio" name="session" ng-click="SELECT_SESSION(_session)"
+                                               ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}">
+                                        <label class="form-check-label mb-0" for="{{ _session.SESSION_NAME}}">{{ _session.SESSION_NAME}} </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 text-center">
+                                    <span class="badge-lg f-10" ng-class="{'badge-light-warning':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==0,
+                                                  'badge-light-outline':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==1,
+                                                  'badge-light-primary':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==3,
+                                                  'badge-light-success':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==4,
+                                                  'badge-light-danger':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==5}">
+                                        {{HEADER_STATUS_LIST[GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)]}}
+                                    </span>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 text-center"><button type="button" class="btn btn-sm btn-light" ng-click="!CLOSE_CASHUP_HEADER(_session.SESSION_MAPPING_ID)">Close</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            
+            <div class="modal-footer text-end">
+                <button class="btn btn-primary" click-once ng-click="INS_CASHUP_HEADER()">Proceed</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="Select_Cashup_details_reg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop='static'>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Select Cashup details</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form name="RegSelectCashupDetailsForm" autocomplete="off" novalidate>
+                <div class="modal-body resCashupHeader resBreadCrumbModal">
+                    <div class="row g-2">
+                        <div class="col-xxl-3 col-xl-3 col-md-3">
+                            <input type="text" disabled ng-model="SELECTED_RECORD.BRANCH_NAME" />
+                        </div>
+                        <div class="col-xxl-3 col-xl-3 col-md-3">
+                            <input type="text" disabled ng-model="CASHUP_DATE | date:DISPLAY_DATE_FORMAT" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 mt-2" ng-show="CASHUP_BY_AREA==true">
+                        <div class="alert alert-light-warning mb-2" ng-show="AREA_LIST.length==0">
+                            <div class="row align-items-center">
+                                <div class="col-auto"><i class="fa-light fa-circle-exclamation txt-orange fa-lg"></i></div>
+                                <div class="col">
+                                    <p class="txt-orange">No Area has been set up. Please setup area from settings</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center px-3" ng-show="AREA_LIST.length>0">
+                            <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700">Area</div>
+                            <div class="col-xxl col-xl col-md">
+                                <div class="row mt-2">
+                                    <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700">Session</div>
+                                    <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700 text-center">Status</div>
+                                    <div class="col-xxl-4 col-xl-4 col-md-4 f-w-700 text-center">Actions</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" ng-repeat="_area in AREA_LIST" ng-show="AREA_LIST.length>0">
+                            <div class="card-body p-2">
+                                <div class="row align-items-center">
+                                    <div class="col-xxl-4 col-xl-4 col-md-4">
+                                        <span class="f-w-600" ng-class="{'txt-primary':SELECTED_AREA==_area.AREA_NAME}">{{ _area.AREA_NAME}} </span>
+                                        <!--<div class="form-check ps-0">
+                            <input type="hidden"
+                                   ng-model="SELECTED_AREA"
+                                   ng-required="CASHUP_BY_AREA"
+                                   name="area_{{$index}}"
+                                   ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.area_{{$index}}.$error.required}" />
+                            <input class="radio_animated" id="{{ _area.AREA_NAME}}" type="radio" name="area" ng-click="SELECT_AREA(_area)" ng-class="{'error':EntrySelectCashupDetailsForm.submitted && EntrySelectCashupDetailsForm.area_{{$index}}.$error.required}">
+                            <label class="form-check-label mb-0 f-w-600" for="{{ _area.AREA_NAME}}">{{ _area.AREA_NAME}} </label>
+                        </div>-->
+                                    </div>
+
+                                    <div class="col-xxl col-xl col-md">
+                                        <div class="row mt-2" ng-repeat="_session in SESSION_LIST| orderBy:'SORT_ORDER'">
+                                            <div class="col-xxl-4 col-xl-4 col-md-4">
+                                                <div class="form-check ps-0">
+                                                    <input type="hidden"
+                                                           ng-model="SELECTED_SESSION"
+                                                           required
+                                                           name="session_{{$index}}"
+                                                           ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}" />
+                                                    <input class="radio_animated" id="{{_area.AREA_NAME}}_{{ _session.SESSION_NAME}}"
+                                                           type="radio" name="session" ng-click="SELECT_SESSION(_session);SELECT_AREA(_area)"
+                                                           ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}">
+                                                    <label class="form-check-label mb-0" for="{{_area.AREA_NAME}}_{{_session.SESSION_NAME}}">{{ _session.SESSION_NAME}} </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xxl-4 col-xl-4 col-md-4 text-center">
+                                                <span class="badge-lg f-10" ng-class="{'badge-light-warning':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==0,
+                                                  'badge-light-outline':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==1,
+                                                  'badge-light-primary':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==3,
+                                                  'badge-light-success':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==4,
+                                                  'badge-light-danger':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)==5}">
+                                                    {{HEADER_STATUS_LIST[GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID,_area.AREA_ID)]}}
+                                                </span>
+                                            </div>
+                                            <div class="col-xxl-4 col-xl-4 col-md-4 text-center">
+                                                <button type="button" class="btn btn-sm btn-light" ng-disabled="!CLOSE_CASHUP_HEADER_PRIVILEGE(_session.SESSION_MAPPING_ID,_area.AREA_ID)" ng-click="CLOSE_CASHUP_HEADER(_session.SESSION_MAPPING_ID,_area.AREA_ID)">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 mt-2" ng-show="CASHUP_BY_AREA==false">
+                        <div class="alert alert-light-warning mb-2" ng-show="SESSION_LIST.length==0">
+                            <div class="row align-items-center">
+                                <div class="col-auto"><i class="fa-light fa-circle-exclamation txt-orange fa-lg"></i></div>
+                                <div class="col">
+                                    <p class="txt-orange">No Session has been set up. Please setup area from settings</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border b-r-5 mb-2 p-2" ng-show="SESSION_LIST.length>0">
+                            <div class="row align-items-center">
+
+                                <div class="col-xxl-6 col-xl-6 col-md-6 f-w-700">Session</div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 f-w-700 text-center">Status</div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 f-w-700 text-center">Actions</div>
+                            </div>
+                            <div class="row align-items-center mt-2" ng-repeat="_session in SESSION_LIST">
+                                <div class="col-xxl-6 col-xl-6 col-md-6">
+                                    <div class="form-check ps-0">
+                                        <input type="hidden"
+                                               ng-model="SELECTED_SESSION"
+                                               required
+                                               name="session_{{$index}}"
+                                               ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}" />
+                                        <input class="radio_animated" id="SESSION_{{ _session.SESSION_NAME}}"
+                                               type="radio" name="session" ng-click="SELECT_SESSION(_session)"
+                                               ng-class="{'error':RegSelectCashupDetailsForm.submitted && RegSelectCashupDetailsForm.session_{{$index}}.$error.required}">
+                                        <label class="form-check-label mb-0" for="SESSION_{{ _session.SESSION_NAME}}">{{ _session.SESSION_NAME}} </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 text-center">
+                                    <span class="badge-lg f-10" ng-class="{'badge-light-warning':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==0,
+                                                  'badge-light-outline':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==1,
+                                                  'badge-light-primary':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==3,
+                                                  'badge-light-success':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==4,
+                                                  'badge-light-danger':GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)==5}">
+                                        {{HEADER_STATUS_LIST[GET_HEADER_VALUE_FOR_PROMPT('status',_session.SESSION_MAPPING_ID)]}}
+                                    </span>
+                                </div>
+                                <div class="col-xxl-3 col-xl-3 col-md-3 text-center"><button type="button" class="btn btn-sm btn-light" ng-disabled="!CLOSE_CASHUP_HEADER_PRIVILEGE(_session.SESSION_MAPPING_ID,_area.AREA_ID)" ng-click="!CLOSE_CASHUP_HEADER(_session.SESSION_MAPPING_ID)">Close</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="modal-footer text-end">
+                <button class="btn btn-primary" click-once ng-click="INS_CASHUP_HEADER()">Proceed</button>
+            </div>
+        </div>
+
+    </div>
+</div>

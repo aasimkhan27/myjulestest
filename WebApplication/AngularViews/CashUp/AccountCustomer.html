@@ -1,0 +1,684 @@
+﻿<style>
+    h5 {
+        font-size: 12px;
+    }
+    .dropdown-menu li.active {
+        background-color: #e7e7e7;
+    }
+
+    .dropdown-menu li {
+        padding: 6px 10px ;
+        border-bottom: 1px solid #e9ecef;
+        cursor: pointer;
+    }
+</style>
+
+<!--<div class="animated fadeInLeft" id="AccountCustomer" role="tabpanel" ng-show="CASHUP.STEP_NO==6" aria-labelledby="custom-content-below-settings-tab">-->
+<div class="overlay_loadingNew" style="display:{{overlay_loadingNew}}!important"></div>
+<div id="LOADER_ID">
+    <div class="card-header">
+        <ul class="nav nav-pills float-left">
+            <li class="nav-item border radius-50">
+                <span class="font-12 text-bold">Branch: <span class="cash-up-header">{{CASHUP.BRANCH_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Area: <span class="cash-up-header">{{CASHUP.AreaList[0].NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">Session: <span class="cash-up-header">{{CASHUP.SESSION.SESSION_NAME}}</span></span>
+            </li>
+            <li class="nav-item border radius-50 ml-2">
+                <span class="font-12 text-bold">CashUp Date: <span class="cash-up-header">{{CASHUP.CASHUP_DATE|date}}</span></span>
+            </li>
+        </ul>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item border radius-50">
+                    <span class="font-12 text-bold">ePOS: <span class="cash-up-header">{{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account Credit"})[0].SALES_AMT | number:2}}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.ACCOUNT_TOTAL=(AccCustomerList | filter:{"IS_DELETED":"0"} | total:'AMOUNT') | number:2 }}</span></span>
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <!--<span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_ACCOUNT!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_ACCOUNT=((CASHUP.EPOS_DATA | filter:{"MEDIA":"Account Credit"}).length>0?(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account Credit"})[0].SALES_AMT*1-CASHUP.ACCOUNT_TOTAL*1:0) |number:2}}</span></span>-->
+                    <span class="font-12 text-bold" ng-class="{'text-danger':CASHUP.VARIANCE_ACCOUNT!=0}">Variance: <span class="cash-up-header">{{ CASHUP.VARIANCE_ACCOUNT=(  CASHUP.ACCOUNT_TOTAL - (CASHUP.EPOS_DATA | filter:{"MEDIA":"Account Credit"})[0].SALES_AMT) |number:2}}</span></span>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-header">
+        <h5 class="card-title">Account Credit</h5>
+
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col">
+                <label for="namehost">Customer Name <span class="text-danger">*</span><span class="float-right"><a class="btn btn-circle" data-toggle="modal" data-target="#Add_Customer"><i class="fas fa-user-plus text-white" data-toggle="tooltip" data-html="true" data-original-title="Add permanent customer"></i></a></span></label>
+            </div>
+            <div class="col">
+                <label for="accountcompany">Company </label>
+            </div>
+            <div class="col-md-2" ng-show="false">
+                <label>Payment Method <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-md-1">
+                <label for="amount">Amount <span class="text-danger">*</span></label>
+            </div>
+            <div class="col">
+                <label for="check">Invoice # <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-md-1">
+                <label for="note">Note</label>
+            </div>
+            <div class="col-md-1">
+                <label for="note">Upload</label>
+            </div>
+
+            <div class="col-md-1">
+            
+            </div>
+        </div>
+        <form id="AccountCreditForm" name="AccountCreditForm" novalidate>
+            <div class="row" ng-repeat="Cust in AccCustomerList | filter:{IS_DELETED:0}" on-finish-render="ngRepeatFinished" ng-init="initaccountList(Cust);">
+                <div class="col" id="AddCustomScroll_REQ">
+                    <div class="form-group">
+                        <input type="text"
+                               name="CUSTOMERS{{$index}}"
+                               ng-model="Cust.CUSTOMER_NAME"
+                               ng-change="SetValues(Cust,$index)"
+                               uib-typeahead="Supplier.NAME for Supplier in ACCOUNT_CUSTOMER_CUSTOMERS | filter:$viewValue"
+                               typeahead-loading="loading"
+                               typeahead-no-results="noResults"
+                               ng-disabled="Cust.RESTRICT_DELETE==1"
+                               class="form-control input-sm"
+                               autocomplete="off"
+                               placeholder="Type to select Customer Name..."
+                               ng-class="{'error':!Cust.CUSTOMER_NAME_VALID && CLICK_SUBMITTED }" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input type="text"
+                               ng-disabled="Cust.RESTRICT_DELETE==1"
+                               class="form-control"
+                               ng-model="Cust.COMPANY" />
+                    </div>
+                </div>
+                <div class="col-md-2" ng-show="false">
+                    <div class="form-group">
+                        <select class="custom-select"
+                                name="PAYMENT_METHOD_ID{{$index}}"
+                                ng-disabled="Cust.RESTRICT_DELETE==1"
+                                ng-model="Cust.PAYMENT_METHOD_ID"
+                                ng-options="CL.PAYMENT_METHOD_ID as CL.METHOD_NAME for CL in PAYMENT_METHODS"
+                                ng-class="{'error':!Cust.AMOUNT_VALID && CLICK_SUBMITTED}">
+                            <option value="">- Select -</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <!--<input type="text" class="form-control" only-digits ng-model="Cust.AMOUNT">-->
+                        <!--<input type="text"  class="form-control" oninput="this.value = this.value.replace(/[^-?0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" ng-model="Cust.AMOUNT"/>-->
+                        <input type="text"
+                               class="form-control"
+                               ng-disabled="Cust.RESTRICT_DELETE==1"
+                               name="AMOUNT{{$index}}" only-digits
+                               ng-model="Cust.AMOUNT"
+                               ng-class="{'error':!Cust.AMOUNT_VALID && CLICK_SUBMITTED}" />
+                        <!--  oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/^(-)|-+/g,'$1').replace(/^([^.]*\.)|\.+/g, '$1');" -->
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input type="text"
+                               ng-disabled="Cust.RESTRICT_DELETE==1"
+                               name="CHECK_NO{{$index}}"
+                               class="form-control"
+                               ng-model="Cust.CHECK_NO"
+                               ng-class="{'error':!Cust.CHECK_NO_VALID && CLICK_SUBMITTED}" />
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="d-flex">
+                        <input type="text"
+                               class="form-control"
+                               ng-disabled="Cust.RESTRICT_DELETE==1"
+                               ng-model="Cust.NOTE" />
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <span ng-hide="Cust.RESTRICT_DELETE==1">
+                            <label for="ACCOUNTFILE{{$index}}" class="btn btn-upload text-nowrap" ng-show="Cust.UploadedFiles==null || Cust.UploadedFiles.length==0">
+                                <i class="fal fa-upload text-white"></i>
+                            </label>
+                            </span>
+                            <span class="hidden-input">
+                                <input id="ACCOUNTFILE{{$index}}" ng-files="getTheFilesToUploadAccount($files, 'AccountFile', 5,Cust,46,$index)" name="file" type="file" />
+
+                            </span>
+                            <span class="d-block" ng-repeat="upls in Cust.UploadedFiles">
+                                <br ng-if="$index!=0" />
+                                <span ng-if="$index!=0" />
+                                <!--<a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.ORIGINAL_FILE_NAME}}">  <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>-->
+
+                                <a class="font-11" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                                    <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                                    <span ng-if="upls.ORIGINAL_FILE_NAME.length > 10">...</span>
+                                </a>
+                                <span> <i ng-hide="Cust.RESTRICT_DELETE==1" ng-click="DELETE_UPLOAD_ACCOUNT_ALL(Cust,upls,$index)" class="fa fa-times text-danger fa-sm mt-2 float-right cursor-pointer"></i> </span>
+                            </span>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="d-flex">
+                        <a class="add_dreceived_button" ng-click="AddCustomerLine()" click-once ng-show="$last" data-toggle="tooltip" data-html="true" data-original-title="Add More"><i class="fas fa-plus-circle ml-2"></i></a>
+                        <a class="add_dreceived_button" ng-hide="Cust.RESTRICT_DELETE==1" ng-click="DeleteLine(AccCustomerList, $index,Cust)" data-toggle="tooltip" data-html="true" data-original-title="Remove"><i class="fas fa-minus-circle ml-2"></i></a>
+                        <i class="fa fa-info-circle cursor-pointer ml-2 text-warning"
+                           ng-show="Cust.RESTRICT_DELETE==1"
+                           data-toggle="tooltip"
+                           data-html="true"
+                           data-placement="top"
+                           data-original-title="You have already received the amount on behalf of this record, if you want to change it or delete you need to first delete in account received"></i>
+
+                    </div>
+                </div>
+            </div>
+</form>
+        <div class="card-footer text-right">
+            <h6 class="app-text text-bold">Total: {{ CASHUP.ACCOUNT_TOTAL=(AccCustomerList | filter:{"IS_DELETED":"0"} | total:'AMOUNT') | number:2 }}</h6>
+        </div>  
+        <hr ng-show="CASHUP.ACCOUNT_CREDIT_VALID==false" />
+        <div class="form-group text-red p-3" ng-show="CASHUP.ACCOUNT_CREDIT_VALID==false">
+            Please fill the mandatory fields marked in red (*) symbol.
+        </div>
+    </div>
+    <div class="card-header">
+        <h5 class="card-title">Account Received  <button type="button" click-once class="btn btn-wenodo btn-sm ml-2" ng-click="POP_RECEIVED_CREDITS()">Select Received Credits</button></h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item border radius-50">
+                    <span class="font-12 text-bold">
+                        ePOS: <span class="cash-up-header">
+                            {{(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account Received"})[0].SALES_AMT | number:2}}
+                          
+                        </span>
+                    </span>
+
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold">Actual: <span class="cash-up-header">{{CASHUP.ACCOUNT_RECEIVED_TOTAL=(SELECTED_CREDIT_RECEIPTS | filter:{"IS_DELETED":"0"} | total:'AMOUNT') | number:2 }}</span></span>
+                  
+                </li>
+                <li class="nav-item border radius-50 ml-2">
+                    <span class="font-12 text-bold" >
+                        <sapn class="font-12 text-bold" >Variance: <span class="cash-up-header">{{ (CASHUP.ACCOUNT_RECEIVED_TOTAL-(CASHUP.EPOS_DATA | filter:{"MEDIA":"Account Received"})[0].SALES_AMT) |number:2}}</span></sapn>
+
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Customer Name <span class="text-danger">*</span></label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Company</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Payment Method <span class="text-danger">*</span></label>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label>Amount</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Received Amount <span class="text-danger">*</span></label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Invoice # <span class="text-danger">*</span></label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Note</label>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label>Upload</label>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <!--<label>Action</label>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-repeat="CR in SELECTED_CREDIT_RECEIPTS | filter:{IS_DELETED:0}" ng-init="initaccountListrec(CR);">
+            <div class="col">
+                <div class="form-group SCROLL_DROP">
+                    <input type="text"
+                           name="CUSTOMERS{{$index}}"
+                           ng-model="CR.CUSTOMER_NAME"
+                           uib-typeahead="Supplier.CUSTOMER_NAME for Supplier in OPEN_ACC_CUST_DECLARATION | filter:$viewValue"
+                           ng-blur="SetValues_Account(CR,$index);initaccountListrec(CR);"
+                           typeahead-loading="loading"
+                           typeahead-no-results="noResults"
+                           ng-disabled="(CR.PARENT_ID==0 || CR.PARENT_ID==null)?false:true"
+                           class="form-control input-sm"
+                           autocomplete="off"
+                           placeholder="Type to select Customer Name..." ng-change="SET_DROPSCROLL();"
+                           ng-class="{'error':!CR.CUSTOMER_NAME_VALID && CLICK_SUBMITTED }" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="CR.COMPANY" ng-disabled="(CR.PARENT_ID==0 || CR.PARENT_ID==null)?false:true" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <select class="custom-select"
+                            name="PAYMENT_METHOD_ID{{$index}}"
+                            ng-model="CR.PAYMENT_METHOD_ID"
+                            ng-class="{'error':!CR.PAYMENT_METHOD_ID_VALID && CLICK_SUBMITTED}"
+                            ng-options="CL.PAYMENT_METHOD_ID as CL.METHOD_NAME for CL in PAYMENT_METHODS_RECEIVED">
+                        <option value="">- Select -</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control"
+                           name="TOT_AMOUNT{{$index}}"
+                           oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/^(-)|-+/g,'$1').replace(/^([^.]*\.)|\.+/g, '$1');"
+                           ng-model="CR.TOTAL_AMT" ng-disabled="true" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control"
+                           name="AMOUNT{{$index}}"
+                           only-digits
+                           ng-model="CR.AMOUNT" ng-change="SET_VALUECHECK(CR);"
+                           ng-class="{'error':!CR.AMOUNT_VALID && CLICK_SUBMITTED}" ng-disabled="CR.ID!=0?true:false" /> <!--ng-disabled="CR.ID!=0?true:false" ng-disabled="CR.IS_REDEEMED==true?true:false"-->
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <input type="text"
+                           name="CHECK_NO{{$index}}"
+                           class="form-control"
+                           ng-model="CR.CHECK_NO"
+                           ng-class="{'error':!CR.CHECK_NO_VALID && CLICK_SUBMITTED}" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="CR.NOTE" />
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label for="ACCOUNTFILE1{{$index}}" class="btn btn-upload text-nowrap" ng-show="CR.UploadedFiles==null || CR.UploadedFiles.length==0" >
+                        <i class="fal fa-upload text-white"></i>
+                    </label>
+                    <span class="hidden-input">
+                        <input id="ACCOUNTFILE1{{$index}}" ng-files="getTheFilesToUploadAccountRec($files, 'AccountFile', 5,CR,46,$index)" name="file" type="file" />
+
+                    </span>
+                    <span class="d-block" ng-repeat="upls in CR.UploadedFiles">
+                        <br ng-if="$index!=0" />
+                        <span ng-if="$index!=0" />
+                        <!--<a download="{{upls.SERVER_FILE_NAME}}" href="/uploads/{{upls.FILE_PATH}}{{upls.ORIGINAL_FILE_NAME}}">  <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME}}</a>-->
+
+                        <a class="font-11" download="{{upls.SERVER_FILE_NAME}}" href="/Uploads/{{upls.FILE_PATH}}{{upls.SERVER_FILE_NAME}}">
+                            <i class="fad fa-download text-blue"></i> {{upls.ORIGINAL_FILE_NAME| limitTo: 10}}
+                            <span ng-if="upls.ORIGINAL_FILE_NAME.length > 10">...</span>
+                        </a>
+                        <span> <i ng-click="DELETE_UPLOAD_ACCOUNT_ALL_REC(CR,upls,$index)" class="fa fa-times text-danger fa-sm mt-2 float-right cursor-pointer"></i> </span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="d-flex">
+                    <a class="add_dreceived_button" ng-click="AddCustomerRedmeed()" click-once ng-show="$last" data-toggle="tooltip" data-html="true" data-original-title="Add More"><i class="fas fa-plus-circle ml-2"></i></a>
+                    <a class="add_dreceived_button" ng-click="DELETE_ACCOUNT_RECEIVED_LINE(SELECTED_CREDIT_RECEIPTS, $index,CR)" data-toggle="tooltip" data-html="true" data-original-title="Remove"><i class="fas fa-minus-circle ml-2"></i></a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="table-responsive overflow-visible" ng-show="false">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>Customer Name <span class="text-danger">*</span></th>
+                        <th>Company</th>
+                        <th>Payment Method <span class="text-danger">*</span></th>
+                        <th> Amount <span class="text-danger">*</span></th>
+                        <th width="10%"> Received Amount <span class="text-danger">*</span></th>
+                        <!--<th>Received Amount <span class="text-danger">*</span></th>-->
+                        <th>Invoice # <span class="text-danger">*</span></th>
+                        <th>Note</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="CR in SELECTED_CREDIT_RECEIPTS | filter:{IS_DELETED:0}">
+                        <td>
+                            <div class="form-group">
+                                <input type="text"
+                                       name="CUSTOMERS{{$index}}"
+                                       ng-model="CR.CUSTOMER_NAME"
+                                       uib-typeahead="Supplier.NAME for Supplier in ACCOUNT_CUSTOMER_CUSTOMERS | filter:$viewValue"
+                                       typeahead-loading="loading"
+                                       typeahead-no-results="noResults"
+                                       class="form-control input-sm"
+                                       autocomplete="off"
+                                       placeholder="Type to select Customer Name..."
+                                       ng-class="{'error':!CR.CUSTOMER_NAME_VALID && CLICK_SUBMITTED }" />
+                            </div>
+                            <!--  ng-change="SetValues(CR,$index)"  ng-disabled="(CR.PARENT_ID==0 || CR.PARENT_ID==null)?false:true" || ng-disabled="(CR.PARENT_ID==0 || CR.PARENT_ID==null)?false:true" -->
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="CR.COMPANY"  />
+                            </div>
+
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <select class="custom-select"
+                                        name="PAYMENT_METHOD_ID{{$index}}"
+                                        ng-model="CR.PAYMENT_METHOD_ID"
+                                        ng-class="{'error':!CR.PAYMENT_METHOD_ID_VALID && CLICK_SUBMITTED}"
+                                        ng-options="CL.PAYMENT_METHOD_ID as CL.METHOD_NAME for CL in PAYMENT_METHODS_RECEIVED">
+
+                                    <option value="">- Select -</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+
+                                <input type="text"
+                                       class="form-control"
+                                       name="TOT_AMOUNT{{$index}}"
+                                       oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/^(-)|-+/g,'$1').replace(/^([^.]*\.)|\.+/g, '$1');"
+                                       ng-model="CR.TOTAL_AMT" ng-disabled="true" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+
+                                <input type="text"
+                                       class="form-control"
+                                       name="AMOUNT{{$index}}"
+                                       oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/^(-)|-+/g,'$1').replace(/^([^.]*\.)|\.+/g, '$1');"
+                                       ng-model="CR.AMOUNT" ng-change="SET_VALUECHECK(CR);"
+                                       ng-class="{'error':!CR.AMOUNT_VALID && CLICK_SUBMITTED}" ng-disabled="CR.IS_REDEEMED==true?true:false" /> <!--ng-disabled="CR.IS_REDEEMED==true?true:false"-->
+                            </div>
+                        </td>
+
+                        <!--<td>
+                        <div class="form-group">
+
+                            <input type="text"
+                                   class="form-control"
+                                   name="AMOUNT_RECEIVED{{$index}}"
+                                   oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/^(-)|-+/g,'$1').replace(/^([^.]*\.)|\.+/g, '$1');"
+                                   ng-model="CR.AMOUNT_RECEIVED"
+                                    />
+                            </div>
+                    </td>-->
+                        <!--<td>
+                        <div class="form-group">
+                            <input type="text"
+                                   class="form-control"
+                                   name="RECEVIED_AMOUNT{{$index}}"
+                                   oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/^(-)|-+/g,'$1').replace(/^([^.]*\.)|\.+/g, '$1');"
+                                   ng-model="CR.RECEVIED_AMOUNT" ng-change="SET_RECIVED_AMOUNT(CR);"
+                                   ng-class="{'error':!CR.RECEVIED_AMOUNT_VALID && CLICK_SUBMITTED}" />
+                            </div>
+                    </td>-->
+                        <td>
+                            <div class="form-group">
+                                <input type="text"
+                                       name="CHECK_NO{{$index}}"
+                                       class="form-control"
+                                       ng-model="CR.CHECK_NO"
+                                       ng-class="{'error':!CR.CHECK_NO_VALID && CLICK_SUBMITTED}" />
+
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="CR.NOTE" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex">
+                                <a class="add_dreceived_button" click-once ng-click="AddCustomerRedmeed()"  ng-show="$last" data-toggle="tooltip" data-html="true" data-original-title="Add More"><i class="fas fa-plus-circle ml-2"></i></a>
+                                <a class="add_dreceived_button" ng-click="DELETE_ACCOUNT_RECEIVED_LINE(SELECTED_CREDIT_RECEIPTS, $index,CR)" data-toggle="tooltip" data-html="true" data-original-title="Remove"><i class="fas fa-minus-circle ml-2"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-right">
+            <h6 class="app-text text-bold">Total: {{(SELECTED_CREDIT_RECEIPTS | filter:{"IS_DELETED":"0"} | total:'AMOUNT')| number:2 }}</h6>
+        </div>
+    </div>
+</div>
+<div class="event-footer animated fadeInUp">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12 d-inline m-2 text-right">
+                <!--<button class="btn btn-w-default btn-sm" ng-click="ShowDiv(GetPreviousStep())" ng-show="CASHUP.STEP_NO!=0"><i class="fa fa-angle-double-left"></i> Previous</button>-->
+                <button class="btn btn-w-default btn-sm" click-once ng-click="PreviousLink()"><i class="fa fa-angle-double-left"></i> Previous</button>
+                <button class="btn btn-wenodo btn-sm" click-once ng-click="NextLink('Vouchers')"><i class="fa fa-angle-double-right"></i> Continue</button>
+                <!--<button class="btn btn-wenodo btn-sm" ng-click="UPD_CASHUP_HEADER_SUBMIT()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==0 || CashUp_Main_STATUS_ID==1 || CashUp_Main_STATUS_ID==5)"><i class="fa fa-angle-double-right"></i> Submit</button>
+                <button class="btn btn-wenodo btn-sm" ng-click="APP_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Approve</button>
+                <button class="btn btn-danger btn-sm" ng-click="REJ_CASHUP()" ng-show="CASHUP.STEP_NO==10 && (CashUp_Main_STATUS_ID==3)"><i class="fa fa-angle-double-right"></i> Return</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->
+
+<div class="modal fade show" id="Account_Received">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Account Credit Receipts</h4>
+                <button type="button" class="close" data-dismiss="modal" click-once  ng-click="RESET_CUSTOMER_SEARCH_RECEIVED_CREDITS()" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="text-sm">Customer Name</label>
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="CustomerSearch.FILTER_CUSTOMER_NAME" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="text-sm">Invoice # </label>
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="CustomerSearch.FILTER_INVOICE_NUMBER" />
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-group">
+                            <label class="text-sm">&nbsp;</label>
+                            <button type="button" class="btn btn-wenodo" click-once ng-click="CUSTOMER_SEARCH_RECEIVED_CREDITS()">Search</button>
+                            <button type="button" class="btn btn-w-default"click-once  ng-click="RESET_CUSTOMER_SEARCH_RECEIVED_CREDITS()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center" ng-show="OPEN_ACC_CUST_DECLARATION.length==0" empty-grid></div>
+                <div class="table-responsive custom-scrollbar" ng-show="OPEN_ACC_CUST_DECLARATION.length>0">
+                    <table class="table table-striped table-head-fixed">
+                        <thead class="bg-wenodo-dark-blue">
+                            <tr>
+                                <th width="2%"></th>
+                                <th>Customer Name</th>
+                                <th>Company</th>
+                                <th>Payment Method</th>
+                                <th>Amount</th>
+                                <th>Remaining Amount</th>
+                                <th>Invoice #</th>
+                                <th>Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="OPD in OPEN_ACC_CUST_DECLARATION  | filter:{IS_DELETED:0}">
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" ng-model="OPD.IS_SELECTED" type="checkbox" id="customCheckbox1{{$index}}" value="option1"  />
+                                        <!-- ng-click="updateSelection($index, OPEN_ACC_CUST_DECLARATION)"-->
+                                        <label for="customCheckbox1{{$index}}" class="custom-control-label"></label>
+                                    </div>
+                                </td>
+                                <td ng-click="OPD.IS_SELECTED=!OPD.IS_SELECTED">{{OPD.CUSTOMER_NAME}}</td>
+                                <td ng-click="OPD.IS_SELECTED=!OPD.IS_SELECTED">{{OPD.COMPANY}}</td>
+                                <td ng-click="OPD.IS_SELECTED=!OPD.IS_SELECTED">{{OPD.PAYMENT_METHOD_NAME}}</td>
+                                <td ng-click="OPD.IS_SELECTED=!OPD.IS_SELECTED">{{OPD.AMOUNT}}</td>
+                                <td ng-click="OPD.IS_SELECTED=!OPD.IS_SELECTED">{{OPD.REMAINING_AMOUNT}}</td>
+                                <td ng-click="OPD.IS_SELECTED=!OPD.IS_SELECTED">{{OPD.CHECK_NO}}</td>
+                                <td ng-click="OPD.IS_SELECTED=!OPD.IS_SELECTED">{{OPD.NOTE}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8" class="text-center table-footer-fixed" ng-show="GetData">
+                                    <a class="btn btn-secondary text-white" ng-click="LAZY_OPEN_ACC_CUST_DECLARATION();">{{VIEWMORERECORD}}</a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer d-inline text-left" ng-show="OPEN_ACC_CUST_DECLARATION.length>0">
+                <button type="button" class="btn btn-wenodo"  click-once ng-click="POP_CLICK_CREDIT_RECEIPTS()">Select</button>
+                <button type="button" class="btn btn-w-default" click-once  ng-click="RESET_CUSTOMER_SEARCH_RECEIVED_CREDITS()" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade show" id="Add_Customer">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Customer</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="CustomerForm" name="CustomerForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>Customer Name <span class="text-danger">*</span></label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="CUSTOMER_NAME"
+                                       maxlength="250"
+                                       required
+                                       ng-model="CustomerSearch.CUSTOMER_NAME"
+                                       ng-class="{'error':CustomerForm.submitted && CustomerForm.CUSTOMER_NAME.$error.required}" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email"
+                                       class="form-control"
+                                       name="EMAIL"
+                                       maxlength="250" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"                                    
+                                       ng-model="CustomerSearch.EMAIL" /> <!--   ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/"-->
+                                <small class="text-danger" ng-show="CustomerForm.EMAIL.$error.pattern">Please Enter Valid Email<br /></small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Contact #</label>
+                                <input type="text"
+                                       class="form-control"
+                                       maxlength="20"
+                                       name="PHONE"
+                                       ng-model="CustomerSearch.PHONE" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div data-ng-show="CustomerForm.submitted && CustomerForm.$invalid" class="form-group has-error errormessage badge badge-light-red w-100 p-3">
+                            <span class="help-block errormessageline"><i class="fa fa-exclamation-triangle"></i> - Please provide the mandatory details to submit(marked in red).</span>
+                        </div>
+                        <div id="divInvlidUser" class="hideshowdiv" data-ng-show="CustomerForm.$valid">
+                            <span class="help-block">{{InvalidUser}}</span>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer d-inline text-left">
+                <button type="button" class="btn btn-wenodo" click-once ng-click="INS_UPD_ACCOUNT_CUSTOMER_CUSTOMERS()">Save</button>
+                <button type="button" class="btn btn-w-default" click-once ng-click="RESET_CUSTOMER()">Reset</button>
+                <button type="button" class="btn btn-w-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+</script>

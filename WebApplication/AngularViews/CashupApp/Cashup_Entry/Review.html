@@ -1,0 +1,1064 @@
+﻿<div class="card cashup-entry-body">
+    <templateurl template-url="../AngularViews/CashupApp/Cashup_Entry/CashupEntryHeader.html" class="cashup_entry_header"></templateurl>
+
+    <div class="card-body pt-1 pb-0 cashup_entry_miniheader">
+        <div class="row gx-2 resSites cashup_entry_header_details">
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Site: <span class="f-w-700">{{SELECTED_SITE}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Area: <span class="f-w-700">{{SELECTED_AREA || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Session: <span class="f-w-700">{{SELECTED_SESSION || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Cashup Date: <span class="f-w-700">{{CASHUP_DATE| date:DISPLAY_DATE_FORMAT }}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <a class="btn btn-primary" href="../Cashup/CashupAppIndex#!/Cashup_Entry_Actual_Reviews">
+                    <i class="fa-light"></i>
+                    Review Actuals
+                </a>
+            </div>
+        </div>
+
+        <!--Review Tab Starts-->
+
+        <div class="card-header px-0 border-0 entry-table" ng-show="IS_APPROVER && CASHUP_BY_AREA">
+            <ul class="nav nav-tabs border-tab mb-0" id="bottom-tab" role="tablist">
+                <li class="nav-item" ng-repeat="AREA in AREA_LIST">
+                    <a class="nav-link nav-border tab-info" ng-class="{'active':ACTIVE_REVIEW_TAB_AREA_ID==AREA.AREA_ID}" ng-click="Fn_REVIEW_TAB_CLICK(AREA)"
+                       id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                        {{AREA.AREA_NAME}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-border tab-info" ng-class="{'active':ACTIVE_REVIEW_TAB_ALL_AREA==true}" ng-click="Fn_REVIEW_TAB_CLICK('all')"
+                       id="bottom-home-tab" data-bs-toggle="tab" role="tab" aria-controls="bottom-home" aria-selected="true">
+                        All Area
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body px-0" ng-repeat="AREA in AREA_LIST" ng-show="ACTIVE_REVIEW_TAB_AREA_ID==AREA.AREA_ID && CASHUP_BY_AREA && ACTIVE_REVIEW_TAB_ALL_AREA == false">
+            <span ng-show="false">{{AREA.AREA_INDEX= $index}}</span>
+            <!--<div class="row mb-3" ng-show="IS_APPROVER">
+                <div class="col-xxl-auto col-xl-auto col-md-auto" ng-repeat="SESSION in SESSION_LIST">
+                    <div class="form-check">
+                        <input class="radio_animated"
+                               id="session_{{SESSION.SESSION_NAME}}_area_{{AREA.AREA_NAME}}"
+                               type="radio"
+                               name="Session"
+                               ng-click="Fn_REVIEW_SESSION_CLICK(SESSION)">
+                        <label class="form-check-label mb-0" for="session_{{SESSION.SESSION_NAME}}_area_{{AREA.AREA_NAME}}">{{SESSION.SESSION_NAME}} </label>
+                    </div>
+                </div>
+            </div>-->
+
+            <div class="row mb-3" ng-show="IS_APPROVER">
+                <div class="col-xxl-auto col-xl-auto col-md-auto" ng-repeat="SESSION in SESSION_LIST">
+                    <div class="form-check">
+                        <input class="radio_animated"
+                               id="Session_Area_{{AREA.AREA_INDEX}}{{$index}}"
+                               type="radio" name="Session_Area_{{AREA.AREA_INDEX}}"
+                               ng-model="SELECTED_DATA.SESSION_MAPPING_ID"
+                               ng-value="SESSION.SESSION_MAPPING_ID"
+                               ng-click="Fn_REVIEW_SESSION_CLICK(SESSION)">
+                        <label class="form-check-label mb-0" for="Session_Area_{{AREA.AREA_INDEX}}{{$index}}">{{SESSION.SESSION_NAME}} </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive resCashupTable">
+                <table class="table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center text-nowrap" colspan="4" width="30">{{SELECTED_DATA.SESSION_NAME}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td class="text-end text-nowrap">ePOS</td>
+                            <td class="text-end text-nowrap">Actual</td>
+                            <td class="text-end text-nowrap">Variance</td>
+                        </tr>
+                        <tr>
+                            <td>Cash</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CASH.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CASH.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CASH.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cards</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CARDS.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CARDS.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CARDS.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CARDS.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Petty Cash</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.PETTY_CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.PETTY_CASH.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.PETTY_CASH.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.PETTY_CASH.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Delivery</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DELIVERY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DELIVERY.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DELIVERY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DELIVERY.ACTUAL | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Account Credit</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_CREDIT.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_CREDIT.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Voucher Redeemed</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_REDEEMED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_REDEEMED.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Deposit Redeemed</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_REDEEMED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_REDEEMED.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_REDEEMED.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Transitory</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.TRANSITORY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+
+                        </tr>
+                        <tr class="bg-gray">
+                            <td class="f-w-700">Total</td>
+                            <td class="text-end f-w-700 text-nowrap">{{CURRENT_CASHUP_HEADER.EPOS_TOTAL | number:2}}</td>
+                            <td class="text-end f-w-700 text-nowrap">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL | number:2}}</td>
+                            <td class="text-end f-w-700 text-nowrap">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL-CURRENT_CASHUP_HEADER.EPOS_TOTAL | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Account Received</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_RECEIVED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_RECEIVED.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_RECEIVED.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Voucher Issued</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_ISSUED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_ISSUED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_ISSUED.ACTUAL - CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_ISSUED.EPOS | number:2 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Deposit Received</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_RECEIVED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_RECEIVED.ACTUAL - CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_RECEIVED.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td class="f-w-700">Total Incl Receivables</td>
+                            <td class="text-end">{{CURRENT_CASHUP_HEADER.EPOS_TOTAL_RCV|number:2}}</td>
+                            <td class="text-end">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL_RCV|number:2}}</td>
+                            <td class="text-end">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL_RCV-CURRENT_CASHUP_HEADER.EPOS_TOTAL_RCV}}</td>
+                        </tr>
+                        <tr class="bg-gray">
+                            <td class="f-w-700">Total Revenue</td>
+                            <td class="text-end text-nowrap f-w-700">{{CURRENT_CASHUP_HEADER.EPOS_TOTAL+CURRENT_CASHUP_HEADER.EPOS_TOTAL_RCV | number:2}}</td>
+                            <td class="text-end text-nowrap f-w-700">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL+CURRENT_CASHUP_HEADER.ACTUAL_TOTAL_RCV|number:2}}</td>
+                            <td class="text-end text-nowrap f-w-700">{{(CURRENT_CASHUP_HEADER.ACTUAL_TOTAL+CURRENT_CASHUP_HEADER.ACTUAL_TOTAL_RCV)-(CURRENT_CASHUP_HEADER.EPOS_TOTAL+CURRENT_CASHUP_HEADER.EPOS_TOTAL_RCV)| number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Complimentary</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.COMPLIMENTARY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.COMPLIMENTARY.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.COMPLIMENTARY.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.COMPLIMENTARY.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Void</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOID.EPOS|number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOID.ACTUAL|number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOID.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOID.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Covers</td>
+                            <td class="text-end text-nowrap" colspan="3">-</td>
+                        </tr>
+                        <tr>
+                            <td>Spend</td>
+                            <td class="text-end text-nowrap" colspan="3">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive resCashupTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="20%">Revenue Type</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">Gross Amount</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">VAT</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">Disc.</th>
+                            <th class="text-end text-nowrap" width="20%">Net Amount</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in CURRENT_CASHUP_HEADER.REVENUE_OBJECT">
+                            <td>
+                                {{item.CATEGORY_NAME}}
+                            </td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_GROSS}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_VAT_TAX}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_DISC_CPN}}</td>
+                            <td class="text-end text-nowrap ">{{item.NET_TOTAL}}</td>
+                        </tr>
+                        <!--<tr>
+                            <td>Drinks</td>
+                            <td class="text-end text-nowrap text-nowrap">10,321.85</td>
+                            <td class="text-end text-nowrap text-nowrap">234.20</td>
+                            <td class="text-end text-nowrap text-nowrap">1,720.31</td>
+                            <td class="text-end text-nowrap">8,601.54</td>
+                        </tr>
+                        <tr>
+                            <td>Others</td>
+                            <td class="text-end text-nowrap text-nowrap">10,321.85</td>
+                            <td class="text-end text-nowrap text-nowrap">234.20</td>
+                            <td class="text-end text-nowrap text-nowrap">1,720.31</td>
+                            <td class="text-end text-nowrap">8,601.54</td>
+                        </tr>-->
+                        <tr>
+                            <td>Service Charge (Incl.)</td>
+
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.SERVICE_CHARGE | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>House Tips</td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.HOUSE_TIPS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cash Tips</td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASH_TIPS | number:2}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td class="text-end text-nowrap text-nowrap"> {{(CURRENT_CASHUP_HEADER.REVENUE_OBJECT | total:'TOTAL_GROSS')|number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{(CURRENT_CASHUP_HEADER.REVENUE_OBJECT | total:'TOTAL_VAT_TAX')|number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap f-w-700">{{(CURRENT_CASHUP_HEADER.REVENUE_OBJECT | total:'TOTAL_DISC_CPN')|number:2}}</td>
+                            <td class="text-end text-nowrap f-w-700">{{(((CURRENT_CASHUP_HEADER.REVENUE_OBJECT | total:'NET_TOTAL') + CURRENT_CASHUP_HEADER.SERVICE_CHARGE +CURRENT_CASHUP_HEADER.HOUSE_TIPS+CURRENT_CASHUP_HEADER.CASH_TIPS)|number:2)}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <hr />
+            <div class="row g-2">
+                <!--<div class="col-xxl-4 col-xl-4 col-xl-4 resCashupTable">
+                    <div class="card p-3">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-end text-nowrap">Actual</th>
+                                    <th class="text-end text-nowrap">ePOS</th>
+                                    <th class="text-end text-nowrap">Variance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="breakfast_row text-end text-nowrap">£ 1200</td>
+                                    <td class="breakfast_row text-end text-nowrap">£ 1200</td>
+                                    <td class="breakfast_row text-end text-nowrap">£ 1200</td>
+                                </tr>
+                                <tr>
+                                    <td class="lunch_row text-end text-nowrap">£ 1200</td>
+                                    <td class="lunch_row text-end text-nowrap">£ 1200</td>
+                                    <td class="lunch_row text-end text-nowrap">£ 1200</td>
+                                </tr>
+                                <tr>
+                                    <td class="dinner_row text-end text-nowrap">£ 1200</td>
+                                    <td class="dinner_row text-end text-nowrap">£ 1200</td>
+                                    <td class="dinner_row text-end text-nowrap">£ 1200</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="others_row text-end text-nowrap">£ 3600</td>
+                                    <td class="others_row text-end text-nowrap">£ 1200</td>
+                                    <td class="others_row text-end text-nowrap">£ 1200</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                           <div class="col-xxl col-xl col-md">
+                                <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-solid f-8 me-1 fa-circle txt-primary"></i> <span class="f-12">Breakfast</span></div>
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-solid f-8 me-1 fa-circle txt-success"></i> <span class="f-12">Lunch</span></div>
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-solid f-8 me-1 fa-circle txt-warning"></i> <span class="f-12">Dinner</span></div>
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <div class="row resText">
+                                    <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-solid f-8 me-1 fa-circle txt-gray"></i> <span class="f-12">Total</span></div>
+                                </div>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-xxl-8 col-xl-8 col-md-8">
+                    <div class="table-responsive resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap f-w-700" colspan="4">Petty Cash Details</th>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-nowrap text-center">Vendor</th>
+                                    <th class="text-nowrap text-center">Cost Category </th>
+                                    <th class="text-nowrap text-center">Goods</th>
+                                    <th class="text-nowrap text-end">Gross Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in PETTY_CASH_DECLARATION_LIST">
+                                    <td class="text-nowrap text-center">{{ROW.PAID_TO}}</td>
+                                    <td class="text-nowrap text-center">{{ROW.COST_CATEGORY_NAME}}</td>
+                                    <td class="text-nowrap text-center">{{ROW.ITEM}}</td>
+                                    <td class="text-nowrap text-end">{{ROW.TOTAL_VALUE}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray text-end">
+                                    <td colspan="4">Total: {{((PETTY_CASH_DECLARATION_LIST ) | total:'TOTAL_VALUE')| number:2}}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-2 resCashupHeader">
+                <div class="col-xxl-12 col-xl-12 col-md-12">
+                    <h6 class="headings">Notes</h6>
+                </div>
+                <div class="col-xxl-4 col-xl-4 col-md-4">
+                    <label>Title</label>
+                    <input type="text" placeholder="Add here" ng-model="REVIEW_TAB_NOTE_ENTRY.TITLE"
+                           ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                </div>
+
+                <div class="col-xxl-12 col-xl-12 col-md-12 resTextAreaCashup">
+                    <label>Description</label>
+                    <textarea placeholder="Add Notes..." ng-model="REVIEW_TAB_NOTE_ENTRY.NOTE"
+                              ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"></textarea>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                    <button click-once class="btn btn-primary m-0" ng-click="SAVE_NOTE()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                        Save
+                    </button>
+                </div>
+            </div>
+            <!-- NOTES SECTION ENDS-->
+            <!-- COMMENT SECTION STARTS-->
+            <div ng-repeat="note in REVIEW_TAB_NOTE_LIST" ng-init="note_init(note)">
+                <div class="textarea-bg mt-4 " ng-hide="note.isEdit">
+                    <div class="comment-elements resText">
+                        <span class="text_avatar">{{note.USER_NAME | limitTo:1}}</span>
+                        <span>{{note.USER_NAME}}</span>
+                        <span class="text-gray">{{NOTE_DATE}}</span>
+                        <span class="comment-pen-icon">
+                            <i class="fa-light fa-pen ms-1 c-pointer" ng-click="EDIT_NOTE(note)"></i>
+                            <i class="fa-light fa-trash-alt ms-1 c-pointer txt-danger" ng-click="DELETE_NOTE(note)"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-xl-auto col-md-auto empty-coloumn">
+                            <span>&nbsp;</span>
+                        </div>
+                        <div class="col-xxl col-xl col-md ">
+                            <span class="comment-title">{{note.TITLE}}</span>
+                            <textarea disabled class="bg-white p-0">{{note.NOTE}}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--All Area-->
+        <div class="card-body px-0" ng-show="ACTIVE_REVIEW_TAB_ALL_AREA == true || !CASHUP_BY_AREA">
+            <div class="table-responsive resCashupTable">
+                <table class="table-striped">
+                    <thead>
+                        <tr>
+                            <th width="10%"></th><!--width="15%"-->
+                            <th ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-center text-nowrap" ng-if="ALL_AREA_DATA.length>1"></th>
+                            <th ng-show="SESSION.SELECTED" class="text-center text-nowrap" ng-if="ALL_AREA_DATA.length>1"></th>
+                            <th ng-repeat-end class="text-center text-nowrap border-end" ng-if="ALL_AREA_DATA.length>1">{{SESSION.SESSION_NAME}} <a ng-click="TOGGLE_SESSION_VIEW(SESSION)" ng-if="ALL_AREA_DATA.length>1"><i class="fa-light ms-2 c-pointer" ng-class="{'fa-plus':SESSION.SELECTED==false,'fa-minus':SESSION.SELECTED==true}"></i></a></th>
+                            <th class="text-center text-nowrap" colspan="3">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">ePOS</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">Actual</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">Variance</td>
+                            <td class="text-end text-nowrap">ePOS</td>
+                            <td class="text-end text-nowrap">Actual</td>
+                            <td class="text-end text-nowrap">Variance</td>
+                        </tr>
+                        <tr>
+                            <td>Cash</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.CASH.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.CASH.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1" ng-class="{'text-danger': (SESSION.CASH.ACTUAL - SESSION.CASH.EPOS) < 0}">{{SESSION.CASH.ACTUAL - SESSION.CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CASH.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.CASH.ACTUAL - ALL_AREA_TOTALS.CASH.EPOS) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cards</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-if="ALL_AREA_DATA.length>1" ng-show="SESSION.SELECTED" class="text-end text-nowrap">{{SESSION.CARDS.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.CARDS.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.CARDS.ACTUAL - SESSION.CARDS.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CARDS.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CARDS.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.CARDS.ACTUAL - ALL_AREA_TOTALS.CARDS.EPOS) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Petty Cash</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-if="ALL_AREA_DATA.length>1" ng-show="SESSION.SELECTED" class="text-end text-nowrap">{{SESSION.PETTY_CASH.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" ng-if="ALL_AREA_DATA.length>1" class="text-end text-nowrap">{{SESSION.PETTY_CASH.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.PETTY_CASH.ACTUAL - SESSION.PETTY_CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.PETTY_CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.PETTY_CASH.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.PETTY_CASH.ACTUAL - ALL_AREA_TOTALS.PETTY_CASH.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Delivery</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DELIVERY.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DELIVERY.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DELIVERY.ACTUAL - SESSION.DELIVERY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DELIVERY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DELIVERY.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.DELIVERY.ACTUAL - ALL_AREA_TOTALS.DELIVERY.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Account Credit</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_CREDIT.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_CREDIT.ACTUAL - SESSION.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.ACCOUNT_CREDIT.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.ACCOUNT_CREDIT.ACTUAL - ALL_AREA_TOTALS.ACCOUNT_CREDIT.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Voucher Redeemed</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_REDEEMED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_REDEEMED.ACTUAL - SESSION.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOUCHER_REDEEMED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.VOUCHER_REDEEMED.ACTUAL - ALL_AREA_TOTALS.VOUCHER_REDEEMED.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Deposit Redeemed</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DEPOSIT_REDEEMED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DEPOSIT_REDEEMED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.DEPOSIT_REDEEMED.ACTUAL - SESSION.DEPOSIT_REDEEMED.EPOS) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DEPOSIT_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DEPOSIT_REDEEMED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.DEPOSIT_REDEEMED.ACTUAL - ALL_AREA_TOTALS.DEPOSIT_REDEEMED.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Transitory</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.TRANSITORY.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.TRANSITORY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                        </tr>
+
+                        <tr class="bg-gray">
+                            <td class="f-w-700">Total</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.EPOS_TOTAL | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACTUAL_TOTAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.ACTUAL_TOTAL - SESSION.EPOS_TOTAL)|number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_ACTUAL-ALL_AREA_TOTALS_EPOS | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Account Received</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_RECEIVED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACCOUNT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.ACCOUNT_RECEIVED.ACTUAL - SESSION.ACCOUNT_RECEIVED.EPOS) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.ACCOUNT_RECEIVED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.ACCOUNT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.ACCOUNT_RECEIVED.ACTUAL - ALL_AREA_TOTALS.ACCOUNT_RECEIVED.EPOS) | number:2}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Voucher Issued</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_ISSUED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOUCHER_ISSUED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.VOUCHER_ISSUED.ACTUAL - SESSION.VOUCHER_ISSUED.EPOS) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOUCHER_ISSUED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOUCHER_ISSUED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.VOUCHER_ISSUED.ACTUAL - ALL_AREA_TOTALS.VOUCHER_ISSUED.EPOS) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Deposit Received</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DEPOSIT_RECEIVED.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.DEPOSIT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.DEPOSIT_RECEIVED.ACTUAL - SESSION.DEPOSIT_RECEIVED.EPOS) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DEPOSIT_RECEIVED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.DEPOSIT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.DEPOSIT_RECEIVED.ACTUAL - ALL_AREA_TOTALS.DEPOSIT_RECEIVED.EPOS) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td class="f-w-700">Total Incl Receivables</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.EPOS_TOTAL_RCV | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.ACTUAL_TOTAL_RCV | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.ACTUAL_TOTAL_RCV - SESSION.EPOS_TOTAL_RCV)|number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_EPOS_RCV | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS_ACTUAL_RCV | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS_ACTUAL_RCV-ALL_AREA_TOTALS_EPOS_RCV )| number:2}}</td>
+                        </tr>
+
+                        <tr class="bg-gray">
+                            <td class="f-w-700">Total Revenue</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.EPOS_TOTAL + SESSION.EPOS_TOTAL_RCV) | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.ACTUAL_TOTAL + SESSION.ACTUAL_TOTAL_RCV) | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{((SESSION.ACTUAL_TOTAL + SESSION.ACTUAL_TOTAL_RCV) - (SESSION.EPOS_TOTAL + SESSION.EPOS_TOTAL_RCV))|number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS_EPOS + ALL_AREA_TOTALS_EPOS_RCV) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS_ACTUAL + ALL_AREA_TOTALS_ACTUAL_RCV) | number:2}}</td>
+                            <td class="text-end text-nowrap">{{((ALL_AREA_TOTALS_ACTUAL + ALL_AREA_TOTALS_ACTUAL_RCV)-(ALL_AREA_TOTALS_EPOS + ALL_AREA_TOTALS_EPOS_RCV)) | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Complimentary</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.COMPLIMENTARY.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.COMPLIMENTARY.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.COMPLIMENTARY.ACTUAL-SESSION.COMPLIMENTARY.EPOS)| number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.COMPLIMENTARY.EPOS}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.COMPLIMENTARY.ACTUAL}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.COMPLIMENTARY.ACTUAL-ALL_AREA_TOTALS.COMPLIMENTARY.EPOS)|number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Void</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOID.EPOS | number:2}}</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{SESSION.VOID.ACTUAL | number:2}}</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">{{(SESSION.VOID.ACTUAL-SESSION.VOID.EPOS)|number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOID.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.VOID.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{(ALL_AREA_TOTALS.VOID.ACTUAL-ALL_AREA_TOTALS.VOID.EPOS)|number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Covers</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                        </tr>
+                        <tr>
+                            <td>Spend</td>
+                            <td ng-repeat-start="SESSION in ALL_AREA_DATA" ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-show="SESSION.SELECTED" class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td ng-repeat-end class="text-end text-nowrap" ng-if="ALL_AREA_DATA.length>1">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                            <td class="text-end text-nowrap">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive resCashupTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="20%">Revenue Type</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">Gross Amount</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">VAT</th>
+                            <th class="text-end text-nowrap text-nowrap" width="20%">Disc.</th>
+                            <th class="text-end text-nowrap" width="20%">Net Amount</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in ALL_AREA_TOTALS.REVENUE">
+                            <td>{{item.CATEGORY_NAME}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_GROSS | number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_VAT_TAX | number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{item.TOTAL_DISC_CPN | number:2}}</td>
+                            <td class="text-end text-nowrap ">{{item.NET_TOTAL | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Service Charge (Incl.)</td>
+
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.SERVICE_CHARGE_TOTAL | number: 2}}</td>
+                        </tr>
+                        <tr>
+                            <td>House Tips</td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.HOUSE_TIPS_TOTAL | number: 2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cash Tips</td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap text-nowrap"></td>
+                            <td class="text-end text-nowrap">{{ALL_AREA_TOTALS.CASH_TIPS_TOTAL | number: 2}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td class="text-end text-nowrap text-nowrap">{{(ALL_AREA_TOTALS.REVENUE | total:'TOTAL_GROSS')|number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap">{{(ALL_AREA_TOTALS.REVENUE | total:'TOTAL_VAT_TAX')|number:2}}</td>
+                            <td class="text-end text-nowrap text-nowrap f-w-700">{{(ALL_AREA_TOTALS.REVENUE | total:'TOTAL_DISC_CPN')|number:2}}</td>
+                            <td class="text-end text-nowrap f-w-700">{{(((ALL_AREA_TOTALS.REVENUE | total:'NET_TOTAL') + ALL_AREA_TOTALS.SERVICE_CHARGE_TOTAL+ALL_AREA_TOTALS.HOUSE_TIPS_TOTAL+ALL_AREA_TOTALS.CASH_TIPS_TOTAL)|number:2)}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <hr />
+            <div class="row g-2">
+                <!--<div class="col-xxl-4 col-xl-4 col-xl-4 resCashupTable">
+                    <div class="card p-3">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-end text-nowrap">Actual</th>
+                                    <th class="text-end text-nowrap">ePOS</th>
+                                    <th class="text-end text-nowrap">Variance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="breakfast_row text-end text-nowrap">£ 1200</td>
+                                    <td class="breakfast_row text-end text-nowrap">£ 1200</td>
+                                    <td class="breakfast_row text-end text-nowrap">£ 1200</td>
+                                </tr>
+                                <tr>
+                                    <td class="lunch_row text-end text-nowrap">£ 1200</td>
+                                    <td class="lunch_row text-end text-nowrap">£ 1200</td>
+                                    <td class="lunch_row text-end text-nowrap">£ 1200</td>
+                                </tr>
+                                <tr>
+                                    <td class="dinner_row text-end text-nowrap">£ 1200</td>
+                                    <td class="dinner_row text-end text-nowrap">£ 1200</td>
+                                    <td class="dinner_row text-end text-nowrap">£ 1200</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="others_row text-end text-nowrap">£ 3600</td>
+                                    <td class="others_row text-end text-nowrap">£ 1200</td>
+                                    <td class="others_row text-end text-nowrap">£ 1200</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="row resText">
+                            <div class="col-xxl col-xl col-md">
+                                <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-solid f-8 me-1 fa-circle txt-primary"></i> <span class="f-12">Breakfast</span></div>
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-solid f-8 me-1 fa-circle txt-success"></i> <span class="f-12">Lunch</span></div>
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-solid f-8 me-1 fa-circle txt-warning"></i> <span class="f-12">Dinner</span></div>
+                            </div>
+                            <div class="col-xxl col-xl col-md">
+                                <div class="col-xxl-auto col-md-auto col-xl-auto"><i class="fa-solid f-8 me-1 fa-circle txt-gray"></i> <span class="f-12">Total</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-xxl-8 col-xl-8 col-md-8">
+                    <div class="table-responsive resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap f-w-700" colspan="4">Petty Cash Details</th>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-nowrap text-center">Vendor</th>
+                                    <th class="text-nowrap text-center">Cost Category </th>
+                                    <th class="text-nowrap text-center">Goods</th>
+                                    <th class="text-nowrap text-end">Gross Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in PETTY_CASH_DECLARATION_ALL_AREA_LIST">
+                                    <td class="text-nowrap text-center">{{ROW.VENDOR}}</td>
+                                    <td class="text-nowrap text-center">{{ROW.COST_CATEGORY_NAME}}</td>
+                                    <td class="text-nowrap text-center">{{ROW.GOODS}}</td>
+                                    <td class="text-nowrap text-end">{{ROW.GROSS_AMOUNT}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray text-end">
+                                    <td colspan="4">Total: {{(PETTY_CASH_DECLARATION_ALL_AREA_LIST | total:'GROSS_AMOUNT')|number:2}}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- NOTES SECTION STARTS
+            <!-- COMMENT SECTION STARTS-->
+            <div class="row g-2 resCashupHeader">
+                <div class="col-xxl-12 col-xl-12 col-md-12">
+                    <h6 class="headings">Notes</h6>
+                </div>
+                <div class="col-xxl-4 col-xl-4 col-md-4">
+                    <label>Title</label>
+                    <input type="text" placeholder="Add here"
+                           ng-model="REVIEW_TAB_NOTE_ENTRY.TITLE"
+                           ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"/>
+                </div>
+
+                <div class="col-xxl-12 col-xl-12 col-md-12 resTextAreaCashup">
+                    <label>Description</label>
+                    <textarea placeholder="Add Notes..."
+                              ng-model="REVIEW_TAB_NOTE_ENTRY.NOTE"
+                              ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"
+                              ></textarea>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                    <button click-once class="btn btn-primary m-0" ng-click="SAVE_NOTE(1)" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                        Save
+                    </button>
+                </div>
+
+            </div>
+
+            <div ng-repeat="note in REVIEW_ALL_TAB_NOTE_LIST" ng-init="note_init(note)">
+                <div class="textarea-bg mt-4 " ng-hide="note.isEdit">
+                    <div class="comment-elements resText">
+                        <span class="text_avatar">{{note.USER_NAME | limitTo:1}}</span>
+                        <span>{{note.USER_NAME}}</span>
+                        <span class="text-gray">{{NOTE_DATE}}</span>
+                        <span class="comment-pen-icon">
+                            <i class="fa-light fa-pen ms-1 c-pointer" ng-click="EDIT_NOTE(note)"></i>
+                            <i class="fa-light fa-trash-alt ms-1 c-pointer txt-danger" ng-click="DELETE_NOTE(note)"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-xl-auto col-md-auto empty-coloumn">
+                            <span>&nbsp;</span>
+                        </div>
+                        <div class="col-xxl col-xl col-md ">
+                            <span class="comment-title">{{note.TITLE}}</span>
+                            <textarea disabled class="bg-white p-0">{{note.NOTE}}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="card-body" ng-show="!CASHUP_BY_AREA">
+
+            <div class="row mb-3" ng-show="IS_APPROVER">
+                <div class="col-xxl-auto col-xl-auto col-md-auto" ng-repeat="SESSION in SESSION_LIST">
+                    <div class="form-check">
+                        <input class="radio_animated"
+                               id="Session_{{$index}}"
+                               type="radio" name="Session"
+                               ng-model="SELECTED_DATA.SESSION_MAPPING_ID"
+                               ng-value="SESSION.SESSION_MAPPING_ID"
+                               ng-click="Fn_REVIEW_SESSION_CLICK(SESSION)">
+                        <label class="form-check-label mb-0" for="Session_{{$index}}">{{SESSION.SESSION_NAME}} </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive resCashupTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center text-nowrap" colspan="4" width="30">{{SELECTED_DATA.SESSION_NAME}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td class="text-end text-nowrap">ePOS</td>
+                            <td class="text-end text-nowrap">Actual</td>
+                            <td class="text-end text-nowrap">Variance</td>
+                        </tr>
+                        <tr>
+                            <td>Cash</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CASH.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CASH.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CASH.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cards</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CARDS.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CARDS.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CARDS.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.CARDS.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Petty Cash</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.PETTY_CASH.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.PETTY_CASH.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.PETTY_CASH.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.PETTY_CASH.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Delivery</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DELIVERY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DELIVERY.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DELIVERY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DELIVERY.ACTUAL | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Account Credit</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_CREDIT.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_CREDIT.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_CREDIT.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Voucher Redeemed</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_REDEEMED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_REDEEMED.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_REDEEMED.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Deposit Redeemed</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_REDEEMED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_REDEEMED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_REDEEMED.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_REDEEMED.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Transitory</td>
+                            <td class="text-end text-nowrap">0</td>
+                            <td class="text-end text-nowrap">0</td>
+                            <td class="text-end text-nowrap">0</td>
+
+                        </tr>
+                        <tr class="bg-gray">
+                            <td class="f-w-700">Total</td>
+                            <td class="text-end f-w-700 text-nowrap">{{CURRENT_CASHUP_HEADER.EPOS_TOTAL | number:2}}</td>
+                            <td class="text-end f-w-700 text-nowrap">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL | number:2}}</td>
+                            <td class="text-end f-w-700 text-nowrap">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL-CURRENT_CASHUP_HEADER.EPOS_TOTAL | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Account Received</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_RECEIVED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_RECEIVED.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.ACCOUNT_RECEIVED.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Voucher Issued</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_ISSUED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_ISSUED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_ISSUED.ACTUAL - CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOUCHER_ISSUED.EPOS | number:2 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Deposit Received</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_RECEIVED.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_RECEIVED.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_RECEIVED.ACTUAL - CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.DEPOSIT_RECEIVED.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td class="f-w-700">Total Incl Receivables</td>
+                            <td class="text-end">{{CURRENT_CASHUP_HEADER.EPOS_TOTAL_RCV|number:2}}</td>
+                            <td class="text-end">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL_RCV|number:2}}</td>
+                            <td class="text-end">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL_RCV-CURRENT_CASHUP_HEADER.EPOS_TOTAL_RCV}}</td>
+                        </tr>
+                        <tr class="bg-gray">
+                            <td class="f-w-700">Total Revenue</td>
+                            <td class="text-end text-nowrap f-w-700">{{CURRENT_CASHUP_HEADER.EPOS_TOTAL+CURRENT_CASHUP_HEADER.EPOS_TOTAL_RCV | number:2}}</td>
+                            <td class="text-end text-nowrap f-w-700">{{CURRENT_CASHUP_HEADER.ACTUAL_TOTAL+CURRENT_CASHUP_HEADER.ACTUAL_TOTAL_RCV|number:2}}</td>
+                            <td class="text-end text-nowrap f-w-700">{{(CURRENT_CASHUP_HEADER.ACTUAL_TOTAL+CURRENT_CASHUP_HEADER.ACTUAL_TOTAL_RCV)-(CURRENT_CASHUP_HEADER.EPOS_TOTAL+CURRENT_CASHUP_HEADER.EPOS_TOTAL_RCV)| number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Complimentary</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.COMPLIMENTARY.EPOS | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.COMPLIMENTARY.ACTUAL | number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.COMPLIMENTARY.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.COMPLIMENTARY.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Void</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOID.EPOS|number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOID.ACTUAL|number:2}}</td>
+                            <td class="text-end text-nowrap">{{CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOID.ACTUAL-CURRENT_CASHUP_HEADER.CASHUP_HEADER_VALUES.VOID.EPOS | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Covers</td>
+                            <td class="text-end text-nowrap" colspan="3">0</td>
+                        </tr>
+                        <tr>
+                            <td>Spend</td>
+                            <td class="text-end text-nowrap" colspan="3">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr />
+            <div class="row g-2">
+                <div class="col-xxl-8 col-xl-8 col-md-8">
+                    <div class="table-responsive resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap f-w-700" colspan="4">Petty Cash Details</th>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-nowrap text-center">Vendor</th>
+                                    <th class="text-nowrap text-center">Cost Category </th>
+                                    <th class="text-nowrap text-center">Goods</th>
+                                    <th class="text-nowrap text-end">Gross Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in PETTY_CASH_DECLARATION_LIST">
+                                    <td class="text-nowrap text-center">{{ROW.PAID_TO}}</td>
+                                    <td class="text-nowrap text-center">{{ROW.COST_CATEGORY_NAME}}</td>
+                                    <td class="text-nowrap text-center">{{ROW.ITEM}}</td>
+                                    <td class="text-nowrap text-end">{{ROW.TOTAL_VALUE}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray text-end">
+                                    <td colspan="4">Total: {{((PETTY_CASH_DECLARATION_LIST ) | total:'TOTAL_VALUE')| number:2}}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-2 mb-3 resCashupHeader">
+                <div class="col-xxl-12 col-xl-12 col-md-12">
+                    <h6 class="headings">Notes</h6>
+                </div>
+                <div class="col-xxl-4 col-xl-4 col-md-4">
+                    <label>Title</label>
+                    <input type="text" placeholder="Add here" ng-model="REVIEW_TAB_NOTE_ENTRY.TITLE" />
+                </div>
+
+                <div class="col-xxl-12 col-xl-12 col-md-12 resTextAreaCashup">
+                    <label>Description</label>
+                    <textarea placeholder="Add Notes..." ng-model="REVIEW_TAB_NOTE_ENTRY.NOTE"></textarea>
+                </div>
+                <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                    <button class="btn btn-primary m-0" ng-click="SAVE_NOTE()">
+                        Save
+                    </button>
+                </div>
+            </div>
+            <div ng-repeat="note in REVIEW_TAB_NOTE_LIST" ng-init="note_init(note)">
+                <div class="textarea-bg mt-4 " ng-hide="note.isEdit">
+                    <div class="comment-elements resText">
+                        <span class="text_avatar">{{note.USER_NAME | limitTo:1}}</span>
+                        <span>{{note.USER_NAME}}</span>
+                        <span class="text-gray">{{NOTE_DATE}}</span>
+                        <span class="comment-pen-icon">
+                            <i class="fa-light fa-pen ms-1 c-pointer" ng-click="EDIT_NOTE(note)"></i>
+                            <i class="fa-light fa-trash-alt ms-1 c-pointer txt-danger" ng-click="DELETE_NOTE(note)"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-xl-auto col-md-auto empty-coloumn">
+                            <span>&nbsp;</span>
+                        </div>
+                        <div class="col-xxl col-xl col-md ">
+                            <span class="comment-title">{{note.TITLE}}</span>
+                            <textarea disabled class="bg-white p-0">{{note.NOTE}}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+    
+    <div class="sticky_bottom_navigator">
+        <div class="card">
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once class="btn btn-light" ng-click="Fn_Cashup_entry_TAB_CLICK(TAB_ID,0)">Previous</button>
+                        <button click-once class="btn btn-primary" ng-show="CASHUP_ENTRY_SEARCH.IS_SUBMIT_BUTTON && (CURRENT_CASHUP_HEADER.STATUS==0 || CURRENT_CASHUP_HEADER.STATUS==1 || CURRENT_CASHUP_HEADER.STATUS == 2 || CURRENT_CASHUP_HEADER.STATUS==5)" ng-click="UPD_CASHUP_REVIEW_STATUS(3)">Submit</button>
+                        <button click-once class="btn btn-light" ng-show="IS_APPROVER && CHECK_ELIGIBILITY()" data-bs-toggle="modal" data-bs-target="#rejection">Return</button>
+                        <button click-once class="btn btn-primary" ng-show="IS_APPROVER && CHECK_ELIGIBILITY()" ng-click="UPD_CASHUP_REVIEW_STATUS(4)">Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="rejection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="table_heading">Reject</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="REJECTION_COMMENT=null"></button>
+            </div>
+            
+            <!--<div class="row align-items-center ">
+                <div class="col-auto txt-primary">
+                    <i class="fa fa-exclamation-triangle text-danger"></i>
+                </div>
+                <div class="col">
+                    <p class="txt-primary">Covers was last updated on 6th June at 17:00</p>
+                </div>
+            </div>-->
+            <form name="RejectionForm" autocomplete="off" novalidate>
+                <div class="modal-body resTextAreaCashup">
+                    <textarea placeholder="Add Notes ..." rows="5" class="mb-0"                              
+                              ng-model="REJECTION_COMMENT"
+                              name="REJECTION_COMMENT"
+                              required
+                              ng-class="{'error':RejectionForm.submitted && RejectionForm.REJECTION_COMMENT.$error.required}"></textarea>
+                </div>
+
+                <div class="modal-footer text-end">
+                    <button class="btn btn-light" data-bs-toggle="modal" data-bs-dismiss="modal" ng-click="REJECTION_COMMENT=null">Cancel</button>
+                    <button class="btn btn-primary" click-once ng-click="UPD_CASHUP_REVIEW_STATUS(5)">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

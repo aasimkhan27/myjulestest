@@ -1,0 +1,698 @@
+﻿<div class="card">
+    <templateurl template-url="../AngularViews/CashupApp/Cashup_Entry/CashupEntryHeader.html" class="cashup_entry_header"></templateurl>
+
+    <div class="card-body pt-1 cashup-entry-body">
+        <div class="row gx-2 resSites cashup_entry_header_details">
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Site: <span class="f-w-700">{{SELECTED_SITE}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Area: <span class="f-w-700">{{SELECTED_AREA || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info">
+                    Session: <span class="f-w-700">{{SELECTED_SESSION || 'ALL'}}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Cashup Date: <span class="f-w-700">{{CASHUP_DATE| date:DISPLAY_DATE_FORMAT }}</span>
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Actual : {{CASHUP_INFO.ACTUAL = VOUCHER_ISSUED_TOTAL | number:2 }}
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    ePOS : {{CASHUP_INFO.EPOS|number:2}}
+                </span>
+            </div>
+            <div class="col-xxl-auto col-xl-auto col-md-auto">
+                <span class="badge_cashup_info text-nowrap">
+                    Variance : <span class="txt-danger" ng-if="(VOUCHER_ISSUED_TOTAL-CASHUP_INFO.EPOS) < 0">
+                        <i class="fa-light fa-arrow-down-right txt-danger"></i>
+                        {{(VOUCHER_ISSUED_TOTAL-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+
+                    <span class="txt-success" ng-if="(CASHUP_INFO.ACTUAL-CASHUP_INFO.EPOS) > 0">
+                        <i class="fa-light fa-arrow-up-right txt-success"></i>
+                        {{(VOUCHER_ISSUED_TOTAL-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+                    <span class="txt-success" ng-if="(CASHUP_INFO.ACTUAL-CASHUP_INFO.EPOS) == 0">
+                        <i class="fa-light"></i>
+                        {{(VOUCHER_ISSUED_TOTAL-CASHUP_INFO.EPOS) | number:2}}
+                    </span>
+                </span>
+            </div>
+        </div>
+        <form name="VouchersEntryForm" autocomplete="off" novalidate>
+            <div class="row">
+                <div class="col-xxl-12 col-xl-12 col-md-12 mt-2">
+                    <h5 class="headings mb-3">Vouchers Issued</h5>
+                    <div class="table-responsive scrollbar-wrapper mx-height-100 resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-center text-nowrap" width="10%">
+                                        Voucher Type
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-center text-nowrap" width="10%">
+                                        Voucher Number
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-center text-nowrap" width="10%">
+                                        Invoice Number
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-center text-nowrap" width="10%">Sold To</th>
+                                    <th class="text-center text-nowrap" width="10%">
+                                        Validity
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-center text-nowrap" width="10%">
+                                        Payment Method
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-end text-nowrap" width="10%">
+                                        Amount
+                                        <span class="txt-danger">*</span>
+                                    </th>
+                                    <th class="text-center text-nowrap" width="10%">Note</th>
+                                    <th class="text-center text-nowrap" width="10%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in VOUCHERS_ENTRY_LIST" ng-init="nginit_voucher_issued(ROW)" ng-if="ROW.ENTRY_TYPE_DETAIL_ID==null">
+                                    <td>
+                                        <!--<div class="dropdown">
+                                        <input type="hidden"
+                                               ng-model="ROW.SELECTED_VOUCHER_TYPE"
+                                               name="VOUCHER_TYPE_{{$index}}"
+                                               required
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.VOUCHER_TYPE_{{$index}}.$error.required}" />
+                                        <div class="dropdown w-100" aria-labelledby="VoucherTypeDDL">
+                                            <button class="select-label"
+                                                    type="button"
+                                                    id="VoucherTypeDDL"
+                                                    ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.VOUCHER_TYPE_{{$index}}.$error.required}"
+                                                    data-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                    ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                                <span class="truncate">{{ROW.SELECTED_VOUCHER_TYPE||'Select'}}</span>
+                                            </button>
+                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                                <li ng-click="SELECT_VOUCHER_TYPE(ROW,'Pre-defined')">
+                                                    Pre-defined
+                                                </li>
+                                                <li ng-click="SELECT_VOUCHER_TYPE(ROW,'Open Voucher')">
+                                                    Open Voucher
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>-->
+
+                                        <ul class="nav nav-pills">
+                                            <li class="dropdown w-100">
+                                                <input type="hidden"
+                                                       ng-model="ROW.SELECTED_VOUCHER_TYPE"
+                                                       name="VOUCHER_TYPE_{{$index}}"
+                                                       required
+                                                       ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.VOUCHER_TYPE_{{$index}}.$error.required}" />
+                                                <a class="text-limitations cursor-pointer"
+                                                   data-toggle="dropdown"
+                                                   ng-class="{'disabled':ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}">
+                                                    <span class="select-label" id="select_label" ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.VOUCHER_TYPE_{{$index}}.$error.required}">
+                                                        {{ROW.SELECTED_VOUCHER_TYPE||'Select'}}
+                                                    </span>
+                                                </a>
+                                                <ul ID="divNewNotifications" class="dropdown-menu unique-dropdown-list scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li class="unique-dropdown-content" ng-click="SELECT_VOUCHER_TYPE(ROW,'Pre-defined')">
+                                                        Pre-defined
+                                                    </li>
+                                                    <li class="unique-dropdown-content" ng-click="SELECT_VOUCHER_TYPE(ROW,'Open Voucher')">
+                                                        Open Voucher
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills min-w-120 mb-0" ng-show="ROW.ShowInput==false">
+                                            <li class="dropdown w-100">
+                                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                                    <span class="select-label personColor" id="select_label" ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.VOUCHER_NO_Issued{{$index}}.$error.required}">
+                                                        Select
+                                                    </span>
+                                                </a>
+                                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li>
+
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <input type="text" placeholder="Add Here"
+                                               class="mb-0 min-w-80" ng-show="ROW.ShowInput==true"
+                                               ng-model="ROW.VOUCHER_NUMBER"
+                                               ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"
+                                               name="VOUCHER_NO_Issued{{$index}}"
+                                               required
+                                               ng-blur="UPLOAD_VOUCHER_CHECK(ROW)"
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.VOUCHER_NO_Issued{{$index}}.$error.required}" />
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                               placeholder="Add Here"
+                                               class="mb-0 min-w-80"
+                                               ng-model="ROW.VOUCHER_INVOICE_NUMBER"
+                                               ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"
+                                               name="INVOICE_NO_Issued_{{$index}}"
+                                               required
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.INVOICE_NO_Issued_{{$index}}.$error.required}" />
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Add Here" class="mb-0 min-w-80" ng-model="ROW.SOLD_TO" ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                    </td>
+                                    <td>
+                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                            <div class="date-column" ng-init="dateinputddmmyy()">
+                                                <input type="text"
+                                                       class="dateinputddmmyy mb-0 min-w-120"
+                                                       placeholder="DD/MM/YY"
+                                                       name="VALIDITY_DATE_Issued_{{$index}}"
+                                                       ng-model="ROW.VALIDITY_DATE"
+                                                       required ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"
+                                                       ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.VALIDITY_DATE_Issued_{{$index}}.$error.required}" />
+                                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills">
+                                            <li class="dropdown w-100">
+                                                <input type="hidden"
+                                                       ng-model="ROW.SELECTED_MODE_OF_PAYMENT_NAME"
+                                                       name="PAYMENT_MODE_Issued_{{$index}}"
+                                                       required
+                                                       ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.PAYMENT_MODE_Issued_{{$index}}.$error.required}" />
+                                                <a class="text-limitations cursor-pointer"
+                                                   data-toggle="dropdown"
+                                                   ng-class="{'disabled':ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}">
+                                                    <span class="select-label" id="select_label" ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.PAYMENT_MODE_Issued_{{$index}}.$error.required}">
+                                                        <span class="truncate">{{ROW.SELECTED_MODE_OF_PAYMENT_NAME || 'Add'}}</span>
+                                                    </span>
+                                                </a>
+                                                <ul ID="divNewNotifications" class="dropdown-menu unique-dropdown-list scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li class="unique-dropdown-content" ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-show="_mode_of_payment.ACTIVE==true" ng-click="SELECT_MODE_OF_PAYMENT(ROW,_mode_of_payment)">
+                                                        <span class="truncate">{{_mode_of_payment.METHOD_NAME}}</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                        <!--<div class="dropdown">
+                                        <input type="hidden"
+                                               ng-model="ROW.SELECTED_MODE_OF_PAYMENT_NAME"
+                                               name="PAYMENT_MODE_Issued_{{$index}}"
+                                               required
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.PAYMENT_MODE_Issued_{{$index}}.$error.required}" />
+                                        <div class="dropdown w-100" aria-labelledby="modeOfPaymentDDL">
+                                            <button class="select-label"
+                                                    type="button"
+                                                    id="modeOfPaymentDDL"
+                                                    ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.PAYMENT_MODE_Issued_{{$index}}.$error.required}"
+                                                    data-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                    ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">
+                                                <span class="truncate">{{ROW.SELECTED_MODE_OF_PAYMENT_NAME || 'Add'}}</span>
+                                            </button>
+                                            <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                                <li ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-show="_mode_of_payment.ACTIVE==true" ng-click="SELECT_MODE_OF_PAYMENT(ROW,_mode_of_payment)">
+                                                    {{_mode_of_payment.METHOD_NAME}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>-->
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Add Here" class="mb-0 min-w-80 text-end" 
+                                               ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" 
+                                               only-digits ng-model="ROW.AMOUNT" ng-change="CALCULATE_TOTAL(ROW)"
+                                               required
+                                               name="AMOUNT_ISSUED_{{$index}}"
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.AMOUNT_ISSUED_{{$index}}.$error.required}"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Add Here" class="mb-0 min-w-80" ng-model="ROW.NOTE" ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                    </td>
+                                    <td class="text-center">
+                                        <button click-once type="button" class="btn btn-transparent c-pointer" ng-disabled="ROW.RESTRICT_DELETE==1 || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" ng-click="DELETE_ROW(ROW)"><i class="fa-light fa-trash-can txt-danger"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray">
+                                    <td class="text-center">Total</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-end">{{VOUCHER_ISSUED_TOTAL | number:2}}</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <button click-once type="button" class="btn btn-outline w-100" ng-click="ADD_NEW_ROW_ENTRY()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"><i class="fa-light fa-plus me-1"></i> Add New Row</button>
+                        </div>
+
+                    </div>
+                    <hr />
+                    <div class="row g-1 mt-1 align-items-center resBadgeCashup">
+                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                            <h5 class="headings pt-3 pe-2"> Vouchers Redeemed </h5>
+                        </div>
+                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                            <button click-once class="btn btn-primary text-nowrap" type="button" data-bs-target="#redeem_voucher" data-bs-toggle="modal" ng-click="GET_OPEN_VOUCHER_DETAILS()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"> Redeem Vouchers</button>
+                        </div>
+                        <div class="col-xxl-auto col-xl-auto col-md-auto ms-auto">
+                            <span class="badge_cashup_info text-nowrap">
+                                Actual : {{(VOUCHER_REDEEMED_CASHUP_INFO.ACTUAL = VOUCHER_REDEEMED_TOTAL) | number:2 }}
+                            </span>
+                        </div>
+                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                            <span class="badge_cashup_info text-nowrap">
+                                ePOS : {{VOUCHER_REDEEMED_CASHUP_INFO.EPOS | number:2}}
+                            </span>
+                        </div>
+                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                            <span class="badge_cashup_info text-nowrap">
+                                Variance : <span class="txt-danger" ng-if="(VOUCHER_ISSUED_TOTAL-CASHUP_INFO.EPOS) < 0">
+                                    <i class="fa-light fa-arrow-down-right txt-danger"></i>
+                                    {{(VOUCHER_REDEEMED_TOTAL-VOUCHER_REDEEMED_CASHUP_INFO.EPOS) | number:2}}
+                                </span>
+                                <span ng-if="(CASHUP_INFO.ACTUAL-CASHUP_INFO.EPOS) == 0" class="txt-success">
+                                    <i class="fa-light"></i>
+                                    {{(VOUCHER_REDEEMED_TOTAL-VOUCHER_REDEEMED_CASHUP_INFO.EPOS) | number:2}}
+                                </span>
+                                <span class="txt-success" ng-if="(CASHUP_INFO.ACTUAL-CASHUP_INFO.EPOS) > 0">
+                                    <i class="fa-light fa-arrow-up-right txt-success"></i>
+                                    {{(VOUCHER_REDEEMED_TOTAL-VOUCHER_REDEEMED_CASHUP_INFO.EPOS) | number:2}}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="table-responsive scrollbar-wrapper mx-height-100 resCashupTable">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap text-center" width="9%">Invoice Number <span class="text-danger">*</span></th>
+                                    <th class="text-nowrap text-center" width="9%">Voucher Number <span class="text-danger">*</span></th>
+                                    <th class="text-nowrap text-center" width="9%">Sold to </th>
+                                    <th class="text-nowrap text-center" width="12%">Validity</th>
+                                    <th class="text-nowrap text-end" width="9%">Amount <span class="text-danger">*</span></th>
+                                    <th class="text-nowrap text-end" width="9%">Redeemed Amount</th>
+                                    <th class="text-nowrap text-center" width="9%">Payment Method <span class="text-danger">*</span></th>
+                                    <th class="text-nowrap text-center" width="9%">Redeemed By <span class="text-danger">*</span></th>
+                                    <th class="text-nowrap text-center" width="9%">Note</th>
+                                    <th class="text-nowrap text-center" width="7%"> Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ROW in VOUCHERS_ENTRY_LIST" ng-init="nginit_voucher_redeemed(ROW)" ng-if="ROW.ENTRY_TYPE_DETAIL_ID!=null">
+                                    <td><input type="text" class="mb-0 min-w-80" 
+                                               ng-disabled="!(ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0)" 
+                                               placeholder="Invoice Number" 
+                                               ng-model="ROW.VOUCHER_INVOICE_NUMBER" 
+                                               ng-required="ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0"
+                                               name="REDEEMED_INVOICE_NUMBER_{{$index}}"
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.REDEEMED_INVOICE_NUMBER_{{$index}}.$error.required}"/></td>
+                                    <td><input type="text" 
+                                               class="mb-0 min-w-80" 
+                                               ng-disabled="!(ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0)" 
+                                               placeholder="Voucher Number" 
+                                               id="upload-voucher-check"
+                                               ng-model="ROW.VOUCHER_NUMBER" 
+                                               ng-required="ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0"
+                                               ng-blur="ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0 && UPLOAD_VOUCHER_CHECK(ROW)"
+                                               name="REDEEMED_VOUCHER_NUMBER_{{$index}}"
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.REDEEMED_VOUCHER_NUMBER_{{$index}}.$error.required}"/></td>
+                                    <td><input type="text" class="mb-0 min-w-80" 
+                                               ng-disabled="!(ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0)" 
+                                               placeholder="Sold to" 
+                                               ng-model="ROW.SOLD_TO" 
+                                               ng-required="ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0"
+                                               name="REDEEMED_SOLD_TO_{{$index}}"
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.REDEEMED_SOLD_TO_{{$index}}.$error.required}"/></td>
+                                    <td>
+                                        <div class="col-xxl-auto col-xl-auto col-md-auto">
+                                            <div class="date-column" ng-init="dateinputddmmyy()">
+                                                <input type="text"
+                                                       class="dateinputddmmyy mb-0 min-w-120"
+                                                       placeholder="DD/MM/YY"
+                                                       ng-model="ROW.VALIDITY_DATE"
+                                                       ng-disabled="!(ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0)" 
+                                                       ng-required="ROW.ID==0 && ROW.ENTRY_TYPE_DETAIL_ID ==0"
+                                                       name="REDEEMED_VALIDITY_DATE_{{$index}}"
+                                                       ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.REDEEMED_VALIDITY_DATE_{{$index}}.$error.required}"/>
+                                                <i class="date-icon fa-light fa-calendar" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="mb-0 text-end min-w-80" disabled placeholder="0.00" ng-model="ROW.TOTAL_AMT" /></td>
+                                    <td>
+                                        <input type="text" class="mb-0 text-end min-w-80"
+                                               ng-disabled="(ROW.ID!=0 && ROW.ID!=null) || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" only-digits placeholder="0.00"
+                                               ng-model="ROW.AMOUNT" ng-change="CALCULATE_TOTAL(ROW)"
+                                               required
+                                               name="REDEEMED_AMT_{{$index}}"
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.REDEEMED_AMT_{{$index}}.$error.required}" />
+                                    </td>
+                                    <td>
+                                        <ul class="nav nav-pills">
+                                            <li class="dropdown w-100">
+                                                <input type="hidden"
+                                                       ng-model="ROW.SELECTED_MODE_OF_PAYMENT_NAME"
+                                                       name="PAYMENT_MODE_Redeemed_{{$index}}"
+                                                       required
+                                                       ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.PAYMENT_MODE_Redeemed_{{$index}}.$error.required}" />
+                                                <a class="text-limitations cursor-pointer"
+                                                   data-toggle="dropdown"
+                                                   ng-class="{'disabled':(ROW.ID!=0 && ROW.ID!=null) || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED}">
+                                                    <span class="select-label text-truncate" id="select_label" ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.PAYMENT_MODE_Redeemed_{{$index}}.$error.required}">
+                                                        {{ROW.SELECTED_MODE_OF_PAYMENT_NAME || 'Add'}}
+                                                    </span>
+                                                </a>
+                                                <ul ID="divNewNotifications" class="dropdown-menu unique-dropdown-list scrollbar-wrapper w-auto" style="min-width:100%">
+                                                    <li class="unique-dropdown-content" ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-show="_mode_of_payment.ACTIVE==true" ng-click="SELECT_MODE_OF_PAYMENT(ROW,_mode_of_payment)">
+                                                        {{_mode_of_payment.METHOD_NAME}}
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                               class="mb-0 min-w-80"
+                                               placeholder="Add here"
+                                               ng-model="ROW.REDEEMED_BY"
+                                               required
+                                               name="REDEEMED_BY_{{$index}}"
+                                               ng-class="{'error':VouchersEntryForm.submitted && VouchersEntryForm.REDEEMED_BY_{{$index}}.$error.required}"
+                                               ng-disabled="(ROW.ID!=0 && ROW.ID!=null) || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" />
+                                    </td>
+
+                                    <td><input type="text" class="mb-0 min-w-80" placeholder="Add here" ng-model="ROW.NOTE" ng-disabled="(ROW.ID!=0 && ROW.ID!=null) || !CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" /></td>
+
+                                    <td class="text-center"><button click-once type="button" class="btn btn-transparent" ng-click="DELETE_ROW(ROW)" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"><i class="fa-light fa-trash-can txt-danger"></i></button></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-gray">
+                                    <td class="text-center">Total</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-end"></td>
+                                    <td class="text-end">{{VOUCHER_REDEEMED_TOTAL | number:2}}</td>
+                                    <td class="text-end"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="col-xxl-12 col-xl-12 col-md-12">
+                            <button click-once type="button" class="btn btn-outline w-100" ng-click="ADD_NEW_ROW_ENTRY_DIRECT_REDEEM()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"><i class="fa-light fa-plus me-1"></i> Add New Row</button>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <h6 class="headings">Comments</h6>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 resTextAreaCashup">
+                        <textarea rows="4" placeholder="Add Comments..." ng-model="CASHUP_ENTRY_NOTE" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED"></textarea>
+                    </div>
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once type="button" class="btn btn-primary" ng-click="INS_UPD_CASHUP_HEADER_NOTES()" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED">Comment</button>
+                    </div>
+                </div>
+                <div class="textarea-bg resText" ng-repeat="COM in VOUCHERS_TAB_NOTE_LIST" ng-init="NOTE_INIT(COM)">
+                    <div class="comment-elements">
+                        <span class="text_avatar">{{COM.USER_NAME | limitTo:1}}</span>
+                        <span>{{COM.USER_NAME}}</span>
+                        <span class="text-gray">{{COM.CREATED_DATE | date:'dd-MMM-yyyy hh:mm a'}}</span>
+                        <span class="comment-pen-icon">
+                            <i class="fa-light fa-pen ms-1 c-pointer" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && EDIT_COMMENT(COM)"></i>
+                            <i class="fa-light fa-trash-alt ms-1 c-pointer txt-danger" ng-show="!COM.isEditable" ng-click="CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED && DELETE_COMMENT(COM)"></i>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xxl-auto col-xl-auto col-md-auto empty-coloumn">
+                            <span>&nbsp;</span>
+                        </div>
+                        <div class="col-xxl col-xl col-md resTextAreaCashup">
+                            <textarea ng-readonly="!COM.isEditable"
+                                      ng-model="COM.NOTE"
+                                      ng-class="{'bg-white':COM.isEditable==true,'bg-gray':COM.isEditable==false}"
+                                      ng-blur="INS_UPD_CASHUP_HEADER_NOTES(COM)">{{COM.NOTE}}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+
+    <div class="sticky_bottom_navigator">
+        <div class="card">
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-md-12 text-end">
+                        <button click-once type="button" class="btn btn-light" ng-click="PREVIOUS()">Previous</button>
+                        <button click-once type="button" class="btn btn-light" ng-disabled="!CASHUP_ENTRY_SEARCH.IS_DATA_ENTRY_ENABLED" ng-click="INS_ENTRY_VOUCHER_DECLARATION(0)">Save</button>
+                        <button click-once type="button" class="btn btn-primary" ng-click="CONTINUE()">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="proceed" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-toggle-wrapper">
+                    <div class="d-flex justify-content-center">
+                        <div class="tickIcon_danger">
+                            <div class="badge text-bg-danger-modal">
+                                <i class="fa-solid fa-exclamation fa-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="modal_infoText">
+                        There is a Variance in Vouchers Issued and Vouchers Redeemed of {{CURRENCY_SYMBOL}} {{(CASHUP_INFO.ACTUAL-CASHUP_INFO.EPOS) | number:2}} and {{CURRENCY_SYMBOL}} {{(VOUCHER_REDEEMED_TOTAL-VOUCHER_REDEEMED_CASHUP_INFO.EPOS) | number:2}} respectively, do you still
+                        want to proceed?
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <div class="row w-100">
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button class="btn btn-light w-100" type="button" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 col-md-6">
+                        <button click-once class="btn btn-primary w-100" type="button" data-bs-dismiss="modal" ng-click="INS_ENTRY_VOUCHER_DECLARATION(1)">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="redeem_voucher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Redeem Vouchers</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ng-click="RESET_OPEN_VOUCHER()"></button>
+            </div>
+            <div class="modal-body resCashupHeader">
+                <div class="row g-2">
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Voucher Type</label>
+                        <ul class="nav nav-pills min-w-120 mb-0">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        {{OPEN_VOUCHER_DETAILS_SEARCH.VOUCHER_TYPE||'Select'}}
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li ng-click="SELECT_OPEN_VOUCHER_TYPE_SEARCH('Pre-defined')">
+                                        Pre-defined
+                                    </li>
+                                    <li ng-click="SELECT_OPEN_VOUCHER_TYPE_SEARCH('Open Voucher')">
+                                        Open Voucher
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Payment Method</label>
+                        <ul class="nav nav-pills min-w-120 mb-0">
+                            <li class="dropdown w-100">
+                                <a class="text-limitations cursor-pointer" data-toggle="dropdown">
+                                    <span class="select-label personColor" id="select_label">
+                                        {{OPEN_VOUCHER_DETAILS_SEARCH.PAYMENT_MODE_NAME || 'Add'}}
+                                    </span>
+                                </a>
+                                <ul id="divNewNotifications" class="dropdown-menu scrollbar-wrapper w-auto" style="min-width:100%">
+                                    <li ng-click="RESET_MODE_OF_PAYMENT_OPEN_VOUCHER_SEARCH()">
+                                        Select
+                                    </li>
+                                    <li ng-repeat="_mode_of_payment in MODE_OF_PAYMENT_LIST" ng-click="SELECT_MODE_OF_PAYMENT_OPEN_VOUCHER_SEARCH(_mode_of_payment)">
+                                        {{_mode_of_payment.METHOD_NAME}}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Invoice Number</label>
+                        <input type="text" placeholder="Invoice Number" ng-model="OPEN_VOUCHER_DETAILS_SEARCH.INVOICE_NUMBER" ng-change="GET_OPEN_VOUCHER_DETAILS()" />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Voucher Number</label>
+                        <input type="text" placeholder="Voucher Number" ng-model="OPEN_VOUCHER_DETAILS_SEARCH.VOUCHER_REFERENCE" ng-change="GET_OPEN_VOUCHER_DETAILS()" />
+                    </div>
+                    <div class="col-xxl col-xl col-md">
+                        <label class="text-nowrap">Sold to</label>
+                        <input type="text" placeholder="Sold to" ng-model="OPEN_VOUCHER_DETAILS_SEARCH.CUSTOMER_NAME" ng-change="GET_OPEN_VOUCHER_DETAILS()" />
+                    </div>
+                </div>
+                <div class="table-responsive scrollbar-wrapper resCashupTable">
+                    <table>
+                        <thead class="table-sticky-top">
+                            <tr>
+                                <th>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Set_as_Default" type="checkbox" value="" ng-model="OPEN_VOUCHER_DETAILS_CHECKED_ALL" ng-click="CHECK_ALL_OPEN_VOUCHER_DETAILS()">
+                                        <label class="form-check-label text-nowrap" for="Set_as_Default">Invoice Number</label>
+                                    </div>
+                                </th>
+                                <th class="text-nowrap text-center">Voucher Type</th>
+                                <th class="text-nowrap text-center">Voucher Number</th>
+                                <th class="text-nowrap text-end">Amount</th>
+                                <th class="text-nowrap text-end">Remaining Amount</th>
+                                <th class="text-nowrap text-center">Sold to</th>
+                                <th class="text-nowrap text-center">Validity</th>
+                                <th class="text-nowrap text-center">Payment Method</th>
+                                <th class="notes">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ROW in OPEN_VOUCHER_DETAILS" ng-init="nginit_open_voucher(ROW)">
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="Set_as_Default2" type="checkbox" value="" ng-model="ROW.CHECKED">
+                                        <label class="form-check-label" for="Set_as_Default2">{{ROW.INVOICE}}</label>
+                                    </div>
+                                </td>
+                                <td class="text-nowrap text-center">{{ROW.VOUCHER_TYPE}}</td>
+                                <td class="text-nowrap text-center">{{ROW.VOUCHER}}</td>
+                                <td class="text-nowrap text-end">{{ROW.AMOUNT}}</td>
+                                <td class="text-nowrap text-end">{{ROW.REMAINING_VALUE}}</td>
+                                <td class="text-nowrap text-center">{{ROW.SOLD_TO}}</td>
+                                <td class="text-nowrap text-center">{{ROW.VALIDITY_DATE | date:DISPLAY_DATE_FORMAT}}</td>
+                                <td class="text-nowrap text-center">{{ROW.PAYMENT_METHOD}}</td>
+                                <td>{{ROW.NOTE}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-sticky-bottom">
+                            <tr class="bg-gray">
+                                <td class="text-center">Total</td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-end text-nowrap">{{ ((OPEN_VOUCHER_DETAILS ) | total:'AMOUNT')| number:2}} </td>
+                                <td class="text-end text-nowrap">{{ ((OPEN_VOUCHER_DETAILS ) | total:'REMAINING_VALUE')| number:2}} </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr class="bg-gray" ng-show="GetData">
+                                <td colspan="9" class="text-center table-footer-fixed"  style="">
+                                    <a class="btn btn-secondary text-white ng-binding" ng-click="GET_OPEN_VOUCHER_DETAILS(1)">{{PAGINATION_TEXT}}</a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer text-end">
+                <button class="btn btn-light" type="button" data-bs-dismiss="modal" ng-click="RESET_OPEN_VOUCHER()">Cancel</button>
+                <button class="btn btn-primary" click-once type="button" data-bs-dismiss="modal" ng-click="SELECT_OPEN_VOUCHERS_TO_REDEEM()">Redeem</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var dropdownMenu;
+
+    $('table').on('show.bs.dropdown', function (e) {
+        var $target = $(e.target);
+        dropdownMenu = $target.find('.unique-dropdown-list');
+
+        $('body').append(dropdownMenu.detach());
+
+
+        var targetOffset = $target.offset();
+        dropdownMenu.css({
+            'display': 'block',
+            'top': targetOffset.top + $target.outerHeight(),
+            'left': targetOffset.left,
+            'min-width': $target.outerWidth(),
+            'max-width': '250px',
+            'max-height': '300px',
+            'z-index': '1060',
+            'overflow': 'auto',
+            'position': 'absolute',
+
+        });
+    });
+
+    $('table').on('hide.bs.dropdown', function (e) {
+        var $target = $(e.target);
+        $target.append(dropdownMenu.detach());
+        dropdownMenu.hide();
+    });
+
+</script>

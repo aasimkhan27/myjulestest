@@ -1,0 +1,51 @@
+
+
+body {
+    background-color: #f4f6f9;
+    }
+    
+    .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #2e708a;
+    color: #fff;
+    }
+    
+    .control-sidebar {
+    -webkit-box-shadow: -9px 0px 40px 0px rgba(104,110,140,1);
+    -moz-box-shadow: -9px 0px 40px 0px rgba(104,110,140,1);
+    box-shadow: -9px 0px 40px 0px rgba(104,110,140,1);
+    }
+    
+    
+
+/****************************Danish****************************/
+.floatcss{
+    margin-bottom: -30px !important;
+}
+.floatcss1{
+    margin-bottom: -20px;
+}
+.floatcss .form-control{
+    height: calc(2.25rem );
+}
+/* asif */
+.rowdata{
+    margin-top: 0rem !important;
+    margin-bottom: 0rem !important;
+    }
+    h6{
+        margin-top: 0rem !important;
+    }
+
+    .card-primary.card-outline {
+    border-top: 3px solid #2e708a;
+}
+
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #444444;
+    background-color: #fff;
+    border-color: #2e708a #2e708a #fff;
+}
+
+    .nav-tabs {
+    border-bottom: 2px solid #2e708a;
+}

@@ -1,0 +1,159 @@
+﻿<div class="row basic_details">
+    <div class="col-xxl-2 col-md-2 col-xl-2">
+        <div class="app">
+            <div id="sidenav" class="bg-grey">
+                <div class="wrapper">
+                    <div class="logo">
+                        <a class="nav-icon pull-right"><i class="fa-regular fa-bars"></i></a>
+                    </div>
+                    <div class="menu scrollbar-wrapper mx-height-100">
+                        <ul class="bg-grey">
+                            <li ng-class="{'':TAB_ID==1}"><a href="#!/Basic_Details" class="txt-success"><span class="badge badge-success"><i class="fa-regular fa-check fa-sm"></i></span> Basic Details</a></li>
+                            <li ng-class="{'':TAB_ID==2}"><a href="#!/Enter_Sites" class="txt-success"><span class="badge badge-success"><i class="fa-regular fa-check fa-sm"></i></span> Enter Sites</a></li>
+                            <li ng-class="{'':TAB_ID==3}"><a href="#!/Enter_Departments"><span class="badge badge-success"><i class="fa-regular fa-check fa-sm"></i></span> Enter Departments</a></li>
+                            <li class="active" ng-class="{'active':TAB_ID==4}"><a href="#!/Enter_Positions"><span class="badge badge-primary">4</span> Enter Positions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- content side -->
+    <div class="col-xxl-10 col-md-10 col-xl-10 bg-white">
+        <div class="right-panel container-sm">
+            <form>
+
+                <div class="row">
+                    <h4 class="heading-text">Add Position</h4>
+                    <div class="col-xxl col-md col-xl">
+                        <label class="d-block" for="Position">Position</label>
+                        <input type="text" placeholder="Add here" />
+                    </div>
+                    <div class="col-xxl-auto col-md-auto col-xl-auto">
+                        <label class="d-block">&nbsp;</label>
+                        <button class="btn btn-primary addBtn">Add</button>
+                    </div>
+                    <!-- text -->
+
+                    <div class="col-xxl-12 col-xl-12 col-md-12">
+                        <div class="texts mb-0">
+                            <p class="mb-0">
+                                You don't need to create all Position here.
+                            </p>
+                            <p class="mb-0">
+                                You can add more/edit at a later stage through the settings page.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- department badges row -->
+                <div class="mt-3">
+                    <div class="row">
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <div class="badgeContainer">
+                                <span> Position-001 </span>
+                                <i class="fa-solid fa-xmark fa-sm"></i>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-3 col-xl-3">
+                            <div class="badgeContainer">
+                                <span>Position-002</span>
+                                <i class="fa-solid fa-xmark fa-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- suggestion badges row -->
+                <div class="mt-3">
+                    <div class="row">
+                        <label>Suggestions</label>
+
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-001 </span>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-002 </span>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-003 </span>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-004 </span>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-005 </span>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-006 </span>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-007 </span>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-008 </span>
+                            </div>
+                        </div>
+                        <div class="col-xxl-4 col-md-4 col-xl-4">
+                            <div class="badgeContainerSuggestion">
+                                <span class="badge"> Position-009 </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-xxl-12 col-xl-12 col-md-12 ">
+            <div class="text-end border-top bottom_container">
+                <a class="btn btn-light" href="#!/Enter_Departments">Previous</a>
+                <a class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.menu').niceScroll({
+            cursorcolor: '#999999', // Changing the scrollbar color
+            cursorwidth: 4, // Changing the scrollbar width
+            cursorborder: 'none', // Rempving the scrollbar border
+        });
+
+        // when opening the sidebar
+        $('.nav-icon').on('click', function () {
+            // open sidebar
+            $('.menu').toggleClass('open');
+        });
+
+        // if dismiss or overlay was clicked
+        $('#dismiss').on('click', function () {
+            $('#sidenav').removeClass('open');
+        });
+    });
+</script>
+
+

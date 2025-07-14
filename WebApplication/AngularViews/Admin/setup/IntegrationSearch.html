@@ -1,0 +1,180 @@
+﻿<form id="IntegrationMappingForm" name="IntegrationMappingForm" novalidate ng-init="GET_INTEGRATION_DETAILS()">
+    <div class="card-header">
+        <div class="row">
+           
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Group:</label>
+                    <select class="custom-select"
+                            name="GROUP_ID"
+                            ng-model="IntegrationMappingSearch.GROUP_ID"
+                            ng-options="IL.ID as IL.GROUP_NAME for IL in INTEGRATION_GROUP_MASTER"
+                            ng-change="INTEGRATION_FILTER_DATA(IntegrationMappingSearch.GROUP_ID);"
+                            
+                            ng-class="{'error':IntegrationMappingForm.submitted && IntegrationMappingForm.GROUP_ID.$error.required}">
+                        <option value="">- Please Select Group -</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group">
+                    <button ng-click="CREATE_XERO_INT();" href="#" class="btn btn-wenodo">Create</button>
+                    <!--<button ng-click="EXCHANGE_CODE(IntegrationMappingSearch.URL);" ng-disabled="XERO_TENANTS.length>0" href="#" class="btn btn-wenodo">Get Xero Token</button>-->
+                    <!--<button ng-click="GET_INTEGRATION_DETAILS();" class="btn btn-wenodo">Search</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body mb-0">
+        <div class="text-center" ng-show="ALL_INTEGRATION_DETAILS.length==0" empty-grid>
+        </div>
+        <div class="table-responsive custom-scrollbar height-auto" ng-show="ALL_INTEGRATION_DETAILS.length>0">
+            <table class="table table-striped">
+                <thead class="bg-wenodo-dark-blue">
+                    <tr>
+                        <th>ENTITY NAME</th>
+                        <th>BRANCH NAME</th>
+                        <th>CLIENT ID</th>
+                        <th>GROUP NAME</th>
+                        <th>SYSTEM NAME</th>
+                        <th>INTEGRATION TYPE</th>
+                        <th>IS OUTBOUND</th>
+                        <th>REFRESH</th>
+                        <!--<th>ADD OUT BOUND</th>-->
+                    </tr>
+                </thead>
+                <tbody ng-repeat="CL in ALL_INTEGRATION_DETAILS" on-finish-render="ngRepeatFinished">
+                    <tr>
+                        <td>{{CL.ENTITY_NAME}}</td>
+                        <td>{{CL.BRANCH_NAME}}</td>
+                        <td>{{CL.CLIENT_ID}}</td>
+                        <td>{{CL.GROUP_NAME}}</td>
+                        <td>{{CL.INTEGRATION_SYSTEM_NAME}}</td>
+                        <td>{{CL.INTEGRATION_TYPE}}</td>
+                        <td>{{CL.IS_OUTBOUND}}</td>
+                        <td class="headcol-right">
+                            <a ng-click="REFRESH(CL)" data-toggle="tooltip" data-html="true" data-original-title="Refresh Token"><i class="far fa-redo text-green"></i></a>
+                        </td>
+                        <!--<td><a ng-if="CL.IS_OUTBOUND==false"  ng-click="POPUP_XERO_SUPPLIER_UPDATE(CL,true)" data-toggle="tooltip" data-html="true" data-original-title="Add Out Bound"><i class="fad fa-layer-plus fa-lg text-green"></i></a></td>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+<form name="UpdatesupplierForm"  id="UpdatesupplierForm" novalidate>
+        <div class="modal fade" id="FIELD_VALUE">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Out Bound Integration</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Customer:*</label>
+                                    <select class="custom-select"
+                                            name="CUSTOMER_ID"
+                                            ng-model="IntegrationMappingSearch.CUSTOMER_ID"
+                                            ng-options="EL.CUSTOMER_ID as EL.CUSTOMER_NAME for EL in CUSTOMER_LIST"
+                                            ng-change="GET_ENTITY_LIST()"
+                                            required
+                                            ng-disabled="true"
+                                            ng-class="{'error':UpdatesupplierForm.submitted && UpdatesupplierForm.CUSTOMER_ID.$error.required}">
+                                        <option value="">- Please Select Customer -</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Entity:*</label>
+                                    <select class="custom-select"
+                                            name="ENTITY_ID"
+                                            ng-model="IntegrationMappingSearch.ENTITY_ID"
+                                            ng-change="ADMIN_GET_BRANCH();GET_PYMNT_SUPPLIERS();"
+                                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in ENTITY_LIST" required
+                                            ng-disabled="true"
+                                            ng-class="{'error':UpdatesupplierForm.submitted && UpdatesupplierForm.ENTITY_ID.$error.required}">
+                                        <option value="">- Please Select Entity-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Branch:</label>
+                                    <select class="custom-select"
+                                            name="BRANCH_ID"
+                                            ng-model="IntegrationMappingSearch.BRANCH_ID"
+                                            ng-options="IL.BRANCH_ID as IL.BRANCH_NAME for IL in BRANCH_LIST"
+                                            ng-change="GET_PYMNT_SUPPLIERS();"
+                                            ng-disabled="true"
+                                            ng-class="{'error':UpdatesupplierForm.submitted && UpdatesupplierForm.BRANCH_ID.$error.required}">
+                                        <option value="">- Please Select Branch -</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Group:*</label>
+                                    <select class="custom-select"
+                                            name="GROUP_ID"
+                                            ng-model="IntegrationMappingSearch.GROUP_ID"
+                                            ng-options="IL.ID as IL.GROUP_NAME for IL in INTEGRATION_GROUP_MASTER"
+                                            ng-change=""
+                                            ng-disabled="true"
+                                            required
+                                            ng-class="{'error':UpdatesupplierForm.submitted && UpdatesupplierForm.GROUP_ID.$error.required}">
+                                        <option value="">- Please Select Group -</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group sd-block">
+                                    <label class="d-block">Supplier:*</label>
+                                    <select class="form-control select2"
+                                            name="XERO_SUPPLIER"
+                                            ng-model="IntegrationMappingSearch.XERO_SUPPLIER"
+                                            ng-options="XS.ID as XS.SUPPLIER_NAME for XS in XERO_SUPPLIERS"
+                                            required
+                                            ng-class="{'error':UpdatesupplierForm.submitted && UpdatesupplierForm.XERO_SUPPLIER.$error.required}">
+                                        <option value="">- Please Select -</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Is Out Bound:*</label>
+                                    <select class="custom-select"
+                                            name="IS_OUTBOUND"
+                                            ng-model="IntegrationMappingSearch.IS_OUTBOUND"
+                                            ng-options="OB.ID as OB.OB_FLAG for OB in IS_OUTBOUND_LIST"
+                                            ng-disabled="true"
+                                            required
+                                            ng-class="{'error':UpdatesupplierForm.submitted && UpdatesupplierForm.IS_OUTBOUND.$error.required}">
+                                        <option value="">- Please Select -</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-0">
+                                <label class="d-block">&nbsp;</label>
+                                <button ng-click="UPD_INTEGRATION_TOKENS();" class="btn btn-sm btn-wenodo">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        $('.select2').select2();
+    </script>
+

@@ -1,0 +1,45 @@
+﻿<div class="row align-items-center edit-profile-header p-3">
+    <div class="col-auto">
+        <div class="item">
+            <img ng-show="EmpSearch_HEADER.IMAGE_PATH==null" class="profile-user-img img-fluid img-circle org-img" src="../../dist/img/default-150x150.png" alt="User profile picture">
+            <img ng-show="EmpSearch_HEADER.IMAGE_PATH!=null" class="profile-user-img img-fluid img-circle org-img" src="{{EmpSearch_HEADER.IMAGE_PATH}}" alt="User profile picture">
+            <!--<a ng-click="UPLOAD_PROFILE_IMAGE()" >
+            </a>-->
+            <div class="image-upload pos-absolute">
+                <label for="file-input">
+                    <span class="edit-badge cursor-pointer"><i class="far fa-pen text-white"></i></span>
+                </label>
+             
+                <input id="file-input" ng-files="getTheFilesImageUpload($files,5,5,EmpSearch_HEADER,EmpID)" name="file" type="file" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h5 class="text-blue mb-0">
+            {{EmpSearch_HEADER.FIRST_NAME}} {{EmpSearch_HEADER.MIDDLE_NAME}} {{EmpSearch_HEADER.LAST_NAME}}
+            <span class="font-14 app-text">({{EmpSearch_HEADER.EMPLOYEE_NO}})</span>
+        </h5>
+        <p class="mb-0 font-14">{{EmpSearch_HEADER.POSITION_TITLE}}</p>
+        <p class="font-12 mb-0">{{EmpSearch_HEADER.BUSINESS_EMAIL}}</p>
+        <p class="font-12 mb-0" ng-show="EmpSearch_HEADER.TERMINATION_DATE==null">{{Employeesince}} {{EmpSearch_HEADER.START_DATE | date}} <span class="text-bold d-block">{{EmployeeServices}}</span></p>
+        <p class="font-12 mb-0" ng-if="EmpSearch_HEADER.TERMINATION_DATE!=null">Termination Date:-{{EmpSearch_HEADER.TERMINATION_DATE | date}}</p>
+        <p class="font-12 mb-0" ng-if="EmpSearch_HEADER.TERMINATION_DATE!=null">Type:-<span data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="{{EmpSearch_HEADER.TERMINATION_COMMENTS}}" class="text-bold">{{EmpSearch_HEADER.TERMINATION_REASONS_NAME}}</span></p>
+        <p class="mb-0" ng-if="TERMINATION_DETAILS.length>0">
+            You will be terminate on {{TERMINATION_DETAILS[0].TERMINATION_DATE | date}}
+            <a title="Discard" ng-click="POP_DISCARD_CHANGES(TERMINATION_DETAILS[0],1,1)"><i class="far fa-times text-danger"></i></a>
+            <a title="Process" ng-click="POP_DISCARD_CHANGES(TERMINATION_DETAILS[0],2,1)"><i class="far fa-cogs text-green"></i></a>
+        </p>
+    </div>
+    <div class="col-md-3 offset-md-3 font-12 lh-24">
+        <p class="mt-2 mb-0"><i class="fal fa-user-tie mr-2"></i>Harsh</p>
+        <p class="mb-0 text-capitalize" ng-show="EmpSearch_HEADER.CITY!=null "><i class="fal fa-map-marker-alt mr-2"></i> {{EmpSearch_HEADER.CITY=='' || EmpSearch_HEADER.CITY==null?'-':EmpSearch_HEADER.CITY}}</p>
+        <p class="mb-0"><i class="fal fa-envelope mr-2"></i>{{EmpSearch_HEADER.BUSINESS_EMAIL}}</p>
+        <p><i class="fal fa-phone-volume mr-2"></i><!--{{EmpSearch_HEADER.MOBILE_CODE==''?'-':EmpSearch_HEADER.MOBILE_CODE}}-->{{EmpSearch_HEADER.MOBILE_NO=='' || EmpSearch_HEADER.MOBILE_NO==null?'-':EmpSearch_HEADER.MOBILE_NO}}</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

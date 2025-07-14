@@ -1,0 +1,570 @@
+﻿<div class="box-shadow">
+    <div class="card-header">
+        <h5 class="card-title">Takings Review - Net Sales</h5>
+        <div class="card-tools">
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item mr-2 text-sm mt-1">**Sales excludes Tax, Service Charge, Tips, Charity</li>
+                <li class="nav-item mr-2" ng-show="false">
+                    <select class="custom-select custom-select-sm mw-150"
+                            name="START_TIME"
+                            style="max-width:150px"
+                            ng-change="ENTITY_CHANGE_FY()"
+                            ng-options="EL.ENTITY_ID as EL.ENTITY_NAME for EL in REVE_ENTITY_LIST"
+                            ng-model="TakingReviewSearch.ENTITY_ID">
+                        <option value="">--Select Entity--</option>
+                    </select>
+                </li>
+                <li class="nav-item mr-2" ng-show="false">
+                    <select class="custom-select custom-select-sm mw-150"
+                            name="START_TIME"
+                            ng-options="BL.BRANCH_ID as BL.BRANCH_NAME for BL in BRANCH_LIST"
+                            ng-model="TakingReviewSearch.BRANCH_ID">
+                        <option value="">--Select Branch--</option>
+                    </select>
+                </li>
+                <li class="nav-item mr-2">
+                    <input type="text"
+                           name="REPORTING_DATE"
+                           autocomplete="off"
+                           class="form-control  dateinputOpenDate"
+                           ng-model="TakingReviewSearch.REPORTING_DATE"
+                           ng-value="TakingReviewSearch.REPORTING_DATE | date"
+                           ng-change="REPORTING_DATE_CHANGE_FY()" />
+                </li>
+                <li class="nav-item mr-2">
+                    <div class="input-group input-group-sm my-0" id="week-picker-wrapper">
+                        <input type="text"
+                               class="form-control week-picker font-11 bg-light-grey "
+                               format="yy-mm-dd"
+                               disabled="disabled"
+                               placeholder="Select a Week">
+                    </div>
+                </li>
+
+
+                <li class="nav-item">
+                    <div class="form-group mb-0">
+                        <button type="button"
+                                class="btn btn-sm btn-wenodo"
+                                ng-click="TAKINGREVIEW_PDF(1)"
+                                data-toggle="tooltip"
+                                data-html="true"
+                                data-original-title="Download PDF">
+                            <i class="far fa-file-pdf"></i>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body" ng-show="!TAKING_REVIEW_GRID_DISPLAY">
+        <div class="row "> <div class="col-md-12 text-center text-green">{{FETCHING_RECORD}}</div></div>
+    </div>
+    <div class="card-body" id="TAKINGREVIEW_PDF_ID" ng-show="TAKING_REVIEW_GRID_DISPLAY">
+        <div class="row my-3" hidden>
+            <div class="col-md-6 border-bottom"><img src="{{LOGO_PATH}}" class="img-fluid footer-logo my-2" alt="" /></div>
+            <div class="col-md-6 border-bottom text-right"><img src="../E_Content/images/logo.png" class="img-fluid footer-logo my-2" alt="" /></div>
+        </div>
+        <div class="row mb-2">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col text-center text-bold">Food</div>
+            <div class="col text-center text-bold">Drinks</div>
+            <div class="col text-center text-bold">Wine</div>
+            <div class="col text-center text-bold">Tobbaco</div>
+            <div class="col text-center text-bold">Others</div>
+            <div class="col text-center text-bold">Sales</div>
+            <div class="col text-center text-bold">Budget</div>
+            <div class="col text-center text-bold">Covers</div>
+            <div class="col text-center text-bold">SPH **</div>
+            <div class="col text-center text-bold">Net Sales LW</div>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-md-11 border border-radius-5">
+                <div class="row">
+                    <div class="col">
+                        <div class="panel entity_name">
+                            <h5 class="text-blue text-bold font-14">{{TAKINGS_REVIEW_OBJ.CUSTOMER_NAME}}</h5>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="panel">
+                            <h5 class="revenue">{{TakingReviewSearch.REPORTING_DATE | date}}</h5>
+                            <div class="w-100 mt-3">
+                                <div class="bg-pastel-blue border-radius-5" style="margin-top: 1.1rem;">
+                                    <span class="wtd-text">WTD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Food_Amt | number:0 }} </span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Food_wtd_Amt | number}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Drink_Amt | number }}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Drink_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Win_Amt | number }}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Win_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Tobacco_Amt | number }}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Tobacco_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Other_Amt | number }}</span>
+                                </div>
+
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Other_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col net_sales">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{TAKINGS_REVIEW_OBJ.TakingReviewList.Sales_Amt  | number }} </span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Sales_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Budget_Amt | number}} </span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Budget_wtd_Amt | number}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Covers_Amt | number}}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Covers_wtd_Amt | number}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.SPH_Amt | number:1}}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.SPH_Amt | number:1}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col net_last_week border-0">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12 border-pastel-blue">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Net_Sales_LW | number}}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="border border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{TAKINGS_REVIEW_OBJ.TakingReviewList.Net_Sales_wtd_LW | number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center mb-2 border border-radius-5" ng-repeat="ENL_OBJ in ENTITY_LIST_OBJ" ng-show="false">
+            <div class="col border border-radius-5">
+                <div class="panel entity_name">
+                    <h5 class="text-blue text-bold font-14">{{ENL_OBJ.ENTITY_NAME}}</h5>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="panel">
+                    <h5 class="revenue">Revenue</h5>
+                    <div class="w-100 mt-3">
+                        <div class="bg-pastel-blue border-radius-5" style="margin-top: 1.1rem;">
+                            <span class="wtd-value">WTD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col border border-radius-5">
+                <div class="panel">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Food_Amt | number:0 }} </span>
+                        </div>
+                        <div class="col-md-12w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Food_wtd_Amt | number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border border-radius-5">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Drink_Amt | number }}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Drink_wtd_Amt | number}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col border border-radius-5">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="text-blue text-bold font-24"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Win_Amt | number }}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Win_wtd_Amt | number}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border border-radius-5">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Tobacco_Amt | number }}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Tobacco_wtd_Amt | number}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border border-radius-5">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Other_Amt | number }}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Other_wtd_Amt | number}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border border-radius-5 net_sales">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span>{{ENL_OBJ.TakingReviewList.Sales_Amt  | number }} </span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Sales_wtd_Amt | number}} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border border-radius-5">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Budget_Amt | number}} </span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Budget_wtd_Amt | number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border border-radius-5">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="value"> {{ENL_OBJ.TakingReviewList.Covers_Amt | number}}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"> {{ENL_OBJ.TakingReviewList.Covers_wtd_Amt | number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border border-radius-5">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.SPH_Amt | number:1}}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.SPH_Amt | number:1}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col border border-radius-5 net_last_week">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Net_Sales_LW | number}}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="bg-pastel-blue border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{ENL_OBJ.TakingReviewList.Net_Sales_wtd_LW | number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center" ng-repeat="BRA_OBJ in BRANCH_LIST_OBJ">
+            <div class="col-md-11 border border-radius-5">
+                <div class="row">
+                    <div class="col">
+                        <div class="panel entity_name">
+                            <h5 class="text-blue text-bold font-14">{{BRA_OBJ.BRANCH_NAME}}</h5>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="panel">
+                            <h5 class="revenue">{{TakingReviewSearch.REPORTING_DATE | date}}</h5>
+                            <div class="w-100 mt-3">
+                                <div class="bg-pastel-blue border-radius-5" style="margin-top: 1.1rem;">
+                                    <span class="wtd-text">WTD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Food_Amt | number:0 }} </span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Food_wtd_Amt | number}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Drink_Amt | number }}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Drink_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Win_Amt | number }}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Win_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Tobacco_Amt | number }}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Tobacco_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Other_Amt | number }}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Other_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col net_sales">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Sales_Amt  | number }} </span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Sales_wtd_Amt | number}} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Budget_Amt | number}} </span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Budget_wtd_Amt | number}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"> {{BRA_OBJ.TakingReviewList.Covers_Amt | number}}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"> {{BRA_OBJ.TakingReviewList.Covers_wtd_Amt | number}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="panel">
+                            <div class="row align-items-center font-10">
+                                <div class="col-md-12 border border-radius-5">
+                                    <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.SPH_Amt | number:1}}</span>
+                                </div>
+                                <div class="w-100 mt-2">
+                                    <div class="bg-pastel-blue border-radius-5">
+                                        <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.SPH_Amt | number:1}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col net_last_week">
+                <div class="panel">
+                    <div class="row align-items-center font-10">
+                        <div class="col-md-12 border-pastel-blue">
+                            <span class="value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Net_Sales_LW | number}}</span>
+                        </div>
+                        <div class="w-100 mt-2">
+                            <div class="border border-radius-5">
+                                <span class="wtd-value"><span ng-bind-html="CURRENCY_SYMBOL"></span> {{BRA_OBJ.TakingReviewList.Net_Sales_wtd_LW | number}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
