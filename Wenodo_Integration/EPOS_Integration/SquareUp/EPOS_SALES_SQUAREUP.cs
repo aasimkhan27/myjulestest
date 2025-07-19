@@ -13,7 +13,7 @@ using static EPOS_Integration.SquareUp.SquareupModel;
 
 namespace EPOS_Integration.SquareUp
 {
-    class EPOS_SALES_SQUAREUP<T>
+    public class EPOS_SALES_SQUAREUP<T>
     {
         public CashupModel CashupModelObj { get; set; }
         public CashupModel Transform_SquareupData(T data, decimal Integration_System_ID, Cashup _ICashUp, DataTable Integration_Dt)
@@ -26,7 +26,7 @@ namespace EPOS_Integration.SquareUp
             try
             {
                 DataSet DS_DATA = new DataSet();
-                DS_DATA =data as DataSet;
+                DS_DATA = data as DataSet;
                 if (DS_DATA.Tables[0].Rows.Count > 0 && DS_DATA.Tables[1].Rows.Count > 0)
                 {
                     _ICashUp.CashupModelObj.EPOS_SALES_HEADER = FillHeader(DS_DATA, _ICashUp);
@@ -133,11 +133,11 @@ namespace EPOS_Integration.SquareUp
                 {
                     foreach (DataRow DR_LINE in Root.Tables[1].Select("ORDER_ID='" + Header_Id + "'").CopyToDataTable().Rows)
                     {
-                       
+
                         DataRow DR_SQ_LINE = _ICashUp.CashupModelObj.EPOS_SALES_LINES.NewRow();
                         DR_SQ_LINE["CHECK_ID"] = Header_Id;
                         DR_SQ_LINE["REVENUE_CENTER_ID"] = (object)DBNull.Value;
-                        DR_SQ_LINE["REVENUE_CENTER"] = (object)DBNull.Value;                     
+                        DR_SQ_LINE["REVENUE_CENTER"] = (object)DBNull.Value;
 
                         var category = (from T1 in Root.Tables[1].AsEnumerable()
                                         join T4 in Root.Tables[4].AsEnumerable()
@@ -164,7 +164,7 @@ namespace EPOS_Integration.SquareUp
                         if (Convert.ToString(DR_LINE["SOURCE_LINE_ITEM_UID"]) == "")
                             GROSS_AMT = Convert.ToDecimal(DR_LINE["GROSS_SALES_MONEY"]) / 100;
                         else
-                            GROSS_AMT = (Convert.ToDecimal(DR_LINE["GROSS_RETURN_MONEY"])- Convert.ToDecimal(DR_LINE["TOTAL_DISCOUNT_MONEY"])) / 100;
+                            GROSS_AMT = (Convert.ToDecimal(DR_LINE["GROSS_RETURN_MONEY"]) - Convert.ToDecimal(DR_LINE["TOTAL_DISCOUNT_MONEY"])) / 100;
 
                         decimal TAX = Convert.ToDecimal(DR_LINE["TOTAL_TAX_MONEY"]) == 0 ? 0 : Convert.ToDecimal(DR_LINE["TOTAL_TAX_MONEY"]) / 100;
                         decimal NET = GROSS_AMT - TAX;
@@ -177,7 +177,7 @@ namespace EPOS_Integration.SquareUp
                         DR_SQ_LINE["DISCOUNT"] = Convert.ToString(DR_LINE["SOURCE_LINE_ITEM_UID"]) == "" ? DISCOUNT_AMT : DISCOUNT_AMT * -1;// (Convert.ToDecimal(data.Where(p => p.UID == DR_LINE["UID"].ToString()).Sum(p => p.TOTAL_DISCOUNT_MONEY))) > 0 ? (Convert.ToDecimal(data.Where(p => p.UID == DR_LINE["UID"].ToString()).Sum(p => p.TOTAL_DISCOUNT_MONEY))) / 100 : 0;
 
                         DR_SQ_LINE["COMP"] = 0;
-                        DR_SQ_LINE["VOID"] = Convert.ToString(DR_LINE["SOURCE_LINE_ITEM_UID"]) != "" ? ((Convert.ToDecimal(DR_LINE["GROSS_RETURN_MONEY"])- Convert.ToDecimal(DR_LINE["TOTAL_TAX_MONEY"]))/100 )* -1 : 0;
+                        DR_SQ_LINE["VOID"] = Convert.ToString(DR_LINE["SOURCE_LINE_ITEM_UID"]) != "" ? ((Convert.ToDecimal(DR_LINE["GROSS_RETURN_MONEY"]) - Convert.ToDecimal(DR_LINE["TOTAL_TAX_MONEY"])) / 100) * -1 : 0;
                         DR_SQ_LINE["TIME_OF_SALE"] = CREATED_AT;
                         DR_SQ_LINE["STAFF_ID"] = (object)DBNull.Value;
                         DR_SQ_LINE["STAFF_NAME"] = (object)DBNull.Value;
@@ -240,7 +240,8 @@ namespace EPOS_Integration.SquareUp
                 if (Root.Tables[3].Select("ORDER_ID='" + Header_Id + "'").Count() > 0)
                 {
                     foreach (DataRow DR in Root.Tables[3].Select("ORDER_ID='" + Header_Id + "'").CopyToDataTable().Rows)
-                    {if (Convert.ToDecimal(Convert.ToDecimal(DR["APPLIED_MONEY"]) / 100) != 0)
+                    {
+                        if (Convert.ToDecimal(Convert.ToDecimal(DR["APPLIED_MONEY"]) / 100) != 0)
                         {
                             DataRow DR_DISCOUNT = _ICashUp.CashupModelObj.EPOS_SALES_DISCOUNTS.NewRow();
                             DR_DISCOUNT["CHECK_ID"] = Header_Id;
