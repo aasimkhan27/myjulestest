@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1433
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wenodo_Integration", "Wenodo_Integration\Wenodo_Integration.csproj", "{59E1E2D4-7191-423B-9593-FF427B381820}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPOS_Integration", "EPOS_Integration\EPOS_Integration.csproj", "{9C12C96C-2D7B-4ACA-917A-8AEA1D329C84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{E71CD4D6-28CC-4A98-ADE6-F903492B4730}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification", "Notification\Notification.csproj", "{D55BAEDD-6797-49BA-B3F2-9F7BB562CCC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HR_Integration", "HR_Integration\HR_Integration.csproj", "{0F540316-00A3-4891-84A9-149A67F50CCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VOUCHER_Integration", "VOUCHER_INTEGRATION\VOUCHER_Integration.csproj", "{D39F645E-858F-408C-8165-CEBA609A30CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59E1E2D4-7191-423B-9593-FF427B381820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59E1E2D4-7191-423B-9593-FF427B381820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59E1E2D4-7191-423B-9593-FF427B381820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59E1E2D4-7191-423B-9593-FF427B381820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C12C96C-2D7B-4ACA-917A-8AEA1D329C84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C12C96C-2D7B-4ACA-917A-8AEA1D329C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C12C96C-2D7B-4ACA-917A-8AEA1D329C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C12C96C-2D7B-4ACA-917A-8AEA1D329C84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E71CD4D6-28CC-4A98-ADE6-F903492B4730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E71CD4D6-28CC-4A98-ADE6-F903492B4730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E71CD4D6-28CC-4A98-ADE6-F903492B4730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E71CD4D6-28CC-4A98-ADE6-F903492B4730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D55BAEDD-6797-49BA-B3F2-9F7BB562CCC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D55BAEDD-6797-49BA-B3F2-9F7BB562CCC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D55BAEDD-6797-49BA-B3F2-9F7BB562CCC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D55BAEDD-6797-49BA-B3F2-9F7BB562CCC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F540316-00A3-4891-84A9-149A67F50CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F540316-00A3-4891-84A9-149A67F50CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F540316-00A3-4891-84A9-149A67F50CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F540316-00A3-4891-84A9-149A67F50CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D39F645E-858F-408C-8165-CEBA609A30CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D39F645E-858F-408C-8165-CEBA609A30CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D39F645E-858F-408C-8165-CEBA609A30CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D39F645E-858F-408C-8165-CEBA609A30CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC874665-520B-4CFC-875B-483583D692E0}
+	EndGlobalSection
+EndGlobal

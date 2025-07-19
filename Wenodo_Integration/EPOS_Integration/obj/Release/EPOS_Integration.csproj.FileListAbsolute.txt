@@ -1,0 +1,259 @@
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\EPOS_Integration.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\EPOS_Integration.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Newtonsoft.Json.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Utility.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\log4net.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Utility.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Newtonsoft.Json.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\log4net.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csprojResolveAssemblyReference.cache
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\EPOS_Integration.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\EPOS_Integration.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Newtonsoft.Json.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Utility.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\log4net.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Utility.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\log4net.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csprojAssemblyReference.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csproj.CoreCompileInputs.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csproj.CopyComplete
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\EPOS_Integration.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\EPOS_Integration.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Newtonsoft.Json.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Utility.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\log4net.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Utility.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\log4net.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csprojAssemblyReference.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csproj.CoreCompileInputs.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csproj.CopyComplete
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Renci.SshNet.Async.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Renci.SshNet.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\RestSharp.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Renci.SshNet.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Renci.SshNet.Async.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\RestSharp.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csprojAssemblyReference.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csproj.CoreCompileInputs.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\EPOS_Integration.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\EPOS_Integration.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Win32.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\netstandard.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.AppContext.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Collections.Concurrent.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Collections.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Collections.NonGeneric.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Collections.Specialized.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.ComponentModel.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.ComponentModel.EventBasedAsync.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.ComponentModel.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.ComponentModel.TypeConverter.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Console.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Data.Common.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.Contracts.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.Debug.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.FileVersionInfo.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.Process.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.StackTrace.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.TextWriterTraceListener.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.Tools.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.TraceSource.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Diagnostics.Tracing.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Drawing.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Dynamic.Runtime.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Globalization.Calendars.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Globalization.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Globalization.Extensions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.Compression.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.Compression.ZipFile.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.FileSystem.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.FileSystem.DriveInfo.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.FileSystem.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.FileSystem.Watcher.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.IsolatedStorage.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.MemoryMappedFiles.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.Pipes.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IO.UnmanagedMemoryStream.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Linq.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Linq.Expressions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Linq.Parallel.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Linq.Queryable.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.Http.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.NameResolution.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.NetworkInformation.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.Ping.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.Requests.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.Security.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.Sockets.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.WebHeaderCollection.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.WebSockets.Client.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Net.WebSockets.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.ObjectModel.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Reflection.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Reflection.Extensions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Reflection.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Resources.Reader.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Resources.ResourceManager.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Resources.Writer.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.CompilerServices.VisualC.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.Extensions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.Handles.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.InteropServices.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.Numerics.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.Serialization.Formatters.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.Serialization.Json.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.Serialization.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.Serialization.Xml.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Claims.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Cryptography.Algorithms.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Cryptography.Csp.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Cryptography.Encoding.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Cryptography.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Cryptography.X509Certificates.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Principal.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.SecureString.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.Encoding.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.Encoding.Extensions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.RegularExpressions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.Overlapped.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.Tasks.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.Tasks.Parallel.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.Thread.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.ThreadPool.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.Timer.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.ValueTuple.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Xml.ReaderWriter.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Xml.XDocument.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Xml.XmlDocument.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Xml.XmlSerializer.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Xml.XPath.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Xml.XPath.XDocument.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\AspNet.Security.OpenIdConnect.Extensions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\AspNet.Security.OpenIdConnect.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\AspNet.Security.OpenIdConnect.Server.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\BitMiracle.LibTiff.NET.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\CsvHelper.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\IronSoftware.Drawing.Common.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\IronXL.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Authentication.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Authentication.Core.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Authentication.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.DataProtection.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.DataProtection.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Hosting.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Http.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Http.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Http.Extensions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Http.Features.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.WebUtilities.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Bcl.HashCode.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Hosting.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.ObjectPool.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Options.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Primitives.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.WebEncoders.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.IdentityModel.Logging.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.IdentityModel.Protocols.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.IdentityModel.Tokens.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Net.Http.Headers.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Win32.Registry.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Newtonsoft.Json.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Renci.SshNet.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\RestSharp.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\SixLabors.Fonts.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\SixLabors.ImageSharp.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\SixLabors.ImageSharp.Drawing.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Buffers.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IdentityModel.Tokens.Jwt.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Memory.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Numerics.Vectors.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.CompilerServices.Unsafe.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.AccessControl.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Cryptography.Xml.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Security.Principal.Windows.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.Encoding.CodePages.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.Encodings.Web.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.Json.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.Tasks.Extensions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Utility.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\log4net.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Utility.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\AspNet.Security.OpenIdConnect.Extensions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\AspNet.Security.OpenIdConnect.Primitives.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\AspNet.Security.OpenIdConnect.Server.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\BitMiracle.LibTiff.NET.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\CsvHelper.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\IronSoftware.Drawing.Common.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\IronSoftware.Drawing.Common.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\IronXL.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\IronXL.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\IronXL.dll.config
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Authentication.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Authentication.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Authentication.Core.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Cryptography.Internal.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.DataProtection.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.DataProtection.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Hosting.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Hosting.Server.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Http.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Http.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Http.Extensions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.Http.Features.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.AspNetCore.WebUtilities.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Bcl.AsyncInterfaces.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Bcl.HashCode.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Configuration.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.DependencyInjection.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.FileProviders.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Hosting.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Logging.Abstractions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.ObjectPool.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Options.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.Primitives.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Extensions.WebEncoders.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.IdentityModel.Logging.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.IdentityModel.Protocols.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.IdentityModel.Tokens.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Microsoft.Net.Http.Headers.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Newtonsoft.Json.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\Renci.SshNet.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\RestSharp.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\SixLabors.ImageSharp.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Buffers.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.IdentityModel.Tokens.Jwt.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Memory.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Numerics.Vectors.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.Encoding.CodePages.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.Encodings.Web.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Text.Json.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\System.Threading.Tasks.Extensions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\bin\Release\log4net.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.csproj.CopyComplete
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\EPOS_Integration\obj\Release\EPOS_Integration.pdb

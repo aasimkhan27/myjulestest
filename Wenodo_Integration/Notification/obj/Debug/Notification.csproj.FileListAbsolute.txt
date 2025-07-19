@@ -1,0 +1,111 @@
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Notification.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Notification.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\BouncyCastle.Crypto.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\EASendMail.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\System.Buffers.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Utility.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\log4net.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Utility.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\BouncyCastle.Crypto.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\System.Buffers.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Debug\log4net.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csprojResolveAssemblyReference.cache
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Notification.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Notification.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\BouncyCastle.Crypto.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\EASendMail.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\System.Buffers.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Utility.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\log4net.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Utility.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\BouncyCastle.Crypto.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\System.Buffers.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\log4net.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csprojAssemblyReference.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csproj.CoreCompileInputs.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csproj.CopyComplete
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Notification.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Notification.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\BouncyCastle.Crypto.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\DocumentFormat.OpenXml.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\EASendMail.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.Auth.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.Auth.PlatformServices.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.Core.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.PlatformServices.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Newtonsoft.Json.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\RestSharp.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\System.Buffers.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Utility.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\log4net.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Utility.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\BouncyCastle.Crypto.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\DocumentFormat.OpenXml.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.Auth.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.Auth.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.Core.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Google.Apis.Core.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Newtonsoft.Json.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\RestSharp.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\System.Buffers.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Debug\log4net.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csprojAssemblyReference.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csproj.CoreCompileInputs.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csproj.CopyComplete
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Notification.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Notification.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\BouncyCastle.Crypto.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\EASendMail.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Newtonsoft.Json.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\RestSharp.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\System.Buffers.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Utility.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\log4net.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Utility.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\BouncyCastle.Crypto.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MailKit.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\MimeKit.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\Newtonsoft.Json.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\RestSharp.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\System.Buffers.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Debug\log4net.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csprojAssemblyReference.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csproj.CoreCompileInputs.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.csproj.CopyComplete
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Debug\Notification.pdb

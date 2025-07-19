@@ -1,0 +1,10 @@
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\bin\Debug\Utility.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\bin\Debug\Utility.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\bin\Debug\log4net.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\bin\Debug\log4net.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\obj\Debug\Utility.csprojAssemblyReference.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\obj\Debug\Utility.csproj.CoreCompileInputs.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\obj\Debug\Utility.csproj.CopyComplete
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\obj\Debug\Utility.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Utility\obj\Debug\Utility.pdb

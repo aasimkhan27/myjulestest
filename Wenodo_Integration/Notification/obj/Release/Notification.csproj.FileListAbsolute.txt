@@ -1,0 +1,100 @@
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\Notification.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\Notification.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\BouncyCastle.Crypto.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\EASendMail.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\System.Buffers.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\Utility.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\log4net.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\Utility.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\BouncyCastle.Crypto.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\System.Buffers.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\bin\Release\log4net.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csprojResolveAssemblyReference.cache
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Notification.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Notification.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\BouncyCastle.Crypto.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\EASendMail.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\System.Buffers.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Utility.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\log4net.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Utility.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\BouncyCastle.Crypto.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\System.Buffers.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\log4net.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csprojAssemblyReference.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csproj.CoreCompileInputs.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csproj.CopyComplete
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Notification.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Notification.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\BouncyCastle.Crypto.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\DocumentFormat.OpenXml.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\EASendMail.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\System.Buffers.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Utility.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\log4net.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Utility.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\BouncyCastle.Crypto.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\DocumentFormat.OpenXml.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\System.Buffers.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\log4net.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csprojAssemblyReference.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csproj.CoreCompileInputs.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csproj.CopyComplete
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Newtonsoft.Json.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\RestSharp.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\Newtonsoft.Json.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Notification\bin\Release\RestSharp.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\Notification.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\Notification.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\BouncyCastle.Crypto.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\EASendMail.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\Newtonsoft.Json.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\RestSharp.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\System.Buffers.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\Utility.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\log4net.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\Microsoft.ApplicationBlocks.Data.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\Utility.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\BouncyCastle.Crypto.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\MailKit.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\MimeKit.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\RestSharp.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\System.Buffers.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\log4net.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csprojAssemblyReference.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csproj.CoreCompileInputs.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.csproj.CopyComplete
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\obj\Release\Notification.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Notification\bin\Release\Newtonsoft.Json.xml

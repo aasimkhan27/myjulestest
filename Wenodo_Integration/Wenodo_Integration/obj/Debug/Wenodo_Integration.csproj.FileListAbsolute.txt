@@ -1,0 +1,243 @@
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe.config
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Newtonsoft.Json.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Notification.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Utility.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\log4net.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Notification.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Utility.pdb
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Newtonsoft.Json.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\log4net.xml
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csprojResolveAssemblyReference.cache
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.ServiceInstaller.resources
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.GenerateResource.Cache
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.exe
+F:\Wenodo\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe.config
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Newtonsoft.Json.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Notification.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Utility.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\log4net.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Notification.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Utility.pdb
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\log4net.xml
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csprojAssemblyReference.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.ServiceInstaller.resources
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.GenerateResource.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.CoreCompileInputs.cache
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.CopyComplete
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.exe
+E:\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csprojAssemblyReference.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.ServiceInstaller.resources
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.GenerateResource.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.CoreCompileInputs.cache
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe.config
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe.manifest
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.application
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\HR_Integration.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Notification.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Utility.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Newtonsoft.Json.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Renci.SshNet.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\CsvHelper.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.Auth.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\log4net.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\netstandard.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Bcl.HashCode.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Memory.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.Core.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Numerics.Vectors.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Buffers.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.dll.config
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Notification.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Utility.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\HR_Integration.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\HR_Integration.dll.config
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Newtonsoft.Json.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Renci.SshNet.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\CsvHelper.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.Auth.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.Auth.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\log4net.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Bcl.HashCode.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Memory.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.Core.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.Core.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Google.Apis.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Numerics.Vectors.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Buffers.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.exe.manifest
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.application
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.CopyComplete
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.exe
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.pdb
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\RestSharp.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\RestSharp.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Win32.Primitives.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.AppContext.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Collections.Concurrent.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Collections.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Collections.NonGeneric.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Collections.Specialized.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.ComponentModel.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.ComponentModel.EventBasedAsync.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.ComponentModel.Primitives.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.ComponentModel.TypeConverter.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Console.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Data.Common.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.Contracts.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.Debug.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.FileVersionInfo.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.Process.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.StackTrace.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.TextWriterTraceListener.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.Tools.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.TraceSource.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Diagnostics.Tracing.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Drawing.Primitives.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Dynamic.Runtime.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Globalization.Calendars.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Globalization.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Globalization.Extensions.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.Compression.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.Compression.ZipFile.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.FileSystem.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.FileSystem.DriveInfo.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.FileSystem.Primitives.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.FileSystem.Watcher.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.IsolatedStorage.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.MemoryMappedFiles.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.Pipes.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.IO.UnmanagedMemoryStream.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Linq.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Linq.Expressions.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Linq.Parallel.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Linq.Queryable.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.Http.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.NameResolution.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.NetworkInformation.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.Ping.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.Primitives.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.Requests.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.Security.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.Sockets.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.WebHeaderCollection.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.WebSockets.Client.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Net.WebSockets.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.ObjectModel.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Reflection.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Reflection.Extensions.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Reflection.Primitives.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Resources.Reader.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Resources.ResourceManager.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Resources.Writer.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.CompilerServices.VisualC.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.Extensions.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.Handles.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.InteropServices.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.Numerics.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.Serialization.Formatters.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.Serialization.Json.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.Serialization.Primitives.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.Serialization.Xml.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Security.Claims.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Security.Cryptography.Algorithms.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Security.Cryptography.Csp.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Security.Cryptography.Encoding.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Security.Cryptography.Primitives.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Security.Cryptography.X509Certificates.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Security.Principal.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Security.SecureString.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Text.Encoding.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Text.Encoding.Extensions.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Text.RegularExpressions.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Overlapped.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Tasks.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Tasks.Parallel.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Thread.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.ThreadPool.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Timer.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.ValueTuple.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Xml.ReaderWriter.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Xml.XDocument.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Xml.XmlDocument.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Xml.XmlSerializer.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Xml.XPath.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Xml.XPath.XDocument.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.CodeDom.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Management.dll
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.CodeDom.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Management.xml
+C:\APPLICATION'S\Projects\WENODO SERVICES\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.exe.config
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe.config
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.exe
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Wenodo_Integration.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\HR_Integration.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Notification.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Utility.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Newtonsoft.Json.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\RestSharp.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Renci.SshNet.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\CsvHelper.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\log4net.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\netstandard.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Bcl.HashCode.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Memory.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Numerics.Vectors.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Buffers.dll
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\EPOS_Integration.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\HR_Integration.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\HR_Integration.dll.config
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Notification.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Utility.pdb
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Newtonsoft.Json.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\RestSharp.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Renci.SshNet.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\CsvHelper.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\log4net.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\Microsoft.Bcl.HashCode.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Memory.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Numerics.Vectors.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\bin\Debug\System.Buffers.xml
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csprojAssemblyReference.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.ServiceInstaller.resources
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.GenerateResource.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.CoreCompileInputs.cache
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.csproj.CopyComplete
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.exe
+D:\Wenodo\Services\Windows_Services\Wenodo_Integration\Wenodo_Integration\obj\Debug\Wenodo_Integration.pdb
