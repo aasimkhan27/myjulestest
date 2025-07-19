@@ -1,3 +1,5 @@
+using App_Repository;
+
 namespace EPOS_Integration.Common
 {
     public interface IDataTransformer

@@ -1,6 +1,7 @@
 using App_Repository;
 using EPOS_Integration.Common;
 using EPOS_Integration.EPOS_SALES;
+using EPOS_Integration.SquareUp;
 using System;
 using System.Data;
 

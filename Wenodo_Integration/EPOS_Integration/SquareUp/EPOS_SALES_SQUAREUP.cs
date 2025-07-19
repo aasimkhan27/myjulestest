@@ -1,4 +1,4 @@
-﻿using App_Repository;
+using App_Repository;
 using EPOS_Integration.EPOS_SALES;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using static EPOS_Integration.SquareUp.SquareupModel;
 
 namespace EPOS_Integration.SquareUp
 {
-    class EPOS_SALES_SQUAREUP<T>
+   public  class EPOS_SALES_SQUAREUP<T>
     {
         public CashupModel CashupModelObj { get; set; }
 
