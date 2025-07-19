@@ -319,7 +319,7 @@ namespace Wenodo_Integration
                 {
                     t1 = new Timer();
                     t1.Interval = GetMilliseconds(ConfigurationManager.AppSettings["EPOS_Interval_Syrve"].ToString());
-                    t1.Elapsed += (s, ea) => EPOS_Integration_Process(sender, e, Convert.ToInt32(IntegrationSource.FOODICS), 0, ConfigurationManager.AppSettings["EPOS_Interval_Syrve"].ToString(), t1);
+                    t1.Elapsed += (s, ea) => EPOS_Integration_Process(sender, e, Convert.ToInt32(IntegrationSource.SYRVE), 0, ConfigurationManager.AppSettings["EPOS_Interval_Syrve"].ToString(), t1);
                     t1.Start();
                 }
                 #endregion
