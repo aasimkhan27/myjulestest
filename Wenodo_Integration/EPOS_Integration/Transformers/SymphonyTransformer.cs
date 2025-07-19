@@ -5,9 +5,9 @@ using System.Data;
 
 namespace EPOS_Integration.Transformers
 {
-    public class SymphonyTransformer : IDataTransformer
+    public class SymphonyTransformer : BaseTransformer, IDataTransformer
     {
-        public void Transform(DataTable integrationData, object data, decimal cashupMainId, Cashup cashup)
+        public void Transform(DataTable integrationData, object data, decimal cashupMainI, Cashup cashup)
         {
             var obj = new EPOS_SALES_SIMPHONY<DataSet>();
             obj.CashupModelObj = cashup.CashupModelObj;

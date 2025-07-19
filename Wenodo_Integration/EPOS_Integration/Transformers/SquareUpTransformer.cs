@@ -5,7 +5,7 @@ using System.Data;
 
 namespace EPOS_Integration.Transformers
 {
-    public class SquareUpTransformer : IDataTransformer
+    public class SquareUpTransformer : BaseTransformer, IDataTransformer
     {
         public void Transform(DataTable integrationData, object data, decimal cashupMainId, Cashup cashup)
         {
