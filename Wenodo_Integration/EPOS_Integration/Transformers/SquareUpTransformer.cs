@@ -1,3 +1,4 @@
+using App_Repository;
 using EPOS_Integration.Common;
 using EPOS_Integration.EPOS_SALES;
 using System;
